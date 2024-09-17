@@ -1,0 +1,1071 @@
+<!DOCTYPE html><html lang="en-US"><head><title>Running Things on gem5</title><meta property="og:title" content="Running Things on gem5"><meta charset="UTF-8"><meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"><meta name="apple-mobile-web-app-capable" content="yes"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta property="og:type" content="website"><meta name="twitter:card" content="summary"><style>@media screen{body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button{-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none;background-color:transparent;border:0;color:inherit;cursor:pointer;font-size:inherit;opacity:.8;outline:none;padding:0;transition:opacity .2s linear}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:disabled,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:disabled,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:disabled,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:disabled{cursor:not-allowed;opacity:.15!important}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover{opacity:1}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:active,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:active,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover:active,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover:active{opacity:.6}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:not(:disabled),body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:not(:disabled),body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover:not(:disabled),body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover:not(:disabled){transition:none}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button.bespoke-marp-presenter-info-page-prev{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNNjggOTAgMjggNTBsNDAtNDAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button.bespoke-marp-presenter-info-page-next{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJtMzIgOTAgNDAtNDAtNDAtNDAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen]{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDpub25lO3N0cm9rZTojZmZmO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6NXB4fTwvc3R5bGU+PC9kZWZzPjxyZWN0IHdpZHRoPSI4MCIgaGVpZ2h0PSI2MCIgeD0iMTAiIHk9IjIwIiBjbGFzcz0iYSIgcng9IjUuNjciLz48cGF0aCBkPSJNNDAgNzBIMjBWNTBtMjAgMEwyMCA3MG00MC00MGgyMHYyMG0tMjAgMCAyMC0yMCIgY2xhc3M9ImEiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button.exit[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button.exit[data-bespoke-marp-osc=fullscreen]{background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDpub25lO3N0cm9rZTojZmZmO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6NXB4fTwvc3R5bGU+PC9kZWZzPjxyZWN0IHdpZHRoPSI4MCIgaGVpZ2h0PSI2MCIgeD0iMTAiIHk9IjIwIiBjbGFzcz0iYSIgcng9IjUuNjciLz48cGF0aCBkPSJNMjAgNTBoMjB2MjBtLTIwIDAgMjAtMjBtNDAgMEg2MFYzMG0yMCAwTDYwIDUwIiBjbGFzcz0iYSIvPjwvc3ZnPg==")}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter]{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNODcuOCA0Ny41Qzg5IDUwIDg3LjcgNTIgODUgNTJIMzVhOC43IDguNyAwIDAgMS03LjItNC41bC0xNS42LTMxQzExIDE0IDEyLjIgMTIgMTUgMTJoNTBhOC44IDguOCAwIDAgMSA3LjIgNC41ek02MCA1MnYzNm0tMTAgMGgyME00NSA0MmgyMCIvPjwvc3ZnPg==") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button.bespoke-marp-presenter-note-bigger{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNMTIgNTBoODBNNTIgOTBWMTAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button.bespoke-marp-presenter-note-smaller{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNMTIgNTBoODAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}}@keyframes __bespoke_marp_transition_reduced_outgoing__{0%{opacity:1}to{opacity:0}}@keyframes __bespoke_marp_transition_reduced_incoming__{0%{mix-blend-mode:plus-lighter;opacity:0}to{mix-blend-mode:plus-lighter;opacity:1}}.bespoke-marp-note,.bespoke-marp-osc,.bespoke-progress-parent{display:none;transition:none}@media screen{::view-transition-group(*){animation-duration:var(--marp-bespoke-transition-animation-duration,.5s);animation-timing-function:ease}::view-transition-new(*),::view-transition-old(*){animation-delay:0s;animation-direction:var(--marp-bespoke-transition-animation-direction,normal);animation-duration:var(--marp-bespoke-transition-animation-duration,.5s);animation-fill-mode:both;animation-name:var(--marp-bespoke-transition-animation-name,var(--marp-bespoke-transition-animation-name-fallback,__bespoke_marp_transition_no_animation__));mix-blend-mode:normal}::view-transition-old(*){--marp-bespoke-transition-animation-name-fallback:__bespoke_marp_transition_reduced_outgoing__;animation-timing-function:ease}::view-transition-new(*){--marp-bespoke-transition-animation-name-fallback:__bespoke_marp_transition_reduced_incoming__;animation-timing-function:ease}::view-transition-new(root),::view-transition-old(root){animation-timing-function:linear}::view-transition-new(__bespoke_marp_transition_osc__),::view-transition-old(__bespoke_marp_transition_osc__){animation-duration:0s!important;animation-name:__bespoke_marp_transition_osc__!important}::view-transition-new(__bespoke_marp_transition_osc__){opacity:0!important}.bespoke-marp-transition-warming-up::view-transition-group(*),.bespoke-marp-transition-warming-up::view-transition-new(*),.bespoke-marp-transition-warming-up::view-transition-old(*){animation-play-state:paused!important}body,html{height:100%;margin:0}body{background:#000;overflow:hidden}svg.bespoke-marp-slide{content-visibility:hidden;opacity:0;pointer-events:none;z-index:-1}svg.bespoke-marp-slide:not(.bespoke-marp-active) *{view-transition-name:none!important}svg.bespoke-marp-slide.bespoke-marp-active{content-visibility:visible;opacity:1;pointer-events:auto;z-index:0}svg.bespoke-marp-slide.bespoke-marp-active.bespoke-marp-active-ready *{animation-name:__bespoke_marp__!important}@supports not (content-visibility:hidden){svg.bespoke-marp-slide[data-bespoke-marp-load=hideable]{display:none}svg.bespoke-marp-slide[data-bespoke-marp-load=hideable].bespoke-marp-active{display:block}}}@media screen and (prefers-reduced-motion:reduce){svg.bespoke-marp-slide *{view-transition-name:none!important}}@media screen{[data-bespoke-marp-fragment=inactive]{visibility:hidden}body[data-bespoke-view=""] .bespoke-marp-parent,body[data-bespoke-view=next] .bespoke-marp-parent{inset:0;position:absolute}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc{view-transition-name:__bespoke_marp_transition_osc__;background:rgba(0,0,0,.65);border-radius:7px;bottom:50px;color:#fff;contain:paint;display:block;font-family:Helvetica,Arial,sans-serif;font-size:16px;left:50%;line-height:0;opacity:1;padding:12px;position:absolute;touch-action:manipulation;transform:translateX(-50%);transition:opacity .2s linear;-webkit-user-select:none;user-select:none;white-space:nowrap;will-change:transform;z-index:1}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>*,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>*{margin-left:6px}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>:first-child,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>:first-child{margin-left:0}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>span,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>span{opacity:.8}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>span[data-bespoke-marp-osc=page],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>span[data-bespoke-marp-osc=page]{display:inline-block;min-width:140px;text-align:center}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev]{height:32px;line-height:32px;width:32px}body[data-bespoke-view=""] .bespoke-marp-parent.bespoke-marp-inactive,body[data-bespoke-view=next] .bespoke-marp-parent.bespoke-marp-inactive{cursor:none}body[data-bespoke-view=""] .bespoke-marp-parent.bespoke-marp-inactive>.bespoke-marp-osc,body[data-bespoke-view=next] .bespoke-marp-parent.bespoke-marp-inactive>.bespoke-marp-osc{opacity:0;pointer-events:none}body[data-bespoke-view=""] svg.bespoke-marp-slide,body[data-bespoke-view=next] svg.bespoke-marp-slide{height:100%;left:0;position:absolute;top:0;width:100%}body[data-bespoke-view=""] .bespoke-progress-parent{background:#222;display:flex;height:5px;width:100%}body[data-bespoke-view=""] .bespoke-progress-parent+.bespoke-marp-parent{top:5px}body[data-bespoke-view=""] .bespoke-progress-parent .bespoke-progress-bar{background:#0288d1;flex:0 0 0;transition:flex-basis .2s cubic-bezier(0,1,1,1)}body[data-bespoke-view=next]{background:transparent}body[data-bespoke-view=presenter]{background:#161616}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container{display:grid;font-family:Helvetica,Arial,sans-serif;grid-template:"current dragbar next" minmax(140px,1fr) "current dragbar note" 2fr "info    dragbar note" 3em;grid-template-columns:minmax(3px,var(--bespoke-marp-presenter-split-ratio,66%)) 0 minmax(3px,1fr);height:100%;left:0;position:absolute;top:0;width:100%}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent{grid-area:current;overflow:hidden;position:relative}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent svg.bespoke-marp-slide{height:calc(100% - 40px);left:20px;pointer-events:none;position:absolute;top:20px;-webkit-user-select:none;user-select:none;width:calc(100% - 40px)}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent svg.bespoke-marp-slide.bespoke-marp-active{filter:drop-shadow(0 3px 10px rgba(0,0,0,.5))}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container{background:#0288d1;cursor:col-resize;grid-area:dragbar;margin-left:-3px;opacity:0;position:relative;transition:opacity .4s linear .1s;width:6px;z-index:10}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container:hover{opacity:1}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container.active{opacity:1;transition-delay:0s}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container{background:#222;cursor:pointer;display:none;grid-area:next;overflow:hidden;position:relative}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container.active{display:block}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container iframe.bespoke-marp-presenter-next{background:transparent;border:0;display:block;filter:drop-shadow(0 3px 10px rgba(0,0,0,.5));height:calc(100% - 40px);left:20px;pointer-events:none;position:absolute;top:20px;-webkit-user-select:none;user-select:none;width:calc(100% - 40px)}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container{background:#222;color:#eee;grid-area:note;position:relative;z-index:1}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button{height:1.5em;line-height:1.5em;width:1.5em}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-wrapper{display:block;inset:0;position:absolute}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-buttons{background:rgba(0,0,0,.65);border-radius:4px;bottom:0;display:flex;gap:4px;margin:12px;opacity:0;padding:6px;pointer-events:none;position:absolute;right:0;transition:opacity .2s linear}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-buttons:focus-within,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-wrapper:focus-within+.bespoke-marp-presenter-note-buttons,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container:hover .bespoke-marp-presenter-note-buttons{opacity:1;pointer-events:auto}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note{word-wrap:break-word;box-sizing:border-box;font-size:calc(1.1em*var(--bespoke-marp-note-font-scale, 1));height:calc(100% - 40px);margin:20px;overflow:auto;padding-right:3px;scrollbar-color:hsla(0,0%,93%,.5) transparent;scrollbar-width:thin;white-space:pre-wrap;width:calc(100% - 40px)}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar{width:6px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar-track{background:transparent}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar-thumb{background:hsla(0,0%,93%,.5);border-radius:6px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note:empty{pointer-events:none}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note.active{display:block}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note p:first-child{margin-top:0}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note p:last-child{margin-bottom:0}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container{align-items:center;box-sizing:border-box;color:#eee;display:flex;flex-wrap:nowrap;grid-area:info;justify-content:center;overflow:hidden;padding:0 10px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-time,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer{box-sizing:border-box;display:block;padding:0 10px;white-space:nowrap;width:100%}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button{height:1.5em;line-height:1.5em;width:1.5em}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page{order:2;text-align:center}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page .bespoke-marp-presenter-info-page-text{display:inline-block;min-width:120px;text-align:center}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-time{color:#999;order:1;text-align:left}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer{color:#999;order:3;text-align:right}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer:hover{cursor:pointer}}@media print{.bespoke-marp-presenter-info-container,.bespoke-marp-presenter-next-container,.bespoke-marp-presenter-note-container{display:none}}</style><style>@charset "UTF-8";@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');div#\:\$p>svg>foreignObject>section{width:1280px;height:720px;box-sizing:border-box;overflow:hidden;position:relative;scroll-snap-align:center center}div#\:\$p>svg>foreignObject>section:after{bottom:0;content:attr(data-marpit-pagination);padding:inherit;pointer-events:none;position:absolute;right:0}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination]):after{display:none}/* Normalization */div#\:\$p>svg>foreignObject>section :is(h1,marp-h1){font-size:2em;margin:0.67em 0}div#\:\$p>svg>foreignObject>section video::-webkit-media-controls{will-change:transform}@page{size:1280px 720px;margin:0}@media print{body,html{background-color:#fff;margin:0;page-break-inside:avoid;break-inside:avoid-page}div#\:\$p>svg>foreignObject>section{page-break-before:always;break-before:page}div#\:\$p>svg>foreignObject>section,div#\:\$p>svg>foreignObject>section *{-webkit-print-color-adjust:exact!important;animation-delay:0s!important;animation-duration:0s!important;color-adjust:exact!important;transition:none!important}div#\:\$p>svg[data-marpit-svg]{display:block;height:100vh;width:100vw}}div#\:\$p>svg>foreignObject>:where(section){container-type:size}div#\:\$p>svg>foreignObject>section img[data-marp-twemoji]{background:transparent;height:1em;margin:0 .05em 0 .1em;vertical-align:-.1em;width:1em}
+/*!
+ * Marp gem5 theme
+ * @theme gem5
+ * @author Jason Lowe-Power
+ *
+ * @auto-scaling true
+ * @size 16:9 1280px 720px
+ * @size 4:3 960px 720px
+ */div#\:\$p>svg>foreignObject>:where(section):not([root]){--gem5-gem5:#008EB0;--gem5-background:#F6F8FA;--gem5-light:#c8eaf3;--gem5-dark:#00627a;--gem5-gray:#77787b;--code-line-height:calc(var(--marpit-root-font-size, 1rem) * 2);--code-font-size:calc(var(--marpit-root-font-size, 1rem) * 1.4)}div#\:\$p>svg>foreignObject>section{color:black;font-size:calc(var(--marpit-root-font-size, 1rem) * 1.6);font-family:sans-serif;line-height:calc(var(--marpit-root-font-size, 1rem) * 2);padding:70px;background-color:var(--gem5-background);background-image:url("../themes/gem5ColorLong.svg");background-repeat:no-repeat;background-position-x:center;background-size:220px;background-position-y:97%}div#\:\$p>svg>foreignObject>section{--marpit-root-font-size:calc(var(--marpit-root-font-size, 1rem) * 1.6)}div#\:\$p>svg>foreignObject>section li{margin-bottom:calc(var(--marpit-root-font-size, 1rem) * 0.2)}div#\:\$p>svg>foreignObject>section ul{margin-bottom:calc(var(--marpit-root-font-size, 1rem) * 0.5)}
+
+/* Move the title of the slide up a bit */div#\:\$p>svg>foreignObject>section>:first-child,div#\:\$p>svg>foreignObject>section>header:first-child+*{margin-top:0}
+
+/* Draw a triangle on the left of the title */div#\:\$p>svg>foreignObject>section :is(h2,marp-h2):before{content:"";position:absolute;top:65px;left:-10px;width:0;height:0;border-left:30px solid transparent;border-right:30px solid transparent;border-bottom:40px solid var(--gem5-gem5);rotate:90deg}
+
+/* Draw a triangle in the lower right */div#\:\$p>svg>foreignObject>section:before{content:"";position:absolute;bottom:0;right:0;width:0;height:0;border-left:100px solid transparent;border-top:100px solid var(--gem5-gem5);rotate:90deg}
+
+/* Add an image to the bottom center of the page */div#\:\$p>svg>foreignObject>section footer{position:fixed;left:0;right:0;bottom:60px;height:100px;margin-bottom:-80px}div#\:\$p>svg>foreignObject>section footer img{height:60px;display:block;margin:0 auto}
+
+/* For the page number */div#\:\$p>svg>foreignObject>section:after{right:-50px;bottom:-55px;font-size:80%;color:var(--gem5-light)}div#\:\$p>svg>foreignObject>section:after{--marpit-root-font-size:80%}div#\:\$p>svg>foreignObject>section a{color:var(--gem5-gem5)}div#\:\$p>svg>foreignObject>section blockquote{position:relative;margin:calc(var(--marpit-root-font-size, 1rem) * 0.6) 0;padding:0 calc(var(--marpit-root-font-size, 1rem) * 1.2);border-left:4px solid var(--gem5-gem5);background-color:var(--gem5-light)}div#\:\$p>svg>foreignObject>section blockquote a{color:var(--gem5-dark)}
+
+/****************************************************/
+/* For title page */
+/* Remove the triangle */div#\:\$p>svg>foreignObject>section.title :is(h2,marp-h2):before{border:none}
+
+/* Remove the triangle in the lower right */div#\:\$p>svg>foreignObject>section.title:before{border:none}
+
+/* Remove the page number */div#\:\$p>svg>foreignObject>section.title:after{display:none}
+
+/* Remove the bottom image */div#\:\$p>svg>foreignObject>section.title footer img{display:none}div#\:\$p>svg>foreignObject>section.title :is(h2,marp-h2){font-size:calc(var(--marpit-root-font-size, 1rem) * 5);line-height:calc(var(--marpit-root-font-size, 1rem) * 5);margin-top:50px;display:block;text-align:center;width:60%}
+
+/* gem5 logo on the right */div#\:\$p>svg>foreignObject>section.title{background-image:url("../../slides/themes/gem5ColorVert.svg");background-repeat:no-repeat;background-position:86% 50%;background-size:440px}
+
+/* title on the left */div#\:\$p>svg>foreignObject>section.title p{width:60%;font-size:calc(var(--marpit-root-font-size, 1rem) * 2.5);line-height:calc(var(--marpit-root-font-size, 1rem) * 2.5)}
+
+/****************************************************/
+/* For two-column layout */div#\:\$p>svg>foreignObject>section.two-col{columns:2;display:block}div#\:\$p>svg>foreignObject>section.two-col :is(h2,marp-h2){column-span:all}div#\:\$p>svg>foreignObject>section.two-col :is(h3,marp-h3){break-before:column}
+
+/****************************************************/
+/* For centering images */div#\:\$p>svg>foreignObject>section.center-image img{display:block;margin:auto}
+
+/* For adding a border to images */div#\:\$p>svg>foreignObject>section.border-image img{border:1px solid var(--gem5-dark)}
+
+/* For altering logo position/appearance */div#\:\$p>svg>foreignObject>section.logo-left{background-position-x:21%}div#\:\$p>svg>foreignObject>section.no-logo{background-image:none}
+
+/****************************************************/
+/* For title cards at the beginning of a section, e.g. Intro to ..., etc.
+   Has a blue gradient. From Erin and Mysore
+*/div#\:\$p>svg>foreignObject>section.start :is(h2,marp-h2){display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;height:100%;font-size:calc(var(--marpit-root-font-size, 1rem) * 4);font-weight:bold;line-height:75px;background:linear-gradient(to right,rgb(67,124,205),rgb(69,214,202));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+/* Remove the triangle */div#\:\$p>svg>foreignObject>section.start :is(h2,marp-h2):before{border:none}
+
+/****************************************************/
+/* For 5 column/full outline */div#\:\$p>svg>foreignObject>section.outline :is(h2,marp-h2){column-span:all}div#\:\$p>svg>foreignObject>section.outline{column-count:5;font-size:calc(var(--marpit-root-font-size, 1rem) * 1.3);line-height:calc(var(--marpit-root-font-size, 1rem) * 1.3)}div#\:\$p>svg>foreignObject>section.outline{--marpit-root-font-size:calc(var(--marpit-root-font-size, 1rem) * 1.3)}div#\:\$p>svg>foreignObject>section.outline ul{list-style-type:none;padding:0;margin:0;padding-bottom:10px}div#\:\$p>svg>foreignObject>section.outline li{margin:0;padding-bottom:5px}div#\:\$p>svg>foreignObject>section.outline ul ul{list-style-type:"- ";padding-left:20px}div#\:\$p>svg>foreignObject>section.outline ul ul ul{display:none}div#\:\$p>svg>foreignObject>section.outline :is(h3,marp-h3){break-before:column}
+
+/****************************************************/
+/* For reducing size of code blocks */div#\:\$p>svg>foreignObject>section.code-50-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.33)}div#\:\$p>svg>foreignObject>section.code-50-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.5)}div#\:\$p>svg>foreignObject>section.code-60-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.48)}div#\:\$p>svg>foreignObject>section.code-60-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.6)}div#\:\$p>svg>foreignObject>section.code-70-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.65)}div#\:\$p>svg>foreignObject>section.code-70-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.7)}div#\:\$p>svg>foreignObject>section.code-80-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.8)}div#\:\$p>svg>foreignObject>section.code-80-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.8)}
+
+/****************************************************/
+/* For code block */div#\:\$p>svg>foreignObject>section :is(pre,marp-pre){padding:10px;border-radius:5px;line-height:var(--code-line-height);background-color:#ffffff;box-shadow:1px 2px 4px var(--gem5-gray)}div#\:\$p>svg>foreignObject>section code{font-family:"Roboto Mono",monospace;background-color:#ffffff;font-size:var(--code-font-size)}
+
+/* Forces inherited height for code in headers */div#\:\$p>svg>foreignObject>section :is(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6)) code{font-size:inherit!important}
+
+/* Targets only inline code */div#\:\$p>svg>foreignObject>section :not(:is(pre,marp-pre))>code{font-size:calc(var(--code-font-size) * 0.9);padding:2px 6px;border:1px solid var(--gem5-gray);border-radius:5px}
+
+/* Targets hyperlinks that contain code */div#\:\$p>svg>foreignObject>section a:has(code){
+    /* Removes underlines */text-decoration:none}
+
+/*!
+  Theme: Default
+  Description: Original highlight.js style
+  Author: (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
+  Maintainer: @highlightjs/core-team
+  Website: https://highlightjs.org/
+  License: see project LICENSE
+  Touched: 2021
+*/
+
+/*
+This is left on purpose making default.css the single file that can be lifted
+as-is from the repository directly without the need for a build step
+
+Typically this "required" baseline CSS is added by `makestuff.js` during build.
+*/div#\:\$p>svg>foreignObject>section :is(pre,marp-pre) code.hljs{display:block;overflow-x:auto;padding:calc(var(--marpit-root-font-size, 1rem) * 1);background-color:#ffffff}div#\:\$p>svg>foreignObject>section code.hljs{padding:3px 5px}
+
+/* end baseline CSS */div#\:\$p>svg>foreignObject>section .hljs{background:#ffffff;color:#444}
+
+/* Base color: saturation 0; */div#\:\$p>svg>foreignObject>section .hljs-subst{
+    /* default */}
+
+/* purposely ignored */div#\:\$p>svg>foreignObject>section .hljs-attr,div#\:\$p>svg>foreignObject>section .hljs-formula,div#\:\$p>svg>foreignObject>section .hljs-params,div#\:\$p>svg>foreignObject>section .hljs-property{}div#\:\$p>svg>foreignObject>section .hljs-comment{color:#697070}div#\:\$p>svg>foreignObject>section .hljs-punctuation,div#\:\$p>svg>foreignObject>section .hljs-tag{color:#444a}div#\:\$p>svg>foreignObject>section .hljs-tag .hljs-attr,div#\:\$p>svg>foreignObject>section .hljs-tag .hljs-name{color:#444}div#\:\$p>svg>foreignObject>section .hljs-attribute,div#\:\$p>svg>foreignObject>section .hljs-doctag,div#\:\$p>svg>foreignObject>section .hljs-keyword,div#\:\$p>svg>foreignObject>section .hljs-meta .hljs-keyword,div#\:\$p>svg>foreignObject>section .hljs-name,div#\:\$p>svg>foreignObject>section .hljs-selector-tag{font-weight:bold}
+
+
+/* User color: hue: 0 */div#\:\$p>svg>foreignObject>section .hljs-deletion,div#\:\$p>svg>foreignObject>section .hljs-number,div#\:\$p>svg>foreignObject>section .hljs-quote,div#\:\$p>svg>foreignObject>section .hljs-selector-class,div#\:\$p>svg>foreignObject>section .hljs-selector-id,div#\:\$p>svg>foreignObject>section .hljs-string,div#\:\$p>svg>foreignObject>section .hljs-template-tag,div#\:\$p>svg>foreignObject>section .hljs-type{color:#880000}div#\:\$p>svg>foreignObject>section .hljs-section,div#\:\$p>svg>foreignObject>section .hljs-title{color:#880000;font-weight:bold}div#\:\$p>svg>foreignObject>section .hljs-link,div#\:\$p>svg>foreignObject>section .hljs-operator,div#\:\$p>svg>foreignObject>section .hljs-regexp,div#\:\$p>svg>foreignObject>section .hljs-selector-attr,div#\:\$p>svg>foreignObject>section .hljs-selector-pseudo,div#\:\$p>svg>foreignObject>section .hljs-symbol,div#\:\$p>svg>foreignObject>section .hljs-template-variable,div#\:\$p>svg>foreignObject>section .hljs-variable{color:#ab5656}
+
+/* Language color: hue: 90; */div#\:\$p>svg>foreignObject>section .hljs-literal{color:#695}div#\:\$p>svg>foreignObject>section .hljs-addition,div#\:\$p>svg>foreignObject>section .hljs-built_in,div#\:\$p>svg>foreignObject>section .hljs-bullet,div#\:\$p>svg>foreignObject>section .hljs-code{color:#397300}
+
+
+/* Meta color: hue: 200 */div#\:\$p>svg>foreignObject>section .hljs-meta{color:#1f7199}div#\:\$p>svg>foreignObject>section .hljs-meta .hljs-string{color:#38a}
+
+
+/* Misc effects */div#\:\$p>svg>foreignObject>section .hljs-emphasis{font-style:italic}div#\:\$p>svg>foreignObject>section .hljs-strong{font-weight:bold}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]{columns:initial!important;display:block!important;padding:0!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:before,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:before{display:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]{all:initial;display:flex;flex-direction:row;height:100%;overflow:hidden;width:100%}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container][data-marpit-advanced-background-direction=vertical]{flex-direction:column}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split]>div[data-marpit-advanced-background-container]{width:var(--marpit-advanced-background-split,50%)}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split=right]>div[data-marpit-advanced-background-container]{margin-left:calc(100% - var(--marpit-advanced-background-split, 50%))}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure{all:initial;background-position:center;background-repeat:no-repeat;background-size:cover;flex:auto;margin:0}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure>figcaption{position:absolute;border:0;clip:rect(0,0,0,0);height:1px;margin:-1px;overflow:hidden;padding:0;white-space:nowrap;width:1px}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content],div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo]{background:transparent!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo],div#\:\$p>svg[data-marpit-svg]>foreignObject[data-marpit-advanced-background=pseudo]{pointer-events:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background-split]{width:100%;height:100%}</style></head><body><div class="bespoke-marp-osc"><button data-bespoke-marp-osc="prev" tabindex="-1" title="Previous slide">Previous slide</button><span data-bespoke-marp-osc="page"></span><button data-bespoke-marp-osc="next" tabindex="-1" title="Next slide">Next slide</button><button data-bespoke-marp-osc="fullscreen" tabindex="-1" title="Toggle fullscreen (f)">Toggle fullscreen</button><button data-bespoke-marp-osc="presenter" tabindex="-1" title="Open presenter view (p)">Open presenter view</button></div><div id=":$p"><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="1" data-paginate="true" data-class="title" data-theme="gem5" lang="en-US" class="title" data-marpit-pagination="1" style="--paginate:true;--class:title;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="running-things-in-gem5">Running Things in gem5</h2>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="2" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="2" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="what-we-will-cover">What we will cover</h2>
+<ul>
+<li>Intro to Syscall Emulation mode</li>
+<li>m5ops</li>
+<li>Annotating workloads</li>
+<li>Cross-compiling workloads</li>
+<li>Traffic generator</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="3" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="3" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="intro-to-syscall-emulation-mode">Intro to Syscall Emulation Mode</h2>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="4" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="what-is-syscall-emulation-mode-and-when-to-useavoid-it">What is Syscall Emulation mode, and when to use/avoid it</h2>
+<p><strong>Syscall Emulation (SE)</strong> mode does not model all the devices in a system. It focuses on simulating the CPU and memory system. It only emulates Linux system calls, and only models user-mode code.</p>
+<p>SE mode is a good choice when the experiment does not need to model the OS (such as page table walks), does not need a high fidelity model (emulation is ok), and faster simulation speed is needed.</p>
+<p>However, if the experiment needs to model the OS interaction, or needs to model a system in high fidelity, then we should use the full-system (FS) mode. The FS mode will be covered in <a href="07-full-system.md">07-full-system</a>.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="5" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="example">Example</h2>
+<h3 id="00-se-hello-world">00-SE-hello-world</h3>
+<p>Under <code>materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world</code>, there is a small example of an SE simulation.<br />
+<a href="../../materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world/00-SE-hello-world.py">00-SE-hello-world.py</a> will run the <a href="../../materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world/00-SE-hello-world.c">00-SE-hello-world</a> binary with a simple X86 configuration.<br />
+This binary prints the string <code>Hello, World!</code>.<br />
+If we use the debug flag <code>SyscallAll</code> with it, we will able to see what syscalls are simulated.<br />
+We can do it with the following command:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">gem5 -re --debug-flags=SyscallAll 00-SE-hello-world.py
+</code></pre>
+<blockquote>
+<p><code>-re</code> is an alias for <code>--stdout-file</code> and <code>--stderr-file</code> to redirect the output to a file.<br />
+The default output is in <code>m5out/simout.txt</code> and m5out/simerr.txt`.</p>
+</blockquote>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="6" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="00-se-hello-world-1">00-SE-hello-world</h2>
+<p>Then in <a href="../../materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world/m5out/simout.txt">simout.txt</a>, we should see:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">280945000: board.processor.cores.core: T0 : syscall Calling write(1, 21152, 14)...
+Hello, World!
+280945000: board.processor.cores.core: T0 : syscall Returned 14.
+</code></pre>
+<p>On the left is the timestamp for the simulation.<br />
+As the timestamp suggests, <strong>SE simulation DOES NOT record the time for the syscall</strong>.</p>
+<blockquote>
+<p>Note that in the <code>simout.txt</code> file the standard out from the <em>simulator</em> and the <em>guest</em> are mixed together.</p>
+</blockquote>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="7" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="m5ops">m5ops</h2>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="8" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="what-is-m5ops">What is m5ops</h2>
+<ul>
+<li>The <strong>m5ops</strong> (short for m5 opcodes) provide different functionalities that can be used to communicate between ​the simulated workload and the simulator.</li>
+<li>The commonly used functionalities are below. More can be found in <a href="https://www.gem5.org/documentation/general_docs/m5ops/">the m5ops documentation</a>:
+<ul>
+<li>exit [delay]: Stop the simulation in delay nanoseconds</li>
+<li>workbegin: Cause an exit event of type &quot;workbegin&quot; that can be used to mark the beginning of an ROI</li>
+<li>workend: Cause and exit event of type &quot;workend&quot; that can be used to mark the ending of an ROI</li>
+<li>resetstats [delay[period]]: Reset simulation statistics in delay nanoseconds; repeat this every period nanoseconds</li>
+<li>dumpstats [delay[period]]: Save simulation statistics to a file in delay nanoseconds; repeat this every period nanoseconds</li>
+<li>checkpoint [delay [period]]: Create a checkpoint in delay nanoseconds; repeat this every period nanoseconds</li>
+<li>switchcpu: Cause an exit event of type, “switch cpu,” allowing the Python to switch to a different CPU model if desired</li>
+</ul>
+</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="9" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="important">IMPORTANT</h2>
+<ul>
+<li><strong><em>Not all of the ops do what they say automatically</em></strong></li>
+<li>Most of these only exit the simulation</li>
+<li>For example:
+<ul>
+<li>exit: Actually exits</li>
+<li>workbegin: Only exits if configured in <code>System</code></li>
+<li>workend: Only exits if configured in <code>System</code></li>
+<li>resetstats: Resets the stats</li>
+<li>dumpstats: Dumps the stats</li>
+<li>checkpoint: Only exits</li>
+<li>switchcpu: Only exits</li>
+</ul>
+</li>
+<li>See <a href="https://github.com/gem5/gem5/blob/stable/src/sim/pseudo_inst.cc">gem5/src/sim/pseudo_inst.cc</a> for details.</li>
+<li>The gem5 standard library might have default behaviors for some of the m5ops. See <a href="https://github.com/gem5/gem5/blob/stable/src/python/gem5/simulate/simulator.py#L301">src/python/gem5/simulate/simulator.py</a> for the default behaviors.</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="10" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="more-about-m5ops">More about m5ops</h2>
+<p>There are three versions of m5ops:</p>
+<ol>
+<li>Instruction mode: it only works with simulated CPU models</li>
+<li>Address mode: it works with simulated CPU models and the KVM CPU (only supports Arm and X86)</li>
+<li>Semihosting: it works with simulated CPU models and the Fast Model</li>
+</ol>
+<p>Different modes should be used depending on the CPU type and ISA.</p>
+<p>The address mode m5ops will be covered in <a href="07-full-system.md">07-full-system</a> as gem5-bridge and <a href="08-accelerating-simulation.md">08-accelerating-simulation</a> after the KVM CPU is introduced.<br />
+<strong>In this session, we will only cover the instruction mode.</strong></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="11" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="when-to-use-m5ops">When to use m5ops</h2>
+<p>There are two main ways of using the m5ops:</p>
+<ol>
+<li>Annotating workloads</li>
+<li>Making gem5-bridge calls in disk images</li>
+</ol>
+<p>In this session, we will focus on learning how to use the m5ops to annotate workloads.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="12" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="how-to-use-m5ops">How to use m5ops</h2>
+<p>m5ops provides a library of functions for different functionalities. All functions can be found in <a href="https://github.com/gem5/gem5/blob/stable/include/gem5/m5ops.h">gem5/include/gem5/m5ops.h</a>.<br />
+The commonly used functions (they are matched with the commonly used functionalities above):</p>
+<ul>
+<li><code>void m5_exit(uint64_t ns_delay)</code></li>
+<li><code>void m5_work_begin(uint64_t workid, uint64_t threadid)</code></li>
+<li><code>void m5_work_end(uint64_t workid, uint64_t threadid)</code></li>
+<li><code>void m5_reset_stats(uint64_t ns_delay, uint64_t ns_period)</code></li>
+<li><code>void m5_dump_stats(uint64_t ns_delay, uint64_t ns_period)</code></li>
+<li><code>void m5_checkpoint(uint64_t ns_delay, uint64_t ns_period)</code></li>
+<li><code>void m5_switch_cpu(void)</code></li>
+</ul>
+<p>In order to call these functions in the workload, we will need to link the m5ops library to the workload.<br />
+So first, we need to build the m5ops library.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="13" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="building-the-m5ops-library">Building the m5ops library</h2>
+<p>The m5 utility is in <a href="https://github.com/gem5/gem5/tree/stable/util/m5">gem5/util/m5</a> directory.​<br />
+In order to build the m5ops library,</p>
+<ol>
+<li><code>cd</code> into the <code>gem5/util/m5</code> directory</li>
+<li>run <code>scons [{TARGET_ISA}.CROSS_COMPILE={TARGET_ISA CROSS COMPILER}] build/{TARGET_ISA}/out/m5​</code></li>
+<li>the compiled library (<code>m5</code> is for command line utility, and <code>libm5.a</code> is a C library) will be at <code>gem5/util/m5/build/{TARGET_ISA}/out</code></li>
+</ol>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>If the host system ISA does not match with the target ISA, then we will need to use the cross-compiler.</li>
+<li><code>TARGET_ISA</code> has to be in lower case.</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="14" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="hands-on-time">Hands-on Time!</h2>
+<h3 id="01-build-m5ops-library">01-build-m5ops-library</h3>
+<h3 id="lets-build-the-m5ops-library-for-x86-and-arm64">Let's build the m5ops library for x86 and arm64</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash"><span class="hljs-built_in">cd</span> /workspaces/2024/gem5/util/m5
+scons build/x86/out/m5
+scons arm64.CROSS_COMPILE=aarch64-linux-gnu- build/arm64/out/m5
+</code></pre>
+<blockquote>
+<p>Note: although we are using Scons to build these, it's a different environment from building gem5 with different targets and options.<br />
+Don't expect things to be similar (e.g., use <code>arm64</code> instead of <code>ARM</code>).</p>
+</blockquote>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="15" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="linking-the-m5ops-library-to-cc-code%E2%80%8B">Linking the m5ops library to C/C++ code​</h2>
+<p>After building the m5ops library, we can link them to our workload by:​</p>
+<ol>
+<li>
+<p>Including <strong>gem5/m5ops.h</strong> in the workload's source file(s) (<code>&lt;gem5/m5ops.h&gt;</code>)</p>
+</li>
+<li>
+<p>Adding <strong>gem5/include</strong> to the compiler's include search path (<code>-Igem5/include</code>)</p>
+</li>
+<li>
+<p>Adding <strong>gem5/util/m5/build/{TARGET_ISA}/out</strong> to the linker search path<br />
+(<code>-Lgem5/util/m5/build/{TARGET_ISA}/out</code>)</p>
+</li>
+<li>
+<p>Linking against <strong>libm5.a</strong> with (<code>-lm5</code>)</p>
+</li>
+</ol>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="16" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="hands-on-time-1">Hands-on Time!</h2>
+<h3 id="02-annotate-this">02-annotate-this</h3>
+<h3 id="lets-annotate-the-workload-with-m5_work_begin-and-m5_work_end">Let's annotate the workload with <code>m5_work_begin</code> and <code>m5_work_end</code></h3>
+<p>In <code>materials/02-Using-gem5/03-running-in-gem5/02-annotate-this</code>, there is a workload source file called <a href="../../materials/02-Using-gem5/03-running-in-gem5/02-annotate-this/02-annotate-this.cpp">02-annotate-this.cpp</a> and a <a href="../../materials/02-Using-gem5/03-running-in-gem5/02-annotate-this/Makefile">Makefile</a>.</p>
+<p>The workload mainly does two things:</p>
+<ol>
+<li>Write a string to the standard out</li>
+</ol>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-built_in">write</span>(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;This will be output to standard out\n&quot;</span>, <span class="hljs-number">36</span>);
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-paginate="true" data-class="code-80-percent" data-theme="gem5" lang="en-US" class="code-80-percent" data-marpit-pagination="17" style="--paginate:true;--class:code-80-percent;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="02-annotate-this-1">02-annotate-this</h2>
+<ol start="2">
+<li>Output all the file and folder names in the current directory</li>
+</ol>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">dirent</span> *d;
+DIR *dr;
+dr = <span class="hljs-built_in">opendir</span>(<span class="hljs-string">&quot;.&quot;</span>);
+<span class="hljs-keyword">if</span> (dr!=<span class="hljs-literal">NULL</span>) {
+    std::cout&lt;&lt;<span class="hljs-string">&quot;List of Files &amp; Folders:\n&quot;</span>;
+    <span class="hljs-keyword">for</span> (d=<span class="hljs-built_in">readdir</span>(dr); d!=<span class="hljs-literal">NULL</span>; d=<span class="hljs-built_in">readdir</span>(dr)) {
+        std::cout&lt;&lt;d-&gt;d_name&lt;&lt; <span class="hljs-string">&quot;, &quot;</span>;
+    }
+    <span class="hljs-built_in">closedir</span>(dr);
+}
+<span class="hljs-keyword">else</span> {
+    std::cout&lt;&lt;<span class="hljs-string">&quot;\nError Occurred!&quot;</span>;
+}
+std::cout&lt;&lt;std::endl;
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="18" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="02-annotate-this-2">02-annotate-this</h2>
+<h3 id="our-goal-in-this-exercise">Our goal in this exercise</h3>
+<ul>
+<li>Mark <code>write(1, &quot;This will be output to standard out\n&quot;, 36);</code> as our region of interest so we can see the execution trace of the syscall.</li>
+</ul>
+<h3 id="how-do-we-do-that">How do we do that?</h3>
+<ol>
+<li>Include the m5ops header file with <code>#include &lt;gem5/m5ops.h&gt;</code></li>
+<li>Call <code>m5_work_begin(0, 0);</code> right before <code>write(1, &quot;This will be output to standard out\n&quot;, 36);</code>.</li>
+<li>Call <code>m5_work_end(0, 0);</code> right after <code>write(1, &quot;This will be output to standard out\n&quot;, 36);</code></li>
+<li>Compile the workload with the following requirements:
+<ol>
+<li>Add <strong>gem5/include</strong> to the compiler's include search path</li>
+<li>Add <strong>gem5/util/m5/build/x86/out</strong> to the linker search path</li>
+<li>Link against <strong>libm5.a</strong></li>
+</ol>
+</li>
+</ol>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="19" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="02-annotate-this-3">02-annotate-this</h2>
+<p>For step 4, we can modify the <a href="../../materials/02-Using-gem5/03-running-in-gem5/02-annotate-this/Makefile">Makefile</a> to have it run</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-Makefile"><span class="hljs-variable">$(GXX)</span> -o 02-annotate-this 02-annotate-this.cpp \
+  -I<span class="hljs-variable">$(GEM5_PATH)</span>/<span class="hljs-keyword">include</span> \
+  -L<span class="hljs-variable">$(GEM5_PATH)</span>/util/m5/build/<span class="hljs-variable">$(ISA)</span>/out \
+  -lm5
+</code></pre>
+<p>If you are having any troubles, the completed version of everything is under <code>materials/02-Using-gem5/03-running-in-gem5/02-annotate-this/complete</code>.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="20" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="02-annotate-this-4">02-annotate-this</h2>
+<p>If the workload is successfully compiled, we can try to run it with</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">./02-annotate-this
+</code></pre>
+
+<p>However, we will see the following error:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">Illegal instruction (core dumped)
+</code></pre>
+<p>This is because the host does not recognize the instruction version of m5ops.</p>
+<p>This is also the reason why we will need to use the address version of m5ops if we use the KVM CPU for our simulation.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="21" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="hands-on-time-2">Hands-on Time!</h2>
+<h3 id="03-run-x86-se">03-run-x86-SE</h3>
+<h3 id="lets-write-a-handler-to-handle-the-m5-exit-events">Let's write a handler to handle the m5 exit events</h3>
+
+<p>First, let's see what the default behavior is. Go to the folder <code>materials/02-Using-gem5/03-running-in-gem5/03-run-x86-SE</code> and run <a href="../../materials/02-Using-gem5/03-running-in-gem5/03-run-x86-SE/03-run-x86-SE.py">03-run-x86-SE.py</a> with the following command:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">gem5 -re 03-run-x86-SE.py
+</code></pre>
+<p>After running the simulation, we should see a directory called <code>m5out</code> in <code>materials/02-Using-gem5/03-running-in-gem5/03-run-x86-SE</code>. Open the file <code>simerr.txt</code> in <code>m5out</code>. We should see two lines that look like this:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-text">warn: No behavior was set by the user for work begin. Default behavior is resetting the stats and continuing.
+
+warn: No behavior was set by the user for work end. Default behavior is dumping the stats and continuing.
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="22" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="22" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="03-run-x86-se-1">03-run-x86-SE</h2>
+<p>As mentioned before, the gem5 standard library might have default behaviors for some of the m5ops. In here, we can see that it has default behaviors for <code>m5_work_begin</code> and <code>m5_work_end</code>.<br />
+Let's detour a bit to see how the gem5 standard library recognizes the exit event and assigns it a default exit handler.<br />
+All standard library defined exit events can be found in <a href="https://github.com/gem5/gem5/blob/stable/src/python/gem5/simulate/exit_event.py">src/python/gem5/simulate/exit_event.py</a>. It uses the exit string of exit events to categorize exit events. For example, both <code>&quot;workbegin&quot;</code> and <code>&quot;m5_workend instruction encountered&quot;</code> exit strings are categorized as <code>ExitEvent.WORKBEGIN</code>.<br />
+All pre-defined exit event handlers can be found in <a href="https://github.com/gem5/gem5/blob/stable/src/python/gem5/simulate/exit_event_generators.py">src/python/gem5/simulate/exit_event_generators.py</a>.</p>
+<p>For example, <code>ExitEvent.WORKBEGIN</code> defaults to using the <code>reset_stats_generator</code>. It means that when we are using the standard library's <code>Simulator</code> object, if there is an exit with exit string <code>&quot;workbegin&quot;</code> or <code>&quot;m5_workbegin instruction encountered&quot;</code>, it will automatically execute <code>m5.stats.reset()</code> unless we overwrite the default behavior using the <code>on_exit_event</code> parameter in the gem5 stdlib <code>Simulator</code> parameter.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="23" data-paginate="true" data-class="two-col code-70-percent" data-theme="gem5" lang="en-US" class="two-col code-70-percent" data-marpit-pagination="23" style="--paginate:true;--class:two-col code-70-percent;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="03-run-x86-se-2">03-run-x86-SE</h2>
+<p>Let's add custom workbegin and workend handlers, and use the <code>on_exit_event</code> parameter in <code>Simulator</code> parameter to overwrite the default behavior. To do this, add the following into <a href="../../materials/02-Using-gem5/03-running-in-gem5/03-run-x86-SE/03-run-x86-SE.py">03-run-x86-SE.py</a>:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-comment"># define a workbegin handler</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">workbegin_handler</span>():
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Workbegin handler&quot;</span>)
+    m5.debug.flags[<span class="hljs-string">&quot;ExecAll&quot;</span>].enable()
+    <span class="hljs-keyword">yield</span> <span class="hljs-literal">False</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># define a workend handler</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">workend_handler</span>():
+    m5.debug.flags[<span class="hljs-string">&quot;ExecAll&quot;</span>].disable()
+    <span class="hljs-keyword">yield</span> <span class="hljs-literal">False</span>
+<span class="hljs-comment">#</span>
+</code></pre>
+<h3 id=""></h3>
+<p>Also, register the handlers using the <code>on_exit_event</code> parameter in the <code>Simulator</code> object construction.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-comment"># setup handler for ExitEvent.WORKBEGIN and ExitEvent.WORKEND</span>
+    on_exit_event= {
+        ExitEvent.WORKBEGIN: workbegin_handler(),
+        ExitEvent.WORKEND: workend_handler()
+    }
+<span class="hljs-comment">#</span>
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="24" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="24" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="03-run-x86-se-3">03-run-x86-SE</h2>
+<p>Let's run this simulation again with the following command</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">gem5 -re 03-run-x86-SE.py
+</code></pre>
+<p>Now, we will see the following in <a href="../../materials/02-Using-gem5/03-running-in-gem5/03-run-x86-SE/m5out/simout.txt">materials/02-Using-gem5/03-running-in-gem5/03-run-x86-SE/m5out/simout.txt</a></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">3757178000: board.processor.cores.core: A0 T0 : 0x7ffff7c82572 @_end+140737350460442    :   syscall                  : IntAlu :   flags=()
+This will be output to standard out
+3757180000: board.processor.cores.core: A0 T0 : 0x7ffff7c82574 @_end+140737350460444    : cmp	rax, 0xfffffffffffff000
+</code></pre>
+<p>This shows the log of the debug flag <code>ExecAll</code> that we enabled for our ROI using <code>m5.debug.flags[&quot;ExecAll&quot;].enable()</code>. It shows the entire execution trace for our ROI. As the timestamp on the left suggests again, SE mode <strong>DOES NOT</strong> time the emulated system calls. Also, as the log suggests, we overwrote the default behavior of <code>m5_work_begin</code> and <code>m5_work_end</code>.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="25" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="25" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<p>Then, with the output</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">List of Files &amp; Folders:
+., .., 03-run-SE.py, m5out,
+Simulation Done
+</code></pre>
+<p>it indicates that SE mode is able to read files on the host machine. Additionally, SE mode is able to write files on the host machine.</p>
+<p>However, again, SE mode is <strong>NOT</strong> able to time the emulated system calls.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="26" data-paginate="true" data-class="code-80-percent" data-theme="gem5" lang="en-US" class="code-80-percent" data-marpit-pagination="26" style="--paginate:true;--class:code-80-percent;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="tips-on-se-mode">Tips on SE mode</h2>
+<p>With the gem5 stdlib, we usually use the <code>set_se_binary_workload</code> function in the <code>board</code> object to set up the workloads. We can pass in files, arguments, environment variables, and output file paths to the <code>set_se_binary_workload</code> function using the corresponding parameters.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">set_se_binary_workload</span>(<span class="hljs-params">
+    self,
+    binary: BinaryResource,
+    exit_on_work_items: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>,
+    stdin_file: <span class="hljs-type">Optional</span>[FileResource] = <span class="hljs-literal">None</span>,
+    stdout_file: <span class="hljs-type">Optional</span>[Path] = <span class="hljs-literal">None</span>,
+    stderr_file: <span class="hljs-type">Optional</span>[Path] = <span class="hljs-literal">None</span>,
+    env_list: <span class="hljs-type">Optional</span>[<span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]] = <span class="hljs-literal">None</span>,
+    arguments: <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>] = [],
+    checkpoint: <span class="hljs-type">Optional</span>[<span class="hljs-type">Union</span>[Path, CheckpointResource]] = <span class="hljs-literal">None</span>,
+</span>) -&gt; <span class="hljs-literal">None</span>:
+</code></pre>
+<p>For more information, we can look at <a href="https://github.com/gem5/gem5/blob/stable/src/python/gem5/components/boards/se_binary_workload.py#L71">src/python/gem5/components/boards/se_binary_workload.py</a>.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="27" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="27" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="cross-compiling">Cross-compiling</h2>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="28" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="28" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="cross-compiling-from-one-isa-to-another%E2%80%8B">Cross-compiling from one ISA to another.​</h2>
+
+<p><img src="03-running-in-gem5-imgs/slide-24.drawio.jpg" alt="Cross compiling center" style="width:800px;" /></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="29" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="29" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="hands-on-time-3">Hands-on Time!</h2>
+<h3 id="04-cross-compile-workload">04-cross-compile-workload</h3>
+<h3 id="lets-cross-compile-the-workload-to-arm64-statically-and-dynamically">Let's cross compile the workload to arm64 statically and dynamically</h3>
+
+<p>For static compilation, add the following command to the Makefile in <code>materials/02-Using-gem5/03-running-in-gem5/04-cross-compile-workload</code>:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-make"><span class="hljs-variable">$(GXX)</span> -o 04-cross-compile-this-static 04-cross-compile-this.cpp -static -I<span class="hljs-variable">$(GEM5_PATH)</span>/<span class="hljs-keyword">include</span> -L<span class="hljs-variable">$(GEM5_PATH)</span>/util/m5/build/<span class="hljs-variable">$(ISA)</span>/out -lm5
+</code></pre>
+<p>For dynamic compilation, add the following command:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-make"><span class="hljs-variable">$(GXX)</span> -o 04-cross-compile-this-dynamic 04-cross-compile-this.cpp -I<span class="hljs-variable">$(GEM5_PATH)</span>/<span class="hljs-keyword">include</span> -L<span class="hljs-variable">$(GEM5_PATH)</span>/util/m5/build/<span class="hljs-variable">$(ISA)</span>/out -lm5
+</code></pre>
+<p>Next, run <code>make</code> in the same directory as the Makefile.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="30" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="30" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="04-cross-compile-workload-1">04-cross-compile-workload</h2>
+<h3 id="notes-1">Notes:</h3>
+<p>Note that we are using <code>arm64</code> as the ISA and <code>aarch64-linux-gnu-g++</code> for the cross compiler. This is in contrast to exercise 2, where the ISA was <code>x86</code> and the compiler was <code>g++</code>.</p>
+<p>Also note that the the static compilation command has the flag <code>-static</code>, while the dynamic command has no additional flags.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="31" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="31" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="hands-on-time-4">Hands-on Time!</h2>
+<h3 id="05-run-arm-se">05-run-arm-SE</h3>
+<h3 id="lets-run-the-compiled-arm64-workloads-and-see-what-happens">Let's run the compiled arm64 workloads and see what happens</h3>
+
+<p>First, let's run the statically compiled workload. <code>cd</code> into the directory <code>materials/02-Using-gem5/03-running-in-gem5/05-run-arm-SE</code> and run <code>05-run-arm-SE.py</code> using the following command:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">gem5 -re --outdir=static 05-run-arm-SE.py --workload-type=static
+</code></pre>
+
+<p>Next, let's run the dynamically compiled workload with the following command:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">gem5 -re --outdir=dynamic 05-run-arm-SE.py --workload-type=dynamic
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="32" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="32" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="05-run-arm-se-1">05-run-arm-SE</h2>
+<p>You will see the following error output in <code>dynamic/simout.txt</code> from running the dynamically compiled workload:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-text">src/base/loader/image_file_data.cc:105: fatal: fatal condition fd &lt; 0 occurred: Failed to open file /lib/ld-linux-aarch64.so.1.
+This error typically occurs when the file path specified is incorrect.
+Memory Usage: 217652 KBytes
+</code></pre>
+<p>To use the dynamically compiled workload, we will have to redirect the library path. We can do this by adding the following to the configuration script, under <code>print(&quot;Time to redirect the library path&quot;)</code>:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">setInterpDir(<span class="hljs-string">&quot;/usr/aarch64-linux-gnu/&quot;</span>)
+board.redirect_paths = [RedirectPath(app_path=<span class="hljs-string">f&quot;/lib&quot;</span>,
+                        host_paths=[<span class="hljs-string">f&quot;/usr/aarch64-linux-gnu/lib&quot;</span>])]
+
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="33" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="33" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="summary">Summary</h2>
+<h3 id="se-mode-does-not-implement-many-things%E2%80%8B">SE mode does NOT implement many things!​</h3>
+<ul>
+<li>Filesystem​</li>
+<li>Most system calls</li>
+<li>I/O devices</li>
+<li>Interrupts</li>
+<li>TLB misses</li>
+<li>Page table walks</li>
+<li>Context switches</li>
+<li>multiple threads
+<ul>
+<li>You may have a multithreaded execution, but there's no context switches &amp; no spin locks​</li>
+</ul>
+</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="34" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="traffic-generator-in-gem5">Traffic Generator in gem5</h2>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="35" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="35" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="synthetic-traffic-generation">Synthetic Traffic Generation</h2>
+<p>Synthetic traffic generation is a technique for driven memory subsystems without requiring the simulation of processor models and running workload programs. We have to note the following about synthetic traffic generation.</p>
+<ul>
+<li>It can be used for the following: measuring maximum theoretical bandwidth, testing correctness of cache coherency protocol</li>
+<li>It can not be used for: measuring the execution time of workloads (even if you have their memory trace)</li>
+</ul>
+<p>Synthetic traffic could follow a certain pattern like <code>sequential (linear)</code>, <code>strided</code>, and <code>random</code>. In this section we will look at tools in gem5 that facilitate synthetic traffic generation.</p>
+<p><img src="03-running-in-gem5-imgs/t_gen_diagram.drawio.svg" alt="Traffic generator center" /></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="36" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="36" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="gem5-stdlib-components-for-synthetic-traffic-generation">gem5: stdlib Components for Synthetic Traffic Generation</h2>
+<p>gem5's standard library has a collection of components for generating synthetic traffic. All such components inherit from <code>AbstractGenerator</code>, found in <code>src/python/gem5/components/processors</code>.</p>
+<ul>
+<li>These components simulate memory accesses. They are intended to replace a processor in a system that you configure with gem5.</li>
+<li>Examples of these components include <code>LinearGenerator</code> and <code>RandomGenerator</code>.</li>
+</ul>
+<p>We will see how to use <code>LinearGenerator</code> and <code>RandomGenerator</code> to stimulate a memory subsystem. The memory subsystem that we are going to use is going to consist of a cache hierarchy with <code>private l1 caches and a shared l2 cache</code> with one channel of <code>DDR3</code> memory.</p>
+<p>In the next slides we will look at <code>LinearGenerator</code> and <code>RandomGenerator</code> at a high level. We'll see how to write a configuration script that uses them.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="37" data-paginate="true" data-class="two-col code-70-percent" data-theme="gem5" lang="en-US" class="two-col code-70-percent" data-marpit-pagination="37" style="--paginate:true;--class:two-col code-70-percent;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="-1"></h2>
+<h3 id="lineargenerator">LinearGenerator</h3>
+<p><a href="/gem5/src/python/gem5/components/processors/linear_generator.py">Python Here</a></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">LinearGenerator</span>(<span class="hljs-title class_ inherited__">AbstractGenerator</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">
+        self,
+        num_cores: <span class="hljs-built_in">int</span> = <span class="hljs-number">1</span>,
+        duration: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;1ms&quot;</span>,
+        rate: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;100GB/s&quot;</span>,
+        block_size: <span class="hljs-built_in">int</span> = <span class="hljs-number">64</span>,
+        min_addr: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>,
+        max_addr: <span class="hljs-built_in">int</span> = <span class="hljs-number">32768</span>,
+        rd_perc: <span class="hljs-built_in">int</span> = <span class="hljs-number">100</span>,
+        data_limit: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>,
+    </span>) -&gt; <span class="hljs-literal">None</span>:
+</code></pre>
+<h3 id="randomgenerator">RandomGenerator</h3>
+<p><a href="/gem5/src/python/gem5/components/processors/random_generator.py">Python Here</a></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RandomGenerator</span>(<span class="hljs-title class_ inherited__">AbstractGenerator</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">
+        self,
+        num_cores: <span class="hljs-built_in">int</span> = <span class="hljs-number">1</span>,
+        duration: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;1ms&quot;</span>,
+        rate: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;100GB/s&quot;</span>,
+        block_size: <span class="hljs-built_in">int</span> = <span class="hljs-number">64</span>,
+        min_addr: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>,
+        max_addr: <span class="hljs-built_in">int</span> = <span class="hljs-number">32768</span>,
+        rd_perc: <span class="hljs-built_in">int</span> = <span class="hljs-number">100</span>,
+        data_limit: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>,
+    </span>) -&gt; <span class="hljs-literal">None</span>:
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="38" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="38" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="lineargeneratorrandomgenerator-knobs">LinearGenerator/RandomGenerator: Knobs</h2>
+<ul>
+<li><strong>num_cores</strong>
+<ul>
+<li>The number of cores in your system</li>
+</ul>
+</li>
+<li><strong>duration</strong>
+<ul>
+<li>Length of time to generate traffic</li>
+</ul>
+</li>
+<li><strong>rate</strong>
+<ul>
+<li>Rate at which to request data from memory
+<ul>
+<li><strong>Note</strong>: This is <em>NOT</em> the rate at which memory will respond. This is the <strong>maximum</strong> rate at which requests will be made</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>block_size</strong>
+<ul>
+<li>The number of bytes accessed with each read/write</li>
+</ul>
+</li>
+</ul>
+<h3 id="-2"></h3>
+<ul>
+<li><strong>min_addr</strong>
+<ul>
+<li>The lowest memory address for the generator to access (via reads/writes)</li>
+</ul>
+</li>
+<li><strong>max_addr</strong>
+<ul>
+<li>The highest memory address for the generator to access (via reads/writes)</li>
+</ul>
+</li>
+<li><strong>rd_perc</strong>
+<ul>
+<li>The percentage of accesses that should be reads</li>
+</ul>
+</li>
+<li><strong>data_limit</strong>
+<ul>
+<li>The maximum number of bytes that the generator can access (via reads/writes)
+<ul>
+<li><strong>Note</strong>: if <code>data_limit</code> is set to 0, there will be no data limit.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="39" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="39" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="traffic-patterns-visualized">Traffic Patterns Visualized</h2>
+<p><code>min_addr</code>: 0, <code>max_addr</code>: 4, <code>block_size</code>: 1</p>
+<p><strong>Linear</strong>: We want to access addresses 0 through 4 so a linear access would mean accessing memory in the following order.</p>
+<p><strong>Random</strong>: We want to access addresses 0 through 4 so a random access would mean accessing memory in any order. (In this example, we are showing the order: 1, 3, 2, 0).</p>
+<h3 id="-3"></h3>
+<p><img src="03-running-in-gem5-imgs/linear_traffic_pattern.drawio.svg" alt="linear traffic pattern" /></p>
+<p><img src="03-running-in-gem5-imgs/random_traffic_pattern.drawio.svg" alt="random traffic pattern" /></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="40" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="hands-on-time-5">Hands-on Time!</h2>
+<h3 id="06-traffic-gen">06-traffic-gen</h3>
+<h3 id="lets-run-an-example-on-how-to-use-the-traffic-generator">Let's run an example on how to use the traffic generator</h3>
+<p>Open the following file.<br />
+<a href="../../materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/simple-traffic-generators.py"><code>materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/simple-traffic-generators.py</code></a></p>
+<p>Steps:</p>
+<ol>
+<li>Run with a Linear Traffic Generator.</li>
+<li>Run with a Hybrid Traffic Generator.</li>
+</ol>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="41" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="41" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-lineargenerator-looking-at-the-code">06-traffic-gen: LinearGenerator: Looking at the Code</h2>
+<p>Go to this section of the code on the right.</p>
+<p>Right now, we have set up a board with a Private L1 Shared L2 Cache Hierarchy (go to <a href="../../materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/components/cache_hierarchy.py"><code>materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/components/cache_hierarchy.py</code></a> to see how it's constructed), and a Single Channel memory system.</p>
+<p>Add a traffic generator right below<br />
+<code>memory = SingleChannelDDR3_1600()</code> with the following lines.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">generator = LinearGenerator(num_cores=<span class="hljs-number">1</span>, rate=<span class="hljs-string">&quot;1GB/s&quot;</span>)
+</code></pre>
+<h3 id="-4"></h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">cache_hierarchy = MyPrivateL1SharedL2CacheHierarchy()
+
+memory = SingleChannelDDR3_1600()
+
+motherboard = TestBoard(
+    clk_freq=<span class="hljs-string">&quot;3GHz&quot;</span>,
+    generator=generator,
+    memory=memory,
+    cache_hierarchy=cache_hierarchy,
+)
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-paginate="true" data-class="two-col code-70-percent" data-theme="gem5" lang="en-US" class="two-col code-70-percent" data-marpit-pagination="42" style="--paginate:true;--class:two-col code-70-percent;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-lineargenerator-completed-code">06-traffic-gen: LinearGenerator: Completed Code</h2>
+<p>The completed code snippet should look like this.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">cache_hierarchy = MyPrivateL1SharedL2CacheHierarchy()
+
+memory = SingleChannelDDR3_1600()
+
+generator = LinearGenerator(num_cores=<span class="hljs-number">1</span>, rate=<span class="hljs-string">&quot;1GB/s&quot;</span>)
+
+motherboard = TestBoard(
+    clk_freq=<span class="hljs-string">&quot;3GHz&quot;</span>,
+    generator=generator,
+    memory=memory,
+    cache_hierarchy=cache_hierarchy,
+)
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="43" data-paginate="true" data-class="code-100-percent" data-theme="gem5" lang="en-US" class="code-100-percent" data-marpit-pagination="43" style="--paginate:true;--class:code-100-percent;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-lineargenerator-running-the-code">06-traffic-gen: LinearGenerator: Running the Code</h2>
+<h3 id="run-the-following-commands-to-see-a-linear-traffic-generator-in-action">Run the following commands to see a Linear Traffic Generator in action</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh"><span class="hljs-built_in">cd</span> ./materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/
+
+gem5 --debug-flags=TrafficGen --debug-end=1000000 \
+simple-traffic-generators.py
+</code></pre>
+<p>We will see some of the expected output in the following slide.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="44" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="44" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-lineargenerator-results">06-traffic-gen: LinearGenerator Results</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">  59605: system.processor.cores.generator: LinearGen::getNextPacket: r to addr 0, size 64
+  59605: system.processor.cores.generator: Next event scheduled at 119210
+ 119210: system.processor.cores.generator: LinearGen::getNextPacket: r to addr 40, size 64
+ 119210: system.processor.cores.generator: Next event scheduled at 178815
+ 178815: system.processor.cores.generator: LinearGen::getNextPacket: r to addr 80, size 64
+ 178815: system.processor.cores.generator: Next event scheduled at 238420
+</code></pre>
+<p>Throughout this output, we see <code>r to addr --</code>. This means that the traffic generator is simulating a <strong>read</strong> request to access memory address <code>0x--</code>.</p>
+
+<p>Above, we see <code>r to addr 0</code> in line 1, <code>r to addr 40</code> in line 3, and <code>r to addr 80</code> in line 5.</p>
+<p>This is because the Linear Traffic Generator  is simulating requests to access memory addresses 0x0000, 0x0040, 0x0080.</p>
+<p>As you can see, the simulated requests are very linear. Each new memory access is 0x0040 bytes above the previous one.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="45" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="45" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-random">06-traffic-gen: Random</h2>
+<p>We are not going to do this right now, but if you swapped <code>LinearGenerator</code> with <code>RandomGenerator</code> and kept the parameters the same, the output is going to look like below. Notice how the pattern of addresses is not a linear sequence anymore.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">  59605: system.processor.cores.generator: RandomGen::getNextPacket: r to addr 2000, size 64
+  59605: system.processor.cores.generator: Next event scheduled at 119210
+ 119210: system.processor.cores.generator: RandomGen::getNextPacket: r to addr 7900, size 64
+ 119210: system.processor.cores.generator: Next event scheduled at 178815
+ 178815: system.processor.cores.generator: RandomGen::getNextPacket: r to addr 33c0, size 64
+ 178815: system.processor.cores.generator: Next event scheduled at 238420
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="46" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="46" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="our-focus-lineargenerator-and-abstractgenerator">Our Focus: LinearGenerator and AbstractGenerator</h2>
+<ul>
+<li>We will be focusing on <code>LinearGenerator</code> and <code>RandomGenerator</code> generators (and a new one later!).
+<ul>
+<li>They are essentially the same, but one performs linear memory accesses and one performs random memory accesses</li>
+</ul>
+</li>
+</ul>
+<p><img src="03-running-in-gem5-imgs/generator_inheritance.drawio.svg" alt="Different Generators" /></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="47" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="47" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="detailed-look-on-some-components">Detailed Look on Some Components</h2>
+<ul>
+<li>You can find all generator related standard library components under <a href="https://github.com/gem5/gem5/tree/stable/src/python/gem5/components/processors"><code>src/python/gem5/components/processors</code></a>.</li>
+<li>Looking at <a href="https://github.com/gem5/gem5/blob/stable/src/python/gem5/components/processors/abstract_generator.py#L53"><code>AbstractGenerator.__init__</code></a>, you'll see that this class takes a list of <code>AbstractGeneratorCores</code> as the input. Example classes that inherit from <code>AbstractGenerator</code> are <code>LinearGenerator</code> and <code>RandomGenerator</code>.</li>
+<li>We will look at classes that extend <code>AbstractGeneratorCore</code> that will will create <strong>synthetic traffic</strong> by using a <code>SimObject</code> called <code>PyTrafficGen</code>. For more information you can look at <code>src/cpu/testers/traffic_gen</code>.</li>
+<li><code>LinearGenerator</code> can have multiple <code>LinearGeneratorCores</code> and <code>RandomGenerator</code> can have multiple <code>RandomGeneratorCores</code>.</li>
+</ul>
+<p>Next we will look at extending <code>AbstractGenerator</code> to create <code>HybridGenerator</code> that has both <code>LinearGeneratorCores</code> and <code>RandomGeneratorCores</code>.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="48" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="48" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="extending-abstractgenerator">Extending AbstractGenerator</h2>
+<p>gem5 has a lot of tools in its standard library, but if you want to simulate specific memory accesses patterns in your research, there might not be anything in the standard library to do this.</p>
+<p>In this case, you would have to extend <code>AbstractGenerator</code> to create a concrete generator that is tailored to your needs.</p>
+<p>To do this, we will go through an example called <code>HybridGenerator</code>.</p>
+<p>The goal of <code>HybridGenerator</code> is to simultaneously simulate both linear and random memory accesses.</p>
+<p>To do this, we need <code>LinearGeneratorCores</code> (to simulate linear traffic) and <code>RandomGeneratorCores</code> (to simulate random traffic).</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="49" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="49" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-a-quick-side-note-about-lineargeneratorcores">06-traffic-gen: HybridGenerator: A Quick Side Note about LinearGeneratorCores</h2>
+<p><code>LinearGeneratorCores</code> simulate linear traffic.</p>
+<p>When we have multiple <code>LinearGeneratorCores</code>, if we configure each one to have the same <code>min_addr</code> and <code>max_addr</code>, each one will start simulating memory accesses at the same <code>min_addr</code> and go up to the same <code>max_addr</code>. They will be accessing the same addresses at the same time.</p>
+<p>We want <code>LinearGeneratorCore</code> to simulate a more reasonable accesses pattern.</p>
+<p>Therefore, we will have each <code>LinearGeneratorCore</code> simulate accesses to a different chunk of memory. To do this, we will have to split up memory into equal-sized chunks and configure each <code>LinearGeneratorCore</code> to simulate accesses to one of these chunks.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="50" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="50" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-a-quick-side-note-about-lineargeneratorcores-cont">06-traffic-gen: HybridGenerator: A Quick Side Note about LinearGeneratorCores Cont.</h2>
+<p>Here's a diagram that shows how each <code>LinearGeneratorCore</code> should access memory.</p>
+<p><img src="03-running-in-gem5-imgs/lin_core_access_diagram.drawio.svg" alt="Linear Generator Core Memory Access Diagram" /></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="51" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="51" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-dividing-memory-address-range">06-traffic-gen: HybridGenerator: Dividing Memory Address Range</h2>
+<p>When we create a <code>HybridGenerator</code>, we have to determine which <code>LinearGeneratorCore</code> gets what chunk of memory.</p>
+<p>As previously discussed, we need to partition the memory address range into equally sized sections and configure each <code>LinearGeneratorCore</code> to simulate accesses to a different section.</p>
+<p>To partition, we will use the <code>partition_range()</code> function in <a href="../../gem5/src/python/gem5/components/processors/abstract_generator.py"><code>gem5/src/python/gem5/components/processors/abstract_generator.py</code></a>.</p>
+<p>This function takes the range of <code>min_addr</code> to <code>max_addr</code> and partitions it into <code>num_partitions</code> equal-length pieces.</p>
+<p>For example, if <code>min_addr</code> = 0, <code>max_addr</code> = 9, and <code>num_partitions</code> = 3, then <code>partition_range</code> would return &lt;0,3&gt;, &lt;3,6&gt;, &lt;6,9&gt;.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="52" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="52" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-a-quick-reminder-about-randomgeneratorcores">06-traffic-gen: HybridGenerator: A quick reminder about RandomGeneratorCores</h2>
+<p>We also have to consider the <code>RandomGeneratorCores</code>.</p>
+<p>It would be reasonable to assume that we should partition them like the <code>LinearGeneratorCores</code>, but this is not the case.</p>
+<p>Even if each <code>RandomGeneratorCore</code> has the same <code>min_addr</code> and <code>max_addr</code>, since each one simulates a random memory access, each one will be simulating accesses to different (random) memory addresses.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="53" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="53" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-dividing-memory-address-range-cont">06-traffic-gen: HybridGenerator: Dividing Memory Address Range Cont.</h2>
+<p>In the end, this is how each core will simulate memory accesses.</p>
+<p><img src="./03-running-in-gem5-imgs/core_access_diagram.drawio.svg" alt="Linear vs. Random memory accesses" /></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="54" data-paginate="true" data-class="code-70-percent" data-theme="gem5" lang="en-US" class="code-70-percent" data-marpit-pagination="54" style="--paginate:true;--class:code-70-percent;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-choosing-a-distribution-of-cores">06-traffic-gen: HybridGenerator: Choosing a Distribution of Cores</h2>
+<p>Now that we know how each core will access memory, next, we need to determine how many <code>LinearGeneratorCores</code> and <code>RandomGeneratorCores</code> we need.</p>
+<p>There are many correct ways to do this, but we will use the following function to determine the number of <code>LinearGeneratorCores</code>.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">        <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_num_linear_cores</span>(<span class="hljs-params">num_cores: <span class="hljs-built_in">int</span></span>):
+            <span class="hljs-string">&quot;&quot;&quot;
+            Returns the largest power of two that is smaller than num_cores
+            &quot;&quot;&quot;</span>
+            <span class="hljs-keyword">if</span> (num_cores &amp; (num_cores - <span class="hljs-number">1</span>) == <span class="hljs-number">0</span>):
+                <span class="hljs-keyword">return</span> num_cores//<span class="hljs-number">2</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-number">2</span> ** <span class="hljs-built_in">int</span>(log(num_cores, <span class="hljs-number">2</span>))
+</code></pre>
+<p>The rest of the cores will be <code>RandomGeneratorCores</code>.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="55" data-paginate="true" data-class="two-col code-60-percent" data-theme="gem5" lang="en-US" class="two-col code-60-percent" data-marpit-pagination="55" style="--paginate:true;--class:two-col code-60-percent;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-constructor">06-traffic-gen: HybridGenerator Constructor</h2>
+<p>Let's start looking at the code!</p>
+<p>Make sure you have the following file open.<br />
+<a href="../../materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/components/hybrid_generator.py"><code>materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/components/hybrid_generator.py</code></a></p>
+<p>On the right, you'll see the constructor for <code>HybridGenerator</code>.</p>
+<p>When we initialize <code>HybridGenerator</code> (via <code>def __init__</code>), we will be initializing an <code>AbstractGenerator</code> (via <code>super() __init__</code>) with the values on the right.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">HybridGenerator</span>(<span class="hljs-title class_ inherited__">AbstractGenerator</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">
+        self,
+        num_cores: <span class="hljs-built_in">int</span> = <span class="hljs-number">2</span>,
+        duration: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;1ms&quot;</span>,
+        rate: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;1GB/s&quot;</span>,
+        block_size: <span class="hljs-built_in">int</span> = <span class="hljs-number">8</span>,
+        min_addr: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>,
+        max_addr: <span class="hljs-built_in">int</span> = <span class="hljs-number">131072</span>,
+        rd_perc: <span class="hljs-built_in">int</span> = <span class="hljs-number">100</span>,
+        data_limit: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>,
+    </span>) -&gt; <span class="hljs-literal">None</span>:
+        <span class="hljs-keyword">if</span> num_cores &lt; <span class="hljs-number">2</span>:
+            <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">&quot;num_cores should be &gt;= 2!&quot;</span>)
+        <span class="hljs-built_in">super</span>().__init__(
+            cores=self._create_cores(
+                num_cores=num_cores,
+                duration=duration,
+                rate=rate,
+                block_size=block_size,
+                min_addr=min_addr,
+                max_addr=max_addr,
+                rd_perc=rd_perc,
+                data_limit=data_limit,
+            )
+        )
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="56" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="56" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-designing-a-hybridgenerator">06-traffic-gen: Designing a HybridGenerator</h2>
+<p>Right now, our <code>HybridGenerator</code> class has a constructor, but we need to return a list of cores.</p>
+<p>In gem5, the method that returns a list of cores is conventionally named <code>_create_cores</code>.</p>
+<p>If you look at our file, <a href="../../materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/components/hybrid_generator.py"><code>hybrid_generator.py</code></a>, you'll see this method called <code>_create_cores</code>.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="57" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="57" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-initializing-variables">06-traffic-gen: HybridGenerator: Initializing Variables</h2>
+<p>Let's define <code>_create_cores</code>!</p>
+<p>Let's start by declaring/defining some important variables.</p>
+<p>First, we'll declare our list of cores.</p>
+<p>Then, we'll define the number of <code>LinearGeneratorCores</code> and <code>RandomGeneratorCores</code>.</p>
+<p>Add the following lines under the comment labeled <code>(1)</code>.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">core_list = []
+
+num_linear_cores = get_num_linear_cores(num_cores)
+num_random_cores = num_cores - num_linear_cores
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="58" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="58" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-partitioning-memory-address-range">06-traffic-gen: HybridGenerator: Partitioning Memory Address Range</h2>
+<p>Next, let's define the memory address range for each <code>LinearGeneratorCore</code>.</p>
+<p>If we want to give each <code>LinearGeneratorCore</code> an equal chunk of the given memory address range, we need to partition the range of <code>min_addr</code> to <code>max_addr</code> into <code>num_linear_cores</code> pieces.</p>
+<p>To do this, we need to add the following line to our code under the comment labeled <code>(2)</code>.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">addr_ranges = partition_range(min_addr, max_addr, num_linear_cores)
+</code></pre>
+<p><code>addr_ranges</code> will be a <code>num_linear_cores</code>-long list of equal-length partitions from <code>min_addr</code> to <code>max_addr</code>.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="59" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="59" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-partitioning-memory-address-range-cont">06-traffic-gen: Partitioning Memory Address Range Cont.</h2>
+<p>For example, we have <code>min_addr=0</code>, <code>max_addr=32768</code>, and <code>num_cores=16</code> (8 <code>LinearGeneratorCores</code>), then</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">addr_ranges=
+  [(0, 4096), (4096, 8192), (8192, 12288), (12288, 16384),
+  (16384, 20480), (20480, 24576), (24576, 28672), (28672, 32768)]
+</code></pre>
+<p>For the <code>i</code>'th <code>LinearGeneratorCore</code>, we take the <code>i</code>'th entry in <code>addr_ranges</code>. <code>min_addr</code> is the first value that entry, and <code>max_addr</code> is the second value in that entry.</p>
+<p>In this example, <code>LinearGeneratorCore</code> 0 gets initialized with <code>min_addr=0</code> and <code>max_addr=4096</code>, <code>LinearGeneratorCore</code> 1 gets initialized with <code>min_addr=4096</code> and <code>max_addr=8192</code>, etc.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="60" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="60" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-creating-a-list-of-cores-lineargeneratorcore">06-traffic-gen: HybridGenerator: Creating a List of Cores: LinearGeneratorCore</h2>
+<p>Next, let's start creating our list of cores.</p>
+<p>First, let's add all the <code>LinearGeneratorCores</code>.</p>
+<p>Add the lines on the right under the comment labeled <code>(3)</code>.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_linear_cores):
+            core_list.append(LinearGeneratorCore(
+                duration=duration,
+                rate=rate,
+                block_size=block_size,
+                min_addr=addr_ranges[i][<span class="hljs-number">0</span>],
+                max_addr=addr_ranges[i][<span class="hljs-number">1</span>],
+                rd_perc=rd_perc,
+                data_limit=data_limit,)
+            )
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="61" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="61" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-creating-a-list-of-cores-explained-lineargeneratorcore">06-traffic-gen: HybridGenerator: Creating a List of Cores Explained: LinearGeneratorCore</h2>
+<p>In the for loop, we create <code>num_linear_cores</code> <code>LinearGeneratorCores</code> and append each one to our <code>core_list</code>.</p>
+<p>Each <code>LinearGeneratorCore</code> parameter is initialized with the same values from the constructor, except for <code>min_addr</code> and <code>max_addr</code>.</p>
+<p>We change <code>min_addr</code> and <code>max_addr</code> so that each <code>LinearGeneratorCore</code> only simulates accesses to a section of the range of <code>HybridGenerator's</code> <code>min_addr</code> to <code>max_addr</code>.</p>
+<h3 id="-5"></h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_linear_cores):
+            core_list.append(LinearGeneratorCore(
+                duration=duration,
+                rate=rate,
+                block_size=block_size,
+                min_addr=addr_ranges[i][<span class="hljs-number">0</span>],
+                max_addr=addr_ranges[i][<span class="hljs-number">1</span>],
+                rd_perc=rd_perc,
+                data_limit=data_limit,)
+            )
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="62" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="62" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-creating-a-list-of-cores-randomgeneratorcore">06-traffic-gen: HybridGenerator: Creating a List of Cores: RandomGeneratorCore</h2>
+<p>Now that we've added the <code>LinearGeneratorCores</code>, let's add all the <code>RandomGeneratorCores</code>.</p>
+<p>Add the lines on the right under the comment labeled <code>(4)</code>.</p>
+<h3 id="-6"></h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_random_cores):
+            core_list.append(RandomGeneratorCore(
+                duration=duration,
+                rate=rate,
+                block_size=block_size,
+                min_addr=min_addr,
+                max_addr=max_addr,
+                rd_perc=rd_perc,
+                data_limit=data_limit,)
+            )
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="63" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="63" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-creating-a-list-of-cores-explained-randomgeneratorcore">06-traffic-gen: HybridGenerator: Creating a List of Cores Explained: RandomGeneratorCore</h2>
+<p>Once again, in the for loop, we create <code>num_linear_cores</code> <code>RandomGeneratorCores</code> and append each one to our core_list.</p>
+<p>Each <code>RandomGeneratorCore</code> parameter is initialized with the same values from the constructor, including <code>min_addr</code> and <code>max_addr</code>.</p>
+<p><code>min_addr</code> and <code>max_addr</code> do not change because each <code>RandomGeneratorCore</code> should be able to access the entire range of <code>HybridGenerator's</code> <code>min_addr</code> to <code>max_addr</code>.</p>
+<h3 id="-7"></h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_random_cores):
+            core_list.append(RandomGeneratorCore(
+                duration=duration,
+                rate=rate,
+                block_size=block_size,
+                min_addr=min_addr,
+                max_addr=max_addr,
+                rd_perc=rd_perc,
+                data_limit=data_limit,)
+            )
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="64" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="64" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-returning-and-beginning-configuration">06-traffic-gen: HybridGenerator: Returning and Beginning Configuration</h2>
+<p>We're almost done with this file!</p>
+<p>Let's return our <code>core_list</code> by adding the following line under the comment labeled <code>(5)</code>.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">return</span> core_list
+</code></pre>
+<p>Now, open the file <a href="../../materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/simple-traffic-generators.py">materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/simple-traffic-generators.py</a>.</p>
+<p>Let's replace our <code>LinearGenerator</code> with a <code>HybridGenerator</code>.</p>
+<p>First, add the following line somewhere at the top of your code to import the <code>HybridGenerator</code>.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">from</span> components.hybrid_generator <span class="hljs-keyword">import</span> HybridGenerator
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="65" data-paginate="true" data-class="two-col code-70-percent" data-theme="gem5" lang="en-US" class="two-col code-70-percent" data-marpit-pagination="65" style="--paginate:true;--class:two-col code-70-percent;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-configuring">06-traffic-gen: HybridGenerator: Configuring</h2>
+<p>In this section of code to the right, you should currently have a <code>LinearGenerator</code>.</p>
+<p>Let's replace it with a <code>HybridGenerator</code>.</p>
+<p>Replace the following lines</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">generator = LinearGenerator(
+    num_cores=<span class="hljs-number">1</span>
+)
+</code></pre>
+<p>with</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">generator = HybridGenerator(
+    num_cores=<span class="hljs-number">6</span>
+)
+</code></pre>
+<h3 id="-8"></h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">cache_hierarchy = MyPrivateL1SharedL2CacheHierarchy()
+
+memory = SingleChannelDDR3_1600()
+
+generator = LinearGenerator(
+    num_cores=<span class="hljs-number">1</span>
+)
+
+motherboard = TestBoard(
+    clk_freq=<span class="hljs-string">&quot;3GHz&quot;</span>,
+    generator=generator,
+    memory=memory,
+    cache_hierarchy=cache_hierarchy,
+)
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="66" data-paginate="true" data-class="two-col code-70-percent" data-theme="gem5" lang="en-US" class="two-col code-70-percent" data-marpit-pagination="66" style="--paginate:true;--class:two-col code-70-percent;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-configuring-cont">06-traffic-gen: HybridGenerator: Configuring Cont.</h2>
+<p>This is what it should look like now.</p>
+<h3 id="-9"></h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">cache_hierarchy = MyPrivateL1SharedL2CacheHierarchy()
+
+memory = SingleChannelDDR3_1600()
+
+generator = HybridGenerator(
+    num_cores=<span class="hljs-number">6</span>
+)
+
+motherboard = TestBoard(
+    clk_freq=<span class="hljs-string">&quot;3GHz&quot;</span>,
+    generator=generator,
+    memory=memory,
+    cache_hierarchy=cache_hierarchy,
+)
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="67" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="67" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-running">06-traffic-gen: HybridGenerator: Running</h2>
+<p>Now, that we've created a <code>HybridGenerator</code>, let's run the program again!</p>
+<p>Make sure you're in the following directory.</p>
+<p><strong><code>materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/</code></strong></p>
+<p>Now run with the following command.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">gem5 --debug-flags=TrafficGen --debug-end=1000000 \
+simple-traffic-generators.py
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="68" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="68" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-output">06-traffic-gen: HybridGenerator: Output</h2>
+<p>After running the command, you should see something like below.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">   7451: system.processor.cores5.generator: RandomGen::getNextPacket: r to addr 80a8, size 8
+   7451: system.processor.cores5.generator: Next event scheduled at 14902
+   7451: system.processor.cores4.generator: RandomGen::getNextPacket: r to addr 10a90, size 8
+   7451: system.processor.cores4.generator: Next event scheduled at 14902
+   7451: system.processor.cores3.generator: LinearGen::getNextPacket: r to addr 18000, size 8
+   7451: system.processor.cores3.generator: Next event scheduled at 14902
+   7451: system.processor.cores2.generator: LinearGen::getNextPacket: r to addr 10000, size 8
+   7451: system.processor.cores2.generator: Next event scheduled at 14902
+   7451: system.processor.cores1.generator: LinearGen::getNextPacket: r to addr 8000, size 8
+   7451: system.processor.cores1.generator: Next event scheduled at 14902
+   7451: system.processor.cores0.generator: LinearGen::getNextPacket: r to addr 0, size 8
+   7451: system.processor.cores0.generator: Next event scheduled at 14902
+</code></pre>
+<p>As you can see, cores 0, 1, 2, and 3 are <code>LinearGeneratorCores</code>, and cores 4 and 5 are <code>RandomGeneratorCores</code>!</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="69" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="69" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-statistics">06-traffic-gen: HybridGenerator: Statistics</h2>
+<p>Now, let's look at some of the statistical differences between our <code>LinearGeneratorCores</code> and <code>RandomGeneratorCores</code>.</p>
+<p>Run the following command to see the miss rate for each core's l1 data cache.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">grep ReadReq.missRate::processor m5out/stats.txt
+</code></pre>
+<p>On the next slide, you'll see the expected output (with some text removed for readability).</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="70" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="70" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="06-traffic-gen-hybridgenerator-statistics-cont">06-traffic-gen: HybridGenerator: Statistics Cont.</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">system.cache_hierarchy.l1dcaches0.ReadReq.missRate::processor.cores0.generator     0.132345
+system.cache_hierarchy.l1dcaches1.ReadReq.missRate::processor.cores1.generator     0.133418
+system.cache_hierarchy.l1dcaches2.ReadReq.missRate::processor.cores2.generator     0.133641
+system.cache_hierarchy.l1dcaches3.ReadReq.missRate::processor.cores3.generator     0.132971
+system.cache_hierarchy.l1dcaches4.ReadReq.missRate::processor.cores4.generator     0.876426
+system.cache_hierarchy.l1dcaches5.ReadReq.missRate::processor.cores5.generator     0.875055
+</code></pre>
+<p>Cores 0, 1, 2, and 3 (<code>LinearGeneratorCores</code>) have a miss rate of <strong>0.13309375</strong> (~13.3%) on average.</p>
+<p>Cores 4 and 5 (<code>RandomGeneratorCores</code>) have a miss rate of <strong>0.8757405</strong> (~87.5%) on average.</p>
+<p>This is because <code>LinearGeneratorCores</code> access memory linearly. Therefore, they exhibit more locality which in turn results in less misses in the l1dcache.</p>
+<p>On the other hand, since the <code>RandomGeneratorCores</code> access memory randomly, the caches can't take advantage of locality in the same way.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="71" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="71" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+<h2 id="summary-1">Summary</h2>
+<p>Overall, we discussed two different types of traffic generators: <strong>Linear</strong> and <strong>Random</strong>.</p>
+<p><code>LinearGenerators</code> simulate linear memory accesses, and <code>RandomGenerators</code> simulate random memory accesses.</p>
+<p>We looked into how to configure a board that uses these traffic generators.</p>
+<p>We also extended the <code>AbstractGenerator</code> class to create a <code>HybridGenerator</code>, which simulates linear and random memory accesses simultaneously.</p>
+<p>Finally, we saw some of the statistical differences between<code>LinearGeneratorCores</code> and <code>RandomGeneratorCores</code>.</p>
+</section>
+<script>!function(){"use strict";const t={h1:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"1"},style:"display: block; font-size: 2em; margin-block-start: 0.67em; margin-block-end: 0.67em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h2:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"2"},style:"display: block; font-size: 1.5em; margin-block-start: 0.83em; margin-block-end: 0.83em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h3:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"3"},style:"display: block; font-size: 1.17em; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h4:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"4"},style:"display: block; margin-block-start: 1.33em; margin-block-end: 1.33em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h5:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"5"},style:"display: block; font-size: 0.83em; margin-block-start: 1.67em; margin-block-end: 1.67em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h6:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"6"},style:"display: block; font-size: 0.67em; margin-block-start: 2.33em; margin-block-end: 2.33em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},span:{proto:()=>HTMLSpanElement},pre:{proto:()=>HTMLElement,style:"display: block; font-family: monospace; white-space: pre; margin: 1em 0; --marp-auto-scaling-white-space: pre;"}},e="data-marp-auto-scaling-wrapper",i="data-marp-auto-scaling-svg",n="data-marp-auto-scaling-container";class s extends HTMLElement{constructor(){super(),this.svgPreserveAspectRatio="xMinYMid meet";const t=t=>([e])=>{const{width:i,height:n}=e.contentRect;this[t]={width:i,height:n},this.updateSVGRect()};this.attachShadow({mode:"open"}),this.containerObserver=new ResizeObserver(t("containerSize")),this.wrapperObserver=new ResizeObserver(((...e)=>{t("wrapperSize")(...e),this.flushSvgDisplay()}))}static get observedAttributes(){return["data-downscale-only"]}connectedCallback(){var t,s,o,r,a;this.shadowRoot.innerHTML=`\n<style>\n  svg[${i}] { display: block; width: 100%; height: auto; vertical-align: top; }\n  span[${n}] { display: table; white-space: var(--marp-auto-scaling-white-space, nowrap); width: max-content; }\n</style>\n<div ${e}>\n  <svg part="svg" ${i}>\n    <foreignObject><span ${n}><slot></slot></span></foreignObject>\n  </svg>\n</div>\n    `.split(/\n\s*/).join(""),this.wrapper=null!==(t=this.shadowRoot.querySelector(`div[${e}]`))&&void 0!==t?t:void 0;const l=this.svg;this.svg=null!==(o=null===(s=this.wrapper)||void 0===s?void 0:s.querySelector(`svg[${i}]`))&&void 0!==o?o:void 0,this.svg!==l&&(this.svgComputedStyle=this.svg?window.getComputedStyle(this.svg):void 0),this.container=null!==(a=null===(r=this.svg)||void 0===r?void 0:r.querySelector(`span[${n}]`))&&void 0!==a?a:void 0,this.observe()}disconnectedCallback(){this.svg=void 0,this.svgComputedStyle=void 0,this.wrapper=void 0,this.container=void 0,this.observe()}attributeChangedCallback(){this.observe()}flushSvgDisplay(){const{svg:t}=this;t&&(t.style.display="inline",requestAnimationFrame((()=>{t.style.display=""})))}observe(){this.containerObserver.disconnect(),this.wrapperObserver.disconnect(),this.wrapper&&this.wrapperObserver.observe(this.wrapper),this.container&&this.containerObserver.observe(this.container),this.svgComputedStyle&&this.observeSVGStyle(this.svgComputedStyle)}observeSVGStyle(t){const e=()=>{const i=(()=>{const e=t.getPropertyValue("--preserve-aspect-ratio");if(e)return e.trim();return`x${(({textAlign:t,direction:e})=>{if(t.endsWith("left"))return"Min";if(t.endsWith("right"))return"Max";if("start"===t||"end"===t){let i="rtl"===e;return"end"===t&&(i=!i),i?"Max":"Min"}return"Mid"})(t)}YMid meet`})();i!==this.svgPreserveAspectRatio&&(this.svgPreserveAspectRatio=i,this.updateSVGRect()),t===this.svgComputedStyle&&requestAnimationFrame(e)};e()}updateSVGRect(){var t,e,i,n,s,o,r;let a=Math.ceil(null!==(e=null===(t=this.containerSize)||void 0===t?void 0:t.width)&&void 0!==e?e:0);const l=Math.ceil(null!==(n=null===(i=this.containerSize)||void 0===i?void 0:i.height)&&void 0!==n?n:0);void 0!==this.dataset.downscaleOnly&&(a=Math.max(a,null!==(o=null===(s=this.wrapperSize)||void 0===s?void 0:s.width)&&void 0!==o?o:0));const c=null===(r=this.svg)||void 0===r?void 0:r.querySelector(":scope > foreignObject");if(null==c||c.setAttribute("width",`${a}`),null==c||c.setAttribute("height",`${l}`),this.svg&&(this.svg.setAttribute("viewBox",`0 0 ${a} ${l}`),this.svg.setAttribute("preserveAspectRatio",this.svgPreserveAspectRatio),this.svg.style.height=a<=0||l<=0?"0":""),this.container){const t=this.svgPreserveAspectRatio.toLowerCase();this.container.style.marginLeft=t.startsWith("xmid")||t.startsWith("xmax")?"auto":"0",this.container.style.marginRight=t.startsWith("xmi")?"auto":"0"}}}const o=(t,{attrs:e={},style:i})=>class extends t{constructor(...t){super(...t);for(const[t,i]of Object.entries(e))this.hasAttribute(t)||this.setAttribute(t,i);this.attachShadow({mode:"open"})}static get observedAttributes(){return["data-auto-scaling"]}connectedCallback(){this._update()}attributeChangedCallback(){this._update()}_update(){const t=i?`<style>:host { ${i} }</style>`:"";let e="<slot></slot>";const{autoScaling:n}=this.dataset;if(void 0!==n){e=`<marp-auto-scaling exportparts="svg:auto-scaling" ${"downscale-only"===n?"data-downscale-only":""}>${e}</marp-auto-scaling>`}this.shadowRoot.innerHTML=t+e}};let r;const a=Symbol();let l;const c="marpitSVGPolyfill:setZoomFactor,",d=Symbol(),g=Symbol();const h=()=>{const t="Apple Computer, Inc."===navigator.vendor,e=t?[u]:[],i={then:e=>(t?(async()=>{if(void 0===l){const t=document.createElement("canvas");t.width=10,t.height=10;const e=t.getContext("2d"),i=new Image(10,10),n=new Promise((t=>{i.addEventListener("load",(()=>t()))}));i.crossOrigin="anonymous",i.src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%201%201%22%3E%3CforeignObject%20width%3D%221%22%20height%3D%221%22%20requiredExtensions%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxhtml%22%3E%3Cdiv%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxhtml%22%20style%3D%22width%3A%201px%3B%20height%3A%201px%3B%20background%3A%20red%3B%20position%3A%20relative%22%3E%3C%2Fdiv%3E%3C%2FforeignObject%3E%3C%2Fsvg%3E",await n,e.drawImage(i,0,0),l=e.getImageData(5,5,1,1).data[3]<128}return l})().then((t=>{null==e||e(t?[u]:[])})):null==e||e([]),i)};return Object.assign(e,i)};let p,m;function u(t){const e="object"==typeof t&&t.target||document,i="object"==typeof t?t.zoom:t;window[g]||(Object.defineProperty(window,g,{configurable:!0,value:!0}),document.body.style.zoom=1.0001,document.body.offsetHeight,document.body.style.zoom=1,window.addEventListener("message",(({data:t,origin:e})=>{if(e===window.origin)try{if(t&&"string"==typeof t&&t.startsWith(c)){const[,e]=t.split(","),i=Number.parseFloat(e);Number.isNaN(i)||(m=i)}}catch(t){console.error(t)}})));let n=!1;Array.from(e.querySelectorAll("svg[data-marpit-svg]"),(t=>{var e,s,o,r;t.style.transform||(t.style.transform="translateZ(0)");const a=i||m||t.currentScale||1;p!==a&&(p=a,n=a);const l=t.getBoundingClientRect(),{length:c}=t.children;for(let i=0;i<c;i+=1){const n=t.children[i];if(n.getScreenCTM){const t=n.getScreenCTM();if(t){const i=null!==(s=null===(e=n.x)||void 0===e?void 0:e.baseVal.value)&&void 0!==s?s:0,c=null!==(r=null===(o=n.y)||void 0===o?void 0:o.baseVal.value)&&void 0!==r?r:0,d=n.children.length;for(let e=0;e<d;e+=1){const s=n.children[e];if("SECTION"===s.tagName){const{style:e}=s;e.transformOrigin||(e.transformOrigin=`${-i}px ${-c}px`),e.transform=`scale(${a}) matrix(${t.a}, ${t.b}, ${t.c}, ${t.d}, ${t.e-l.left}, ${t.f-l.top}) translateZ(0.0001px)`;break}}}}}})),!1!==n&&Array.from(e.querySelectorAll("iframe"),(({contentWindow:t})=>{null==t||t.postMessage(`${c}${n}`,"null"===window.origin?"*":window.origin)}))}function v({once:t=!1,target:e=document}={}){const i=function(t=document){if(t[d])return t[d];let e=!0;const i=()=>{e=!1,delete t[d]};Object.defineProperty(t,d,{configurable:!0,value:i});let n=[],s=!1;(async()=>{try{n=await h()}finally{s=!0}})();const o=()=>{for(const e of n)e({target:t});s&&0===n.length||e&&window.requestAnimationFrame(o)};return o(),i}(e);return t?(i(),()=>{}):i}p=1,m=void 0;const b=Symbol(),w=(e=document)=>{if("undefined"==typeof window)throw new Error("Marp Core's browser script is valid only in browser context.");if(((e=document)=>{const i=window[a];i||customElements.define("marp-auto-scaling",s);for(const n of Object.keys(t)){const s=`marp-${n}`,a=t[n].proto();null!=r||(r=!!document.createElement("div",{is:"marp-auto-scaling"}).outerHTML.startsWith("<div is")),r&&a!==HTMLElement?i||customElements.define(s,o(a,{style:t[n].style}),{extends:n}):(i||customElements.define(s,o(HTMLElement,t[n])),e.querySelectorAll(`${n}[is="${s}"]`).forEach((t=>{t.outerHTML=t.outerHTML.replace(new RegExp(`^<${n}`,"i"),`<${s}`).replace(new RegExp(`</${n}>$`,"i"),`</${s}>`)})))}window[a]=!0})(e),e[b])return e[b];const i=v({target:e}),n=()=>{i(),delete e[b]},l=Object.assign(n,{cleanup:n,update:()=>w(e)});return Object.defineProperty(e,b,{configurable:!0,value:l}),l},y=document.currentScript;w(y?y.getRootNode():document)}();
+</script></foreignObject></svg></div><div class="bespoke-marp-note" data-index="19" tabindex="0"><p>I think ./02-annotate-this is what should go above. It was previously blank.</p></div><div class="bespoke-marp-note" data-index="20" tabindex="0"><p>What I want to do in this exercise:
+1. Have people run ```gem5 -re 03-run-x86-SE.py``` without any modification and show them what is the default handler for workbegin and workend in stdlib.
+2. Have people to add a workbegin handler and a workend handler that uses debug.flags[&quot;ExecAll] to enable and disable debug flag to see the execution trace of the syscall.
+3. Point out that SE mode do not time the syscall and it can read/write the host directory</p></div><div class="bespoke-marp-note" data-index="28" tabindex="0"><p>What I want to do in this exercise:
+
+1. have people to cross compile the workload statically and dynamically by modifying the Makefile
+2. point out the cross compiler and &quot;-static&quot;</p></div><div class="bespoke-marp-note" data-index="30" tabindex="0"><p>What I want to do in this exercise:
+1. first let people run the static one, and let them know this is arm
+2. then let people run the dynamic one which will lead to errors
+3. show people how to redirect lib</p><p>Not sure what to say for &quot;and let them know this is arm&quot;</p></div><div class="bespoke-marp-note" data-index="43" tabindex="0"><p>Is the sentence above accurate?</p></div><div class="bespoke-marp-note" data-index="70" tabindex="0"><p>Speaker Notes:
+
+## More summaries
+
+m5ops can be used to communicate between simulated workload and the simulator
+
+Traffic generator can abstract away the details of a data requestor such as CPU for generating test cases for memory systems</p></div><script>/*!! License: https://unpkg.com/@marp-team/marp-cli@3.4.0/lib/bespoke.js.LICENSE.txt */
+!function(){"use strict";function e(e){return e&&e.__esModule&&Object.prototype.hasOwnProperty.call(e,"default")?e.default:e}var t={from:function(e,t){var n,r=1===(e.parent||e).nodeType?e.parent||e:document.querySelector(e.parent||e),o=[].filter.call("string"==typeof e.slides?r.querySelectorAll(e.slides):e.slides||r.children,(function(e){return"SCRIPT"!==e.nodeName})),i={},a=function(e,t){return(t=t||{}).index=o.indexOf(e),t.slide=e,t},s=function(e,t){i[e]=(i[e]||[]).filter((function(e){return e!==t}))},l=function(e,t){return(i[e]||[]).reduce((function(e,n){return e&&!1!==n(t)}),!0)},c=function(e,t){o[e]&&(n&&l("deactivate",a(n,t)),n=o[e],l("activate",a(n,t)))},d=function(e,t){var r=o.indexOf(n)+e;l(e>0?"next":"prev",a(n,t))&&c(r,t)},u={off:s,on:function(e,t){return(i[e]||(i[e]=[])).push(t),s.bind(null,e,t)},fire:l,slide:function(e,t){if(!arguments.length)return o.indexOf(n);l("slide",a(o[e],t))&&c(e,t)},next:d.bind(null,1),prev:d.bind(null,-1),parent:r,slides:o,destroy:function(e){l("destroy",a(n,e)),i={}}};return(t||[]).forEach((function(e){e(u)})),n||c(0),u}},n=e(t);const r=document.body,o=(...e)=>history.replaceState(...e),i="presenter",a="next",s=["",i,a],l="bespoke-marp-",c=`data-${l}`,d=(e,{protocol:t,host:n,pathname:r,hash:o}=location)=>{const i=e.toString();return`${t}//${n}${r}${i?"?":""}${i}${o}`},u=()=>r.dataset.bespokeView,f=e=>new URLSearchParams(location.search).get(e),m=(e,t={})=>{var n;const r={location,setter:o,...t},i=new URLSearchParams(r.location.search);for(const t of Object.keys(e)){const n=e[t];"string"==typeof n?i.set(t,n):i.delete(t)}try{r.setter({...null!==(n=window.history.state)&&void 0!==n?n:{}},"",d(i,r.location))}catch(e){console.error(e)}},g=(()=>{const e="bespoke-marp";try{return localStorage.setItem(e,e),localStorage.removeItem(e),!0}catch(e){return!1}})(),p=e=>{try{return localStorage.getItem(e)}catch(e){return null}},v=(e,t)=>{try{return localStorage.setItem(e,t),!0}catch(e){return!1}},h=e=>{try{return localStorage.removeItem(e),!0}catch(e){return!1}},y=(e,t)=>{const n="aria-hidden";t?e.setAttribute(n,"true"):e.removeAttribute(n)},b=e=>{e.parent.classList.add(`${l}parent`),e.slides.forEach((e=>e.classList.add(`${l}slide`))),e.on("activate",(t=>{const n=`${l}active`,r=t.slide,o=r.classList,i=!o.contains(n);if(e.slides.forEach((e=>{e.classList.remove(n),y(e,!0)})),o.add(n),y(r,!1),i){const e=`${n}-ready`;o.add(e),document.body.clientHeight,o.remove(e)}}))},w=e=>{let t=0,n=0;Object.defineProperty(e,"fragments",{enumerable:!0,value:e.slides.map((e=>[null,...e.querySelectorAll("[data-marpit-fragment]")]))});const r=r=>void 0!==e.fragments[t][n+r],o=(r,o)=>{t=r,n=o,e.fragments.forEach(((e,t)=>{e.forEach(((e,n)=>{if(null==e)return;const i=t<r||t===r&&n<=o;e.setAttribute(`${c}fragment`,(i?"":"in")+"active");const a=`${c}current-fragment`;t===r&&n===o?e.setAttribute(a,"current"):e.removeAttribute(a)}))})),e.fragmentIndex=o;const i={slide:e.slides[r],index:r,fragments:e.fragments[r],fragmentIndex:o};e.fire("fragment",i)};e.on("next",(({fragment:i=!0})=>{if(i){if(r(1))return o(t,n+1),!1;const i=t+1;e.fragments[i]&&o(i,0)}else{const r=e.fragments[t].length;if(n+1<r)return o(t,r-1),!1;const i=e.fragments[t+1];i&&o(t+1,i.length-1)}})),e.on("prev",(({fragment:i=!0})=>{if(r(-1)&&i)return o(t,n-1),!1;const a=t-1;e.fragments[a]&&o(a,e.fragments[a].length-1)})),e.on("slide",(({index:t,fragment:n})=>{let r=0;if(void 0!==n){const o=e.fragments[t];if(o){const{length:e}=o;r=-1===n?e-1:Math.min(Math.max(n,0),e-1)}}o(t,r)})),o(0,0)},x=document,k=()=>!(!x.fullscreenEnabled&&!x.webkitFullscreenEnabled),$=()=>!(!x.fullscreenElement&&!x.webkitFullscreenElement),E=e=>{e.fullscreen=()=>{k()&&(async()=>{return $()?null===(e=x.exitFullscreen||x.webkitExitFullscreen)||void 0===e?void 0:e.call(x):((e=x.body)=>{var t;return null===(t=e.requestFullscreen||e.webkitRequestFullscreen)||void 0===t?void 0:t.call(e)})();var e})()},document.addEventListener("keydown",(t=>{"f"!==t.key&&"F11"!==t.key||t.altKey||t.ctrlKey||t.metaKey||!k()||(e.fullscreen(),t.preventDefault())}))},L=`${l}inactive`,S=(e=2e3)=>({parent:t,fire:n})=>{const r=t.classList,o=e=>n(`marp-${e?"":"in"}active`);let i;const a=()=>{i&&clearTimeout(i),i=setTimeout((()=>{r.add(L),o()}),e),r.contains(L)&&(r.remove(L),o(!0))};for(const e of["mousedown","mousemove","touchend"])document.addEventListener(e,a);setTimeout(a,0)},P=["AUDIO","BUTTON","INPUT","SELECT","TEXTAREA","VIDEO"],_=e=>{e.parent.addEventListener("keydown",(e=>{if(!e.target)return;const t=e.target;(P.includes(t.nodeName)||"true"===t.contentEditable)&&e.stopPropagation()}))},T=e=>{window.addEventListener("load",(()=>{for(const t of e.slides){const e=t.querySelector("marp-auto-scaling, [data-auto-scaling], [data-marp-fitting]");t.setAttribute(`${c}load`,e?"":"hideable")}}))},I=({interval:e=250}={})=>t=>{document.addEventListener("keydown",(e=>{if(" "===e.key&&e.shiftKey)t.prev();else if("ArrowLeft"===e.key||"ArrowUp"===e.key||"PageUp"===e.key)t.prev({fragment:!e.shiftKey});else if(" "!==e.key||e.shiftKey)if("ArrowRight"===e.key||"ArrowDown"===e.key||"PageDown"===e.key)t.next({fragment:!e.shiftKey});else if("End"===e.key)t.slide(t.slides.length-1,{fragment:-1});else{if("Home"!==e.key)return;t.slide(0)}else t.next();e.preventDefault()}));let n,r,o=0;t.parent.addEventListener("wheel",(i=>{let a=!1;const s=(e,t)=>{e&&(a=a||((e,t)=>((e,t)=>{const n="X"===t?"Width":"Height";return e[`client${n}`]<e[`scroll${n}`]})(e,t)&&((e,t)=>{const{overflow:n}=e,r=e[`overflow${t}`];return"auto"===n||"scroll"===n||"auto"===r||"scroll"===r})(getComputedStyle(e),t))(e,t)),(null==e?void 0:e.parentElement)&&s(e.parentElement,t)};if(0!==i.deltaX&&s(i.target,"X"),0!==i.deltaY&&s(i.target,"Y"),a)return;i.preventDefault();const l=Math.sqrt(i.deltaX**2+i.deltaY**2);if(void 0!==i.wheelDelta){if(void 0===i.webkitForce&&Math.abs(i.wheelDelta)<40)return;if(i.deltaMode===i.DOM_DELTA_PIXEL&&l<4)return}else if(i.deltaMode===i.DOM_DELTA_PIXEL&&l<12)return;r&&clearTimeout(r),r=setTimeout((()=>{n=0}),e);const c=Date.now()-o<e,d=l<=n;if(n=l,c||d)return;let u;(i.deltaX>0||i.deltaY>0)&&(u="next"),(i.deltaX<0||i.deltaY<0)&&(u="prev"),u&&(t[u](),o=Date.now())}))},M=(e=`.${l}osc`)=>{const t=document.querySelector(e);if(!t)return()=>{};const n=(e,n)=>{t.querySelectorAll(`[${c}osc=${JSON.stringify(e)}]`).forEach(n)};return k()||n("fullscreen",(e=>e.style.display="none")),g||n("presenter",(e=>{e.disabled=!0,e.title="Presenter view is disabled due to restricted localStorage."})),e=>{t.addEventListener("click",(t=>{if(t.target instanceof HTMLElement){const{bespokeMarpOsc:n}=t.target.dataset;n&&t.target.blur();const r={fragment:!t.shiftKey};"next"===n?e.next(r):"prev"===n?e.prev(r):"fullscreen"===n?null==e||e.fullscreen():"presenter"===n&&e.openPresenterView()}})),e.parent.appendChild(t),e.on("activate",(({index:t})=>{n("page",(n=>n.textContent=`Page ${t+1} of ${e.slides.length}`))})),e.on("fragment",(({index:t,fragments:r,fragmentIndex:o})=>{n("prev",(e=>e.disabled=0===t&&0===o)),n("next",(n=>n.disabled=t===e.slides.length-1&&o===r.length-1))})),e.on("marp-active",(()=>y(t,!1))),e.on("marp-inactive",(()=>y(t,!0))),k()&&(e=>{for(const t of["","webkit"])x.addEventListener(t+"fullscreenchange",e)})((()=>n("fullscreen",(e=>e.classList.toggle("exit",k()&&$())))))}},O=e=>{window.addEventListener("message",(t=>{if(t.origin!==window.origin)return;const[n,r]=t.data.split(":");if("navigate"===n){const[t,n]=r.split(",");let o=Number.parseInt(t,10),i=Number.parseInt(n,10)+1;i>=e.fragments[o].length&&(o+=1,i=0),e.slide(o,{fragment:i})}}))};var A=["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"];let C=e=>String(e).replace(/[&<>"']/g,(e=>`&${D[e]};`)),D={"&":"amp","<":"lt",">":"gt",'"':"quot","'":"apos"},N="dangerouslySetInnerHTML",B={className:"class",htmlFor:"for"},q={};function K(e,t){let n=[],r="";t=t||{};for(let e=arguments.length;e-- >2;)n.push(arguments[e]);if("function"==typeof e)return t.children=n.reverse(),e(t);if(e){if(r+="<"+e,t)for(let e in t)!1!==t[e]&&null!=t[e]&&e!==N&&(r+=` ${B[e]?B[e]:C(e)}="${C(t[e])}"`);r+=">"}if(-1===A.indexOf(e)){if(t[N])r+=t[N].__html;else for(;n.length;){let e=n.pop();if(e)if(e.pop)for(let t=e.length;t--;)n.push(e[t]);else r+=!0===q[e]?e:C(e)}r+=e?`</${e}>`:""}return q[r]=!0,r}const j=({children:e})=>K(null,null,...e),F=`${l}presenter-`,V={container:`${F}container`,dragbar:`${F}dragbar-container`,next:`${F}next`,nextContainer:`${F}next-container`,noteContainer:`${F}note-container`,noteWrapper:`${F}note-wrapper`,noteButtons:`${F}note-buttons`,infoContainer:`${F}info-container`,infoPage:`${F}info-page`,infoPageText:`${F}info-page-text`,infoPagePrev:`${F}info-page-prev`,infoPageNext:`${F}info-page-next`,noteButtonsBigger:`${F}note-bigger`,noteButtonsSmaller:`${F}note-smaller`,infoTime:`${F}info-time`,infoTimer:`${F}info-timer`},U=e=>{const{title:t}=document;document.title="[Presenter view]"+(t?` - ${t}`:"");const n={},r=e=>(n[e]=n[e]||document.querySelector(`.${e}`),n[e]);document.body.appendChild((e=>{const t=document.createElement("div");return t.className=V.container,t.appendChild(e),t.insertAdjacentHTML("beforeend",K(j,null,K("div",{class:V.nextContainer},K("iframe",{class:V.next,src:"?view=next"})),K("div",{class:V.dragbar}),K("div",{class:V.noteContainer},K("div",{class:V.noteWrapper}),K("div",{class:V.noteButtons},K("button",{class:V.noteButtonsSmaller,tabindex:"-1",title:"Smaller notes font size"},"Smaller notes font size"),K("button",{class:V.noteButtonsBigger,tabindex:"-1",title:"Bigger notes font size"},"Bigger notes font size"))),K("div",{class:V.infoContainer},K("div",{class:V.infoPage},K("button",{class:V.infoPagePrev,tabindex:"-1",title:"Previous"},"Previous"),K("span",{class:V.infoPageText}),K("button",{class:V.infoPageNext,tabindex:"-1",title:"Next"},"Next")),K("time",{class:V.infoTime,title:"Current time"}),K("time",{class:V.infoTimer,title:"Timer"})))),t})(e.parent)),(e=>{let t=!1;r(V.dragbar).addEventListener("mousedown",(()=>{t=!0,r(V.dragbar).classList.add("active")})),window.addEventListener("mouseup",(()=>{t=!1,r(V.dragbar).classList.remove("active")})),window.addEventListener("mousemove",(e=>{if(!t)return;const n=e.clientX/document.documentElement.clientWidth*100;r(V.container).style.setProperty("--bespoke-marp-presenter-split-ratio",`${Math.max(0,Math.min(100,n))}%`)})),r(V.nextContainer).addEventListener("click",(()=>e.next()));const n=r(V.next),o=(i=n,(e,t)=>{var n;return null===(n=i.contentWindow)||void 0===n?void 0:n.postMessage(`navigate:${e},${t}`,"null"===window.origin?"*":window.origin)});var i;n.addEventListener("load",(()=>{r(V.nextContainer).classList.add("active"),o(e.slide(),e.fragmentIndex),e.on("fragment",(({index:e,fragmentIndex:t})=>o(e,t)))}));const a=document.querySelectorAll(".bespoke-marp-note");a.forEach((e=>{e.addEventListener("keydown",(e=>e.stopPropagation())),r(V.noteWrapper).appendChild(e)})),e.on("activate",(()=>a.forEach((t=>t.classList.toggle("active",t.dataset.index==e.slide())))));let s=0;const l=e=>{s=Math.max(-5,s+e),r(V.noteContainer).style.setProperty("--bespoke-marp-note-font-scale",(1.2**s).toFixed(4))},c=()=>l(1),d=()=>l(-1),u=r(V.noteButtonsBigger),f=r(V.noteButtonsSmaller);u.addEventListener("click",(()=>{u.blur(),c()})),f.addEventListener("click",(()=>{f.blur(),d()})),document.addEventListener("keydown",(e=>{"+"===e.key&&c(),"-"===e.key&&d()}),!0),e.on("activate",(({index:t})=>{r(V.infoPageText).textContent=`${t+1} / ${e.slides.length}`}));const m=r(V.infoPagePrev),g=r(V.infoPageNext);m.addEventListener("click",(t=>{m.blur(),e.prev({fragment:!t.shiftKey})})),g.addEventListener("click",(t=>{g.blur(),e.next({fragment:!t.shiftKey})})),e.on("fragment",(({index:t,fragments:n,fragmentIndex:r})=>{m.disabled=0===t&&0===r,g.disabled=t===e.slides.length-1&&r===n.length-1}));let p=new Date;const v=()=>{const e=new Date,t=e=>`${Math.floor(e)}`.padStart(2,"0"),n=e.getTime()-p.getTime(),o=t(n/1e3%60),i=t(n/1e3/60%60),a=t(n/36e5%24);r(V.infoTime).textContent=e.toLocaleTimeString(),r(V.infoTimer).textContent=`${a}:${i}:${o}`};v(),setInterval(v,250),r(V.infoTimer).addEventListener("click",(()=>{p=new Date}))})(e)},X=e=>{if(!(e=>e.syncKey&&"string"==typeof e.syncKey)(e))throw new Error("The current instance of Bespoke.js is invalid for Marp bespoke presenter plugin.");Object.defineProperties(e,{openPresenterView:{enumerable:!0,value:H},presenterUrl:{enumerable:!0,get:R}}),g&&document.addEventListener("keydown",(t=>{"p"!==t.key||t.altKey||t.ctrlKey||t.metaKey||(t.preventDefault(),e.openPresenterView())}))};function H(){const{max:e,floor:t}=Math,n=e(t(.85*window.innerWidth),640),r=e(t(.85*window.innerHeight),360);return window.open(this.presenterUrl,F+this.syncKey,`width=${n},height=${r},menubar=no,toolbar=no`)}function R(){const e=new URLSearchParams(location.search);return e.set("view","presenter"),e.set("sync",this.syncKey),d(e)}const W=e=>{const t=u();return t===a&&e.appendChild(document.createElement("span")),{"":X,[i]:U,[a]:O}[t]},J=e=>{e.on("activate",(t=>{document.querySelectorAll(".bespoke-progress-parent > .bespoke-progress-bar").forEach((n=>{n.style.flexBasis=100*t.index/(e.slides.length-1)+"%"}))}))},Y=e=>{const t=Number.parseInt(e,10);return Number.isNaN(t)?null:t},z=(e={})=>{const t={history:!0,...e};return e=>{let n=!0;const r=e=>{const t=n;try{return n=!0,e()}finally{n=t}},o=(t={fragment:!0})=>{let n=t.fragment?Y(f("f")||""):null;((t,n)=>{const{min:r,max:o}=Math,{fragments:i,slides:a}=e,s=o(0,r(t,a.length-1)),l=o(0,r(n||0,i[s].length-1));s===e.slide()&&l===e.fragmentIndex||e.slide(s,{fragment:l})})((()=>{var t,r;if(location.hash){const[o]=location.hash.slice(1).split(":~:");if(/^\d+$/.test(o))return(null!==(t=Y(o))&&void 0!==t?t:1)-1;const i=document.getElementById(o)||document.querySelector(`a[name="${CSS.escape(o)}"]`);if(i){const{length:t}=e.slides;for(let o=0;o<t;o+=1)if(e.slides[o].contains(i)){const t=null===(r=e.fragments)||void 0===r?void 0:r[o],a=i.closest("[data-marpit-fragment]");if(t&&a){const e=t.indexOf(a);e>=0&&(n=e)}return o}}}return 0})(),n)};e.on("fragment",(({index:e,fragmentIndex:r})=>{n||m({f:0===r||r.toString()},{location:{...location,hash:`#${e+1}`},setter:(...e)=>t.history?history.pushState(...e):history.replaceState(...e)})})),setTimeout((()=>{o(),window.addEventListener("hashchange",(()=>r((()=>{o({fragment:!1}),m({f:void 0})})))),window.addEventListener("popstate",(()=>{n||r((()=>o()))})),n=!1}),0)}},G=(e={})=>{var t;const n=e.key||(null===(t=window.history.state)||void 0===t?void 0:t.marpBespokeSyncKey)||Math.random().toString(36).slice(2),r=`bespoke-marp-sync-${n}`;var i;i={marpBespokeSyncKey:n},m({},{setter:(e,...t)=>o({...e,...i},...t)});const a=()=>{const e=p(r);return e?JSON.parse(e):Object.create(null)},s=e=>{const t=a(),n={...t,...e(t)};return v(r,JSON.stringify(n)),n},l=()=>{window.removeEventListener("pageshow",l),s((e=>({reference:(e.reference||0)+1})))};return e=>{l(),Object.defineProperty(e,"syncKey",{value:n,enumerable:!0});let t=!0;setTimeout((()=>{e.on("fragment",(e=>{t&&s((()=>({index:e.index,fragmentIndex:e.fragmentIndex})))}))}),0),window.addEventListener("storage",(n=>{if(n.key===r&&n.oldValue&&n.newValue){const r=JSON.parse(n.oldValue),o=JSON.parse(n.newValue);if(r.index!==o.index||r.fragmentIndex!==o.fragmentIndex)try{t=!1,e.slide(o.index,{fragment:o.fragmentIndex,forSync:!0})}finally{t=!0}}}));const o=()=>{const{reference:e}=a();void 0===e||e<=1?h(r):s((()=>({reference:e-1})))};window.addEventListener("pagehide",(e=>{e.persisted&&window.addEventListener("pageshow",l),o()})),e.on("destroy",o)}},{PI:Q,abs:Z,sqrt:ee,atan2:te}=Math,ne={passive:!0},re=({slope:e=-.7,swipeThreshold:t=30}={})=>n=>{let r;const o=n.parent,i=e=>{const t=o.getBoundingClientRect();return{x:e.pageX-(t.left+t.right)/2,y:e.pageY-(t.top+t.bottom)/2}};o.addEventListener("touchstart",(({touches:e})=>{r=1===e.length?i(e[0]):void 0}),ne),o.addEventListener("touchmove",(e=>{if(r)if(1===e.touches.length){e.preventDefault();const t=i(e.touches[0]),n=t.x-r.x,o=t.y-r.y;r.delta=ee(Z(n)**2+Z(o)**2),r.radian=te(n,o)}else r=void 0})),o.addEventListener("touchend",(o=>{if(r){if(r.delta&&r.delta>=t&&r.radian){const t=(r.radian-e+Q)%(2*Q)-Q;n[t<0?"next":"prev"](),o.stopPropagation()}r=void 0}}),ne)},oe=new Map;oe.clear(),oe.set("none",{backward:{both:void 0,incoming:void 0,outgoing:void 0},forward:{both:void 0,incoming:void 0,outgoing:void 0}});const ie={both:"",outgoing:"outgoing-",incoming:"incoming-"},ae={forward:"",backward:"-backward"},se=e=>`--marp-bespoke-transition-animation-${e}`,le=e=>`--marp-transition-${e}`,ce=se("name"),de=se("duration"),ue=e=>new Promise((t=>{const n={},r=document.createElement("div"),o=e=>{r.remove(),t(e)};r.addEventListener("animationstart",(()=>o(n))),Object.assign(r.style,{animationName:e,animationDuration:"1s",animationFillMode:"both",animationPlayState:"paused",position:"absolute",pointerEvents:"none"}),document.body.appendChild(r);const i=getComputedStyle(r).getPropertyValue(le("duration"));i&&(n.defaultDuration=i),((e,t)=>{requestAnimationFrame((()=>{e.style.animationPlayState="running",requestAnimationFrame((()=>t(void 0)))}))})(r,o)})),fe=async e=>oe.has(e)?oe.get(e):(e=>{const t={},n=[];for(const[r,o]of Object.entries(ie))for(const[i,a]of Object.entries(ae)){const s=`marp-${o}transition${a}-${e}`;n.push(ue(s).then((e=>{t[i]=t[i]||{},t[i][r]=e?{...e,name:s}:void 0})))}return Promise.all(n).then((()=>t))})(e).then((t=>(oe.set(e,t),t))),me=e=>Object.values(e).flatMap(Object.values).every((e=>!e)),ge=(e,{type:t,backward:n})=>{const r=e[n?"backward":"forward"],o=(()=>{const e=r[t],n=e=>({[ce]:e.name});if(e)return n(e);if(r.both){const e=n(r.both);return"incoming"===t&&(e[se("direction")]="reverse"),e}})();return!o&&n?ge(e,{type:t,backward:!1}):o||{[ce]:"__bespoke_marp_transition_no_animation__"}},pe=e=>{if(e)try{const t=JSON.parse(e);if((e=>{if("object"!=typeof e)return!1;const t=e;return"string"==typeof t.name&&(void 0===t.duration||"string"==typeof t.duration)})(t))return t}catch(e){}},ve="_tSId",he="_tA",ye="bespoke-marp-transition-warming-up",be=window.matchMedia("(prefers-reduced-motion: reduce)"),we="__bespoke_marp_transition_reduced_outgoing__",xe="__bespoke_marp_transition_reduced_incoming__",ke={forward:{both:void 0,incoming:{name:xe},outgoing:{name:we}},backward:{both:void 0,incoming:{name:xe},outgoing:{name:we}}},$e=e=>{if(!document.startViewTransition)return;const t=t=>(void 0!==t&&(e._tD=t),e._tD);let n;t(!1),((...e)=>{const t=[...new Set(e).values()];return Promise.all(t.map((e=>fe(e)))).then()})(...Array.from(document.querySelectorAll("section[data-transition], section[data-transition-back]")).flatMap((e=>[e.dataset.transition,e.dataset.transitionBack].flatMap((e=>{const t=pe(e);return[null==t?void 0:t.name,(null==t?void 0:t.builtinFallback)?`__builtin__${t.name}`:void 0]})).filter((e=>!!e))))).then((()=>{document.querySelectorAll("style").forEach((e=>{e.innerHTML=e.innerHTML.replace(/--marp-transition-duration:[^;}]*[;}]/g,(e=>e.slice(0,-1)+"!important"+e.slice(-1)))}))}));const r=(n,{back:r,cond:o})=>i=>{var a;const s=t();if(s)return!!i[he]||!("object"!=typeof s||(s.skipTransition(),!i.forSync));if(!o(i))return!0;const l=e.slides[e.slide()],c=()=>{var e;return null!==(e=i.back)&&void 0!==e?e:r},d="data-transition"+(c()?"-back":""),u=l.querySelector(`section[${d}]`);if(!u)return!0;const f=pe(null!==(a=u.getAttribute(d))&&void 0!==a?a:void 0);return!f||((async(e,{builtinFallback:t=!0}={})=>{let n=await fe(e);if(me(n)){if(!t)return;return n=await fe(`__builtin__${e}`),me(n)?void 0:n}return n})(f.name,{builtinFallback:f.builtinFallback}).then((e=>{if(!e){t(!0);try{n(i)}finally{t(!1)}return}let r=e;be.matches&&(console.warn("Use a constant animation to transition because preferring reduced motion by viewer has detected."),r=ke);const o=document.getElementById(ve);o&&o.remove();const a=document.createElement("style");a.id=ve,document.head.appendChild(a),((e,t)=>{const n=[`:root{${le("direction")}:${t.backward?-1:1};}`,":root:has(.bespoke-marp-inactive){cursor:none;}"],r=t=>{var n,o,i;const a=(null===(n=e[t].both)||void 0===n?void 0:n.defaultDuration)||(null===(o=e[t].outgoing)||void 0===o?void 0:o.defaultDuration)||(null===(i=e[t].incoming)||void 0===i?void 0:i.defaultDuration);return"forward"===t?a:a||r("forward")},o=t.duration||r(t.backward?"backward":"forward");void 0!==o&&n.push(`::view-transition-group(*){${de}:${o};}`);const i=e=>Object.entries(e).map((([e,t])=>`${e}:${t};`)).join("");return n.push(`::view-transition-old(root){${i(ge(e,{...t,type:"outgoing"}))}}`,`::view-transition-new(root){${i(ge(e,{...t,type:"incoming"}))}}`),n})(r,{backward:c(),duration:f.duration}).forEach((e=>{var t;return null===(t=a.sheet)||void 0===t?void 0:t.insertRule(e)}));const s=document.documentElement.classList;s.add(ye);let l=!1;const d=()=>{l||(n(i),l=!0,s.remove(ye))},u=()=>{t(!1),a.remove(),s.remove(ye)};try{t(!0);const e=document.startViewTransition(d);t(e),e.finished.finally(u)}catch(e){console.error(e),d(),u()}})),!1)};e.on("prev",r((t=>e.prev({...t,[he]:!0})),{back:!0,cond:e=>{var t;return e.index>0&&!((null===(t=e.fragment)||void 0===t||t)&&n.fragmentIndex>0)}})),e.on("next",r((t=>e.next({...t,[he]:!0})),{cond:t=>t.index+1<e.slides.length&&!(n.fragmentIndex+1<n.fragments.length)})),setTimeout((()=>{e.on("slide",r((t=>e.slide(t.index,{...t,[he]:!0})),{cond:t=>{const n=e.slide();return t.index!==n&&(t.back=t.index<n,!0)}}))}),0),e.on("fragment",(e=>{n=e}))};let Ee;const Le=()=>(void 0===Ee&&(Ee="wakeLock"in navigator&&navigator.wakeLock),Ee),Se=async()=>{const e=Le();if(e)try{return await e.request("screen")}catch(e){console.warn(e)}return null},Pe=async()=>{if(!Le())return;let e;const t=()=>{e&&"visible"===document.visibilityState&&Se()};for(const e of["visibilitychange","fullscreenchange"])document.addEventListener(e,t);return e=await Se(),e};((e=document.getElementById(":$p"))=>{(()=>{const e=f("view");r.dataset.bespokeView=e===a||e===i?e:""})();const t=(e=>{const t=f(e);return m({[e]:void 0}),t})("sync")||void 0;n.from(e,((...e)=>{const t=s.findIndex((e=>u()===e));return e.map((([e,n])=>e[t]&&n)).filter((e=>e))})([[1,1,0],G({key:t})],[[1,1,1],W(e)],[[1,1,0],_],[[1,1,1],b],[[1,0,0],S()],[[1,1,1],T],[[1,1,1],z({history:!1})],[[1,1,0],I()],[[1,1,0],E],[[1,0,0],J],[[1,1,0],re()],[[1,0,0],M()],[[1,0,0],$e],[[1,1,1],w],[[1,1,0],Pe]))})()}();</script></body></html>

@@ -1,0 +1,466 @@
+@charset "UTF-8";
+/*!
+ * Marp gem5 theme
+ * @theme gem5
+ * @author Jason Lowe-Power
+ *
+ * @auto-scaling true
+ * @size 16:9 1280px 720px
+ * @size 4:3 960px 720px
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+:root {
+    --gem5-gem5: #008EB0;
+    --gem5-background: #F6F8FA;
+    --gem5-light: #c8eaf3;
+    --gem5-dark: #00627a;
+    --gem5-gray: #77787b;
+
+    --code-line-height: 2rem;
+    --code-font-size: 1.4rem;
+}
+
+section {
+    color: black;
+    font-size: 1.6rem;
+    font-family: sans-serif;
+    line-height: 2rem;
+    padding: 70px;
+    background-color: var(--gem5-background);
+    background-image: url("../themes/gem5ColorLong.svg");
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-size: 220px;
+    background-position-y: 97%;
+}
+
+section li {
+    margin-bottom: 0.2rem;
+}
+
+section ul {
+    margin-bottom: 0.5rem;
+}
+
+/* Move the title of the slide up a bit */
+section>*:first-child,
+section>header:first-child+* {
+    margin-top: 0;
+}
+
+/* Draw a triangle on the left of the title */
+h2::before {
+    content: "";
+    position: absolute;
+    top: 65px;
+    left: -10px;
+    width: 0;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 40px solid var(--gem5-gem5);
+    rotate: 90deg;
+}
+
+/* Draw a triangle in the lower right */
+section::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-left: 100px solid transparent;
+    border-top: 100px solid var(--gem5-gem5);
+    rotate: 90deg;
+}
+
+/* Add an image to the bottom center of the page */
+footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 60px;
+    height: 100px;
+    margin-bottom: -80px;
+}
+
+footer img {
+    height: 60px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* For the page number */
+section::after {
+    right: -50px;
+    bottom: -55px;
+    font-size: 80%;
+    color: var(--gem5-light);
+}
+
+a {
+    color: var(--gem5-gem5);
+}
+
+blockquote {
+    position: relative;
+    margin: 0.6rem 0;
+    padding: 0 1.2rem;
+    border-left: 4px solid var(--gem5-gem5);
+    background-color: var(--gem5-light);
+}
+
+blockquote a {
+    color: var(--gem5-dark);
+}
+
+/****************************************************/
+/* For title page */
+/* Remove the triangle */
+section.title h2::before {
+    border: none;
+}
+
+/* Remove the triangle in the lower right */
+section.title::before {
+    border: none;
+}
+
+/* Remove the page number */
+section.title::after {
+    display: none;
+}
+
+/* Remove the bottom image */
+section.title footer img {
+    display: none;
+}
+
+section.title h2 {
+    font-size: 5rem;
+    line-height: 5rem;
+    margin-top: 50px;
+    display: block;
+    text-align: center;
+    width: 60%;
+}
+
+/* gem5 logo on the right */
+section.title {
+    background-image: url("../../slides/themes/gem5ColorVert.svg");
+    background-repeat: no-repeat;
+    background-position: 86% 50%;
+    background-size: 440px;
+}
+
+/* title on the left */
+section.title p {
+    width: 60%;
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+}
+
+/****************************************************/
+/* For two-column layout */
+section.two-col {
+    columns: 2;
+    display: block;
+}
+
+section.two-col h2 {
+    column-span: all;
+}
+
+section.two-col h3 {
+    break-before: column;
+}
+
+/****************************************************/
+/* For centering images */
+section.center-image img {
+    display: block;
+    margin: auto;
+}
+
+/* For adding a border to images */
+section.border-image img {
+    border: 1px solid var(--gem5-dark);
+}
+
+/* For altering logo position/appearance */
+section.logo-left {
+    background-position-x: 21%;
+}
+section.no-logo {
+    background-image: none;
+}
+
+/****************************************************/
+/* For title cards at the beginning of a section, e.g. Intro to ..., etc.
+   Has a blue gradient. From Erin and Mysore
+*/
+section.start h2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 4rem;
+    font-weight: bold;
+    line-height: 75px;
+    background: linear-gradient(to right, rgb(67, 124, 205), rgb(69, 214, 202));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Remove the triangle */
+section.start h2::before {
+    border: none;
+}
+
+/****************************************************/
+/* For 5 column/full outline */
+
+section.outline h2 {
+    column-span: all;
+}
+
+section.outline {
+    column-count: 5;
+    font-size: 1.3rem;
+    line-height: 1.3rem;
+}
+
+section.outline ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    padding-bottom: 10px;
+}
+
+section.outline li {
+    margin: 0;
+    padding-bottom: 5px;
+}
+
+section.outline ul ul {
+    list-style-type: "- ";
+    padding-left: 20px;
+}
+
+section.outline ul ul ul {
+    display: none;
+}
+
+section.outline h3 {
+    break-before: column;
+}
+
+/****************************************************/
+/* For reducing size of code blocks */
+section.code-50-percent pre {
+    line-height: calc(var(--code-line-height) * 0.33);
+}
+section.code-50-percent pre code {
+    font-size: calc(var(--code-font-size) * 0.5);
+}
+
+section.code-60-percent pre {
+    line-height: calc(var(--code-line-height) * 0.48);
+}
+section.code-60-percent pre code {
+    font-size: calc(var(--code-font-size) * 0.6);
+}
+
+section.code-70-percent pre {
+    line-height: calc(var(--code-line-height) * 0.65);
+}
+section.code-70-percent pre code {
+    font-size: calc(var(--code-font-size) * 0.7);
+}
+
+section.code-80-percent pre {
+    line-height: calc(var(--code-line-height) * 0.8);
+}
+section.code-80-percent pre code {
+    font-size: calc(var(--code-font-size) * 0.8);
+}
+
+/****************************************************/
+/* For code block */
+
+pre {
+    padding: 10px;
+    border-radius: 5px;
+    line-height: var(--code-line-height);
+    background-color: #ffffff;
+    box-shadow: 1px 2px 4px var(--gem5-gray);
+}
+
+code {
+    font-family: "Roboto Mono", monospace;
+    background-color: #ffffff;
+    font-size: var(--code-font-size);
+}
+
+/* Forces inherited height for code in headers */
+:is(h1, h2, h3, h4, h5, h6) code {
+    font-size: inherit !important;
+}
+
+/* Targets only inline code */
+:not(pre) > code {
+    font-size: calc(var(--code-font-size) * 0.9);
+    padding: 2px 6px;
+    border: 1px solid var(--gem5-gray);
+    border-radius: 5px;
+}
+
+/* Targets hyperlinks that contain code */
+a:has(code) {
+    /* Removes underlines */
+    text-decoration: none;
+}
+
+/*!
+  Theme: Default
+  Description: Original highlight.js style
+  Author: (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
+  Maintainer: @highlightjs/core-team
+  Website: https://highlightjs.org/
+  License: see project LICENSE
+  Touched: 2021
+*/
+
+/*
+This is left on purpose making default.css the single file that can be lifted
+as-is from the repository directly without the need for a build step
+
+Typically this "required" baseline CSS is added by `makestuff.js` during build.
+*/
+
+pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 1rem;
+    background-color: #ffffff;
+}
+
+code.hljs {
+    padding: 3px 5px;
+}
+
+/* end baseline CSS */
+
+.hljs {
+    background: #ffffff;
+    color: #444;
+}
+
+/* Base color: saturation 0; */
+
+.hljs-subst {
+    /* default */
+}
+
+/* purposely ignored */
+.hljs-formula,
+.hljs-attr,
+.hljs-property,
+.hljs-params {}
+
+.hljs-comment {
+    color: #697070;
+}
+
+.hljs-tag,
+.hljs-punctuation {
+    color: #444a;
+}
+
+.hljs-tag .hljs-name,
+.hljs-tag .hljs-attr {
+    color: #444;
+}
+
+
+.hljs-keyword,
+.hljs-attribute,
+.hljs-selector-tag,
+.hljs-meta .hljs-keyword,
+
+.hljs-doctag,
+.hljs-name {
+    font-weight: bold;
+}
+
+
+/* User color: hue: 0 */
+
+.hljs-type,
+.hljs-string,
+.hljs-number,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-quote,
+.hljs-template-tag,
+.hljs-deletion {
+    color: #880000;
+}
+
+.hljs-title,
+.hljs-section {
+    color: #880000;
+    font-weight: bold;
+}
+
+.hljs-regexp,
+.hljs-symbol,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-link,
+.hljs-selector-attr,
+.hljs-operator,
+.hljs-selector-pseudo {
+    color: #ab5656;
+}
+
+/* Language color: hue: 90; */
+
+.hljs-literal {
+    color: #695;
+}
+
+.hljs-built_in,
+.hljs-bullet,
+.hljs-code,
+.hljs-addition {
+    color: #397300;
+}
+
+
+/* Meta color: hue: 200 */
+
+.hljs-meta {
+    color: #1f7199;
+}
+
+.hljs-meta .hljs-string {
+    color: #38a;
+}
+
+
+/* Misc effects */
+
+.hljs-emphasis {
+    font-style: italic;
+}
+
+.hljs-strong {
+    font-weight: bold;
+}

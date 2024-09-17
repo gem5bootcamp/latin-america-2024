@@ -1,0 +1,842 @@
+<!DOCTYPE html><html lang="en-US"><head><title>Developing SimObjects in gem5</title><meta property="og:title" content="Developing SimObjects in gem5"><meta name="author" content="Mahyar Samani, M. Mysore"><meta property="article:author" content="Mahyar Samani, M. Mysore"><meta charset="UTF-8"><meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"><meta name="apple-mobile-web-app-capable" content="yes"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta property="og:type" content="website"><meta name="twitter:card" content="summary"><style>@media screen{body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button{-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none;background-color:transparent;border:0;color:inherit;cursor:pointer;font-size:inherit;opacity:.8;outline:none;padding:0;transition:opacity .2s linear}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:disabled,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:disabled,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:disabled,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:disabled{cursor:not-allowed;opacity:.15!important}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover{opacity:1}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:active,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:active,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover:active,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover:active{opacity:.6}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:not(:disabled),body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:not(:disabled),body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover:not(:disabled),body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover:not(:disabled){transition:none}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button.bespoke-marp-presenter-info-page-prev{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNNjggOTAgMjggNTBsNDAtNDAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button.bespoke-marp-presenter-info-page-next{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJtMzIgOTAgNDAtNDAtNDAtNDAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen]{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDpub25lO3N0cm9rZTojZmZmO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6NXB4fTwvc3R5bGU+PC9kZWZzPjxyZWN0IHdpZHRoPSI4MCIgaGVpZ2h0PSI2MCIgeD0iMTAiIHk9IjIwIiBjbGFzcz0iYSIgcng9IjUuNjciLz48cGF0aCBkPSJNNDAgNzBIMjBWNTBtMjAgMEwyMCA3MG00MC00MGgyMHYyMG0tMjAgMCAyMC0yMCIgY2xhc3M9ImEiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button.exit[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button.exit[data-bespoke-marp-osc=fullscreen]{background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDpub25lO3N0cm9rZTojZmZmO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6NXB4fTwvc3R5bGU+PC9kZWZzPjxyZWN0IHdpZHRoPSI4MCIgaGVpZ2h0PSI2MCIgeD0iMTAiIHk9IjIwIiBjbGFzcz0iYSIgcng9IjUuNjciLz48cGF0aCBkPSJNMjAgNTBoMjB2MjBtLTIwIDAgMjAtMjBtNDAgMEg2MFYzMG0yMCAwTDYwIDUwIiBjbGFzcz0iYSIvPjwvc3ZnPg==")}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter]{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNODcuOCA0Ny41Qzg5IDUwIDg3LjcgNTIgODUgNTJIMzVhOC43IDguNyAwIDAgMS03LjItNC41bC0xNS42LTMxQzExIDE0IDEyLjIgMTIgMTUgMTJoNTBhOC44IDguOCAwIDAgMSA3LjIgNC41ek02MCA1MnYzNm0tMTAgMGgyME00NSA0MmgyMCIvPjwvc3ZnPg==") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button.bespoke-marp-presenter-note-bigger{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNMTIgNTBoODBNNTIgOTBWMTAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button.bespoke-marp-presenter-note-smaller{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNMTIgNTBoODAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}}@keyframes __bespoke_marp_transition_reduced_outgoing__{0%{opacity:1}to{opacity:0}}@keyframes __bespoke_marp_transition_reduced_incoming__{0%{mix-blend-mode:plus-lighter;opacity:0}to{mix-blend-mode:plus-lighter;opacity:1}}.bespoke-marp-note,.bespoke-marp-osc,.bespoke-progress-parent{display:none;transition:none}@media screen{::view-transition-group(*){animation-duration:var(--marp-bespoke-transition-animation-duration,.5s);animation-timing-function:ease}::view-transition-new(*),::view-transition-old(*){animation-delay:0s;animation-direction:var(--marp-bespoke-transition-animation-direction,normal);animation-duration:var(--marp-bespoke-transition-animation-duration,.5s);animation-fill-mode:both;animation-name:var(--marp-bespoke-transition-animation-name,var(--marp-bespoke-transition-animation-name-fallback,__bespoke_marp_transition_no_animation__));mix-blend-mode:normal}::view-transition-old(*){--marp-bespoke-transition-animation-name-fallback:__bespoke_marp_transition_reduced_outgoing__;animation-timing-function:ease}::view-transition-new(*){--marp-bespoke-transition-animation-name-fallback:__bespoke_marp_transition_reduced_incoming__;animation-timing-function:ease}::view-transition-new(root),::view-transition-old(root){animation-timing-function:linear}::view-transition-new(__bespoke_marp_transition_osc__),::view-transition-old(__bespoke_marp_transition_osc__){animation-duration:0s!important;animation-name:__bespoke_marp_transition_osc__!important}::view-transition-new(__bespoke_marp_transition_osc__){opacity:0!important}.bespoke-marp-transition-warming-up::view-transition-group(*),.bespoke-marp-transition-warming-up::view-transition-new(*),.bespoke-marp-transition-warming-up::view-transition-old(*){animation-play-state:paused!important}body,html{height:100%;margin:0}body{background:#000;overflow:hidden}svg.bespoke-marp-slide{content-visibility:hidden;opacity:0;pointer-events:none;z-index:-1}svg.bespoke-marp-slide:not(.bespoke-marp-active) *{view-transition-name:none!important}svg.bespoke-marp-slide.bespoke-marp-active{content-visibility:visible;opacity:1;pointer-events:auto;z-index:0}svg.bespoke-marp-slide.bespoke-marp-active.bespoke-marp-active-ready *{animation-name:__bespoke_marp__!important}@supports not (content-visibility:hidden){svg.bespoke-marp-slide[data-bespoke-marp-load=hideable]{display:none}svg.bespoke-marp-slide[data-bespoke-marp-load=hideable].bespoke-marp-active{display:block}}}@media screen and (prefers-reduced-motion:reduce){svg.bespoke-marp-slide *{view-transition-name:none!important}}@media screen{[data-bespoke-marp-fragment=inactive]{visibility:hidden}body[data-bespoke-view=""] .bespoke-marp-parent,body[data-bespoke-view=next] .bespoke-marp-parent{inset:0;position:absolute}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc{view-transition-name:__bespoke_marp_transition_osc__;background:rgba(0,0,0,.65);border-radius:7px;bottom:50px;color:#fff;contain:paint;display:block;font-family:Helvetica,Arial,sans-serif;font-size:16px;left:50%;line-height:0;opacity:1;padding:12px;position:absolute;touch-action:manipulation;transform:translateX(-50%);transition:opacity .2s linear;-webkit-user-select:none;user-select:none;white-space:nowrap;will-change:transform;z-index:1}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>*,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>*{margin-left:6px}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>:first-child,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>:first-child{margin-left:0}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>span,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>span{opacity:.8}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>span[data-bespoke-marp-osc=page],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>span[data-bespoke-marp-osc=page]{display:inline-block;min-width:140px;text-align:center}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev]{height:32px;line-height:32px;width:32px}body[data-bespoke-view=""] .bespoke-marp-parent.bespoke-marp-inactive,body[data-bespoke-view=next] .bespoke-marp-parent.bespoke-marp-inactive{cursor:none}body[data-bespoke-view=""] .bespoke-marp-parent.bespoke-marp-inactive>.bespoke-marp-osc,body[data-bespoke-view=next] .bespoke-marp-parent.bespoke-marp-inactive>.bespoke-marp-osc{opacity:0;pointer-events:none}body[data-bespoke-view=""] svg.bespoke-marp-slide,body[data-bespoke-view=next] svg.bespoke-marp-slide{height:100%;left:0;position:absolute;top:0;width:100%}body[data-bespoke-view=""] .bespoke-progress-parent{background:#222;display:flex;height:5px;width:100%}body[data-bespoke-view=""] .bespoke-progress-parent+.bespoke-marp-parent{top:5px}body[data-bespoke-view=""] .bespoke-progress-parent .bespoke-progress-bar{background:#0288d1;flex:0 0 0;transition:flex-basis .2s cubic-bezier(0,1,1,1)}body[data-bespoke-view=next]{background:transparent}body[data-bespoke-view=presenter]{background:#161616}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container{display:grid;font-family:Helvetica,Arial,sans-serif;grid-template:"current dragbar next" minmax(140px,1fr) "current dragbar note" 2fr "info    dragbar note" 3em;grid-template-columns:minmax(3px,var(--bespoke-marp-presenter-split-ratio,66%)) 0 minmax(3px,1fr);height:100%;left:0;position:absolute;top:0;width:100%}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent{grid-area:current;overflow:hidden;position:relative}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent svg.bespoke-marp-slide{height:calc(100% - 40px);left:20px;pointer-events:none;position:absolute;top:20px;-webkit-user-select:none;user-select:none;width:calc(100% - 40px)}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent svg.bespoke-marp-slide.bespoke-marp-active{filter:drop-shadow(0 3px 10px rgba(0,0,0,.5))}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container{background:#0288d1;cursor:col-resize;grid-area:dragbar;margin-left:-3px;opacity:0;position:relative;transition:opacity .4s linear .1s;width:6px;z-index:10}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container:hover{opacity:1}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container.active{opacity:1;transition-delay:0s}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container{background:#222;cursor:pointer;display:none;grid-area:next;overflow:hidden;position:relative}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container.active{display:block}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container iframe.bespoke-marp-presenter-next{background:transparent;border:0;display:block;filter:drop-shadow(0 3px 10px rgba(0,0,0,.5));height:calc(100% - 40px);left:20px;pointer-events:none;position:absolute;top:20px;-webkit-user-select:none;user-select:none;width:calc(100% - 40px)}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container{background:#222;color:#eee;grid-area:note;position:relative;z-index:1}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button{height:1.5em;line-height:1.5em;width:1.5em}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-wrapper{display:block;inset:0;position:absolute}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-buttons{background:rgba(0,0,0,.65);border-radius:4px;bottom:0;display:flex;gap:4px;margin:12px;opacity:0;padding:6px;pointer-events:none;position:absolute;right:0;transition:opacity .2s linear}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-buttons:focus-within,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-wrapper:focus-within+.bespoke-marp-presenter-note-buttons,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container:hover .bespoke-marp-presenter-note-buttons{opacity:1;pointer-events:auto}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note{word-wrap:break-word;box-sizing:border-box;font-size:calc(1.1em*var(--bespoke-marp-note-font-scale, 1));height:calc(100% - 40px);margin:20px;overflow:auto;padding-right:3px;scrollbar-color:hsla(0,0%,93%,.5) transparent;scrollbar-width:thin;white-space:pre-wrap;width:calc(100% - 40px)}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar{width:6px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar-track{background:transparent}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar-thumb{background:hsla(0,0%,93%,.5);border-radius:6px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note:empty{pointer-events:none}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note.active{display:block}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note p:first-child{margin-top:0}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note p:last-child{margin-bottom:0}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container{align-items:center;box-sizing:border-box;color:#eee;display:flex;flex-wrap:nowrap;grid-area:info;justify-content:center;overflow:hidden;padding:0 10px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-time,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer{box-sizing:border-box;display:block;padding:0 10px;white-space:nowrap;width:100%}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button{height:1.5em;line-height:1.5em;width:1.5em}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page{order:2;text-align:center}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page .bespoke-marp-presenter-info-page-text{display:inline-block;min-width:120px;text-align:center}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-time{color:#999;order:1;text-align:left}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer{color:#999;order:3;text-align:right}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer:hover{cursor:pointer}}@media print{.bespoke-marp-presenter-info-container,.bespoke-marp-presenter-next-container,.bespoke-marp-presenter-note-container{display:none}}</style><style>@charset "UTF-8";@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');div#\:\$p>svg>foreignObject>section{width:1280px;height:720px;box-sizing:border-box;overflow:hidden;position:relative;scroll-snap-align:center center}div#\:\$p>svg>foreignObject>section:after{bottom:0;content:attr(data-marpit-pagination);padding:inherit;pointer-events:none;position:absolute;right:0}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination]):after{display:none}/* Normalization */div#\:\$p>svg>foreignObject>section :is(h1,marp-h1){font-size:2em;margin:0.67em 0}div#\:\$p>svg>foreignObject>section video::-webkit-media-controls{will-change:transform}@page{size:1280px 720px;margin:0}@media print{body,html{background-color:#fff;margin:0;page-break-inside:avoid;break-inside:avoid-page}div#\:\$p>svg>foreignObject>section{page-break-before:always;break-before:page}div#\:\$p>svg>foreignObject>section,div#\:\$p>svg>foreignObject>section *{-webkit-print-color-adjust:exact!important;animation-delay:0s!important;animation-duration:0s!important;color-adjust:exact!important;transition:none!important}div#\:\$p>svg[data-marpit-svg]{display:block;height:100vh;width:100vw}}div#\:\$p>svg>foreignObject>:where(section){container-type:size}div#\:\$p>svg>foreignObject>section img[data-marp-twemoji]{background:transparent;height:1em;margin:0 .05em 0 .1em;vertical-align:-.1em;width:1em}
+/*!
+ * Marp gem5 theme
+ * @theme gem5
+ * @author Jason Lowe-Power
+ *
+ * @auto-scaling true
+ * @size 16:9 1280px 720px
+ * @size 4:3 960px 720px
+ */div#\:\$p>svg>foreignObject>:where(section):not([root]){--gem5-gem5:#008EB0;--gem5-background:#F6F8FA;--gem5-light:#c8eaf3;--gem5-dark:#00627a;--gem5-gray:#77787b;--code-line-height:calc(var(--marpit-root-font-size, 1rem) * 2);--code-font-size:calc(var(--marpit-root-font-size, 1rem) * 1.4)}div#\:\$p>svg>foreignObject>section{color:black;font-size:calc(var(--marpit-root-font-size, 1rem) * 1.6);font-family:sans-serif;line-height:calc(var(--marpit-root-font-size, 1rem) * 2);padding:70px;background-color:var(--gem5-background);background-image:url("../themes/gem5ColorLong.svg");background-repeat:no-repeat;background-position-x:center;background-size:220px;background-position-y:97%}div#\:\$p>svg>foreignObject>section{--marpit-root-font-size:calc(var(--marpit-root-font-size, 1rem) * 1.6)}div#\:\$p>svg>foreignObject>section li{margin-bottom:calc(var(--marpit-root-font-size, 1rem) * 0.2)}div#\:\$p>svg>foreignObject>section ul{margin-bottom:calc(var(--marpit-root-font-size, 1rem) * 0.5)}
+
+/* Move the title of the slide up a bit */div#\:\$p>svg>foreignObject>section>:first-child,div#\:\$p>svg>foreignObject>section>header:first-child+*{margin-top:0}
+
+/* Draw a triangle on the left of the title */div#\:\$p>svg>foreignObject>section :is(h2,marp-h2):before{content:"";position:absolute;top:65px;left:-10px;width:0;height:0;border-left:30px solid transparent;border-right:30px solid transparent;border-bottom:40px solid var(--gem5-gem5);rotate:90deg}
+
+/* Draw a triangle in the lower right */div#\:\$p>svg>foreignObject>section:before{content:"";position:absolute;bottom:0;right:0;width:0;height:0;border-left:100px solid transparent;border-top:100px solid var(--gem5-gem5);rotate:90deg}
+
+/* Add an image to the bottom center of the page */div#\:\$p>svg>foreignObject>section footer{position:fixed;left:0;right:0;bottom:60px;height:100px;margin-bottom:-80px}div#\:\$p>svg>foreignObject>section footer img{height:60px;display:block;margin:0 auto}
+
+/* For the page number */div#\:\$p>svg>foreignObject>section:after{right:-50px;bottom:-55px;font-size:80%;color:var(--gem5-light)}div#\:\$p>svg>foreignObject>section:after{--marpit-root-font-size:80%}div#\:\$p>svg>foreignObject>section a{color:var(--gem5-gem5)}div#\:\$p>svg>foreignObject>section blockquote{position:relative;margin:calc(var(--marpit-root-font-size, 1rem) * 0.6) 0;padding:0 calc(var(--marpit-root-font-size, 1rem) * 1.2);border-left:4px solid var(--gem5-gem5);background-color:var(--gem5-light)}div#\:\$p>svg>foreignObject>section blockquote a{color:var(--gem5-dark)}
+
+/****************************************************/
+/* For title page */
+/* Remove the triangle */div#\:\$p>svg>foreignObject>section.title :is(h2,marp-h2):before{border:none}
+
+/* Remove the triangle in the lower right */div#\:\$p>svg>foreignObject>section.title:before{border:none}
+
+/* Remove the page number */div#\:\$p>svg>foreignObject>section.title:after{display:none}
+
+/* Remove the bottom image */div#\:\$p>svg>foreignObject>section.title footer img{display:none}div#\:\$p>svg>foreignObject>section.title :is(h2,marp-h2){font-size:calc(var(--marpit-root-font-size, 1rem) * 5);line-height:calc(var(--marpit-root-font-size, 1rem) * 5);margin-top:50px;display:block;text-align:center;width:60%}
+
+/* gem5 logo on the right */div#\:\$p>svg>foreignObject>section.title{background-image:url("../../slides/themes/gem5ColorVert.svg");background-repeat:no-repeat;background-position:86% 50%;background-size:440px}
+
+/* title on the left */div#\:\$p>svg>foreignObject>section.title p{width:60%;font-size:calc(var(--marpit-root-font-size, 1rem) * 2.5);line-height:calc(var(--marpit-root-font-size, 1rem) * 2.5)}
+
+/****************************************************/
+/* For two-column layout */div#\:\$p>svg>foreignObject>section.two-col{columns:2;display:block}div#\:\$p>svg>foreignObject>section.two-col :is(h2,marp-h2){column-span:all}div#\:\$p>svg>foreignObject>section.two-col :is(h3,marp-h3){break-before:column}
+
+/****************************************************/
+/* For centering images */div#\:\$p>svg>foreignObject>section.center-image img{display:block;margin:auto}
+
+/* For adding a border to images */div#\:\$p>svg>foreignObject>section.border-image img{border:1px solid var(--gem5-dark)}
+
+/* For altering logo position/appearance */div#\:\$p>svg>foreignObject>section.logo-left{background-position-x:21%}div#\:\$p>svg>foreignObject>section.no-logo{background-image:none}
+
+/****************************************************/
+/* For title cards at the beginning of a section, e.g. Intro to ..., etc.
+   Has a blue gradient. From Erin and Mysore
+*/div#\:\$p>svg>foreignObject>section.start :is(h2,marp-h2){display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;height:100%;font-size:calc(var(--marpit-root-font-size, 1rem) * 4);font-weight:bold;line-height:75px;background:linear-gradient(to right,rgb(67,124,205),rgb(69,214,202));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+/* Remove the triangle */div#\:\$p>svg>foreignObject>section.start :is(h2,marp-h2):before{border:none}
+
+/****************************************************/
+/* For 5 column/full outline */div#\:\$p>svg>foreignObject>section.outline :is(h2,marp-h2){column-span:all}div#\:\$p>svg>foreignObject>section.outline{column-count:5;font-size:calc(var(--marpit-root-font-size, 1rem) * 1.3);line-height:calc(var(--marpit-root-font-size, 1rem) * 1.3)}div#\:\$p>svg>foreignObject>section.outline{--marpit-root-font-size:calc(var(--marpit-root-font-size, 1rem) * 1.3)}div#\:\$p>svg>foreignObject>section.outline ul{list-style-type:none;padding:0;margin:0;padding-bottom:10px}div#\:\$p>svg>foreignObject>section.outline li{margin:0;padding-bottom:5px}div#\:\$p>svg>foreignObject>section.outline ul ul{list-style-type:"- ";padding-left:20px}div#\:\$p>svg>foreignObject>section.outline ul ul ul{display:none}div#\:\$p>svg>foreignObject>section.outline :is(h3,marp-h3){break-before:column}
+
+/****************************************************/
+/* For reducing size of code blocks */div#\:\$p>svg>foreignObject>section.code-50-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.33)}div#\:\$p>svg>foreignObject>section.code-50-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.5)}div#\:\$p>svg>foreignObject>section.code-60-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.48)}div#\:\$p>svg>foreignObject>section.code-60-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.6)}div#\:\$p>svg>foreignObject>section.code-70-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.65)}div#\:\$p>svg>foreignObject>section.code-70-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.7)}div#\:\$p>svg>foreignObject>section.code-80-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.8)}div#\:\$p>svg>foreignObject>section.code-80-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.8)}
+
+/****************************************************/
+/* For code block */div#\:\$p>svg>foreignObject>section :is(pre,marp-pre){padding:10px;border-radius:5px;line-height:var(--code-line-height);background-color:#ffffff;box-shadow:1px 2px 4px var(--gem5-gray)}div#\:\$p>svg>foreignObject>section code{font-family:"Roboto Mono",monospace;background-color:#ffffff;font-size:var(--code-font-size)}
+
+/* Forces inherited height for code in headers */div#\:\$p>svg>foreignObject>section :is(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6)) code{font-size:inherit!important}
+
+/* Targets only inline code */div#\:\$p>svg>foreignObject>section :not(:is(pre,marp-pre))>code{font-size:calc(var(--code-font-size) * 0.9);padding:2px 6px;border:1px solid var(--gem5-gray);border-radius:5px}
+
+/* Targets hyperlinks that contain code */div#\:\$p>svg>foreignObject>section a:has(code){
+    /* Removes underlines */text-decoration:none}
+
+/*!
+  Theme: Default
+  Description: Original highlight.js style
+  Author: (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
+  Maintainer: @highlightjs/core-team
+  Website: https://highlightjs.org/
+  License: see project LICENSE
+  Touched: 2021
+*/
+
+/*
+This is left on purpose making default.css the single file that can be lifted
+as-is from the repository directly without the need for a build step
+
+Typically this "required" baseline CSS is added by `makestuff.js` during build.
+*/div#\:\$p>svg>foreignObject>section :is(pre,marp-pre) code.hljs{display:block;overflow-x:auto;padding:calc(var(--marpit-root-font-size, 1rem) * 1);background-color:#ffffff}div#\:\$p>svg>foreignObject>section code.hljs{padding:3px 5px}
+
+/* end baseline CSS */div#\:\$p>svg>foreignObject>section .hljs{background:#ffffff;color:#444}
+
+/* Base color: saturation 0; */div#\:\$p>svg>foreignObject>section .hljs-subst{
+    /* default */}
+
+/* purposely ignored */div#\:\$p>svg>foreignObject>section .hljs-attr,div#\:\$p>svg>foreignObject>section .hljs-formula,div#\:\$p>svg>foreignObject>section .hljs-params,div#\:\$p>svg>foreignObject>section .hljs-property{}div#\:\$p>svg>foreignObject>section .hljs-comment{color:#697070}div#\:\$p>svg>foreignObject>section .hljs-punctuation,div#\:\$p>svg>foreignObject>section .hljs-tag{color:#444a}div#\:\$p>svg>foreignObject>section .hljs-tag .hljs-attr,div#\:\$p>svg>foreignObject>section .hljs-tag .hljs-name{color:#444}div#\:\$p>svg>foreignObject>section .hljs-attribute,div#\:\$p>svg>foreignObject>section .hljs-doctag,div#\:\$p>svg>foreignObject>section .hljs-keyword,div#\:\$p>svg>foreignObject>section .hljs-meta .hljs-keyword,div#\:\$p>svg>foreignObject>section .hljs-name,div#\:\$p>svg>foreignObject>section .hljs-selector-tag{font-weight:bold}
+
+
+/* User color: hue: 0 */div#\:\$p>svg>foreignObject>section .hljs-deletion,div#\:\$p>svg>foreignObject>section .hljs-number,div#\:\$p>svg>foreignObject>section .hljs-quote,div#\:\$p>svg>foreignObject>section .hljs-selector-class,div#\:\$p>svg>foreignObject>section .hljs-selector-id,div#\:\$p>svg>foreignObject>section .hljs-string,div#\:\$p>svg>foreignObject>section .hljs-template-tag,div#\:\$p>svg>foreignObject>section .hljs-type{color:#880000}div#\:\$p>svg>foreignObject>section .hljs-section,div#\:\$p>svg>foreignObject>section .hljs-title{color:#880000;font-weight:bold}div#\:\$p>svg>foreignObject>section .hljs-link,div#\:\$p>svg>foreignObject>section .hljs-operator,div#\:\$p>svg>foreignObject>section .hljs-regexp,div#\:\$p>svg>foreignObject>section .hljs-selector-attr,div#\:\$p>svg>foreignObject>section .hljs-selector-pseudo,div#\:\$p>svg>foreignObject>section .hljs-symbol,div#\:\$p>svg>foreignObject>section .hljs-template-variable,div#\:\$p>svg>foreignObject>section .hljs-variable{color:#ab5656}
+
+/* Language color: hue: 90; */div#\:\$p>svg>foreignObject>section .hljs-literal{color:#695}div#\:\$p>svg>foreignObject>section .hljs-addition,div#\:\$p>svg>foreignObject>section .hljs-built_in,div#\:\$p>svg>foreignObject>section .hljs-bullet,div#\:\$p>svg>foreignObject>section .hljs-code{color:#397300}
+
+
+/* Meta color: hue: 200 */div#\:\$p>svg>foreignObject>section .hljs-meta{color:#1f7199}div#\:\$p>svg>foreignObject>section .hljs-meta .hljs-string{color:#38a}
+
+
+/* Misc effects */div#\:\$p>svg>foreignObject>section .hljs-emphasis{font-style:italic}div#\:\$p>svg>foreignObject>section .hljs-strong{font-weight:bold}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]{columns:initial!important;display:block!important;padding:0!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:before,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:before{display:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]{all:initial;display:flex;flex-direction:row;height:100%;overflow:hidden;width:100%}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container][data-marpit-advanced-background-direction=vertical]{flex-direction:column}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split]>div[data-marpit-advanced-background-container]{width:var(--marpit-advanced-background-split,50%)}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split=right]>div[data-marpit-advanced-background-container]{margin-left:calc(100% - var(--marpit-advanced-background-split, 50%))}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure{all:initial;background-position:center;background-repeat:no-repeat;background-size:cover;flex:auto;margin:0}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure>figcaption{position:absolute;border:0;clip:rect(0,0,0,0);height:1px;margin:-1px;overflow:hidden;padding:0;white-space:nowrap;width:1px}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content],div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo]{background:transparent!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo],div#\:\$p>svg[data-marpit-svg]>foreignObject[data-marpit-advanced-background=pseudo]{pointer-events:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background-split]{width:100%;height:100%}</style></head><body><div class="bespoke-marp-osc"><button data-bespoke-marp-osc="prev" tabindex="-1" title="Previous slide">Previous slide</button><span data-bespoke-marp-osc="page"></span><button data-bespoke-marp-osc="next" tabindex="-1" title="Next slide">Next slide</button><button data-bespoke-marp-osc="fullscreen" tabindex="-1" title="Toggle fullscreen (f)">Toggle fullscreen</button><button data-bespoke-marp-osc="presenter" tabindex="-1" title="Open presenter view (p)">Open presenter view</button></div><div id=":$p"><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="1" data-paginate="true" data-class="title" data-theme="gem5" lang="en-US" class="title" data-marpit-pagination="1" style="--paginate:true;--class:title;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="developing-simobjects-in-gem5">Developing SimObjects in gem5</h2>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="2" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="2" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="lets-begin-by-building-gem5">Let's begin by building gem5</h2>
+<p>Let's build gem5 in the base <strong>gem5</strong> directory while we go through some basics. Do it by running the following commands.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh"><span class="hljs-built_in">cd</span> gem5
+scons build/NULL/gem5.opt -j$(<span class="hljs-built_in">nproc</span>)
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="3" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="3" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="some-basics-on-gem5s-build-system">Some basics on gem5's build system</h2>
+<p>gem5's build system is <em>complicated</em>.</p>
+<p>As we'll see in the coming sections, gem5 has a number of domain-specific languages and source-to-source compilers.</p>
+<p>This means two things:</p>
+<ol>
+<li>It's not always obvious what the final code is going to look like.</li>
+<li>There are many, many options for setting up the gem5 build.</li>
+</ol>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="4" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="configuring-the-gem5-build">Configuring the gem5 build</h2>
+<p>As we've seen, there are multiple ways to configure the gem5 build and this results in different binaries.</p>
+<p>There are two categories of options:</p>
+<ol>
+<li>Build-time configuration (e.g., what models to include in the binary)</li>
+<li>Compiler configuration (e.g., optimizations, debug flags, etc.)</li>
+</ol>
+<p>If you forget any of this,</p>
+<blockquote>
+<p><code>scons --help</code> will explain the targets and Kconfig tools.</p>
+</blockquote>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="5" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="compiler-configuration">Compiler configuration</h2>
+<p>This is specified by the <em>suffix</em> of the gem5 binary you build. For example, <code>gem5.opt</code> is built with the &quot;opt&quot; configuration. The options are:</p>
+<ul>
+<li><code>fast</code>: All optimizations, no debug symbols, most assertions are disabled.
+<ul>
+<li>Use this only after you have fully debugged your models.</li>
+<li>Significant speedup over <code>opt</code> because the binary is smaller (~50 MiB).</li>
+</ul>
+</li>
+<li><code>opt</code>: Optimized build with debug symbols and all panics, assertions, etc. enabled.
+<ul>
+<li>This is the most common build target, but it's very large (~500 MiB).</li>
+<li>Can use this with <code>gdb</code> but sometimes it will say &quot;that variable is optimized away&quot;.</li>
+</ul>
+</li>
+<li><code>debug</code>: Minimal optimizations (<code>-O1</code>) and all debug symbols.
+<ul>
+<li>Use this when you need to debug the gem5 code itself and <code>opt</code> doesn't work for you.</li>
+<li><em>Much, much</em> slower than <code>opt</code> (order 5-10x slower).</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Remember, these options are for the <em>gem5</em> binary, not the simulated system. Choosing <em>fast</em> or <em>debug</em> will not affect the output of the simulator (unless there are bugs, of course).</p>
+</blockquote>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="6" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="build-time-configuration">Build-time configuration</h2>
+<p>There are many options for configuring the gem5 build.</p>
+<p>Two ways to do this:</p>
+<ol>
+<li>Use the defaults found in <code>gem5/build_opts</code></li>
+<li>Configure with <code>Kconfig</code> (the same tool the Linux kernel uses)</li>
+</ol>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="7" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="build_opts">Build_opts</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-text">ALL                       GCN3_X86                  NULL_MOESI_hammer  X86_MESI_Two_Level
+ARM                       MIPS                      POWER              X86_MI_example
+ARM_MESI_Three_Level      NULL                      RISCV              X86_MOESI_AMD_Base
+ARM_MESI_Three_Level_HTM  NULL_MESI_Two_Level       SPARC
+ARM_MOESI_hammer          NULL_MOESI_CMP_directory  VEGA_X86
+Garnet_standalone         NULL_MOESI_CMP_token      X86
+</code></pre>
+<p>In <code>build_opts</code> you'll find a number of default options. Most of them are named <code>&lt;ISA&gt;_&lt;PROTOCOL&gt;</code>.</p>
+<p>For example, <code>X86_MESI_Two_Level</code> is the build option for the X86 ISA and with the MESI_Two_Level protocol.</p>
+<p>You can also build multiple ISAs into a single binary (e.g., <code>ALL</code>), but you <strong>cannot</strong> build multiple Ruby coherence protocols into one binary.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="8" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="using-kconfig">Using Kconfig</h2>
+<p>Kconfig is a tool that allows you to configure the gem5 build interactively.</p>
+<p>When using Kconfig, you first must create a build directory.<br />
+Note: This directory can have any name and live <em>anywhere</em> on your system.</p>
+<p>Common practice is to create a directory called <code>build</code> in the gem5 source directory and to use a default from <code>build_opts</code>.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">scons defconfig build/my_gem5/ build_opts/ALL
+</code></pre>
+<p>In this case, we are using <code>build/my_gem5</code> as the build directory and <code>build_opts/ALL</code> as the default configuration.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="9" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="using-kconfig-cont">Using Kconfig (cont.)</h2>
+<p>Once you have created the build directory, you can run <code>scons</code> with the <code>menuconfig</code> target to get an interactive configuration tool.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">scons menuconfig build/my_gem5/
+</code></pre>
+<script src="https://asciinema.org/a/nMSV0wVOKNavHSJEt3I77jxyu.js" id="asciicast-nMSV0wVOKNavHSJEt3I77jxyu" async="true"></script>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="10" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="putting-it-all-together">Putting it all together</h2>
+<p>To build gem5, once you have a build directory set up and configured, you can run the following command.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">scons build/my_gem5/gem5.opt -j$(<span class="hljs-built_in">nproc</span>)
+</code></pre>
+<p>This will build the gem5 binary with the configuration you have set up.<br />
+It will build the &quot;opt&quot; binary.</p>
+<p>Note: gem5 takes a long time to build, so using multiple cores is important.<br />
+I don't know how many cores you have, so I've used <code>-j$(nproc)</code> to use all of them.<br />
+You may want to use fewer cores if you're doing other things on your system.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="11" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="gem5s-scons-build-system">gem5's Scons build system</h2>
+<p>There are two main types of files used to set up gem5's build:</p>
+<ul>
+<li><code>SConstruct</code>: Contains definitions of types of build targets.
+<ul>
+<li>All of the <code>SConstruct</code> files are executed first.</li>
+<li>Some code is also in <code>gem5/build_tools</code></li>
+<li>To be honest, this code is confusing and not easy to trace.</li>
+</ul>
+</li>
+<li><code>SConscript</code>: Contains the build instructions for a file.
+<ul>
+<li>Defines <em>what</em> to build (e.g., which C++ files to compile).</li>
+<li>You will mostly interact with these files.</li>
+</ul>
+</li>
+</ul>
+<p>We support <em>most</em> common OSes and <em>most</em> modern compilers. Fixing compiler errors in the SCons build is not straightforward.</p>
+<blockquote>
+<p>We strongly encourage you to use <strong>supported</strong> compilers/OSes or use docker to build gem5.</p>
+<p>You will <em>not</em> find the SCons documentation helpful. gem5 has customized it <em>way</em> too much.</p>
+</blockquote>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="12" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="simobjects">SimObjects</h2>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="13" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="what-is-a-simobject">What is a SimObject?</h2>
+<p><code>SimObject</code> is gem5's name for a simulated model. We use <code>SimObject</code> and its children classes (e.g. <code>ClockedObject</code>) to model computer hardware components. <code>SimObject</code> facilitates the following in gem5:</p>
+<ul>
+<li>Defining a model: e.g. a cache</li>
+<li>Parameterizing a model: e.g. cache size, associativity</li>
+<li>Gathering statistics: e.g. number of hits, number of accesses</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="14" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="simobject-in-code">SimObject in Code</h2>
+<p>In a gem5 build, each <code>SimObject</code> based class has 4 related files.</p>
+<ul>
+<li><code>SimObject</code> declaration file: Python(ish) script (.py extension):
+<ul>
+<li>Represents the model at the highest level. Allows instantiation of the model and interfacing with the C++ backend. It defines the sets of parameters for the model.</li>
+<li><strong>CAUTION</strong>: You should not change parameter values (which we will learn about in the future) in this file if what you want to do is to reconfigure your <code>SimObject</code>.</li>
+</ul>
+</li>
+<li><code>SimObject</code> header file: C++ header file (.hh extension):
+<ul>
+<li>Declares the <code>SimObject</code> class in C++.<br />
+Strongly tied to <code>SimObject</code> definition file.</li>
+</ul>
+</li>
+<li><code>SimObject</code> source file: C++ source file (.cc extension):
+<ul>
+<li>Implements the <code>SimObject</code> functionalities.</li>
+</ul>
+</li>
+<li><code>SimObjectParams</code> header file: <strong>Auto-generated</strong> C++ header file (.hh) from <code>SimObject</code> definition:
+<ul>
+<li>Declares a C++ struct storing all the parameters of the <code>SimObject</code>.</li>
+</ul>
+</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="15" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="hellosimobject">HelloSimObject</h2>
+<p>We will start building our first <code>SimObject</code> called <code>HelloSimObject</code>, and we will look at one of the <code>SimObject</code> files.</p>
+<p>We will start with the following steps.</p>
+<ol>
+<li>Write a definition file.</li>
+<li>Write a header file.</li>
+<li>Write a source file.</li>
+<li>Write a <code>SConscript</code>.</li>
+<li>Compile.</li>
+<li>Write a configuration script and run it.</li>
+</ol>
+<h3 id=""></h3>
+<p>Later, we'll do the following steps.</p>
+<ol start="7">
+<li>Add a parameter to the definition file.</li>
+<li>Update the source file.</li>
+<li>Compile.</li>
+<li>Write a second configuration script and run it.</li>
+</ol>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="16" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="step-1-simple-simobject">Step 1: Simple SimObject</h2>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-paginate="true" data-class="border-image" data-theme="gem5" lang="en-US" class="border-image" data-marpit-pagination="17" style="--paginate:true;--class:border-image;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="simobject-definition-file-creating-the-files">SimObject Definition File: Creating the Files</h2>
+<p>Let's create a python file for our <code>SimObject</code> under:<br />
+<a href="../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py">src/bootcamp/hello-sim-object/HelloSimObject.py</a></p>
+<p>Since gem5 is still compiling, start by opening a new terminal.</p>
+<p><img src="./01-sim-objects-intro-imgs/terminal.drawio.svg" alt="Where to click to open a new terminal" style="width:1140px;" /></p>
+<p>Then, run the following commands in the base <strong>gem5</strong> directory:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh"><span class="hljs-built_in">cd</span> gem5
+<span class="hljs-built_in">mkdir</span> src/bootcamp
+<span class="hljs-built_in">mkdir</span> src/bootcamp/hello-sim-object
+<span class="hljs-built_in">touch</span> src/bootcamp/hello-sim-object/HelloSimObject.py
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="18" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="simobject-definition-file-importing-and-defining">SimObject Definition File: Importing and Defining</h2>
+<p>Open <a href="../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py">src/bootcamp/hello-sim-object/HelloSimObject.py</a> in your editor of choice.</p>
+<p>In <code>HelloSimObject.py</code>, we will define a new class that represents our <code>HelloSimObject</code>.<br />
+We need to import the definition of <code>SimObject</code> from <code>m5.objects.SimObject</code>.<br />
+Add the following line to <code>HelloSimObject.py</code> to import the definition for <code>SimObject</code>.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">from</span> m5.objects.SimObject <span class="hljs-keyword">import</span> SimObject
+</code></pre>
+<p>Let's add the definition for our new <code>SimObject</code>.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">HelloSimObject</span>(<span class="hljs-title class_ inherited__">SimObject</span>):
+    <span class="hljs-built_in">type</span> = <span class="hljs-string">&quot;HelloSimObject&quot;</span>
+    cxx_header = <span class="hljs-string">&quot;bootcamp/hello-sim-object/hello_sim_object.hh&quot;</span>
+    cxx_class = <span class="hljs-string">&quot;gem5::HelloSimObject&quot;</span>
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="19" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="simobject-definition-file-deeper-look-at-what-we-have-done">SimObject Definition File: Deeper Look at What We Have Done</h2>
+<p>Let's take a deeper look at the few lines of code we have.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">HelloSimObject</span>(<span class="hljs-title class_ inherited__">SimObject</span>):
+    <span class="hljs-built_in">type</span> = <span class="hljs-string">&quot;HelloSimObject&quot;</span>
+    cxx_header = <span class="hljs-string">&quot;bootcamp/hello-sim-object/hello_sim_object.hh&quot;</span>
+    cxx_class = <span class="hljs-string">&quot;gem5::HelloSimObject&quot;</span>
+</code></pre>
+<ul>
+<li><code>type</code> is the type name for the <code>SimObject</code> in Python.</li>
+<li><code>cxx_header</code> denotes the path to the C++ header file that declares the <code>SimObject</code> in C++. <strong>IMPORTANT</strong>: This path should be specified relative to <code>gem5/src</code>.</li>
+<li><code>cxx_class</code> is the name of your <code>SimObject</code> class in C++.</li>
+</ul>
+<p><code>type</code>, <code>cxx_header</code>, and <code>cxx_class</code> are keywords defined by the <code>MetaSimObject</code> metaclass. For a complete list of these keywords, look at <a href="../../gem5/src/python/m5/SimObject.py">src/python/m5/SimObject::MetaSimObject</a>. Some (if not all) of these keyword variables can be skipped. However, I strongly encourage you to at least define <code>type</code>, <code>cxx_header</code>, <code>cxx_class</code>.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="20" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="word-to-the-wise-and-a-little-peek-into-the-future">Word to the Wise and A Little Peek into the Future</h2>
+<ul>
+<li>
+<p>I strongly recommend setting <code>type</code> to the name of the <code>SimObject</code> class in Python. I also recommend making sure that the C++ class name is the same as the Python class. You will see throughout the gem5 codebase that this is <em>not</em> always the case. However, I strongly recommend following this rule to rid yourself of any compilation headaches.</p>
+</li>
+<li>
+<p>We will see later that, when gem5 is built, there will be an <strong>auto-generated</strong> struct definition that stores the parameters of that class. The name of the struct will be determined by the name of the <code>SimObject</code> itself. For example, if the name of the <code>SimObject</code> is <code>HelloSimObject</code>, the struct storing its parameters will be <code>HelloSimObjectParams</code>. This definition will be in a file under <a href="../../gem5/build/NULL/params/HelloSimObject.hh">params/HelloSimObject.hh</a> in the build directory. This struct is used when instantiating an object of a <code>SimObject</code> in C++.</p>
+</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="21" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="simobject-header-file-creating-the-files">SimObject Header File: Creating the Files</h2>
+<p>Now, let's start building our <code>SimObject</code> in C++. First, let's create a file for our <code>SimObject</code> by running the following commands in the base <strong>gem5</strong> directory. <strong>REMEMBER</strong>: We set <code>cxx_header</code> to <code>bootcamp/hello-sim-object/hello_sim_object.hh</code>. Therefore, we need to add the definition for <code>HelloSimObject</code> in a file with that same path.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh"><span class="hljs-built_in">touch</span> src/bootcamp/hello-sim-object/hello_sim_object.hh
+</code></pre>
+<p><strong>VERY IMPORTANT</strong>: If a <code>SimObject</code> class inherits from another <code>SimObject</code> class in Python, it should do the same in C++. For example, <code>HelloSimObject</code> inherits from <code>SimObject</code> in Python, so in C++, <code>HelloSimObject</code> should inherit from <code>SimObject</code>.<br />
+<strong>VERY IMPORTANT</strong>: <code>SimObject</code> parameter structs are inherited in the same way as the <code>SimObject</code> itself. For example, if <code>HelloSimObject</code> inherits from <code>SimObject</code>, <code>HelloSimObjectParams</code> inherits from <code>SimObjectParams</code>.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="22" data-paginate="true" data-class="code-60-percent" data-theme="gem5" lang="en-US" class="code-60-percent" data-marpit-pagination="22" style="--paginate:true;--class:code-60-percent;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="simobject-header-file-first-few-lines">SimObject Header File: First Few Lines</h2>
+<p>Open <a href="../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.hh">src/bootcamp/hello-sim-object/hello_sim_object.hh</a> in your editor of choice and add the following code to it.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> __BOOTCAMP_HELLO_SIM_OBJECT_HELLO_SIM_OBJECT_HH__</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> __BOOTCAMP_HELLO_SIM_OBJECT_HELLO_SIM_OBJECT_HH__</span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;params/HelloSimObject.hh&quot;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;sim/sim_object.hh&quot;</span></span>
+
+<span class="hljs-keyword">namespace</span> gem5
+{
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">HelloSimObject</span>: <span class="hljs-keyword">public</span> SimObject
+{
+  <span class="hljs-keyword">public</span>:
+    <span class="hljs-built_in">HelloSimObject</span>(<span class="hljs-type">const</span> HelloSimObjectParams&amp; params);
+};
+
+} <span class="hljs-comment">// namespace gem5</span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">// __BOOTCAMP_HELLO_SIM_OBJECT_HELLO_SIM_OBJECT_HH__</span></span>
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="23" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="23" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="simobject-header-file-deeper-look-into-the-first-few-lines">SimObject Header File: Deeper Look into the First Few Lines</h2>
+<p>Things to note:</p>
+
+<ul>
+<li><code>__BOOTCAMP_HELLO_SIM_OBJECT_HELLO_SIM_OBJECT_HH__</code> is an include guard to prevent double includes and cyclic includes. gem5's convention is that the name should reflect the location of the header file relative to the <code>gem5/src</code> directory, with <code>_</code> being the separator.</li>
+<li><code>sim/sim_object.hh</code> holds the definition for class <code>SimObject</code> in C++.</li>
+<li>As mentioned previously, <code>params/HelloSimObject.hh</code> is auto-generated and declares a struct named <code>HelloSimObjectParams</code>.</li>
+<li>Every <code>SimObject</code> should be declared/defined inside the <code>namespace gem5</code>. Different categories of <code>SimObjects</code> may have their own specific namespace such as <code>gem5::memory</code>.</li>
+<li>Class <code>HelloSimObject</code> (C++ counterpart for <code>HelloSimObject</code> in Python) should inherit from class <code>SimObject</code> (C++ counterpart for <code>SimObject</code> in Python).</li>
+<li>Every <code>SimObject</code> class needs to define a constructor that takes exactly one argument. This argument must be a constant reference object of its parameter struct. Later on, we will look at gem5's internal process that instantiates objects from <code>SimObject</code> classes.</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="24" data-paginate="true" data-class="code-50-percent" data-theme="gem5" lang="en-US" class="code-50-percent" data-marpit-pagination="24" style="--paginate:true;--class:code-50-percent;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="simobject-source-file-all-the-code">SimObject Source File: All the Code</h2>
+<p>Let's create a source file for <code>HelloSimObject</code> under:<br />
+<a href="../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.cc">src/bootcamp/hello-sim-object/hello_sim_object.cc</a>.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh"><span class="hljs-built_in">touch</span> src/bootcamp/hello-sim-object/hello_sim_object.cc
+</code></pre>
+<p>Open <a href="../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.cc">src/bootcamp/hello-sim-object/hello_sim_object.cc</a> in your editor of choice and add the following code to it.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;bootcamp/hello-sim-object/hello_sim_object.hh&quot;</span></span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-keyword">namespace</span> gem5
+{
+
+HelloSimObject::<span class="hljs-built_in">HelloSimObject</span>(<span class="hljs-type">const</span> HelloSimObjectParams&amp; params):
+    <span class="hljs-built_in">SimObject</span>(params)
+{
+    std::cout &lt;&lt; <span class="hljs-string">&quot;Hello from HelloSimObject&#x27;s constructor!&quot;</span> &lt;&lt; std::endl;
+}
+
+} <span class="hljs-comment">// namespace gem5</span>
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="25" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="25" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="simobject-source-file-deeper-look">SimObject Source File: Deeper Look</h2>
+<p>Things to note:</p>
+<ul>
+<li>gem5's convention for the order of include statements is as follows.
+<ul>
+<li>the header for the <code>SimObject</code>.</li>
+<li>C++ libraries in alphabetical order.</li>
+<li>other gem5 header files in alphabetical order.</li>
+</ul>
+</li>
+<li>We only define <code>HelloSimObject's</code> constructor since that's the only function it has so far.</li>
+<li>The <code>params</code> object passed to the <code>HelloSimObject::HelloSimObject</code> constructor is an object of <code>HelloSimObjectParams</code> which inherits from <code>SimObjectParams</code>. This means <code>params</code> can then be passed on to the <code>SimObject::SimObject</code> constructor.</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="26" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="26" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="lets-start-building-sconscript">Let's Start Building: SConscript</h2>
+<p>We need to register our <code>SimObject</code> with gem5 for it to be built into the gem5 executable. At build time, <code>scons</code> (gem5's build system) will look through the gem5 directory searching for files named <code>SConscript</code>. <code>SConscript</code> files include instructions on what needs to be built. We will simply create a file called <code>SConscript</code> (inside our <code>SimObject</code> directory) by running the following command in the base <strong>gem5</strong> directory.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh"><span class="hljs-built_in">touch</span> src/bootcamp/hello-sim-object/SConscript
+</code></pre>
+<p>Add the following to the <a href="../../gem5/src/bootcamp/hello-sim-object/SConscript">SConscript</a>.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">Import(<span class="hljs-string">&quot;*&quot;</span>)
+
+SimObject(<span class="hljs-string">&quot;HelloSimObject.py&quot;</span>, sim_objects=[<span class="hljs-string">&quot;HelloSimObject&quot;</span>])
+
+Source(<span class="hljs-string">&quot;hello_sim_object.cc&quot;</span>)
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="27" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="27" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="lets-start-building-deeper-look-at-the-sconscript">Let's Start Building: Deeper Look at the SConscript</h2>
+<p>Things to note:</p>
+<ul>
+<li><code>SimObject(&quot;HelloSimObject.py&quot;, sim_objects=[&quot;HelloSimObject&quot;])</code> registers <code>HelloSimObject</code> as a <code>SimObject</code>. The first argument denotes the name of the submodule that will be created under <code>m5.objects</code>. All the <code>SimObjects</code> listed under <code>sim_objects</code> will be added to that submodule. In this example, we will be able to import <code>HelloSimObject</code> as <code>m5.objects.HelloSimObject.HelloSimObject</code>. It is possible to define more than one <code>SimObject</code> in one Python script. Only <code>SimObjects</code> listed under <code>sim_objects</code> will be built.</li>
+<li><code>Source(&quot;hello_sim_object.cc&quot;)</code> adds <code>hello_sim_object.cc</code> as a source file to be compiled.</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="28" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="28" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="lets-compile">Let's Compile</h2>
+<p>Now, the only thing left to do before we can use <code>HelloSimObject</code> in our configuration script is to recompile gem5. Run the following command in the base <strong>gem5</strong> directory to recompile gem5.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">scons build/NULL/gem5.opt -j$(<span class="hljs-built_in">nproc</span>)
+</code></pre>
+<p>While we wait for gem5 to build, we will create a configuration script that uses <code>HelloSimObject</code>. In a separate terminal, let's create that script inside <a href="../../gem5/configs/">gem5/configs</a>. First, let's create a directory structure for our scripts. Run the following set of commands in the base <strong>gem5</strong> directory to create a clean structure.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh"><span class="hljs-built_in">mkdir</span> configs/bootcamp
+<span class="hljs-built_in">mkdir</span> configs/bootcamp/hello-sim-object
+<span class="hljs-built_in">touch</span> configs/bootcamp/hello-sim-object/first-hello-example.py
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="29" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="29" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="configuration-script-first-hello-example-m5-and-root">Configuration Script: First Hello Example: m5 and Root</h2>
+<p>Open <a href="../../gem5/configs/bootcamp/hello-sim-object/first-hello-example.py">configs/bootcamp/first-hello-example.py</a> in your editor of choice.</p>
+<p>To run a simulation, we will need to interface with gem5's backend. <code>m5</code> will allow us to call on the C++ backend to instantiate <code>SimObjects</code> in C++ and simulate them. To import <code>m5</code> into your configuration script, add the following to your code.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">import</span> m5
+</code></pre>
+<p>Every configuration script in gem5 has to instantiate an object of class <code>Root</code>. This object represents the root of the device tree in the computer system that gem5 is simulating. To import <code>Root</code> into your configuration, add the following line to your script.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">from</span> m5.objects.Root <span class="hljs-keyword">import</span> Root
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="30" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="30" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="configuration-script-first-hello-example-creating-instances-in-python">Configuration Script: First Hello Example: Creating Instances in Python</h2>
+<p>We will also need to import <code>HelloSimObject</code> into our configuration script. To do that, add the following line to your configuration script.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">from</span> m5.objects.HelloSimObject <span class="hljs-keyword">import</span> HelloSimObject
+</code></pre>
+<p>The next thing we need to do is create a <code>Root</code> object and a <code>HelloSimObject</code> object. We can just add our <code>HelloSimObject</code> object as a child of the <code>root</code> object by using the <code>.</code> operator. Add the following lines to your configuration to do that.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">root = Root(full_system=<span class="hljs-literal">False</span>)
+root.hello = HelloSimObject()
+</code></pre>
+<p><strong>NOTE</strong>: We are passing <code>full_system=False</code> to <code>Root</code> because we are going to simulate in <code>SE</code> mode.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="31" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="31" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="configuration-script-first-hello-example-instantiation-in-c-and-simulation">Configuration Script: First Hello Example: Instantiation in C++ and Simulation</h2>
+<p>Next, let's tell gem5 to instantiate our <code>SimObjects</code> in C++ by calling <code>instantiate</code> from <code>m5</code>. Add the following line to your code to do that.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">m5.instantiate()
+</code></pre>
+<p>Now that we have instantiated our <code>SimObjects</code>, we can tell gem5 to start the simulation. We do that by calling <code>simulate</code> from <code>m5</code>. Add the following line to your code to do that.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">exit_event = m5.simulate()
+</code></pre>
+<p>At this point, the simulation will start. It will return an object that holds the status of the simulation. We can see why the simulation exits by calling <code>getCause</code> from <code>exit_event</code>. Add the following line to your code to due that.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Exited simulation because: <span class="hljs-subst">{exit_event.getCause()}</span>.&quot;</span>)
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="32" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="32" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="everything-everywhere-all-at-once">Everything Everywhere All at Once</h2>
+<p>Here is the complete version of our configuration script.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">import</span> m5
+<span class="hljs-keyword">from</span> m5.objects.Root <span class="hljs-keyword">import</span> Root
+<span class="hljs-keyword">from</span> m5.objects.HelloSimObject <span class="hljs-keyword">import</span> HelloSimObject
+
+root = Root(full_system=<span class="hljs-literal">False</span>)
+root.hello = HelloSimObject()
+
+m5.instantiate()
+exit_event = m5.simulate()
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Exited simulation because: <span class="hljs-subst">{exit_event.getCause()}</span>.&quot;</span>)
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="33" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="33" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="simulate-first-hello-example">Simulate: First Hello Example</h2>
+<p>Run with the following command in the base <strong>gem5</strong> directory.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">./build/NULL/gem5.opt ./configs/bootcamp/hello-sim-object/first-hello-example.py
+</code></pre>
+<script src="https://asciinema.org/a/ffjsHBq6mPCR1DPxT15WCkm58.js" id="asciicast-ffjsHBq6mPCR1DPxT15WCkm58" async="true"></script>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="34" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="end-of-step-1">End of Step 1</h2>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="35" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="35" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="a-little-bit-of-a-detour-m5instantiate">A Little Bit of a Detour: m5.instantiate</h2>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="36" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="36" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="detour-m5instantiate-simobject-constructors-and-connecting-ports">Detour: m5.instantiate: SimObject Constructors and Connecting Ports</h2>
+<p>Below is a snippet of code from the definition of <code>m5.instantiate</code>:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-comment"># Create the C++ sim objects and connect ports</span>
+    <span class="hljs-keyword">for</span> obj <span class="hljs-keyword">in</span> root.descendants():
+        obj.createCCObject()
+    <span class="hljs-keyword">for</span> obj <span class="hljs-keyword">in</span> root.descendants():
+        obj.connectPorts()
+</code></pre>
+<p>When you call <code>m5.instantiate</code>, first, all the <code>SimObjects</code> are created (i.e. their C++ constructors are called). Then, all the <code>port</code> connections are created. If you don't know what a <code>Port</code> is, don't worry. We will get to that in the later slides. For now, think of <code>ports</code> as a way for <code>SimObjects</code> to send each other data.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="37" data-paginate="true" data-class="code-50-percent" data-theme="gem5" lang="en-US" class="code-50-percent" data-marpit-pagination="37" style="--paginate:true;--class:code-50-percent;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="detour-m5instantiate-simobjectinit">Detour: m5.instantiate: SimObject::init</h2>
+<p>Here is a later snippet of code in <code>instantiate</code>.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">    <span class="hljs-comment"># Do a second pass to finish initializing the sim objects</span>
+    <span class="hljs-keyword">for</span> obj <span class="hljs-keyword">in</span> root.descendants():
+        obj.init()
+</code></pre>
+<p>In this step, gem5 will call the <code>init</code> function from every <code>SimObject</code>. <code>init</code> is a virtual function defined by the <code>SimObject</code> class. Every <code>SimObject</code> based class can override this function. The purpose of the <code>init</code> function is similar to the constructor. However, it is guaranteed that when the <code>init</code> function from any <code>SimObject</code> is called, all the <code>SimObjects</code> are created (i.e. their constructors are called).</p>
+<p>Below is the declaration for <code>init</code> in <code>src/sim/sim_object.hh</code>.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">    <span class="hljs-comment">/* init() is called after all C++ SimObjects have been created and
+    *  all ports are connected.  Initializations that are independent
+    *  of unserialization but rely on a fully instantiated and
+    *  connected SimObject graph should be done here. */</span>
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span>;
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="38" data-paginate="true" data-class="code-80-percent" data-theme="gem5" lang="en-US" class="code-80-percent" data-marpit-pagination="38" style="--paginate:true;--class:code-80-percent;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="detour-m5instantiate-simobjectinitstate-simobjectloadstate">Detour: m5.instantiate: SimObject::initState, SimObject::loadState</h2>
+<p>Below shows another snippet from instantiate:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-comment"># Restore checkpoint (if any)</span>
+    <span class="hljs-keyword">if</span> ckpt_dir:
+        _drain_manager.preCheckpointRestore()
+        ckpt = _m5.core.getCheckpoint(ckpt_dir)
+        <span class="hljs-keyword">for</span> obj <span class="hljs-keyword">in</span> root.descendants():
+            obj.loadState(ckpt)
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">for</span> obj <span class="hljs-keyword">in</span> root.descendants():
+            obj.initState()
+</code></pre>
+<p><code>initState</code> and <code>loadState</code> are the last step of initializing <code>SimObjects</code>. However, only one of them is called for every simulation. <code>loadState</code> is called to unserialize a <code>SimObject's</code> state from a checkpoint and <code>initState</code> is only called when starting a new simulation (i.e. not from a checkpoint).</p>
+<p>Continued in next page.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="39" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="39" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="detour-m5instantiate-simobjectinitstate-simobjectloadstate-c">Detour: m5.instantiate: SimObject::initState, SimObject::loadState: C++</h2>
+<p>Below is the declaration for <code>initState</code> and <code>loadState</code> in <code>src/sim/sim_object.hh</code>.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">    <span class="hljs-comment">/* loadState() is called on each SimObject when restoring from a
+    *  checkpoint.  The default implementation simply calls
+    *  unserialize() if there is a corresponding section in the
+    *  checkpoint.  However, objects can override loadState() to get
+    *  other behaviors, e.g., doing other programmed initializations
+    *  after unserialize(), or complaining if no checkpoint section is
+    *  found. */</span>
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">loadState</span><span class="hljs-params">(CheckpointIn &amp;cp)</span></span>;
+    <span class="hljs-comment">/* initState() is called on each SimObject when *not* restoring
+    *  from a checkpoint.  This provides a hook for state
+    *  initializations that are only required for a &quot;cold start&quot;. */</span>
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">initState</span><span class="hljs-params">()</span></span>;
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="40" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="we-will-see-later">We Will See Later</h2>
+<p>You might have noticed that we also call <code>m5.simulate</code> in our configuration script. For now, <code>HelloSimObject</code> does nothing interesting during simulation. We will look into the details of simulate later.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="41" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="41" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="params">Params</h2>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="42" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="step-2-simobject-params">Step 2: SimObject Params</h2>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="43" data-paginate="true" data-class="code-60-percent" data-theme="gem5" lang="en-US" class="code-60-percent" data-marpit-pagination="43" style="--paginate:true;--class:code-60-percent;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="lets-talk-about-params-model-vs-params">Let's Talk About Params: Model vs Params</h2>
+
+<p>As we mentioned earlier, gem5 allows us to parameterize our models. The whole set of parameter classes in gem5 is defined under <code>m5.params</code>, so let's go ahead and import everything from <code>m5.params</code> into our <code>SimObject</code> definition file. Open <a href="../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py">src/bootcamp/hello-sim-object/HelloSimObject.py</a> in your editor of choice and add the following line to it.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">from</span> m5.params <span class="hljs-keyword">import</span> *
+</code></pre>
+<p>Now we just need to define a parameter for our <code>HelloSimObject</code>. Add the following line to the same file (the <code>HelloSimObject</code> definition) to do that. You should add this line under the definition of<br />
+<code>class HelloSimObject</code>.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">num_hellos = Param.Int(<span class="hljs-string">&quot;Number of times to say Hello.&quot;</span>)
+</code></pre>
+<p>Make sure to take a look at <a href="../../gem5/src/python/m5/params.py">src/python/m5/params.py</a> for more information on different parameter classes and how you can add a parameter.<br />
+<strong>CAUTION</strong>: <code>Params</code> allow you to define a default value for them. I strongly recommend that you don't define defaults unless you really have to.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="44" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="44" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="hellosimobject-definition-file-now">HelloSimObject Definition File Now</h2>
+<p>Here is what your <code>HelloSimObject</code> definition file should look like after the changes.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">from</span> m5.objects.SimObject <span class="hljs-keyword">import</span> SimObject
+<span class="hljs-keyword">from</span> m5.params <span class="hljs-keyword">import</span> *
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">HelloSimObject</span>(<span class="hljs-title class_ inherited__">SimObject</span>):
+    <span class="hljs-built_in">type</span> = <span class="hljs-string">&quot;HelloSimObject&quot;</span>
+    cxx_header = <span class="hljs-string">&quot;bootcamp/hello-sim-object/hello_sim_object.hh&quot;</span>
+    cxx_class = <span class="hljs-string">&quot;gem5::HelloSimObject&quot;</span>
+
+    num_hellos = Param.Int(<span class="hljs-string">&quot;Number times to say Hello.&quot;</span>)
+</code></pre>
+<p><strong>NOTE</strong>: This change to <code>HelloSimObject.py</code> will now add an attribute to the <code>HelloSimObjectParams</code> the next time you compile gem5. This means that we can now access this parameter in the C++ code.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="45" data-paginate="true" data-class="code-50-percent" data-theme="gem5" lang="en-US" class="code-50-percent" data-marpit-pagination="45" style="--paginate:true;--class:code-50-percent;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="using-num_hellos">Using num_hellos</h2>
+<p>Now, we're going to use <code>num_hellos</code> to print <code>Hello from ...</code> multiple times in the constructor of the <code>HelloSimObject</code>. Open <a href="../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.cc">src/bootcamp/hello-sim-object/hello_sim_object.cc</a> in your editor of choice.</p>
+<p>Change <code>HelloSimObject::HelloSimObject</code> like below:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">HelloSimObject::<span class="hljs-built_in">HelloSimObject</span>(<span class="hljs-type">const</span> HelloSimObjectParams&amp; params):
+    <span class="hljs-built_in">SimObject</span>(params)
+{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; params.num_hellos; i++) {
+        std::cout &lt;&lt; <span class="hljs-string">&quot;i: &quot;</span> &lt;&lt; i &lt;&lt; <span class="hljs-string">&quot;, Hello from HelloSimObject&#x27;s constructor!&quot;</span> &lt;&lt; std::endl;
+    }
+}
+</code></pre>
+<p>Make sure you don't delete <code>include</code> statments and any lines containing <code>namespace gem5</code></p>
+<p><em><strong>RECOMPILE</strong></em>: All we need to do now is just recompile gem5. Simply do that by running the following command in the base <strong>gem5</strong> directory.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">scons build/NULL/gem5.opt -j$(<span class="hljs-built_in">nproc</span>)
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="46" data-paginate="true" data-class="two-col code-60-percent" data-theme="gem5" lang="en-US" class="two-col code-60-percent" data-marpit-pagination="46" style="--paginate:true;--class:two-col code-60-percent;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="paramshellosimobjecthh">params/HelloSimObject.hh</h2>
+<p>As we mentioned before, the parameters of a <code>SimObject</code> are defined in an auto-generated header file with the <code>SimObject's</code> name.</p>
+<p>Now that we have added a parameter to <code>HelloSimObject</code>, it should now be defined under <code>HelloSimObjectParams</code> in <a href="../../gem5/build/NULL/params/HelloSimObject.hh">build/NULL/params/HelloSimObject.hh</a>.</p>
+<p>If you look at the header file, you should see something like this.</p>
+<h3 id="-1"></h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> __PARAMS__HelloSimObject__</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> __PARAMS__HelloSimObject__</span>
+
+<span class="hljs-keyword">namespace</span> gem5 {
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">HelloSimObject</span>;
+} <span class="hljs-comment">// namespace gem5</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstddef&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;base/types.hh&quot;</span></span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;params/SimObject.hh&quot;</span></span>
+
+<span class="hljs-keyword">namespace</span> gem5
+{
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">HelloSimObjectParams</span>
+    : <span class="hljs-keyword">public</span> SimObjectParams
+{
+    <span class="hljs-function">gem5::HelloSimObject * <span class="hljs-title">create</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;
+    <span class="hljs-type">int</span> num_hellos;
+};
+
+} <span class="hljs-comment">// namespace gem5</span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">// __PARAMS__HelloSimObject__</span></span>
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="47" data-paginate="true" data-class="code-60-percent" data-theme="gem5" lang="en-US" class="code-60-percent" data-marpit-pagination="47" style="--paginate:true;--class:code-60-percent;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="configuration-script-second-hello-example">Configuration Script: Second Hello Example</h2>
+<p>Let's create a copy of <a href="../../gem5/configs/bootcamp/hello-sim-object/first-hello-example.py">first-hello-example.py</a> named <a href="../../gem5/configs/bootcamp/hello-sim-object/second-hello-example.py">second-hello-example.py</a>. Just run the following command in the base <strong>gem5</strong> directory to do this.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh"><span class="hljs-built_in">cp</span> configs/bootcamp/hello-sim-object/first-hello-example.py configs/bootcamp/hello-sim-object/second-hello-example.py
+</code></pre>
+<p>Now, open <a href="../../gem5/configs/bootcamp/hello-sim-object/second-hello-example.py">second-hello-example.py</a> in your editor of choice and change the code so that it passes a value for <code>num_hellos</code> when you instantiate a <code>HelloSimObject</code>. Below is a full example of this.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">import</span> m5
+<span class="hljs-keyword">from</span> m5.objects.Root <span class="hljs-keyword">import</span> Root
+<span class="hljs-keyword">from</span> m5.objects.HelloSimObject <span class="hljs-keyword">import</span> HelloSimObject
+
+root = Root(full_system=<span class="hljs-literal">False</span>)
+root.hello = HelloSimObject(num_hellos=<span class="hljs-number">5</span>)
+
+m5.instantiate()
+exit_event = m5.simulate()
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Exited simulation because: <span class="hljs-subst">{exit_event.getCause()}</span>.&quot;</span>)
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="48" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="48" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="simulate-second-hello-example">Simulate: Second Hello Example</h2>
+<p>Run with the following command in the base <strong>gem5</strong> directory.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">./build/NULL/gem5.opt ./configs/bootcamp/hello-sim-object/second-hello-example.py
+</code></pre>
+<script src="https://asciinema.org/a/P1nULfk7VRZGvQURZJryl7mAK.js" id="asciicast-P1nULfk7VRZGvQURZJryl7mAK" async="true"></script>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="49" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="49" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="end-of-step-2">End of Step 2</h2>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="50" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="50" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="summary-of-steps">Summary of Steps</h2>
+<ul>
+<li>Creating a basic <code>SimObject</code>
+<ul>
+<li><a href="../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py"><code>SimObject</code> definition file</a> (.py)
+<ul>
+<li>Defines the sets of parameters for the model.</li>
+</ul>
+</li>
+<li><a href="../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.hh"><code>SimObject</code> header file</a> (.hh)
+<ul>
+<li>Declares the <code>SimObject</code> class in C++.</li>
+</ul>
+</li>
+<li><a href="../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.cc"><code>SimObject</code> source file</a> (.cc extension):
+<ul>
+<li>Implements the <code>SimObject</code> functionalities.</li>
+</ul>
+</li>
+<li><a href="../../gem5/src/bootcamp/hello-sim-object/SConscript"><code>SConscript</code></a>
+<ul>
+<li>Register our <code>SimObject</code> with gem5.</li>
+</ul>
+</li>
+<li>Auto-generated <a href="../../gem5/build/NULL/params/HelloSimObject.hh"><code>SimObjectParams</code> header file</a> (.hh)
+<ul>
+<li>Declares a C++ struct storing all the parameters of the <code>SimObject</code>.</li>
+</ul>
+</li>
+<li><a href="../../gem5/configs/bootcamp/hello-sim-object/first-hello-example.py">Configuration file</a> (.py)
+<ul>
+<li>Instantiate <code>SimObject</code> and run the simulation.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Adding a parameter (<code>num_hellos</code>)
+<ul>
+<li>Update the <a href="../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py">definition file</a> and the <a href="../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.cc">source file</a>.</li>
+<li>Write a new <a href="../../gem5/configs/bootcamp/hello-sim-object/second-hello-example.py">configuration file</a>.</li>
+<li>Re-compile and re-run.</li>
+</ul>
+</li>
+</ul>
+</section>
+<script>!function(){"use strict";const t={h1:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"1"},style:"display: block; font-size: 2em; margin-block-start: 0.67em; margin-block-end: 0.67em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h2:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"2"},style:"display: block; font-size: 1.5em; margin-block-start: 0.83em; margin-block-end: 0.83em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h3:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"3"},style:"display: block; font-size: 1.17em; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h4:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"4"},style:"display: block; margin-block-start: 1.33em; margin-block-end: 1.33em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h5:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"5"},style:"display: block; font-size: 0.83em; margin-block-start: 1.67em; margin-block-end: 1.67em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h6:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"6"},style:"display: block; font-size: 0.67em; margin-block-start: 2.33em; margin-block-end: 2.33em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},span:{proto:()=>HTMLSpanElement},pre:{proto:()=>HTMLElement,style:"display: block; font-family: monospace; white-space: pre; margin: 1em 0; --marp-auto-scaling-white-space: pre;"}},e="data-marp-auto-scaling-wrapper",i="data-marp-auto-scaling-svg",n="data-marp-auto-scaling-container";class s extends HTMLElement{constructor(){super(),this.svgPreserveAspectRatio="xMinYMid meet";const t=t=>([e])=>{const{width:i,height:n}=e.contentRect;this[t]={width:i,height:n},this.updateSVGRect()};this.attachShadow({mode:"open"}),this.containerObserver=new ResizeObserver(t("containerSize")),this.wrapperObserver=new ResizeObserver(((...e)=>{t("wrapperSize")(...e),this.flushSvgDisplay()}))}static get observedAttributes(){return["data-downscale-only"]}connectedCallback(){var t,s,o,r,a;this.shadowRoot.innerHTML=`\n<style>\n  svg[${i}] { display: block; width: 100%; height: auto; vertical-align: top; }\n  span[${n}] { display: table; white-space: var(--marp-auto-scaling-white-space, nowrap); width: max-content; }\n</style>\n<div ${e}>\n  <svg part="svg" ${i}>\n    <foreignObject><span ${n}><slot></slot></span></foreignObject>\n  </svg>\n</div>\n    `.split(/\n\s*/).join(""),this.wrapper=null!==(t=this.shadowRoot.querySelector(`div[${e}]`))&&void 0!==t?t:void 0;const l=this.svg;this.svg=null!==(o=null===(s=this.wrapper)||void 0===s?void 0:s.querySelector(`svg[${i}]`))&&void 0!==o?o:void 0,this.svg!==l&&(this.svgComputedStyle=this.svg?window.getComputedStyle(this.svg):void 0),this.container=null!==(a=null===(r=this.svg)||void 0===r?void 0:r.querySelector(`span[${n}]`))&&void 0!==a?a:void 0,this.observe()}disconnectedCallback(){this.svg=void 0,this.svgComputedStyle=void 0,this.wrapper=void 0,this.container=void 0,this.observe()}attributeChangedCallback(){this.observe()}flushSvgDisplay(){const{svg:t}=this;t&&(t.style.display="inline",requestAnimationFrame((()=>{t.style.display=""})))}observe(){this.containerObserver.disconnect(),this.wrapperObserver.disconnect(),this.wrapper&&this.wrapperObserver.observe(this.wrapper),this.container&&this.containerObserver.observe(this.container),this.svgComputedStyle&&this.observeSVGStyle(this.svgComputedStyle)}observeSVGStyle(t){const e=()=>{const i=(()=>{const e=t.getPropertyValue("--preserve-aspect-ratio");if(e)return e.trim();return`x${(({textAlign:t,direction:e})=>{if(t.endsWith("left"))return"Min";if(t.endsWith("right"))return"Max";if("start"===t||"end"===t){let i="rtl"===e;return"end"===t&&(i=!i),i?"Max":"Min"}return"Mid"})(t)}YMid meet`})();i!==this.svgPreserveAspectRatio&&(this.svgPreserveAspectRatio=i,this.updateSVGRect()),t===this.svgComputedStyle&&requestAnimationFrame(e)};e()}updateSVGRect(){var t,e,i,n,s,o,r;let a=Math.ceil(null!==(e=null===(t=this.containerSize)||void 0===t?void 0:t.width)&&void 0!==e?e:0);const l=Math.ceil(null!==(n=null===(i=this.containerSize)||void 0===i?void 0:i.height)&&void 0!==n?n:0);void 0!==this.dataset.downscaleOnly&&(a=Math.max(a,null!==(o=null===(s=this.wrapperSize)||void 0===s?void 0:s.width)&&void 0!==o?o:0));const c=null===(r=this.svg)||void 0===r?void 0:r.querySelector(":scope > foreignObject");if(null==c||c.setAttribute("width",`${a}`),null==c||c.setAttribute("height",`${l}`),this.svg&&(this.svg.setAttribute("viewBox",`0 0 ${a} ${l}`),this.svg.setAttribute("preserveAspectRatio",this.svgPreserveAspectRatio),this.svg.style.height=a<=0||l<=0?"0":""),this.container){const t=this.svgPreserveAspectRatio.toLowerCase();this.container.style.marginLeft=t.startsWith("xmid")||t.startsWith("xmax")?"auto":"0",this.container.style.marginRight=t.startsWith("xmi")?"auto":"0"}}}const o=(t,{attrs:e={},style:i})=>class extends t{constructor(...t){super(...t);for(const[t,i]of Object.entries(e))this.hasAttribute(t)||this.setAttribute(t,i);this.attachShadow({mode:"open"})}static get observedAttributes(){return["data-auto-scaling"]}connectedCallback(){this._update()}attributeChangedCallback(){this._update()}_update(){const t=i?`<style>:host { ${i} }</style>`:"";let e="<slot></slot>";const{autoScaling:n}=this.dataset;if(void 0!==n){e=`<marp-auto-scaling exportparts="svg:auto-scaling" ${"downscale-only"===n?"data-downscale-only":""}>${e}</marp-auto-scaling>`}this.shadowRoot.innerHTML=t+e}};let r;const a=Symbol();let l;const c="marpitSVGPolyfill:setZoomFactor,",d=Symbol(),g=Symbol();const h=()=>{const t="Apple Computer, Inc."===navigator.vendor,e=t?[u]:[],i={then:e=>(t?(async()=>{if(void 0===l){const t=document.createElement("canvas");t.width=10,t.height=10;const e=t.getContext("2d"),i=new Image(10,10),n=new Promise((t=>{i.addEventListener("load",(()=>t()))}));i.crossOrigin="anonymous",i.src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%201%201%22%3E%3CforeignObject%20width%3D%221%22%20height%3D%221%22%20requiredExtensions%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxhtml%22%3E%3Cdiv%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxhtml%22%20style%3D%22width%3A%201px%3B%20height%3A%201px%3B%20background%3A%20red%3B%20position%3A%20relative%22%3E%3C%2Fdiv%3E%3C%2FforeignObject%3E%3C%2Fsvg%3E",await n,e.drawImage(i,0,0),l=e.getImageData(5,5,1,1).data[3]<128}return l})().then((t=>{null==e||e(t?[u]:[])})):null==e||e([]),i)};return Object.assign(e,i)};let p,m;function u(t){const e="object"==typeof t&&t.target||document,i="object"==typeof t?t.zoom:t;window[g]||(Object.defineProperty(window,g,{configurable:!0,value:!0}),document.body.style.zoom=1.0001,document.body.offsetHeight,document.body.style.zoom=1,window.addEventListener("message",(({data:t,origin:e})=>{if(e===window.origin)try{if(t&&"string"==typeof t&&t.startsWith(c)){const[,e]=t.split(","),i=Number.parseFloat(e);Number.isNaN(i)||(m=i)}}catch(t){console.error(t)}})));let n=!1;Array.from(e.querySelectorAll("svg[data-marpit-svg]"),(t=>{var e,s,o,r;t.style.transform||(t.style.transform="translateZ(0)");const a=i||m||t.currentScale||1;p!==a&&(p=a,n=a);const l=t.getBoundingClientRect(),{length:c}=t.children;for(let i=0;i<c;i+=1){const n=t.children[i];if(n.getScreenCTM){const t=n.getScreenCTM();if(t){const i=null!==(s=null===(e=n.x)||void 0===e?void 0:e.baseVal.value)&&void 0!==s?s:0,c=null!==(r=null===(o=n.y)||void 0===o?void 0:o.baseVal.value)&&void 0!==r?r:0,d=n.children.length;for(let e=0;e<d;e+=1){const s=n.children[e];if("SECTION"===s.tagName){const{style:e}=s;e.transformOrigin||(e.transformOrigin=`${-i}px ${-c}px`),e.transform=`scale(${a}) matrix(${t.a}, ${t.b}, ${t.c}, ${t.d}, ${t.e-l.left}, ${t.f-l.top}) translateZ(0.0001px)`;break}}}}}})),!1!==n&&Array.from(e.querySelectorAll("iframe"),(({contentWindow:t})=>{null==t||t.postMessage(`${c}${n}`,"null"===window.origin?"*":window.origin)}))}function v({once:t=!1,target:e=document}={}){const i=function(t=document){if(t[d])return t[d];let e=!0;const i=()=>{e=!1,delete t[d]};Object.defineProperty(t,d,{configurable:!0,value:i});let n=[],s=!1;(async()=>{try{n=await h()}finally{s=!0}})();const o=()=>{for(const e of n)e({target:t});s&&0===n.length||e&&window.requestAnimationFrame(o)};return o(),i}(e);return t?(i(),()=>{}):i}p=1,m=void 0;const b=Symbol(),w=(e=document)=>{if("undefined"==typeof window)throw new Error("Marp Core's browser script is valid only in browser context.");if(((e=document)=>{const i=window[a];i||customElements.define("marp-auto-scaling",s);for(const n of Object.keys(t)){const s=`marp-${n}`,a=t[n].proto();null!=r||(r=!!document.createElement("div",{is:"marp-auto-scaling"}).outerHTML.startsWith("<div is")),r&&a!==HTMLElement?i||customElements.define(s,o(a,{style:t[n].style}),{extends:n}):(i||customElements.define(s,o(HTMLElement,t[n])),e.querySelectorAll(`${n}[is="${s}"]`).forEach((t=>{t.outerHTML=t.outerHTML.replace(new RegExp(`^<${n}`,"i"),`<${s}`).replace(new RegExp(`</${n}>$`,"i"),`</${s}>`)})))}window[a]=!0})(e),e[b])return e[b];const i=v({target:e}),n=()=>{i(),delete e[b]},l=Object.assign(n,{cleanup:n,update:()=>w(e)});return Object.defineProperty(e,b,{configurable:!0,value:l}),l},y=document.currentScript;w(y?y.getRootNode():document)}();
+</script></foreignObject></svg></div><div class="bespoke-marp-note" data-index="0" tabindex="0"><p>Add a topic sentence here.</p></div><div class="bespoke-marp-note" data-index="1" tabindex="0"><p>Speaker Notes
+- How to build gem5</p></div><div class="bespoke-marp-note" data-index="12" tabindex="0"><p>Speaker Notes
+- SimObject
+    - Definition
+    - Role of SimObjects</p></div><div class="bespoke-marp-note" data-index="13" tabindex="0"><p>Speaker Notes
+- 4 SimObject files
+    - Definition file
+    - Header file
+    - Source file
+    - Params header file (auto-generated)</p></div><div class="bespoke-marp-note" data-index="14" tabindex="0"><p>Speaker Notes
+- Steps to making HelloSimObject
+    - First HelloSimObject
+    - Adding `num_hellos`</p></div><div class="bespoke-marp-note" data-index="16" tabindex="0"><p>Speaker Notes
+- Commands to run for:
+    - Creating a directory
+    - Creating a new file</p></div><div class="bespoke-marp-note" data-index="17" tabindex="0"><p>Speaker Notes
+- What to put in SimObject definition file</p></div><div class="bespoke-marp-note" data-index="18" tabindex="0"><p>Speaker Notes
+- Understanding SimObject definition file
+    - What is
+        - type
+        - cxx_header
+        - cxx_class
+    - MetaSimObject metaclass</p></div><div class="bespoke-marp-note" data-index="19" tabindex="0"><p>Speaker Notes
+- Important Notes
+    - Naming consistency
+    - autogenerated params header file</p><p>An object of a SimObject class?</p></div><div class="bespoke-marp-note" data-index="20" tabindex="0"><p>Speaker Notes
+- Creating header file
+- Parallelizing inheritance for
+    - Classes
+    - Params</p><p>need to add the declaration?</p></div><div class="bespoke-marp-note" data-index="21" tabindex="0"><p>Speaker Notes
+- Finalizing header file</p></div><div class="bespoke-marp-note" data-index="22" tabindex="0"><p>Speaker Notes
+- __BOOTCAMP_HELLO_SIM_OBJECT_HELLO_SIM_OBJECT_HH__
+    - double includes/cyclic includes
+- sim/sim_object.hh
+- namespace gem5
+    - specific namespaces
+- HelloSimObject inherits from SimObject
+- SimObject constructor</p><p>- `sim/sim_object.hh` holds the definition for class `SimObject` in C++.
+Should this be declaration?</p></div><div class="bespoke-marp-note" data-index="23" tabindex="0"><p>Speaker Notes
+- Creating and writing source file</p></div><div class="bespoke-marp-note" data-index="24" tabindex="0"><p>Speaker Notes
+- Include statement convention
+- Constructors we defined
+- Explain params object in the context of HelloSimObject</p><p>In the last bullet point: I don't fully understand this line: This means params can be passed to the `SimObject::SimObject`
+It can be passed to SimObject::SimObject because it inherits from SimObjectParams? It needs to be passed to SimObjectParams because of the nature of inheritance? Why do we need to pass to SimObject?</p></div><div class="bespoke-marp-note" data-index="25" tabindex="0"><p>Speaker Notes
+- Why we need a SConscript
+- Creating and writing a Sconscript</p></div><div class="bespoke-marp-note" data-index="26" tabindex="0"><p>Speaker Notes
+- Go through each line of SConscript
+    - Import(&quot;*&quot;)
+    - SimObject(&quot;HelloSimObject.py&quot;, sim_objects=[&quot;HelloSimObject&quot;])
+    - Source(&quot;hello_sim_object.cc&quot;)</p></div><div class="bespoke-marp-note" data-index="27" tabindex="0"><p>Speaker Notes
+- Recompile gem5
+- Creating directories and configuration script file path</p></div><div class="bespoke-marp-note" data-index="28" tabindex="0"><p>Speaker Notes
+- Explaining import statements
+    - Interfacing with backend
+        - m5
+    - Device tree (Explain in depth) (Consider visual)
+        - Root</p><p>Might be worth mentioning the device tree earlier or dedicating a slide to it</p></div><div class="bespoke-marp-note" data-index="29" tabindex="0"><p>Speaker Notes
+- Importing HelloSimObject
+- Creating device tree in code</p></div><div class="bespoke-marp-note" data-index="30" tabindex="0"><p>Speaker Notes
+- m5.instantiate()
+- m5.simulate()
+- getCause()</p></div><div class="bespoke-marp-note" data-index="31" tabindex="0"><p>Speaker Notes
+- Complete configuration script</p></div><div class="bespoke-marp-note" data-index="32" tabindex="0"><p>Speaker Notes
+- Command to run</p></div><div class="bespoke-marp-note" data-index="35" tabindex="0"><p>Speaker Notes
+- What happens when m5.instantiate() is called
+    - SimObjects created
+    - Ports</p></div><div class="bespoke-marp-note" data-index="36" tabindex="0"><p>Speaker Notes
+- What happens when m5.instantiate() is called
+    - init (for all SimObjects)</p></div><div class="bespoke-marp-note" data-index="37" tabindex="0"><p>Speaker Notes
+- What happens when m5.instantiate() is called
+    - checkpoints (explain in depth)
+    - initState and loadState</p></div><div class="bespoke-marp-note" data-index="38" tabindex="0"><p>Speaker Notes
+- loadState code
+    - Words to explain
+        - unserialize()
+        - hook
+        - cold start</p></div><div class="bespoke-marp-note" data-index="39" tabindex="0"><p>Speaker Notes
+- HelloSimObject relation to m5.simulate</p></div><div class="bespoke-marp-note" data-index="42" tabindex="0"><p>Speaker Notes
+- Updating definition file
+    - m5.params
+    - New parameter (num_hellos)
+- parameter classes/how to add a parameter</p><p>ask Jason for good example analogy for Model vs Params (cache is a model and cache size is a param)</p></div><div class="bespoke-marp-note" data-index="43" tabindex="0"><p>Speaker Notes
+- Final definition file</p></div><div class="bespoke-marp-note" data-index="44" tabindex="0"><p>Speaker Notes
+- Updating source file to use num_hellos
+    - Explain that you are NOT replacing the ENTIRE file with this code (only updating the class)
+- Recompile</p></div><div class="bespoke-marp-note" data-index="45" tabindex="0"><p>Speaker Notes
+- Auto-generated param header file</p></div><div class="bespoke-marp-note" data-index="46" tabindex="0"><p>Speaker Notes
+- Creating a new configuration script
+- Adding param num_hellos</p></div><div class="bespoke-marp-note" data-index="47" tabindex="0"><p>Speaker Notes
+- Command to run with</p></div><script>/*!! License: https://unpkg.com/@marp-team/marp-cli@3.4.0/lib/bespoke.js.LICENSE.txt */
+!function(){"use strict";function e(e){return e&&e.__esModule&&Object.prototype.hasOwnProperty.call(e,"default")?e.default:e}var t={from:function(e,t){var n,r=1===(e.parent||e).nodeType?e.parent||e:document.querySelector(e.parent||e),o=[].filter.call("string"==typeof e.slides?r.querySelectorAll(e.slides):e.slides||r.children,(function(e){return"SCRIPT"!==e.nodeName})),i={},a=function(e,t){return(t=t||{}).index=o.indexOf(e),t.slide=e,t},s=function(e,t){i[e]=(i[e]||[]).filter((function(e){return e!==t}))},l=function(e,t){return(i[e]||[]).reduce((function(e,n){return e&&!1!==n(t)}),!0)},c=function(e,t){o[e]&&(n&&l("deactivate",a(n,t)),n=o[e],l("activate",a(n,t)))},d=function(e,t){var r=o.indexOf(n)+e;l(e>0?"next":"prev",a(n,t))&&c(r,t)},u={off:s,on:function(e,t){return(i[e]||(i[e]=[])).push(t),s.bind(null,e,t)},fire:l,slide:function(e,t){if(!arguments.length)return o.indexOf(n);l("slide",a(o[e],t))&&c(e,t)},next:d.bind(null,1),prev:d.bind(null,-1),parent:r,slides:o,destroy:function(e){l("destroy",a(n,e)),i={}}};return(t||[]).forEach((function(e){e(u)})),n||c(0),u}},n=e(t);const r=document.body,o=(...e)=>history.replaceState(...e),i="presenter",a="next",s=["",i,a],l="bespoke-marp-",c=`data-${l}`,d=(e,{protocol:t,host:n,pathname:r,hash:o}=location)=>{const i=e.toString();return`${t}//${n}${r}${i?"?":""}${i}${o}`},u=()=>r.dataset.bespokeView,f=e=>new URLSearchParams(location.search).get(e),m=(e,t={})=>{var n;const r={location,setter:o,...t},i=new URLSearchParams(r.location.search);for(const t of Object.keys(e)){const n=e[t];"string"==typeof n?i.set(t,n):i.delete(t)}try{r.setter({...null!==(n=window.history.state)&&void 0!==n?n:{}},"",d(i,r.location))}catch(e){console.error(e)}},g=(()=>{const e="bespoke-marp";try{return localStorage.setItem(e,e),localStorage.removeItem(e),!0}catch(e){return!1}})(),p=e=>{try{return localStorage.getItem(e)}catch(e){return null}},v=(e,t)=>{try{return localStorage.setItem(e,t),!0}catch(e){return!1}},h=e=>{try{return localStorage.removeItem(e),!0}catch(e){return!1}},y=(e,t)=>{const n="aria-hidden";t?e.setAttribute(n,"true"):e.removeAttribute(n)},b=e=>{e.parent.classList.add(`${l}parent`),e.slides.forEach((e=>e.classList.add(`${l}slide`))),e.on("activate",(t=>{const n=`${l}active`,r=t.slide,o=r.classList,i=!o.contains(n);if(e.slides.forEach((e=>{e.classList.remove(n),y(e,!0)})),o.add(n),y(r,!1),i){const e=`${n}-ready`;o.add(e),document.body.clientHeight,o.remove(e)}}))},w=e=>{let t=0,n=0;Object.defineProperty(e,"fragments",{enumerable:!0,value:e.slides.map((e=>[null,...e.querySelectorAll("[data-marpit-fragment]")]))});const r=r=>void 0!==e.fragments[t][n+r],o=(r,o)=>{t=r,n=o,e.fragments.forEach(((e,t)=>{e.forEach(((e,n)=>{if(null==e)return;const i=t<r||t===r&&n<=o;e.setAttribute(`${c}fragment`,(i?"":"in")+"active");const a=`${c}current-fragment`;t===r&&n===o?e.setAttribute(a,"current"):e.removeAttribute(a)}))})),e.fragmentIndex=o;const i={slide:e.slides[r],index:r,fragments:e.fragments[r],fragmentIndex:o};e.fire("fragment",i)};e.on("next",(({fragment:i=!0})=>{if(i){if(r(1))return o(t,n+1),!1;const i=t+1;e.fragments[i]&&o(i,0)}else{const r=e.fragments[t].length;if(n+1<r)return o(t,r-1),!1;const i=e.fragments[t+1];i&&o(t+1,i.length-1)}})),e.on("prev",(({fragment:i=!0})=>{if(r(-1)&&i)return o(t,n-1),!1;const a=t-1;e.fragments[a]&&o(a,e.fragments[a].length-1)})),e.on("slide",(({index:t,fragment:n})=>{let r=0;if(void 0!==n){const o=e.fragments[t];if(o){const{length:e}=o;r=-1===n?e-1:Math.min(Math.max(n,0),e-1)}}o(t,r)})),o(0,0)},x=document,k=()=>!(!x.fullscreenEnabled&&!x.webkitFullscreenEnabled),$=()=>!(!x.fullscreenElement&&!x.webkitFullscreenElement),E=e=>{e.fullscreen=()=>{k()&&(async()=>{return $()?null===(e=x.exitFullscreen||x.webkitExitFullscreen)||void 0===e?void 0:e.call(x):((e=x.body)=>{var t;return null===(t=e.requestFullscreen||e.webkitRequestFullscreen)||void 0===t?void 0:t.call(e)})();var e})()},document.addEventListener("keydown",(t=>{"f"!==t.key&&"F11"!==t.key||t.altKey||t.ctrlKey||t.metaKey||!k()||(e.fullscreen(),t.preventDefault())}))},L=`${l}inactive`,S=(e=2e3)=>({parent:t,fire:n})=>{const r=t.classList,o=e=>n(`marp-${e?"":"in"}active`);let i;const a=()=>{i&&clearTimeout(i),i=setTimeout((()=>{r.add(L),o()}),e),r.contains(L)&&(r.remove(L),o(!0))};for(const e of["mousedown","mousemove","touchend"])document.addEventListener(e,a);setTimeout(a,0)},P=["AUDIO","BUTTON","INPUT","SELECT","TEXTAREA","VIDEO"],_=e=>{e.parent.addEventListener("keydown",(e=>{if(!e.target)return;const t=e.target;(P.includes(t.nodeName)||"true"===t.contentEditable)&&e.stopPropagation()}))},T=e=>{window.addEventListener("load",(()=>{for(const t of e.slides){const e=t.querySelector("marp-auto-scaling, [data-auto-scaling], [data-marp-fitting]");t.setAttribute(`${c}load`,e?"":"hideable")}}))},I=({interval:e=250}={})=>t=>{document.addEventListener("keydown",(e=>{if(" "===e.key&&e.shiftKey)t.prev();else if("ArrowLeft"===e.key||"ArrowUp"===e.key||"PageUp"===e.key)t.prev({fragment:!e.shiftKey});else if(" "!==e.key||e.shiftKey)if("ArrowRight"===e.key||"ArrowDown"===e.key||"PageDown"===e.key)t.next({fragment:!e.shiftKey});else if("End"===e.key)t.slide(t.slides.length-1,{fragment:-1});else{if("Home"!==e.key)return;t.slide(0)}else t.next();e.preventDefault()}));let n,r,o=0;t.parent.addEventListener("wheel",(i=>{let a=!1;const s=(e,t)=>{e&&(a=a||((e,t)=>((e,t)=>{const n="X"===t?"Width":"Height";return e[`client${n}`]<e[`scroll${n}`]})(e,t)&&((e,t)=>{const{overflow:n}=e,r=e[`overflow${t}`];return"auto"===n||"scroll"===n||"auto"===r||"scroll"===r})(getComputedStyle(e),t))(e,t)),(null==e?void 0:e.parentElement)&&s(e.parentElement,t)};if(0!==i.deltaX&&s(i.target,"X"),0!==i.deltaY&&s(i.target,"Y"),a)return;i.preventDefault();const l=Math.sqrt(i.deltaX**2+i.deltaY**2);if(void 0!==i.wheelDelta){if(void 0===i.webkitForce&&Math.abs(i.wheelDelta)<40)return;if(i.deltaMode===i.DOM_DELTA_PIXEL&&l<4)return}else if(i.deltaMode===i.DOM_DELTA_PIXEL&&l<12)return;r&&clearTimeout(r),r=setTimeout((()=>{n=0}),e);const c=Date.now()-o<e,d=l<=n;if(n=l,c||d)return;let u;(i.deltaX>0||i.deltaY>0)&&(u="next"),(i.deltaX<0||i.deltaY<0)&&(u="prev"),u&&(t[u](),o=Date.now())}))},M=(e=`.${l}osc`)=>{const t=document.querySelector(e);if(!t)return()=>{};const n=(e,n)=>{t.querySelectorAll(`[${c}osc=${JSON.stringify(e)}]`).forEach(n)};return k()||n("fullscreen",(e=>e.style.display="none")),g||n("presenter",(e=>{e.disabled=!0,e.title="Presenter view is disabled due to restricted localStorage."})),e=>{t.addEventListener("click",(t=>{if(t.target instanceof HTMLElement){const{bespokeMarpOsc:n}=t.target.dataset;n&&t.target.blur();const r={fragment:!t.shiftKey};"next"===n?e.next(r):"prev"===n?e.prev(r):"fullscreen"===n?null==e||e.fullscreen():"presenter"===n&&e.openPresenterView()}})),e.parent.appendChild(t),e.on("activate",(({index:t})=>{n("page",(n=>n.textContent=`Page ${t+1} of ${e.slides.length}`))})),e.on("fragment",(({index:t,fragments:r,fragmentIndex:o})=>{n("prev",(e=>e.disabled=0===t&&0===o)),n("next",(n=>n.disabled=t===e.slides.length-1&&o===r.length-1))})),e.on("marp-active",(()=>y(t,!1))),e.on("marp-inactive",(()=>y(t,!0))),k()&&(e=>{for(const t of["","webkit"])x.addEventListener(t+"fullscreenchange",e)})((()=>n("fullscreen",(e=>e.classList.toggle("exit",k()&&$())))))}},O=e=>{window.addEventListener("message",(t=>{if(t.origin!==window.origin)return;const[n,r]=t.data.split(":");if("navigate"===n){const[t,n]=r.split(",");let o=Number.parseInt(t,10),i=Number.parseInt(n,10)+1;i>=e.fragments[o].length&&(o+=1,i=0),e.slide(o,{fragment:i})}}))};var A=["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"];let C=e=>String(e).replace(/[&<>"']/g,(e=>`&${D[e]};`)),D={"&":"amp","<":"lt",">":"gt",'"':"quot","'":"apos"},N="dangerouslySetInnerHTML",B={className:"class",htmlFor:"for"},q={};function K(e,t){let n=[],r="";t=t||{};for(let e=arguments.length;e-- >2;)n.push(arguments[e]);if("function"==typeof e)return t.children=n.reverse(),e(t);if(e){if(r+="<"+e,t)for(let e in t)!1!==t[e]&&null!=t[e]&&e!==N&&(r+=` ${B[e]?B[e]:C(e)}="${C(t[e])}"`);r+=">"}if(-1===A.indexOf(e)){if(t[N])r+=t[N].__html;else for(;n.length;){let e=n.pop();if(e)if(e.pop)for(let t=e.length;t--;)n.push(e[t]);else r+=!0===q[e]?e:C(e)}r+=e?`</${e}>`:""}return q[r]=!0,r}const j=({children:e})=>K(null,null,...e),F=`${l}presenter-`,V={container:`${F}container`,dragbar:`${F}dragbar-container`,next:`${F}next`,nextContainer:`${F}next-container`,noteContainer:`${F}note-container`,noteWrapper:`${F}note-wrapper`,noteButtons:`${F}note-buttons`,infoContainer:`${F}info-container`,infoPage:`${F}info-page`,infoPageText:`${F}info-page-text`,infoPagePrev:`${F}info-page-prev`,infoPageNext:`${F}info-page-next`,noteButtonsBigger:`${F}note-bigger`,noteButtonsSmaller:`${F}note-smaller`,infoTime:`${F}info-time`,infoTimer:`${F}info-timer`},U=e=>{const{title:t}=document;document.title="[Presenter view]"+(t?` - ${t}`:"");const n={},r=e=>(n[e]=n[e]||document.querySelector(`.${e}`),n[e]);document.body.appendChild((e=>{const t=document.createElement("div");return t.className=V.container,t.appendChild(e),t.insertAdjacentHTML("beforeend",K(j,null,K("div",{class:V.nextContainer},K("iframe",{class:V.next,src:"?view=next"})),K("div",{class:V.dragbar}),K("div",{class:V.noteContainer},K("div",{class:V.noteWrapper}),K("div",{class:V.noteButtons},K("button",{class:V.noteButtonsSmaller,tabindex:"-1",title:"Smaller notes font size"},"Smaller notes font size"),K("button",{class:V.noteButtonsBigger,tabindex:"-1",title:"Bigger notes font size"},"Bigger notes font size"))),K("div",{class:V.infoContainer},K("div",{class:V.infoPage},K("button",{class:V.infoPagePrev,tabindex:"-1",title:"Previous"},"Previous"),K("span",{class:V.infoPageText}),K("button",{class:V.infoPageNext,tabindex:"-1",title:"Next"},"Next")),K("time",{class:V.infoTime,title:"Current time"}),K("time",{class:V.infoTimer,title:"Timer"})))),t})(e.parent)),(e=>{let t=!1;r(V.dragbar).addEventListener("mousedown",(()=>{t=!0,r(V.dragbar).classList.add("active")})),window.addEventListener("mouseup",(()=>{t=!1,r(V.dragbar).classList.remove("active")})),window.addEventListener("mousemove",(e=>{if(!t)return;const n=e.clientX/document.documentElement.clientWidth*100;r(V.container).style.setProperty("--bespoke-marp-presenter-split-ratio",`${Math.max(0,Math.min(100,n))}%`)})),r(V.nextContainer).addEventListener("click",(()=>e.next()));const n=r(V.next),o=(i=n,(e,t)=>{var n;return null===(n=i.contentWindow)||void 0===n?void 0:n.postMessage(`navigate:${e},${t}`,"null"===window.origin?"*":window.origin)});var i;n.addEventListener("load",(()=>{r(V.nextContainer).classList.add("active"),o(e.slide(),e.fragmentIndex),e.on("fragment",(({index:e,fragmentIndex:t})=>o(e,t)))}));const a=document.querySelectorAll(".bespoke-marp-note");a.forEach((e=>{e.addEventListener("keydown",(e=>e.stopPropagation())),r(V.noteWrapper).appendChild(e)})),e.on("activate",(()=>a.forEach((t=>t.classList.toggle("active",t.dataset.index==e.slide())))));let s=0;const l=e=>{s=Math.max(-5,s+e),r(V.noteContainer).style.setProperty("--bespoke-marp-note-font-scale",(1.2**s).toFixed(4))},c=()=>l(1),d=()=>l(-1),u=r(V.noteButtonsBigger),f=r(V.noteButtonsSmaller);u.addEventListener("click",(()=>{u.blur(),c()})),f.addEventListener("click",(()=>{f.blur(),d()})),document.addEventListener("keydown",(e=>{"+"===e.key&&c(),"-"===e.key&&d()}),!0),e.on("activate",(({index:t})=>{r(V.infoPageText).textContent=`${t+1} / ${e.slides.length}`}));const m=r(V.infoPagePrev),g=r(V.infoPageNext);m.addEventListener("click",(t=>{m.blur(),e.prev({fragment:!t.shiftKey})})),g.addEventListener("click",(t=>{g.blur(),e.next({fragment:!t.shiftKey})})),e.on("fragment",(({index:t,fragments:n,fragmentIndex:r})=>{m.disabled=0===t&&0===r,g.disabled=t===e.slides.length-1&&r===n.length-1}));let p=new Date;const v=()=>{const e=new Date,t=e=>`${Math.floor(e)}`.padStart(2,"0"),n=e.getTime()-p.getTime(),o=t(n/1e3%60),i=t(n/1e3/60%60),a=t(n/36e5%24);r(V.infoTime).textContent=e.toLocaleTimeString(),r(V.infoTimer).textContent=`${a}:${i}:${o}`};v(),setInterval(v,250),r(V.infoTimer).addEventListener("click",(()=>{p=new Date}))})(e)},X=e=>{if(!(e=>e.syncKey&&"string"==typeof e.syncKey)(e))throw new Error("The current instance of Bespoke.js is invalid for Marp bespoke presenter plugin.");Object.defineProperties(e,{openPresenterView:{enumerable:!0,value:H},presenterUrl:{enumerable:!0,get:R}}),g&&document.addEventListener("keydown",(t=>{"p"!==t.key||t.altKey||t.ctrlKey||t.metaKey||(t.preventDefault(),e.openPresenterView())}))};function H(){const{max:e,floor:t}=Math,n=e(t(.85*window.innerWidth),640),r=e(t(.85*window.innerHeight),360);return window.open(this.presenterUrl,F+this.syncKey,`width=${n},height=${r},menubar=no,toolbar=no`)}function R(){const e=new URLSearchParams(location.search);return e.set("view","presenter"),e.set("sync",this.syncKey),d(e)}const W=e=>{const t=u();return t===a&&e.appendChild(document.createElement("span")),{"":X,[i]:U,[a]:O}[t]},J=e=>{e.on("activate",(t=>{document.querySelectorAll(".bespoke-progress-parent > .bespoke-progress-bar").forEach((n=>{n.style.flexBasis=100*t.index/(e.slides.length-1)+"%"}))}))},Y=e=>{const t=Number.parseInt(e,10);return Number.isNaN(t)?null:t},z=(e={})=>{const t={history:!0,...e};return e=>{let n=!0;const r=e=>{const t=n;try{return n=!0,e()}finally{n=t}},o=(t={fragment:!0})=>{let n=t.fragment?Y(f("f")||""):null;((t,n)=>{const{min:r,max:o}=Math,{fragments:i,slides:a}=e,s=o(0,r(t,a.length-1)),l=o(0,r(n||0,i[s].length-1));s===e.slide()&&l===e.fragmentIndex||e.slide(s,{fragment:l})})((()=>{var t,r;if(location.hash){const[o]=location.hash.slice(1).split(":~:");if(/^\d+$/.test(o))return(null!==(t=Y(o))&&void 0!==t?t:1)-1;const i=document.getElementById(o)||document.querySelector(`a[name="${CSS.escape(o)}"]`);if(i){const{length:t}=e.slides;for(let o=0;o<t;o+=1)if(e.slides[o].contains(i)){const t=null===(r=e.fragments)||void 0===r?void 0:r[o],a=i.closest("[data-marpit-fragment]");if(t&&a){const e=t.indexOf(a);e>=0&&(n=e)}return o}}}return 0})(),n)};e.on("fragment",(({index:e,fragmentIndex:r})=>{n||m({f:0===r||r.toString()},{location:{...location,hash:`#${e+1}`},setter:(...e)=>t.history?history.pushState(...e):history.replaceState(...e)})})),setTimeout((()=>{o(),window.addEventListener("hashchange",(()=>r((()=>{o({fragment:!1}),m({f:void 0})})))),window.addEventListener("popstate",(()=>{n||r((()=>o()))})),n=!1}),0)}},G=(e={})=>{var t;const n=e.key||(null===(t=window.history.state)||void 0===t?void 0:t.marpBespokeSyncKey)||Math.random().toString(36).slice(2),r=`bespoke-marp-sync-${n}`;var i;i={marpBespokeSyncKey:n},m({},{setter:(e,...t)=>o({...e,...i},...t)});const a=()=>{const e=p(r);return e?JSON.parse(e):Object.create(null)},s=e=>{const t=a(),n={...t,...e(t)};return v(r,JSON.stringify(n)),n},l=()=>{window.removeEventListener("pageshow",l),s((e=>({reference:(e.reference||0)+1})))};return e=>{l(),Object.defineProperty(e,"syncKey",{value:n,enumerable:!0});let t=!0;setTimeout((()=>{e.on("fragment",(e=>{t&&s((()=>({index:e.index,fragmentIndex:e.fragmentIndex})))}))}),0),window.addEventListener("storage",(n=>{if(n.key===r&&n.oldValue&&n.newValue){const r=JSON.parse(n.oldValue),o=JSON.parse(n.newValue);if(r.index!==o.index||r.fragmentIndex!==o.fragmentIndex)try{t=!1,e.slide(o.index,{fragment:o.fragmentIndex,forSync:!0})}finally{t=!0}}}));const o=()=>{const{reference:e}=a();void 0===e||e<=1?h(r):s((()=>({reference:e-1})))};window.addEventListener("pagehide",(e=>{e.persisted&&window.addEventListener("pageshow",l),o()})),e.on("destroy",o)}},{PI:Q,abs:Z,sqrt:ee,atan2:te}=Math,ne={passive:!0},re=({slope:e=-.7,swipeThreshold:t=30}={})=>n=>{let r;const o=n.parent,i=e=>{const t=o.getBoundingClientRect();return{x:e.pageX-(t.left+t.right)/2,y:e.pageY-(t.top+t.bottom)/2}};o.addEventListener("touchstart",(({touches:e})=>{r=1===e.length?i(e[0]):void 0}),ne),o.addEventListener("touchmove",(e=>{if(r)if(1===e.touches.length){e.preventDefault();const t=i(e.touches[0]),n=t.x-r.x,o=t.y-r.y;r.delta=ee(Z(n)**2+Z(o)**2),r.radian=te(n,o)}else r=void 0})),o.addEventListener("touchend",(o=>{if(r){if(r.delta&&r.delta>=t&&r.radian){const t=(r.radian-e+Q)%(2*Q)-Q;n[t<0?"next":"prev"](),o.stopPropagation()}r=void 0}}),ne)},oe=new Map;oe.clear(),oe.set("none",{backward:{both:void 0,incoming:void 0,outgoing:void 0},forward:{both:void 0,incoming:void 0,outgoing:void 0}});const ie={both:"",outgoing:"outgoing-",incoming:"incoming-"},ae={forward:"",backward:"-backward"},se=e=>`--marp-bespoke-transition-animation-${e}`,le=e=>`--marp-transition-${e}`,ce=se("name"),de=se("duration"),ue=e=>new Promise((t=>{const n={},r=document.createElement("div"),o=e=>{r.remove(),t(e)};r.addEventListener("animationstart",(()=>o(n))),Object.assign(r.style,{animationName:e,animationDuration:"1s",animationFillMode:"both",animationPlayState:"paused",position:"absolute",pointerEvents:"none"}),document.body.appendChild(r);const i=getComputedStyle(r).getPropertyValue(le("duration"));i&&(n.defaultDuration=i),((e,t)=>{requestAnimationFrame((()=>{e.style.animationPlayState="running",requestAnimationFrame((()=>t(void 0)))}))})(r,o)})),fe=async e=>oe.has(e)?oe.get(e):(e=>{const t={},n=[];for(const[r,o]of Object.entries(ie))for(const[i,a]of Object.entries(ae)){const s=`marp-${o}transition${a}-${e}`;n.push(ue(s).then((e=>{t[i]=t[i]||{},t[i][r]=e?{...e,name:s}:void 0})))}return Promise.all(n).then((()=>t))})(e).then((t=>(oe.set(e,t),t))),me=e=>Object.values(e).flatMap(Object.values).every((e=>!e)),ge=(e,{type:t,backward:n})=>{const r=e[n?"backward":"forward"],o=(()=>{const e=r[t],n=e=>({[ce]:e.name});if(e)return n(e);if(r.both){const e=n(r.both);return"incoming"===t&&(e[se("direction")]="reverse"),e}})();return!o&&n?ge(e,{type:t,backward:!1}):o||{[ce]:"__bespoke_marp_transition_no_animation__"}},pe=e=>{if(e)try{const t=JSON.parse(e);if((e=>{if("object"!=typeof e)return!1;const t=e;return"string"==typeof t.name&&(void 0===t.duration||"string"==typeof t.duration)})(t))return t}catch(e){}},ve="_tSId",he="_tA",ye="bespoke-marp-transition-warming-up",be=window.matchMedia("(prefers-reduced-motion: reduce)"),we="__bespoke_marp_transition_reduced_outgoing__",xe="__bespoke_marp_transition_reduced_incoming__",ke={forward:{both:void 0,incoming:{name:xe},outgoing:{name:we}},backward:{both:void 0,incoming:{name:xe},outgoing:{name:we}}},$e=e=>{if(!document.startViewTransition)return;const t=t=>(void 0!==t&&(e._tD=t),e._tD);let n;t(!1),((...e)=>{const t=[...new Set(e).values()];return Promise.all(t.map((e=>fe(e)))).then()})(...Array.from(document.querySelectorAll("section[data-transition], section[data-transition-back]")).flatMap((e=>[e.dataset.transition,e.dataset.transitionBack].flatMap((e=>{const t=pe(e);return[null==t?void 0:t.name,(null==t?void 0:t.builtinFallback)?`__builtin__${t.name}`:void 0]})).filter((e=>!!e))))).then((()=>{document.querySelectorAll("style").forEach((e=>{e.innerHTML=e.innerHTML.replace(/--marp-transition-duration:[^;}]*[;}]/g,(e=>e.slice(0,-1)+"!important"+e.slice(-1)))}))}));const r=(n,{back:r,cond:o})=>i=>{var a;const s=t();if(s)return!!i[he]||!("object"!=typeof s||(s.skipTransition(),!i.forSync));if(!o(i))return!0;const l=e.slides[e.slide()],c=()=>{var e;return null!==(e=i.back)&&void 0!==e?e:r},d="data-transition"+(c()?"-back":""),u=l.querySelector(`section[${d}]`);if(!u)return!0;const f=pe(null!==(a=u.getAttribute(d))&&void 0!==a?a:void 0);return!f||((async(e,{builtinFallback:t=!0}={})=>{let n=await fe(e);if(me(n)){if(!t)return;return n=await fe(`__builtin__${e}`),me(n)?void 0:n}return n})(f.name,{builtinFallback:f.builtinFallback}).then((e=>{if(!e){t(!0);try{n(i)}finally{t(!1)}return}let r=e;be.matches&&(console.warn("Use a constant animation to transition because preferring reduced motion by viewer has detected."),r=ke);const o=document.getElementById(ve);o&&o.remove();const a=document.createElement("style");a.id=ve,document.head.appendChild(a),((e,t)=>{const n=[`:root{${le("direction")}:${t.backward?-1:1};}`,":root:has(.bespoke-marp-inactive){cursor:none;}"],r=t=>{var n,o,i;const a=(null===(n=e[t].both)||void 0===n?void 0:n.defaultDuration)||(null===(o=e[t].outgoing)||void 0===o?void 0:o.defaultDuration)||(null===(i=e[t].incoming)||void 0===i?void 0:i.defaultDuration);return"forward"===t?a:a||r("forward")},o=t.duration||r(t.backward?"backward":"forward");void 0!==o&&n.push(`::view-transition-group(*){${de}:${o};}`);const i=e=>Object.entries(e).map((([e,t])=>`${e}:${t};`)).join("");return n.push(`::view-transition-old(root){${i(ge(e,{...t,type:"outgoing"}))}}`,`::view-transition-new(root){${i(ge(e,{...t,type:"incoming"}))}}`),n})(r,{backward:c(),duration:f.duration}).forEach((e=>{var t;return null===(t=a.sheet)||void 0===t?void 0:t.insertRule(e)}));const s=document.documentElement.classList;s.add(ye);let l=!1;const d=()=>{l||(n(i),l=!0,s.remove(ye))},u=()=>{t(!1),a.remove(),s.remove(ye)};try{t(!0);const e=document.startViewTransition(d);t(e),e.finished.finally(u)}catch(e){console.error(e),d(),u()}})),!1)};e.on("prev",r((t=>e.prev({...t,[he]:!0})),{back:!0,cond:e=>{var t;return e.index>0&&!((null===(t=e.fragment)||void 0===t||t)&&n.fragmentIndex>0)}})),e.on("next",r((t=>e.next({...t,[he]:!0})),{cond:t=>t.index+1<e.slides.length&&!(n.fragmentIndex+1<n.fragments.length)})),setTimeout((()=>{e.on("slide",r((t=>e.slide(t.index,{...t,[he]:!0})),{cond:t=>{const n=e.slide();return t.index!==n&&(t.back=t.index<n,!0)}}))}),0),e.on("fragment",(e=>{n=e}))};let Ee;const Le=()=>(void 0===Ee&&(Ee="wakeLock"in navigator&&navigator.wakeLock),Ee),Se=async()=>{const e=Le();if(e)try{return await e.request("screen")}catch(e){console.warn(e)}return null},Pe=async()=>{if(!Le())return;let e;const t=()=>{e&&"visible"===document.visibilityState&&Se()};for(const e of["visibilitychange","fullscreenchange"])document.addEventListener(e,t);return e=await Se(),e};((e=document.getElementById(":$p"))=>{(()=>{const e=f("view");r.dataset.bespokeView=e===a||e===i?e:""})();const t=(e=>{const t=f(e);return m({[e]:void 0}),t})("sync")||void 0;n.from(e,((...e)=>{const t=s.findIndex((e=>u()===e));return e.map((([e,n])=>e[t]&&n)).filter((e=>e))})([[1,1,0],G({key:t})],[[1,1,1],W(e)],[[1,1,0],_],[[1,1,1],b],[[1,0,0],S()],[[1,1,1],T],[[1,1,1],z({history:!1})],[[1,1,0],I()],[[1,1,0],E],[[1,0,0],J],[[1,1,0],re()],[[1,0,0],M()],[[1,0,0],$e],[[1,1,1],w],[[1,1,0],Pe]))})()}();</script></body></html>

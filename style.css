@@ -1,0 +1,298 @@
+/* Google Fonts Import Link */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900&display=swap');
+
+:root {
+    /* //Base Colors// */
+    --body-color: #e7ecec;
+    --sidebar-color: #f2f4f4;
+    --primary-color: #2a96a9;
+    --primary-color-light: #F6F5FF;
+    --primary-color-dark: #265c66;
+    --toggle-color: #ddd;
+    --text-color: #262626;
+    --link-color: #2a96a9;
+
+    /* //transition colors// */
+    --tran-03: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.4s ease;
+    --tran-05: all 0.5s ease;
+
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ========================================================================= *
+ * Html/Body
+ * ========================================================================= */
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    position: relative;
+    background: var(--body-color);
+    color: var(--text-color);
+    font-family: 'Noto Sans', sans-serif;
+}
+
+/* ========================================================================= *
+ * Main
+ * ========================================================================= */
+
+#main {
+    display: flex;
+    position: relative;
+    min-height: 100vh;
+    align-items: stretch;
+}
+
+div.content {
+    position: justify;
+    font-size: 20px;
+    flex: 1;
+    padding: 30px;
+    padding-bottom: 30px;
+}
+
+div.content a{
+    color: #2a96a9;
+    text-decoration: none;
+}
+
+
+
+/* ------------------------------------------------------------------------- *
+ * Splash Page
+ * ------------------------------------------------------------------------- */
+
+#home {
+    position: absolute;
+    max-width: 70%;
+}
+
+/* ------------------------------------------------------------------------- *
+ * Slide View
+ * ------------------------------------------------------------------------- */
+
+#slideFrame {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+#slideView {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+}
+
+#slideButtons {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    margin: 8px 0;
+}
+
+#slideButtonsCenter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#slideName {
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+}
+
+#slidePdf {
+    margin-top: 8px;
+
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+}
+
+#slideButtons :is(button, a) {
+    border: none;
+    outline: none;
+    background-color: var(--primary-color);
+    padding: 10px 16px;
+    font-size: 14px;
+    color: #F6F5FF;
+    cursor: pointer;
+    z-index: 1;
+
+    text-decoration: none;
+}
+#slideButtons :is(button, a):hover {
+    background-color: var(--primary-color-dark);
+}
+
+#slideButtons :is(button) span {
+    display: block;
+}
+#slideButtons button span:first-child {
+    font-weight: 600;
+    font-size: 16px;
+}
+#prevSlide span {
+    text-align: left;;
+}
+#nextSlide span {
+    text-align: right;
+}
+
+/* ========================================================================= *
+ * Sidebar
+ * ========================================================================= */
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    padding: 20px 16px;
+    background: var(--sidebar-color);
+    overflow-y: auto;
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* ------------------------------------------------------------------------- *
+ * Sidebar header
+ * ------------------------------------------------------------------------- */
+
+.sidebar .sidebar-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+
+.sidebar .sidebar-logo {
+    width: 48px;
+
+}
+
+.sidebar .sidebar-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin-left: 20px;
+}
+
+/* ------------------------------------------------------------------------- *
+ * Sidebar categories
+ * ------------------------------------------------------------------------- */
+
+.sidebar .sidebar-category {
+
+}
+
+.sidebar-category .category-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.sidebar-category:is(.selected, :hover) .category-name {
+    text-decoration: underline;
+}
+
+.sidebar-category .category-name {
+    margin-right: 20px;
+    font-size: 20px;
+}
+
+.sidebar-category .dropdown-arrow {
+    user-select: none;
+    font-size: 20px;
+    transition: transform 0.25s ease-in-out;
+}
+
+.sidebar-category.selected .dropdown-arrow {
+    transform: rotate(90deg);
+}
+
+/* ------------------------------------------------------------------------- *
+ * Sidebar slide links
+ * ------------------------------------------------------------------------- */
+
+.sidebar-category .category-slides {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+    transition: height 0.25s ease-in-out;
+}
+
+.category-slides .slide-link {
+    display: block;
+    height: 25px;
+    padding-left: 16px;
+    font-size: 16px;
+    font-weight: 400;
+    cursor: pointer;
+
+    /* prevent word-wrap, necessary for accurate div height calc */
+    white-space: pre;
+}
+.category-slides .slide-link:hover {
+    text-decoration: underline;
+    color: var(--link-color)
+}
+
+/*.sidebar li .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    font-size: 20px;
+}*/
+
+/*.sidebar li .icon,
+.sidebar li .text{
+    font-size: 15px;
+    color: var(--text-color);
+}*/
+
+/* ========================================================================= *
+ * Bottom Nav
+ * ========================================================================= */
+.slider{
+    margin: 40px auto;
+    width: 50%;
+}
+
+.btn {
+    border: none;
+    outline: none;
+    background-color: var(--primary-color);
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #F6F5FF;
+    cursor: pointer;
+    margin: 5px auto;
+}
+.btn:hover{
+    background-color: #265c66;
+}
+

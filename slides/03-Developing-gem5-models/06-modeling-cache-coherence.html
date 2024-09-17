@@ -1,0 +1,918 @@
+<!DOCTYPE html><html lang="en-US"><head><title>Modeling Cache Coherence in gem5</title><meta property="og:title" content="Modeling Cache Coherence in gem5"><meta charset="UTF-8"><meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"><meta name="apple-mobile-web-app-capable" content="yes"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta property="og:type" content="website"><meta name="twitter:card" content="summary"><style>@media screen{body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button{-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none;background-color:transparent;border:0;color:inherit;cursor:pointer;font-size:inherit;opacity:.8;outline:none;padding:0;transition:opacity .2s linear}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:disabled,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:disabled,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:disabled,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:disabled{cursor:not-allowed;opacity:.15!important}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover{opacity:1}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:active,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:active,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover:active,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover:active{opacity:.6}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:not(:disabled),body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button:hover:not(:disabled),body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button:hover:not(:disabled),body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button:hover:not(:disabled){transition:none}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button.bespoke-marp-presenter-info-page-prev{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNNjggOTAgMjggNTBsNDAtNDAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button.bespoke-marp-presenter-info-page-next{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJtMzIgOTAgNDAtNDAtNDAtNDAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen]{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDpub25lO3N0cm9rZTojZmZmO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6NXB4fTwvc3R5bGU+PC9kZWZzPjxyZWN0IHdpZHRoPSI4MCIgaGVpZ2h0PSI2MCIgeD0iMTAiIHk9IjIwIiBjbGFzcz0iYSIgcng9IjUuNjciLz48cGF0aCBkPSJNNDAgNzBIMjBWNTBtMjAgMEwyMCA3MG00MC00MGgyMHYyMG0tMjAgMCAyMC0yMCIgY2xhc3M9ImEiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button.exit[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button.exit[data-bespoke-marp-osc=fullscreen]{background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDpub25lO3N0cm9rZTojZmZmO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6NXB4fTwvc3R5bGU+PC9kZWZzPjxyZWN0IHdpZHRoPSI4MCIgaGVpZ2h0PSI2MCIgeD0iMTAiIHk9IjIwIiBjbGFzcz0iYSIgcng9IjUuNjciLz48cGF0aCBkPSJNMjAgNTBoMjB2MjBtLTIwIDAgMjAtMjBtNDAgMEg2MFYzMG0yMCAwTDYwIDUwIiBjbGFzcz0iYSIvPjwvc3ZnPg==")}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter]{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNODcuOCA0Ny41Qzg5IDUwIDg3LjcgNTIgODUgNTJIMzVhOC43IDguNyAwIDAgMS03LjItNC41bC0xNS42LTMxQzExIDE0IDEyLjIgMTIgMTUgMTJoNTBhOC44IDguOCAwIDAgMSA3LjIgNC41ek02MCA1MnYzNm0tMTAgMGgyME00NSA0MmgyMCIvPjwvc3ZnPg==") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button.bespoke-marp-presenter-note-bigger{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNMTIgNTBoODBNNTIgOTBWMTAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button.bespoke-marp-presenter-note-smaller{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1IiBkPSJNMTIgNTBoODAiLz48L3N2Zz4=") no-repeat 50%;background-size:contain;overflow:hidden;text-indent:100%;white-space:nowrap}}@keyframes __bespoke_marp_transition_reduced_outgoing__{0%{opacity:1}to{opacity:0}}@keyframes __bespoke_marp_transition_reduced_incoming__{0%{mix-blend-mode:plus-lighter;opacity:0}to{mix-blend-mode:plus-lighter;opacity:1}}.bespoke-marp-note,.bespoke-marp-osc,.bespoke-progress-parent{display:none;transition:none}@media screen{::view-transition-group(*){animation-duration:var(--marp-bespoke-transition-animation-duration,.5s);animation-timing-function:ease}::view-transition-new(*),::view-transition-old(*){animation-delay:0s;animation-direction:var(--marp-bespoke-transition-animation-direction,normal);animation-duration:var(--marp-bespoke-transition-animation-duration,.5s);animation-fill-mode:both;animation-name:var(--marp-bespoke-transition-animation-name,var(--marp-bespoke-transition-animation-name-fallback,__bespoke_marp_transition_no_animation__));mix-blend-mode:normal}::view-transition-old(*){--marp-bespoke-transition-animation-name-fallback:__bespoke_marp_transition_reduced_outgoing__;animation-timing-function:ease}::view-transition-new(*){--marp-bespoke-transition-animation-name-fallback:__bespoke_marp_transition_reduced_incoming__;animation-timing-function:ease}::view-transition-new(root),::view-transition-old(root){animation-timing-function:linear}::view-transition-new(__bespoke_marp_transition_osc__),::view-transition-old(__bespoke_marp_transition_osc__){animation-duration:0s!important;animation-name:__bespoke_marp_transition_osc__!important}::view-transition-new(__bespoke_marp_transition_osc__){opacity:0!important}.bespoke-marp-transition-warming-up::view-transition-group(*),.bespoke-marp-transition-warming-up::view-transition-new(*),.bespoke-marp-transition-warming-up::view-transition-old(*){animation-play-state:paused!important}body,html{height:100%;margin:0}body{background:#000;overflow:hidden}svg.bespoke-marp-slide{content-visibility:hidden;opacity:0;pointer-events:none;z-index:-1}svg.bespoke-marp-slide:not(.bespoke-marp-active) *{view-transition-name:none!important}svg.bespoke-marp-slide.bespoke-marp-active{content-visibility:visible;opacity:1;pointer-events:auto;z-index:0}svg.bespoke-marp-slide.bespoke-marp-active.bespoke-marp-active-ready *{animation-name:__bespoke_marp__!important}@supports not (content-visibility:hidden){svg.bespoke-marp-slide[data-bespoke-marp-load=hideable]{display:none}svg.bespoke-marp-slide[data-bespoke-marp-load=hideable].bespoke-marp-active{display:block}}}@media screen and (prefers-reduced-motion:reduce){svg.bespoke-marp-slide *{view-transition-name:none!important}}@media screen{[data-bespoke-marp-fragment=inactive]{visibility:hidden}body[data-bespoke-view=""] .bespoke-marp-parent,body[data-bespoke-view=next] .bespoke-marp-parent{inset:0;position:absolute}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc{view-transition-name:__bespoke_marp_transition_osc__;background:rgba(0,0,0,.65);border-radius:7px;bottom:50px;color:#fff;contain:paint;display:block;font-family:Helvetica,Arial,sans-serif;font-size:16px;left:50%;line-height:0;opacity:1;padding:12px;position:absolute;touch-action:manipulation;transform:translateX(-50%);transition:opacity .2s linear;-webkit-user-select:none;user-select:none;white-space:nowrap;will-change:transform;z-index:1}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>*,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>*{margin-left:6px}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>:first-child,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>:first-child{margin-left:0}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>span,body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>span{opacity:.8}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>span[data-bespoke-marp-osc=page],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>span[data-bespoke-marp-osc=page]{display:inline-block;min-width:140px;text-align:center}body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=""] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=fullscreen],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=next],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=presenter],body[data-bespoke-view=next] .bespoke-marp-parent>.bespoke-marp-osc>button[data-bespoke-marp-osc=prev]{height:32px;line-height:32px;width:32px}body[data-bespoke-view=""] .bespoke-marp-parent.bespoke-marp-inactive,body[data-bespoke-view=next] .bespoke-marp-parent.bespoke-marp-inactive{cursor:none}body[data-bespoke-view=""] .bespoke-marp-parent.bespoke-marp-inactive>.bespoke-marp-osc,body[data-bespoke-view=next] .bespoke-marp-parent.bespoke-marp-inactive>.bespoke-marp-osc{opacity:0;pointer-events:none}body[data-bespoke-view=""] svg.bespoke-marp-slide,body[data-bespoke-view=next] svg.bespoke-marp-slide{height:100%;left:0;position:absolute;top:0;width:100%}body[data-bespoke-view=""] .bespoke-progress-parent{background:#222;display:flex;height:5px;width:100%}body[data-bespoke-view=""] .bespoke-progress-parent+.bespoke-marp-parent{top:5px}body[data-bespoke-view=""] .bespoke-progress-parent .bespoke-progress-bar{background:#0288d1;flex:0 0 0;transition:flex-basis .2s cubic-bezier(0,1,1,1)}body[data-bespoke-view=next]{background:transparent}body[data-bespoke-view=presenter]{background:#161616}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container{display:grid;font-family:Helvetica,Arial,sans-serif;grid-template:"current dragbar next" minmax(140px,1fr) "current dragbar note" 2fr "info    dragbar note" 3em;grid-template-columns:minmax(3px,var(--bespoke-marp-presenter-split-ratio,66%)) 0 minmax(3px,1fr);height:100%;left:0;position:absolute;top:0;width:100%}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent{grid-area:current;overflow:hidden;position:relative}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent svg.bespoke-marp-slide{height:calc(100% - 40px);left:20px;pointer-events:none;position:absolute;top:20px;-webkit-user-select:none;user-select:none;width:calc(100% - 40px)}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-parent svg.bespoke-marp-slide.bespoke-marp-active{filter:drop-shadow(0 3px 10px rgba(0,0,0,.5))}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container{background:#0288d1;cursor:col-resize;grid-area:dragbar;margin-left:-3px;opacity:0;position:relative;transition:opacity .4s linear .1s;width:6px;z-index:10}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container:hover{opacity:1}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-dragbar-container.active{opacity:1;transition-delay:0s}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container{background:#222;cursor:pointer;display:none;grid-area:next;overflow:hidden;position:relative}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container.active{display:block}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-next-container iframe.bespoke-marp-presenter-next{background:transparent;border:0;display:block;filter:drop-shadow(0 3px 10px rgba(0,0,0,.5));height:calc(100% - 40px);left:20px;pointer-events:none;position:absolute;top:20px;-webkit-user-select:none;user-select:none;width:calc(100% - 40px)}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container{background:#222;color:#eee;grid-area:note;position:relative;z-index:1}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container button{height:1.5em;line-height:1.5em;width:1.5em}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-wrapper{display:block;inset:0;position:absolute}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-buttons{background:rgba(0,0,0,.65);border-radius:4px;bottom:0;display:flex;gap:4px;margin:12px;opacity:0;padding:6px;pointer-events:none;position:absolute;right:0;transition:opacity .2s linear}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-buttons:focus-within,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-presenter-note-wrapper:focus-within+.bespoke-marp-presenter-note-buttons,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container:hover .bespoke-marp-presenter-note-buttons{opacity:1;pointer-events:auto}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note{word-wrap:break-word;box-sizing:border-box;font-size:calc(1.1em*var(--bespoke-marp-note-font-scale, 1));height:calc(100% - 40px);margin:20px;overflow:auto;padding-right:3px;scrollbar-color:hsla(0,0%,93%,.5) transparent;scrollbar-width:thin;white-space:pre-wrap;width:calc(100% - 40px)}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar{width:6px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar-track{background:transparent}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note::-webkit-scrollbar-thumb{background:hsla(0,0%,93%,.5);border-radius:6px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note:empty{pointer-events:none}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note.active{display:block}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note p:first-child{margin-top:0}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-note-container .bespoke-marp-note p:last-child{margin-bottom:0}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container{align-items:center;box-sizing:border-box;color:#eee;display:flex;flex-wrap:nowrap;grid-area:info;justify-content:center;overflow:hidden;padding:0 10px}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-time,body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer{box-sizing:border-box;display:block;padding:0 10px;white-space:nowrap;width:100%}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container button{height:1.5em;line-height:1.5em;width:1.5em}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page{order:2;text-align:center}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-page .bespoke-marp-presenter-info-page-text{display:inline-block;min-width:120px;text-align:center}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-time{color:#999;order:1;text-align:left}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer{color:#999;order:3;text-align:right}body[data-bespoke-view=presenter] .bespoke-marp-presenter-container .bespoke-marp-presenter-info-container .bespoke-marp-presenter-info-timer:hover{cursor:pointer}}@media print{.bespoke-marp-presenter-info-container,.bespoke-marp-presenter-next-container,.bespoke-marp-presenter-note-container{display:none}}</style><style>@charset "UTF-8";@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');div#\:\$p>svg>foreignObject>section{width:1280px;height:720px;box-sizing:border-box;overflow:hidden;position:relative;scroll-snap-align:center center}div#\:\$p>svg>foreignObject>section:after{bottom:0;content:attr(data-marpit-pagination);padding:inherit;pointer-events:none;position:absolute;right:0}div#\:\$p>svg>foreignObject>section:not([data-marpit-pagination]):after{display:none}/* Normalization */div#\:\$p>svg>foreignObject>section :is(h1,marp-h1){font-size:2em;margin:0.67em 0}div#\:\$p>svg>foreignObject>section video::-webkit-media-controls{will-change:transform}@page{size:1280px 720px;margin:0}@media print{body,html{background-color:#fff;margin:0;page-break-inside:avoid;break-inside:avoid-page}div#\:\$p>svg>foreignObject>section{page-break-before:always;break-before:page}div#\:\$p>svg>foreignObject>section,div#\:\$p>svg>foreignObject>section *{-webkit-print-color-adjust:exact!important;animation-delay:0s!important;animation-duration:0s!important;color-adjust:exact!important;transition:none!important}div#\:\$p>svg[data-marpit-svg]{display:block;height:100vh;width:100vw}}div#\:\$p>svg>foreignObject>:where(section){container-type:size}div#\:\$p>svg>foreignObject>section img[data-marp-twemoji]{background:transparent;height:1em;margin:0 .05em 0 .1em;vertical-align:-.1em;width:1em}
+/*!
+ * Marp gem5 theme
+ * @theme gem5
+ * @author Jason Lowe-Power
+ *
+ * @auto-scaling true
+ * @size 16:9 1280px 720px
+ * @size 4:3 960px 720px
+ */div#\:\$p>svg>foreignObject>:where(section):not([root]){--gem5-gem5:#008EB0;--gem5-background:#F6F8FA;--gem5-light:#c8eaf3;--gem5-dark:#00627a;--gem5-gray:#77787b;--code-line-height:calc(var(--marpit-root-font-size, 1rem) * 2);--code-font-size:calc(var(--marpit-root-font-size, 1rem) * 1.4)}div#\:\$p>svg>foreignObject>section{color:black;font-size:calc(var(--marpit-root-font-size, 1rem) * 1.6);font-family:sans-serif;line-height:calc(var(--marpit-root-font-size, 1rem) * 2);padding:70px;background-color:var(--gem5-background);background-image:url("../themes/gem5ColorLong.svg");background-repeat:no-repeat;background-position-x:center;background-size:220px;background-position-y:97%}div#\:\$p>svg>foreignObject>section{--marpit-root-font-size:calc(var(--marpit-root-font-size, 1rem) * 1.6)}div#\:\$p>svg>foreignObject>section li{margin-bottom:calc(var(--marpit-root-font-size, 1rem) * 0.2)}div#\:\$p>svg>foreignObject>section ul{margin-bottom:calc(var(--marpit-root-font-size, 1rem) * 0.5)}
+
+/* Move the title of the slide up a bit */div#\:\$p>svg>foreignObject>section>:first-child,div#\:\$p>svg>foreignObject>section>header:first-child+*{margin-top:0}
+
+/* Draw a triangle on the left of the title */div#\:\$p>svg>foreignObject>section :is(h2,marp-h2):before{content:"";position:absolute;top:65px;left:-10px;width:0;height:0;border-left:30px solid transparent;border-right:30px solid transparent;border-bottom:40px solid var(--gem5-gem5);rotate:90deg}
+
+/* Draw a triangle in the lower right */div#\:\$p>svg>foreignObject>section:before{content:"";position:absolute;bottom:0;right:0;width:0;height:0;border-left:100px solid transparent;border-top:100px solid var(--gem5-gem5);rotate:90deg}
+
+/* Add an image to the bottom center of the page */div#\:\$p>svg>foreignObject>section footer{position:fixed;left:0;right:0;bottom:60px;height:100px;margin-bottom:-80px}div#\:\$p>svg>foreignObject>section footer img{height:60px;display:block;margin:0 auto}
+
+/* For the page number */div#\:\$p>svg>foreignObject>section:after{right:-50px;bottom:-55px;font-size:80%;color:var(--gem5-light)}div#\:\$p>svg>foreignObject>section:after{--marpit-root-font-size:80%}div#\:\$p>svg>foreignObject>section a{color:var(--gem5-gem5)}div#\:\$p>svg>foreignObject>section blockquote{position:relative;margin:calc(var(--marpit-root-font-size, 1rem) * 0.6) 0;padding:0 calc(var(--marpit-root-font-size, 1rem) * 1.2);border-left:4px solid var(--gem5-gem5);background-color:var(--gem5-light)}div#\:\$p>svg>foreignObject>section blockquote a{color:var(--gem5-dark)}
+
+/****************************************************/
+/* For title page */
+/* Remove the triangle */div#\:\$p>svg>foreignObject>section.title :is(h2,marp-h2):before{border:none}
+
+/* Remove the triangle in the lower right */div#\:\$p>svg>foreignObject>section.title:before{border:none}
+
+/* Remove the page number */div#\:\$p>svg>foreignObject>section.title:after{display:none}
+
+/* Remove the bottom image */div#\:\$p>svg>foreignObject>section.title footer img{display:none}div#\:\$p>svg>foreignObject>section.title :is(h2,marp-h2){font-size:calc(var(--marpit-root-font-size, 1rem) * 5);line-height:calc(var(--marpit-root-font-size, 1rem) * 5);margin-top:50px;display:block;text-align:center;width:60%}
+
+/* gem5 logo on the right */div#\:\$p>svg>foreignObject>section.title{background-image:url("../../slides/themes/gem5ColorVert.svg");background-repeat:no-repeat;background-position:86% 50%;background-size:440px}
+
+/* title on the left */div#\:\$p>svg>foreignObject>section.title p{width:60%;font-size:calc(var(--marpit-root-font-size, 1rem) * 2.5);line-height:calc(var(--marpit-root-font-size, 1rem) * 2.5)}
+
+/****************************************************/
+/* For two-column layout */div#\:\$p>svg>foreignObject>section.two-col{columns:2;display:block}div#\:\$p>svg>foreignObject>section.two-col :is(h2,marp-h2){column-span:all}div#\:\$p>svg>foreignObject>section.two-col :is(h3,marp-h3){break-before:column}
+
+/****************************************************/
+/* For centering images */div#\:\$p>svg>foreignObject>section.center-image img{display:block;margin:auto}
+
+/* For adding a border to images */div#\:\$p>svg>foreignObject>section.border-image img{border:1px solid var(--gem5-dark)}
+
+/* For altering logo position/appearance */div#\:\$p>svg>foreignObject>section.logo-left{background-position-x:21%}div#\:\$p>svg>foreignObject>section.no-logo{background-image:none}
+
+/****************************************************/
+/* For title cards at the beginning of a section, e.g. Intro to ..., etc.
+   Has a blue gradient. From Erin and Mysore
+*/div#\:\$p>svg>foreignObject>section.start :is(h2,marp-h2){display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;height:100%;font-size:calc(var(--marpit-root-font-size, 1rem) * 4);font-weight:bold;line-height:75px;background:linear-gradient(to right,rgb(67,124,205),rgb(69,214,202));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+/* Remove the triangle */div#\:\$p>svg>foreignObject>section.start :is(h2,marp-h2):before{border:none}
+
+/****************************************************/
+/* For 5 column/full outline */div#\:\$p>svg>foreignObject>section.outline :is(h2,marp-h2){column-span:all}div#\:\$p>svg>foreignObject>section.outline{column-count:5;font-size:calc(var(--marpit-root-font-size, 1rem) * 1.3);line-height:calc(var(--marpit-root-font-size, 1rem) * 1.3)}div#\:\$p>svg>foreignObject>section.outline{--marpit-root-font-size:calc(var(--marpit-root-font-size, 1rem) * 1.3)}div#\:\$p>svg>foreignObject>section.outline ul{list-style-type:none;padding:0;margin:0;padding-bottom:10px}div#\:\$p>svg>foreignObject>section.outline li{margin:0;padding-bottom:5px}div#\:\$p>svg>foreignObject>section.outline ul ul{list-style-type:"- ";padding-left:20px}div#\:\$p>svg>foreignObject>section.outline ul ul ul{display:none}div#\:\$p>svg>foreignObject>section.outline :is(h3,marp-h3){break-before:column}
+
+/****************************************************/
+/* For reducing size of code blocks */div#\:\$p>svg>foreignObject>section.code-50-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.33)}div#\:\$p>svg>foreignObject>section.code-50-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.5)}div#\:\$p>svg>foreignObject>section.code-60-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.48)}div#\:\$p>svg>foreignObject>section.code-60-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.6)}div#\:\$p>svg>foreignObject>section.code-70-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.65)}div#\:\$p>svg>foreignObject>section.code-70-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.7)}div#\:\$p>svg>foreignObject>section.code-80-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.8)}div#\:\$p>svg>foreignObject>section.code-80-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.8)}
+
+/****************************************************/
+/* For code block */div#\:\$p>svg>foreignObject>section :is(pre,marp-pre){padding:10px;border-radius:5px;line-height:var(--code-line-height);background-color:#ffffff;box-shadow:1px 2px 4px var(--gem5-gray)}div#\:\$p>svg>foreignObject>section code{font-family:"Roboto Mono",monospace;background-color:#ffffff;font-size:var(--code-font-size)}
+
+/* Forces inherited height for code in headers */div#\:\$p>svg>foreignObject>section :is(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6)) code{font-size:inherit!important}
+
+/* Targets only inline code */div#\:\$p>svg>foreignObject>section :not(:is(pre,marp-pre))>code{font-size:calc(var(--code-font-size) * 0.9);padding:2px 6px;border:1px solid var(--gem5-gray);border-radius:5px}
+
+/* Targets hyperlinks that contain code */div#\:\$p>svg>foreignObject>section a:has(code){
+    /* Removes underlines */text-decoration:none}
+
+/*!
+  Theme: Default
+  Description: Original highlight.js style
+  Author: (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
+  Maintainer: @highlightjs/core-team
+  Website: https://highlightjs.org/
+  License: see project LICENSE
+  Touched: 2021
+*/
+
+/*
+This is left on purpose making default.css the single file that can be lifted
+as-is from the repository directly without the need for a build step
+
+Typically this "required" baseline CSS is added by `makestuff.js` during build.
+*/div#\:\$p>svg>foreignObject>section :is(pre,marp-pre) code.hljs{display:block;overflow-x:auto;padding:calc(var(--marpit-root-font-size, 1rem) * 1);background-color:#ffffff}div#\:\$p>svg>foreignObject>section code.hljs{padding:3px 5px}
+
+/* end baseline CSS */div#\:\$p>svg>foreignObject>section .hljs{background:#ffffff;color:#444}
+
+/* Base color: saturation 0; */div#\:\$p>svg>foreignObject>section .hljs-subst{
+    /* default */}
+
+/* purposely ignored */div#\:\$p>svg>foreignObject>section .hljs-attr,div#\:\$p>svg>foreignObject>section .hljs-formula,div#\:\$p>svg>foreignObject>section .hljs-params,div#\:\$p>svg>foreignObject>section .hljs-property{}div#\:\$p>svg>foreignObject>section .hljs-comment{color:#697070}div#\:\$p>svg>foreignObject>section .hljs-punctuation,div#\:\$p>svg>foreignObject>section .hljs-tag{color:#444a}div#\:\$p>svg>foreignObject>section .hljs-tag .hljs-attr,div#\:\$p>svg>foreignObject>section .hljs-tag .hljs-name{color:#444}div#\:\$p>svg>foreignObject>section .hljs-attribute,div#\:\$p>svg>foreignObject>section .hljs-doctag,div#\:\$p>svg>foreignObject>section .hljs-keyword,div#\:\$p>svg>foreignObject>section .hljs-meta .hljs-keyword,div#\:\$p>svg>foreignObject>section .hljs-name,div#\:\$p>svg>foreignObject>section .hljs-selector-tag{font-weight:bold}
+
+
+/* User color: hue: 0 */div#\:\$p>svg>foreignObject>section .hljs-deletion,div#\:\$p>svg>foreignObject>section .hljs-number,div#\:\$p>svg>foreignObject>section .hljs-quote,div#\:\$p>svg>foreignObject>section .hljs-selector-class,div#\:\$p>svg>foreignObject>section .hljs-selector-id,div#\:\$p>svg>foreignObject>section .hljs-string,div#\:\$p>svg>foreignObject>section .hljs-template-tag,div#\:\$p>svg>foreignObject>section .hljs-type{color:#880000}div#\:\$p>svg>foreignObject>section .hljs-section,div#\:\$p>svg>foreignObject>section .hljs-title{color:#880000;font-weight:bold}div#\:\$p>svg>foreignObject>section .hljs-link,div#\:\$p>svg>foreignObject>section .hljs-operator,div#\:\$p>svg>foreignObject>section .hljs-regexp,div#\:\$p>svg>foreignObject>section .hljs-selector-attr,div#\:\$p>svg>foreignObject>section .hljs-selector-pseudo,div#\:\$p>svg>foreignObject>section .hljs-symbol,div#\:\$p>svg>foreignObject>section .hljs-template-variable,div#\:\$p>svg>foreignObject>section .hljs-variable{color:#ab5656}
+
+/* Language color: hue: 90; */div#\:\$p>svg>foreignObject>section .hljs-literal{color:#695}div#\:\$p>svg>foreignObject>section .hljs-addition,div#\:\$p>svg>foreignObject>section .hljs-built_in,div#\:\$p>svg>foreignObject>section .hljs-bullet,div#\:\$p>svg>foreignObject>section .hljs-code{color:#397300}
+
+
+/* Meta color: hue: 200 */div#\:\$p>svg>foreignObject>section .hljs-meta{color:#1f7199}div#\:\$p>svg>foreignObject>section .hljs-meta .hljs-string{color:#38a}
+
+
+/* Misc effects */div#\:\$p>svg>foreignObject>section .hljs-emphasis{font-style:italic}div#\:\$p>svg>foreignObject>section .hljs-strong{font-weight:bold}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]{columns:initial!important;display:block!important;padding:0!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:before,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:before{display:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]{all:initial;display:flex;flex-direction:row;height:100%;overflow:hidden;width:100%}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container][data-marpit-advanced-background-direction=vertical]{flex-direction:column}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split]>div[data-marpit-advanced-background-container]{width:var(--marpit-advanced-background-split,50%)}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split=right]>div[data-marpit-advanced-background-container]{margin-left:calc(100% - var(--marpit-advanced-background-split, 50%))}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure{all:initial;background-position:center;background-repeat:no-repeat;background-size:cover;flex:auto;margin:0}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure>figcaption{position:absolute;border:0;clip:rect(0,0,0,0);height:1px;margin:-1px;overflow:hidden;padding:0;white-space:nowrap;width:1px}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content],div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo]{background:transparent!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo],div#\:\$p>svg[data-marpit-svg]>foreignObject[data-marpit-advanced-background=pseudo]{pointer-events:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background-split]{width:100%;height:100%}</style></head><body><div class="bespoke-marp-osc"><button data-bespoke-marp-osc="prev" tabindex="-1" title="Previous slide">Previous slide</button><span data-bespoke-marp-osc="page"></span><button data-bespoke-marp-osc="next" tabindex="-1" title="Next slide">Next slide</button><button data-bespoke-marp-osc="fullscreen" tabindex="-1" title="Toggle fullscreen (f)">Toggle fullscreen</button><button data-bespoke-marp-osc="presenter" tabindex="-1" title="Open presenter view (p)">Open presenter view</button></div><div id=":$p"><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="1" data-paginate="true" data-class="title" data-theme="gem5" lang="en-US" class="title" data-marpit-pagination="1" style="--paginate:true;--class:title;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="modeling-cache-coherence-in-gem5">Modeling Cache Coherence in gem5</h2>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="2" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="2" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="outline">Outline</h2>
+<ul>
+<li>A bit of history and coherence reminder</li>
+<li>Components of a SLICC protocol</li>
+<li>Debugging protocols</li>
+<li>Where to find things in Ruby</li>
+<li>Included protocols</li>
+</ul>
+<h3 id="what-were-not-going-to-do">What we're not going to do</h3>
+<p>Write a new protocol from scratch (we will fill in a few missing pieces, though)</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="3" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="3" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="gem5-history">gem5 history</h2>
+<p>M5 + GEMS = gem5</p>
+<p><strong>M5</strong>: &quot;Classic&quot; caches, CPU model, requestor/responder port interface</p>
+<p><strong>GEMS</strong>: Ruby + network</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="4" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="cache-coherence-reminder">Cache Coherence Reminder</h2>
+<p>Single-Writer Multiple-Reader (SWMR) invariant</p>
+<p><img src="06-modeling-cache-coherence-imgs/cache-coherence-example-1.drawio.svg" alt="cache coherence example" /></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-paginate="hold" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="4" style="--paginate:hold;--class:center-image;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="cache-coherence-reminder-1">Cache Coherence Reminder</h2>
+<p>Single-Writer Multiple-Reader (SWMR) invariant</p>
+<p><img src="06-modeling-cache-coherence-imgs/cache-coherence-example-2.drawio.svg" alt="cache coherence example" /></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="5" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="ruby-architecture">Ruby Architecture</h2>
+<p><img src="06-modeling-cache-coherence-imgs/ruby-architecture.drawio.svg" alt="ruby architecture: classic ports on each side of a black box" /></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="6" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="ruby-inside-the-black-box">Ruby Inside the Black Box</h2>
+<p><img src="06-modeling-cache-coherence-imgs/ruby-inside.drawio.svg" alt="Inside Ruby: controllers around an interconnect model cloud" /></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="7" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="ruby-components">Ruby Components</h2>
+<ul>
+<li><strong>Controller Models</strong> <em>(e.g, caches)</em>: Manage coherence state and issue requests</li>
+<li><strong>Controller Topology</strong> <em>(how the caches are connected)</em>: Determines how messages are routed</li>
+<li><strong>Interconnect Model</strong> <em>(e.g., on-chip routers)</em>: Determines performance of routing</li>
+<li><strong>Interface</strong> <em>(how to get messages in/out of Ruby)</em></li>
+</ul>
+<blockquote>
+<p><strong>Note</strong>: The main goal of Ruby is <em><strong>flexibility</strong></em>, not <em><strong>usability</strong></em>.</p>
+</blockquote>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="8" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="controller-models">Controller Models</h2>
+<ul>
+<li>Implemented in &quot;SLICC&quot;
+<ul>
+<li><strong>S</strong>pecification <strong>L</strong>anguage for <strong>I</strong>ncluding <strong>C</strong>ache <strong>C</strong>oherence</li>
+</ul>
+</li>
+<li>SLICC is a domain-specific language
+<ul>
+<li>Describes the coherence protocol</li>
+<li>Generates C++ code</li>
+<li>See <code>build/.../mem/ruby/protocol</code> for generated files (but you really don't want to read these.)</li>
+</ul>
+</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="9" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="cache-coherence-example-to-implement">Cache coherence example to implement</h2>
+<ul>
+<li><strong>MSI</strong>: Modified, Shared, Invalid</li>
+<li>From Nagarajan, Sorin, Hill, and Wood. <a href="https://link.springer.com/book/10.1007/978-3-031-01764-3">A Primer on Memory Consistency and Cache Coherence</a>.</li>
+<li><a href="https://www.gem5.org/pages/static/external/Sorin_et-al_Excerpt_8.2.pdf">Excerpt of 8.2 download</a></li>
+</ul>
+<p><img src="06-modeling-cache-coherence-imgs/msi-table.drawio.svg" alt="MSI state diagramo table" /></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="10" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="slicc-original-purpose">SLICC Original Purpose</h2>
+<ul>
+<li>Create these tables</li>
+</ul>
+<blockquote>
+<p>Actual output!</p>
+</blockquote>
+<p><img src="06-modeling-cache-coherence-imgs/msi-table-slicc.drawio.svg" alt="MSI state diagram table from SLICC" /></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="11" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="how-auto-generated-code-works">How auto generated code works</h2>
+<blockquote>
+<p><strong>IMPORTANT</strong> Never modify these files!</p>
+</blockquote>
+<p><img src="06-modeling-cache-coherence-imgs/auto-generated-code.drawio.svg" alt="Structure of auto-generated code" /></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="12" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="cache-state-machine-outline">Cache state machine outline</h2>
+<ul>
+<li><strong>Parameters</strong>: These are the <code>SimObject</code> parameters (and some special things)
+<ul>
+<li><strong>Cache memory</strong>: Where the data is stored</li>
+<li><strong>Message buffers</strong>: Sending and receiving messages from the network</li>
+</ul>
+</li>
+<li><strong>State declarations</strong>: The stable and transient states</li>
+<li><strong>Event declarations</strong>: State machine events that will be &quot;triggered&quot;</li>
+<li><strong>Other structures and functions</strong>: Entries, TBEs, get/setState, etc.</li>
+<li><strong>In ports</strong>: Trigger events based on incoming messages</li>
+<li><strong>Actions</strong>: Execute single operations on cache structures</li>
+<li><strong>Transitions</strong>: Move from state to state and execute actions</li>
+</ul>
+<p><strong>In ports</strong> read <strong>Cache memory</strong> then <em>trigger</em> <strong>Events</strong>.<br />
+<strong>Events</strong> cause <strong>Transitions</strong> based on the <strong>State</strong> which execute <strong>Actions</strong>.<br />
+<strong>Actions</strong> can update <strong>Cache memory</strong> and send <strong>Messages</strong> via <strong>Message buffers</strong>.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="13" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="cache-memory">Cache memory</h2>
+<ul>
+<li>See <code>src/mem/ruby/structures/CacheMemory</code></li>
+<li>Stores the cache data (in an <code>Entry</code> as defined in the SLICC file)</li>
+<li>Can use the function <code>cacheProbe()</code> to get the replacement address when a cache miss occurs
+<ul>
+<li>Interacts with replacement policies in <code>src/mem/cache/replacement_policies</code></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>IMPORTANT</strong>: Always call <code>setMRU()</code> when you access an <code>Entry</code> otherwise the replacement policy won't work.</p>
+</blockquote>
+<p>(You should never have to modify <code>CacheMemory</code> unless you're modifying Ruby itself.)</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="14" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="message-buffers">Message buffers</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c++">MessageBuffer * requestToDir, network=<span class="hljs-string">&quot;To&quot;</span>, virtual_network=<span class="hljs-string">&quot;0&quot;</span>, vnet_type=<span class="hljs-string">&quot;request&quot;</span>;
+MessageBuffer * forwardFromDir, network=<span class="hljs-string">&quot;From&quot;</span>, virtual_network=<span class="hljs-string">&quot;1&quot;</span>, vnet_type=<span class="hljs-string">&quot;forward&quot;</span>;
+</code></pre>
+<ul>
+<li>Declaring message buffers is quite confusing.</li>
+<li>The to/from declares them as either &quot;in_port&quot; type or &quot;out_port&quot; type.</li>
+<li>Virtual network is required when some messages have higher priority than others.</li>
+<li><code>vnet_type</code> is the message type. &quot;Response&quot; means that the message carries data and is used in Garnet for counting buffer credits.</li>
+<li>Message buffers have the following interface
+<ul>
+<li><code>peek()</code>: Get the head message</li>
+<li><code>pop()</code>: Remove the head message (Don't forget this or you'll have deadlock!)</li>
+<li><code>isReady()</code>: Check if there is a message to read</li>
+<li><code>recycle()</code>: Take the head message and put it on the tail (useful to get blocking messages out of the way)</li>
+<li><code>stallAndWait()</code>: Move the head message to a separate queue (don't forget to call <code>wakeUpDependents()</code> later!)</li>
+</ul>
+</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="15" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="hands-on-writing-and-debugging-protocols">Hands-on: Writing and debugging protocols</h2>
+<p>See <a href="../../materials/03-Developing-gem5-models/06-modeling-cache-coherence/README.md"><code>materials/03-Developing-gem5-models/06-modeling-cache-coherence/README.md</code></a></p>
+<p>You will:</p>
+<ol>
+<li>Declare the protocol for the compiler</li>
+<li>Fill in the message types</li>
+<li>Complete the message buffers</li>
+<li>Test the protocol</li>
+<li>Find a bug</li>
+<li>Fix the bug</li>
+<li>Test with the ruby random tester</li>
+</ol>
+<p>Step 0: Copy the template</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh"><span class="hljs-built_in">cp</span> -r materials/03-Developing-gem5-models/06-modeling-cache-coherence/MyMSI* gem5/src/mem/ruby/protocol
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="16" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="declaring-a-protocol">Declaring a protocol</h2>
+<p>Modify <a href="../../gem5/src/mem/ruby/protocol/MyMSI.slicc"><code>src/mem/ruby/protocol/MyMSI.slicc</code></a></p>
+<ul>
+<li>Need to tell Scons about the state machine files</li>
+<li>In a file called <code>&lt;protocol&gt;.slicc</code></li>
+<li>You can use the same state machine (<code>.sm</code>) files for multiple protocols</li>
+<li>Usually, you want to do this in the <a href="../../gem5/src/mem/ruby/protocol/"><code>src/mem/ruby/protocol</code></a> directory.</li>
+</ul>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-text">protocol &quot;MyMSI&quot;;
+include &quot;RubySlicc_interfaces.slicc&quot;;
+include &quot;MyMSI-msg.sm&quot;;
+include &quot;MyMSI-cache.sm&quot;;
+include &quot;MyMSI-dir.sm&quot;;
+</code></pre>
+<blockquote>
+<p>Remember the caveat that each protocol must be compiled separately.<br />
+Hopefully this isn't a requirement forever.</p>
+</blockquote>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="17" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="declaring-the-message-types">Declaring the message types</h2>
+<p>Modify <a href="../../gem5/src/mem/ruby/protocol/MyMSI-msg.sm"><code>src/mem/ruby/protocol/MyMSI-msg.sm</code></a></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c++"><span class="hljs-built_in">enumeration</span>(CoherenceRequestType, desc=<span class="hljs-string">&quot;Types of request messages&quot;</span>) {
+    GetS,       desc=<span class="hljs-string">&quot;Request from cache for a block with read permission&quot;</span>;
+    GetM,       desc=<span class="hljs-string">&quot;Request from cache for a block with write permission&quot;</span>;
+    PutS,       desc=<span class="hljs-string">&quot;Sent to directory when evicting a block in S (clean WB)&quot;</span>;
+    PutM,       desc=<span class="hljs-string">&quot;Sent to directory when evicting a block in M&quot;</span>;
+    ...
+}
+<span class="hljs-built_in">enumeration</span>(CoherenceResponseType, desc=<span class="hljs-string">&quot;Types of response messages&quot;</span>) {
+    Data,       desc=<span class="hljs-string">&quot;Contains the most up-to-date data&quot;</span>;
+    InvAck,     desc=<span class="hljs-string">&quot;Message from another cache that they have inv. the blk&quot;</span>;
+}
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="18" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="message-buffers-for-the-directory">Message buffers for the directory</h2>
+<p>Modify <a href="../../gem5/src/mem/ruby/protocol/MyMSI-dir.sm"><code>src/mem/ruby/protocol/MyMSI-dir.sm</code></a></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c++">    <span class="hljs-comment">// Forwarding requests from the directory *to* the caches.</span>
+    MessageBuffer *forwardToCache, network=<span class="hljs-string">&quot;To&quot;</span>, virtual_network=<span class="hljs-string">&quot;1&quot;</span>,
+          vnet_type=<span class="hljs-string">&quot;forward&quot;</span>;
+    <span class="hljs-comment">// Response from the directory *to* the cache.</span>
+    MessageBuffer *responseToCache, network=<span class="hljs-string">&quot;To&quot;</span>, virtual_network=<span class="hljs-string">&quot;2&quot;</span>,
+          vnet_type=<span class="hljs-string">&quot;response&quot;</span>;
+
+    <span class="hljs-comment">// Requests *from* the cache to the directory</span>
+    MessageBuffer *requestFromCache, network=<span class="hljs-string">&quot;From&quot;</span>, virtual_network=<span class="hljs-string">&quot;0&quot;</span>,
+          vnet_type=<span class="hljs-string">&quot;request&quot;</span>;
+
+    <span class="hljs-comment">// Responses *from* the cache to the directory</span>
+    MessageBuffer *responseFromCache, network=<span class="hljs-string">&quot;From&quot;</span>, virtual_network=<span class="hljs-string">&quot;2&quot;</span>,
+          vnet_type=<span class="hljs-string">&quot;response&quot;</span>;
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="19" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="compile-your-new-protocol">Compile your new protocol</h2>
+<p>First, register the protocol with the <code>Kconfig</code> builder. Modify <a href="../../gem5/src/mem/ruby/protocol/Kconfig"><code>src/mem/ruby/protocol/Kconfig</code></a>.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-Kconfig">config PROTOCOL
+    default &quot;MyMSI&quot; if RUBY_PROTOCOL_MYMSI
+</code></pre>
+<p>and</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-Kconfig">cont_choice &quot;Ruby protocol&quot;
+    config RUBY_PROTOCOL_MYMSI
+        bool &quot;MyMSI&quot;
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="20" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="run-scons-to-compile">Run scons to compile</h2>
+<p>Create a new build directory for the gem5 binary with your protocol. Let's start with the configuration from <code>build_opts/ALL</code> and modify it. You need to change the protocol, and you should enable the HTML output.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">scons defconfig build/ALL_MyMSI build_opts/ALL
+</code></pre>
+<p>Install the necessary locale and launch menuconfig.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>apt-get update &amp;&amp; apt-get install locales
+locale-gen en_US.UTF-8
+export LANG=&quot;en_US.UTF-8&quot;
+scons menuconfig build/ALL_MyMSI
+# Ruby -&gt; Enable -&gt; Ruby protocol -&gt; MyMSI
+</code></pre>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">scons -j$(<span class="hljs-built_in">nproc</span>) build/ALL_MyMSI/gem5.opt PROTOCOL=MyMSI
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="22" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="21" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="create-a-run-script">Create a run script</h2>
+<p>Modify <a href="../../gem5/configs/learning_gem5/part3/msi_caches.py"><code>configs/learning_gem5/part3/msi_caches.py</code></a> to use your new protocol.<br />
+This file sets up the Ruby protocol for the MSI caches already in gem5's codebase. We'll use it for simplicity.</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">build/ALL_MyMSI/gem5.opt configs/learning_gem5/part3/simple_ruby.py
+</code></pre>
+<p>While we're waiting on the compilation, let's look at some of the details of the code.<br />
+(It is way too much code to write all yourself today... so let's just read it)</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="23" data-paginate="true" data-class="code-60-percent" data-theme="gem5" lang="en-US" class="code-60-percent" data-marpit-pagination="22" style="--paginate:true;--class:code-60-percent;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="lets-look-at-some-code-in-port-definition">Let's look at some code: In-port definition</h2>
+<p>From <a href="../../gem5/src/learning_gem5/part3/MSI-cache.sm"><code>gem5/src/learning_gem5/part3/MSI-cache.sm</code></a></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c++"><span class="hljs-built_in">in_port</span>(mandatory_in, RubyRequest, mandatoryQueue) {
+    <span class="hljs-keyword">if</span> (mandatory_in.<span class="hljs-built_in">isReady</span>(<span class="hljs-built_in">clockEdge</span>())) {
+        <span class="hljs-built_in">peek</span>(mandatory_in, RubyRequest, block_on=<span class="hljs-string">&quot;LineAddress&quot;</span>) {
+            Entry cache_entry := <span class="hljs-built_in">getCacheEntry</span>(in_msg.LineAddress);
+            TBE tbe := TBEs[in_msg.LineAddress];
+            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">is_invalid</span>(cache_entry) &amp;&amp;
+                    cacheMemory.<span class="hljs-built_in">cacheAvail</span>(in_msg.LineAddress) == <span class="hljs-literal">false</span> ) {
+                Addr addr := cacheMemory.<span class="hljs-built_in">cacheProbe</span>(in_msg.LineAddress);
+                Entry victim_entry := <span class="hljs-built_in">getCacheEntry</span>(addr);
+                TBE victim_tbe := TBEs[addr];
+                <span class="hljs-built_in">trigger</span>(Event:Replacement, addr, victim_entry, victim_tbe);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">if</span> (in_msg.Type == RubyRequestType:LD ||
+                        in_msg.Type == RubyRequestType:IFETCH) {
+                    <span class="hljs-built_in">trigger</span>(Event:Load, in_msg.LineAddress, cache_entry,
+                            tbe);
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (in_msg.Type == RubyRequestType:ST) {
+                    <span class="hljs-built_in">trigger</span>(Event:Store, in_msg.LineAddress, cache_entry,
+                            tbe);
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-built_in">error</span>(<span class="hljs-string">&quot;Unexpected type from processor&quot;</span>);
+                }
+            }
+        }
+    }
+}
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="24" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="23" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="state-declarations">State declarations</h2>
+<p>See <a href="../../gem5/src/mem/ruby/protocol/MSI-cache.sm"><code>gem5/src/mem/ruby/protocol/MSI-cache.sm</code></a></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c++"><span class="hljs-built_in">state_declaration</span>(State, desc=<span class="hljs-string">&quot;Cache states&quot;</span>) {
+ I,      AccessPermission:Invalid, desc=<span class="hljs-string">&quot;Not present/Invalid&quot;</span>;
+ <span class="hljs-comment">// States moving out of I</span>
+ IS_D,   AccessPermission:Invalid, desc=<span class="hljs-string">&quot;Invalid, moving to S, waiting for data&quot;</span>;
+ IM_AD,  AccessPermission:Invalid, desc=<span class="hljs-string">&quot;Invalid, moving to M, waiting for acks and data&quot;</span>;
+ IM_A,   AccessPermission:Busy,    desc=<span class="hljs-string">&quot;Invalid, moving to M, waiting for acks&quot;</span>;
+
+ S,      AccessPermission:Read_Only, desc=<span class="hljs-string">&quot;Shared. Read-only, other caches may have the block&quot;</span>;
+ . . .
+}
+</code></pre>
+<p><strong><code>AccessPermission:...</code></strong>: Used for functional accesses<br />
+<strong><code>IS_D</code></strong>: Invalid, waiting for data to move to shared</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="25" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="24" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="event-declarations">Event declarations</h2>
+<p>See <a href="../../gem5/src/mem/ruby/protocol/MSI-cache.sm"><code>gem5/src/mem/ruby/protocol/MSI-cache.sm</code></a></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c++"><span class="hljs-built_in">enumeration</span>(Event, desc=<span class="hljs-string">&quot;Cache events&quot;</span>) {
+ <span class="hljs-comment">// From the processor/sequencer/mandatory queue</span>
+ Load,           desc=<span class="hljs-string">&quot;Load from processor&quot;</span>;
+ Store,          desc=<span class="hljs-string">&quot;Store from processor&quot;</span>;
+
+ <span class="hljs-comment">// Internal event (only triggered from processor requests)</span>
+ Replacement,    desc=<span class="hljs-string">&quot;Triggered when block is chosen as victim&quot;</span>;
+
+ <span class="hljs-comment">// Forwarded request from other cache via dir on the forward network</span>
+ FwdGetS,        desc=<span class="hljs-string">&quot;Directory sent us a request to satisfy GetS. &quot;</span>;
+                      <span class="hljs-string">&quot;We must have the block in M to respond to this.&quot;</span>;
+ FwdGetM,        desc=<span class="hljs-string">&quot;Directory sent us a request to satisfy GetM. &quot;</span>;
+ . . .
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="26" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="25" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="other-structures-and-functions">Other structures and functions</h2>
+<p>See <a href="../../gem5/src/mem/ruby/protocol/MSI-cache.sm"><code>gem5/src/mem/ruby/protocol/MSI-cache.sm</code></a></p>
+<ul>
+<li><strong>Entry</strong>: Declare the data structure for each entry
+<ul>
+<li>Block data, block state, sometimes others (e.g., tokens)</li>
+</ul>
+</li>
+<li><strong>TBE/TBETable</strong>: Transient Buffer Entry
+<ul>
+<li>Like an MSHR, but not exactly (allocated more often)</li>
+<li>Holds data for blocks in transient states</li>
+</ul>
+</li>
+<li><strong>get/set State, AccessPermissions, functional read/write</strong>
+<ul>
+<li>Required to implement AbstractController</li>
+<li>Usually just copy-paste from examples</li>
+</ul>
+</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="27" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="26" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="ports-and-message-buffers">Ports and message buffers</h2>
+<p>Not gem5 ports!</p>
+<ul>
+<li><strong>out_port</strong>: &quot;Rename&quot; the message buffer and declare message type</li>
+<li><strong>in_port</strong>: Much of the SLICC &quot;magic&quot; here.
+<ul>
+<li>Called every cycle</li>
+<li>Look at head message</li>
+<li>Trigger events</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>Note</strong>: (General rule of thumb) You should only ever have <code>if</code> statements in <code>in_port</code> blocks. Never in <strong>actions</strong>.</p>
+</blockquote>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="28" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="27" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="in-port-blocks">In port blocks</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c++"><span class="hljs-built_in">in_port</span>(forward_in, RequestMsg, forwardToCache) {
+ <span class="hljs-keyword">if</span> (forward_in.<span class="hljs-built_in">isReady</span>(<span class="hljs-built_in">clockEdge</span>())) {
+   <span class="hljs-built_in">peek</span>(forward_in, RequestMsg) {
+     Entry cache_entry := <span class="hljs-built_in">getCacheEntry</span>(in_msg.addr);
+     TBE tbe := TBEs[in_msg.addr];
+     <span class="hljs-keyword">if</span> (in_msg.Type == CoherenceRequestType:GetS) {
+        <span class="hljs-built_in">trigger</span>(Event:FwdGetS, in_msg.addr, cache_entry, tbe);
+     } <span class="hljs-keyword">else</span>
+ . . .
+</code></pre>
+<p>It's weird syntax that looks like a function call, but it's not.<br />
+Automatically populates a &quot;local variable&quot; called <code>in_msg</code>.</p>
+<p><code>trigger()</code> looks for a <em>transition</em>.<br />
+It also automatically ensures all resources are available to complete the transition.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="29" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="28" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="actions">Actions</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c++"><span class="hljs-built_in">action</span>(sendGetM, <span class="hljs-string">&quot;gM&quot;</span>, desc=<span class="hljs-string">&quot;Send GetM to the directory&quot;</span>) {
+ <span class="hljs-built_in">enqueue</span>(request_out, RequestMsg, <span class="hljs-number">1</span>) {
+    out_msg.addr := address;
+    out_msg.Type := CoherenceRequestType:GetM;
+    out_msg.Destination.<span class="hljs-built_in">add</span>(<span class="hljs-built_in">mapAddressToMachine</span>(address, MachineType:Directory));
+    out_msg.MessageSize := MessageSizeType:Control;
+    out_msg.Requestor := machineID;
+ }
+}
+</code></pre>
+<p><strong><code>enqueue</code></strong> is like <code>peek</code>, but it automatically populates <code>out_msg</code></p>
+<p>Some variables are implicit in actions. These are passed in via <code>trigger()</code> in <code>in_port</code>.<br />
+These are <code>address</code>, <code>cache_entry</code>, <code>tbe</code></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="30" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="29" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="transitions">Transitions</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c++"><span class="hljs-built_in">transition</span>(I, Store, IM_AD) {
+  allocateCacheBlock;
+  allocateTBE;
+  ...
+}
+<span class="hljs-built_in">transition</span>({IM_AD, SM_AD}, {DataDirNoAcks, DataOwner}, M) {
+  ...
+  externalStoreHit;
+  popResponseQueue;
+}
+</code></pre>
+<ul>
+<li><strong><code>(I, Store, IM_AD)</code></strong>: From state <code>I</code> on event <code>Store</code> to state <code>IM_AD</code></li>
+<li><strong><code>({IM_AD, SM_AD}, {DataDirNoAcks, DataOwner}, M)</code></strong>: From either <code>IM_AD</code> or <code>SM_AD</code> on either <code>DataDirNoAcks</code> or <code>DataOwner</code> to state <code>M</code></li>
+<li>Almost always <code>pop</code> at the end</li>
+<li>Don't forget to use stats!</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="31" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="30" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="now-the-exercise">Now, the exercise</h2>
+<p>The code should be compiled by now!</p>
+<p>See <a href="../../materials/03-Developing-gem5-models/06-modeling-cache-coherence/README.md"><code>materials/03-Developing-gem5-models/06-modeling-cache-coherence/README.md</code></a></p>
+<p>You will:</p>
+<ol>
+<li>Declare the protocol for the compiler</li>
+<li>Fill in the message types</li>
+<li>Complete the message buffers</li>
+<li>Test the protocol</li>
+<li>Find a bug</li>
+<li>Fix the bug</li>
+<li>Test with the ruby random tester</li>
+</ol>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="32" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="31" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="debugging-protocols">Debugging protocols</h2>
+<h3 id="run-a-parallel-test">Run a parallel test</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">build/ALL_MyMSI/gem5.opt configs/learning_gem5/part3/simple_ruby.py
+</code></pre>
+<p>Result is a failure!</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-termout">build/ALL_MyMSI/mem/ruby/protocol/L1Cache_Transitions.cc:266: panic: Invalid transition
+system.caches.controllers0 time: 73 addr: 0x9100 event: DataDirNoAcks state: IS_D
+</code></pre>
+<h3 id="run-with-protocol-trace">Run with protocol trace</h3>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
+</code></pre>
+<p>Start fixing the errors and fill in the <code>MyMSI-cache.sm</code></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="33" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="32" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="fixing-the-errors-missing-transition">Fixing the errors: Missing transition</h2>
+<ul>
+<li>Missing IS_D transition in cache
+<ul>
+<li>write the data to the cache</li>
+<li>deallocate the TBE</li>
+<li>mark that this is an &quot;external load hit&quot;</li>
+<li>pop the response queue</li>
+</ul>
+</li>
+</ul>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c++"><span class="hljs-built_in">transition</span>(IS_D, {DataDirNoAcks, DataOwner}, S) {
+    writeDataToCache;
+    deallocateTBE;
+    externalLoadHit;
+    popResponseQueue;
+}
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="33" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="fixing-the-errors-missing-action">Fixing the errors: Missing action</h2>
+<ul>
+<li>Fill in the &quot;write data to cache&quot; action
+<ul>
+<li>Get the data out of the message (how to get the message?)</li>
+<li>Set the cache entry's data (how? where does <code>cache_entry</code> come from?)</li>
+<li>Make sure to have <code>assert(is_valid(cache_entry))</code></li>
+</ul>
+</li>
+</ul>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c++"><span class="hljs-built_in">action</span>(writeDataToCache, <span class="hljs-string">&quot;wd&quot;</span>, desc=<span class="hljs-string">&quot;Write data to the cache&quot;</span>) {
+    <span class="hljs-built_in">peek</span>(response_in, ResponseMsg) {
+        <span class="hljs-built_in">assert</span>(<span class="hljs-built_in">is_valid</span>(cache_entry));
+        cache_entry.DataBlk := in_msg.DataBlk;
+    }
+}
+</code></pre>
+<p>Try again (have to recompile after any change to the protocol):</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">scons build/ALL_MyMSI/gem5.opt -j$(<span class="hljs-built_in">nproc</span>) PROTOCOL=MYMSI
+build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="35" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="34" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="fixing-the-error-why-assert-failure">Fixing the error: Why assert failure?</h2>
+<ul>
+<li>Why assert failure?
+<ul>
+<li>Fill in <code>allocateCacheBlock</code>!</li>
+<li>Make sure to call <code>set_cache_entry</code>. Asserting there is an entry available and that <code>cache_entry</code> is invalid is helpful.</li>
+</ul>
+</li>
+</ul>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c++"><span class="hljs-built_in">action</span>(allocateCacheBlock, <span class="hljs-string">&quot;a&quot;</span>, desc=<span class="hljs-string">&quot;Allocate a cache block&quot;</span>) {
+    <span class="hljs-built_in">assert</span>(<span class="hljs-built_in">is_invalid</span>(cache_entry));
+    <span class="hljs-built_in">assert</span>(cacheMemory.<span class="hljs-built_in">cacheAvail</span>(address));
+    <span class="hljs-built_in">set_cache_entry</span>(cacheMemory.<span class="hljs-built_in">allocate</span>(address, <span class="hljs-keyword">new</span> Entry));
+}
+</code></pre>
+<p>Try again:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">scons build/ALL_MyMSI/gem5.opt -j$(<span class="hljs-built_in">nproc</span>) PROTOCOL=MYMSI
+build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/simple_ruby.py
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="36" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="35" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="when-debugging-takes-too-long-rubyrandomtester">When debugging takes too long: RubyRandomTester</h2>
+<p><strong>At some point it might be taking while to get to new errors, so...</strong></p>
+<p>Run the Ruby random tester. This is a special &quot;CPU&quot; which exercises coherence corner cases.</p>
+<ul>
+<li>Modify the <code>test_caches.py</code> the same way as <code>msi_caches.py</code></li>
+</ul>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
+</code></pre>
+<p>Notice you may want to change <code>checks_to_complete</code> and <code>num_cpus</code> in <code>test_caches.py</code>.<br />
+You may also want to reduce the memory latency.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="37" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="36" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="using-the-random-tester">Using the random tester</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
+</code></pre>
+<ul>
+<li>Wow! now it should be way faster to see the error!</li>
+<li>Now, you need to handle this in the cache! <code>transition(S, Inv, I)</code>
+<ul>
+<li>If you get an invalidate...</li>
+<li>Send an ack, let the CPU know that this line was invalidated, deallocate the block, pop the queue</li>
+</ul>
+</li>
+<li>So, now, hmm, it looks like it works??? But here's still one more
+<ul>
+<li>Some transitions are very rare: <code>transition(I, Store, IM_AD)</code></li>
+<li>Try varying the parameters of the tester (without <code>ProtocolTrace</code>!) to find a combination which triggers an error (100000 checks, 8 CPUs, 50ns memory...)</li>
+</ul>
+</li>
+<li>Now, you can fix the error!</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="38" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="37" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="transitions-1">Transitions</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">
+transition(S, Inv, I) {
+  sendInvAcktoReq;
+  forwardEviction;
+  deallocateCacheBlock;
+  popForwardQueue;
+}
+
+transition(I, Store,IM_AD) {}
+  allocateCacheBlock;
+  allocateTBE;
+  sendGetM;
+  popMandatoryQueue;
+}
+
+</code></pre>
+<p>Run Scons and the Python script again</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="39" data-paginate="true" data-class="code-60-percent no-logo" data-theme="gem5" lang="en-US" class="code-60-percent no-logo" data-marpit-pagination="38" style="--paginate:true;--class:code-60-percent no-logo;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="fixing-the-error-deadlock">Fixing the error: Deadlock</h2>
+<ul>
+<li>Possible deadlock... hmm... This happens if <em>nothing</em> happens in the caches for a long time.
+<ul>
+<li>What was the last thing that happened before the deadlock? Let's check what was <em>supposed</em> to happen</li>
+<li>Fill that in!</li>
+</ul>
+</li>
+</ul>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c++"><span class="hljs-built_in">transition</span>({SM_AD, SM_A}, {Store, Replacement, FwdGetS, FwdGetM}) {
+    stall;
+}
+
+<span class="hljs-built_in">action</span>(loadHit, <span class="hljs-string">&quot;Lh&quot;</span>, desc=<span class="hljs-string">&quot;Load hit&quot;</span>) {
+  <span class="hljs-comment">// Set this entry as the most recently used for the replacement policy</span>
+  <span class="hljs-comment">// Send the data back to the sequencer/CPU. <span class="hljs-doctag">NOTE:</span> False means it was not an &quot;external hit&quot;, but hit in this local cache.</span>
+  <span class="hljs-built_in">assert</span>(<span class="hljs-built_in">is_valid</span>(cache_entry));
+  <span class="hljs-comment">// Set this entry as the most recently used for the replacement policy</span>
+  cacheMemory.<span class="hljs-built_in">setMRU</span>(cache_entry);
+  <span class="hljs-comment">// Send the data back to the sequencer/CPU. <span class="hljs-doctag">NOTE:</span> False means it was not an &quot;external hit&quot;, but hit in this local cache.</span>
+  sequencer.<span class="hljs-built_in">readCallback</span>(address, cache_entry.DataBlk, <span class="hljs-literal">false</span>);
+}
+</code></pre>
+<p>Try again (Scons and Python script)</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">scons build/ALL_MyMSI/gem5.opt -j$(<span class="hljs-built_in">nproc</span>) PROTOCOL=MYMSI
+build/ALL_MyMSI/gem5.opt --debug-flags=ProtocolTrace configs/learning_gem5/part3/ruby_test.py
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-paginate="true" data-class="code-80-percent" data-theme="gem5" lang="en-US" class="code-80-percent" data-marpit-pagination="39" style="--paginate:true;--class:code-80-percent;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="fixing-the-error-what-to-do-on-a-store">Fixing the error: What to do on a store</h2>
+<ul>
+<li>Fix the next error (what to do on a store??)
+<ul>
+<li>Allocate a block, allocate a TBE, send a message, pop the queue</li>
+<li>Also make sure that all actions that you need</li>
+<li>When sending, you need to construct a new message. See <code>RequestMsg</code> in <code>MyMSI-msg.sm</code></li>
+</ul>
+</li>
+</ul>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c++"> <span class="hljs-built_in">action</span>(sendGetM, <span class="hljs-string">&quot;gM&quot;</span>, desc=<span class="hljs-string">&quot;Send GetM to the directory&quot;</span>) {
+        <span class="hljs-comment">// Fill this in with an enqueue on the request output port</span>
+    <span class="hljs-built_in">enqueue</span>(request_out, RequestMsg, <span class="hljs-number">1</span>) {
+      out_msg.addr := address;
+      out_msg.Type := CoherenceRequestType:GetM;
+      out_msg.Destination.<span class="hljs-built_in">add</span>(<span class="hljs-built_in">mapAddressToMachine</span>(address,
+                                    MachineType:Directory));
+      out_msg.MessageSize := MessageSizeType:Control;
+      out_msg.Requestor := machineID;
+    }
+  }
+</code></pre>
+<p>Run Scons and Python script</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="41" data-paginate="true" data-class="code-60-percent" data-theme="gem5" lang="en-US" class="code-60-percent" data-marpit-pagination="40" style="--paginate:true;--class:code-60-percent;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="final-error-what-to-do-when-there-is-sharing">Final error: What to do when there is sharing?</h2>
+<ul>
+<li>Next error: What to do when there is sharing??
+<ul>
+<li>get data from memory (yes, this is an unoptimized protocol..)</li>
+<li>remove the <em>requestor</em> from the sharers (just in case)</li>
+<li>send an invalidate to all other sharers</li>
+<li>set the owner</li>
+<li>and pop the queue</li>
+</ul>
+</li>
+<li>Now edit <code>MyMSI-dir.sm</code></li>
+</ul>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c++"><span class="hljs-built_in">transition</span>(S, GetM, M_m) {
+    sendMemRead;
+    removeReqFromSharers;
+    sendInvToSharers;
+    setOwner;
+    popRequestQueue;
+}
+</code></pre>
+<p>Try again (Scons and Python script): (note: no protocol trace this time since it is mostly working)</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">build/ALL_MyMSI/gem5.opt configs/learning_gem5/part3/ruby_test.py
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="41" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="now-that-its-working-look-at-the-stats">Now that it's working... look at the stats</h2>
+<p>Re-run the simple pthread test and lets look at some stats!</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">build/ALL_MyMSI/gem5.opt configs/learning_gem5/part3/simple_ruby.py
+</code></pre>
+<ul>
+<li>How many forwarded messages did the L1 caches receive?</li>
+<li>How many times times did a cache have to upgrade from S -&gt; M?</li>
+<li>What was the average miss latency for the L1?</li>
+<li>What was the average miss latency <em>when another cache had the data</em>?</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="43" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="42" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="answers">Answers</h2>
+<ul>
+<li>How many forwarded messages did the L1 caches receive? <code>grep -i fwd m5out/stats.txt</code>
+<ul>
+<li>(<code>...FwdGetM</code> + <code>...FwdGetS</code>) =  (16+13) = 29</li>
+</ul>
+</li>
+<li>How many times times did a cache have to upgrade from S -&gt; M?<br />
+<code>grep L1Cache_Controller.SM_AD.DataDirNoAcks::total m5out/stats.txt</code><br />
+565</li>
+<li>What was the average miss latency for the L1?<br />
+<code>grep MachineType.L1Cache.miss_mach_latency_hist_seqr::mean  m5out/stats.txt</code><br />
+19.448276</li>
+<li>What was the average miss latency <em>when another cache had the data</em>?<br />
+<code>grep RequestTypeMachineType.ST.L1Cache.miss_type_mach_latency_hist_seqr::mean m5out/stats.txt</code><br />
+18<br />
+<code>grep RequestTypeMachineType.LD.L1Cache.miss_type_mach_latency_hist_seqr::mean</code></li>
+<li>multiply by sample size (...::sample) and then add together</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="44" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="43" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="ruby-config-scripts">Ruby config scripts</h2>
+<ul>
+<li>Don't follow gem5 style closely :(</li>
+<li>Require lots of boilerplate</li>
+<li>Standard Library does a much better job</li>
+</ul>
+<h3 id="whats-needed-in-these-scripts">What's needed in these scripts?</h3>
+<ol>
+<li>Instantiate the controllers<br />
+Here is where you pass all of the parameters to the <code>.sm</code> files</li>
+<li>Create a <code>Sequencer</code> for each CPU (and DMA, etc.)<br />
+More details in a moment</li>
+<li>Create and connect all of the network routers</li>
+</ol>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="45" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="44" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="creating-the-topology">Creating the topology</h2>
+<ul>
+<li>You can connect the routers any way you like:
+<ul>
+<li>Mesh, torus, ring, crossbar, dragonfly, etc.</li>
+</ul>
+</li>
+<li>Usually hidden in <code>create_topology</code> (see configs/topologies)
+<ul>
+<li>Problem: These make assumptions about controllers</li>
+<li>Inappropriate for non-default protocols</li>
+</ul>
+</li>
+</ul>
+<p>After creating the topology (before simulation), Ruby's network model will find all of the valid paths from one node to another in the on-chip network.<br />
+Thus, the OCN is completely separate from the types of controllers and the protocol.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="46" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="45" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="point-to-point-example">Point-to-point example</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">self.routers = [Switch(router_id = i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(controllers))]
+self.ext_links = [SimpleExtLink(link_id=i, ext_node=c, int_node=self.routers[i])
+                  <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(controllers)]
+link_count = <span class="hljs-number">0</span>
+self.int_links = []
+<span class="hljs-keyword">for</span> ri <span class="hljs-keyword">in</span> self.routers:
+    <span class="hljs-keyword">for</span> rj <span class="hljs-keyword">in</span> self.routers:
+        <span class="hljs-keyword">if</span> ri == rj: <span class="hljs-keyword">continue</span> <span class="hljs-comment"># Don&#x27;t connect a router to itself!</span>
+        link_count += <span class="hljs-number">1</span>
+        self.int_links.append(SimpleIntLink(link_id = link_count, src_node = ri, dst_node = rj))
+</code></pre>
+<ul>
+<li><strong><code>self.routers</code></strong>: One router per controller in this case of point-to-point
+<ul>
+<li>Must have a router for &quot;internal&quot; links</li>
+</ul>
+</li>
+<li><strong><code>self.ext_links</code></strong>: Connects the controller to the router
+<ul>
+<li>You can have multiple external links per router, but not for this point-to-point example</li>
+</ul>
+</li>
+<li><strong><code>self.int_links</code></strong>: Connects the routers to each other</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="46" style="--paginate:true;--theme:gem5;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="49" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;06-modeling-cache-coherence-imgs/ruby-architecture.drawio.svg&quot;);background-size:600px auto;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="47" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="46" style="--paginate:true;--theme:gem5;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="49" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
+<h2 id="ports-to-ruby-to-ports-interface">Ports to Ruby to ports interface</h2>
+
+<p>Remember this picture?</p>
+<ul>
+<li>At the top, cores connect to Ruby via the <code>Sequencer</code> which is called <code>mandatory_queue</code> in the SLICC file.
+<ul>
+<li>When the request is complete, call <code>sequencer.readCallback</code> or <code>sequencer.writeCallback</code>.</li>
+<li>Make sure to include if it's a hit or miss for statistics. You can even include where the miss was serviced for more detailed stats.</li>
+</ul>
+</li>
+<li>At the bottom, any <code>Controller</code> can have a requestor port and you can send messages by using special message buffers <code>requestToMemory</code> and <code>responseFromMemory</code>.</li>
+</ul>
+</section>
+</foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="46" style="" data-marpit-pagination-total="49" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="48" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="47" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="where-is">Where is...?</h2>
+<h3 id="configuration">Configuration</h3>
+<ul>
+<li>configs/network: Configuration of network models</li>
+<li>configs/topologies: Default cache topologies</li>
+<li>configs/ruby: Protocol config and Ruby config</li>
+<li><strong>NOTE</strong>: Want to move more to the standard library!</li>
+<li>Ruby config: configs/ruby/Ruby.py
+<ul>
+<li>Entry point for Ruby configs and helper functions</li>
+<li>Selects the right protocol config &quot;automatically&quot;</li>
+</ul>
+</li>
+</ul>
+<h3 id="slicc-dont-be-afraid-to-modify-the-compiler">SLICC: <em>Don't be afraid to modify the compiler</em></h3>
+<ul>
+<li>src/mem/slicc: Code for the compiler</li>
+<li>src/mem/ruby/slicc_interface
+<ul>
+<li>Structures used only in generated code</li>
+<li>AbstractController</li>
+</ul>
+</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="49" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="48" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="where-is-1">Where is...?</h2>
+<ul>
+<li>src/mem/ruby/structures
+<ul>
+<li>Structures used in Ruby (e.g., cache memory, replace policy)</li>
+</ul>
+</li>
+<li>src/mem/ruby/system
+<ul>
+<li>Ruby wrapper code and entry point</li>
+<li>RubyPort/Sequencer</li>
+<li>RubySystem: Centralized information, checkpointing, etc.</li>
+</ul>
+</li>
+<li>src/mem/ruby/common: General data structures, etc.</li>
+<li>src/mem/ruby/filters: Bloom filters, etc.</li>
+<li>src/mem/ruby/network: Network model</li>
+<li>src/mem/ruby/profiler: Profiling for coherence protocols</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="50" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="49" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="49">
+<h2 id="current-protocols">Current protocols</h2>
+<ul>
+<li>GPU VIPER (&quot;Realistic&quot; GPU-CPU protocol)</li>
+<li>GPU VIPER Region (HSC paper)</li>
+<li>Garnet standalone (No coherence, just traffic injection)</li>
+<li>MESI Three level (like two level, but with L0 cache)</li>
+<li>MESI Two level (private L1s shared L2)</li>
+<li>MI example (Example: Do not use for performance)</li>
+<li>MOESI AMD (Core pairs, 3 level, optionally with region coherence)</li>
+<li>MOESI CMP directory</li>
+<li>MOESI CMP token</li>
+<li>MOESI hammer (Like AMD hammer protocol for opteron/hyper transport)</li>
+</ul>
+</section>
+<script>!function(){"use strict";const t={h1:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"1"},style:"display: block; font-size: 2em; margin-block-start: 0.67em; margin-block-end: 0.67em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h2:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"2"},style:"display: block; font-size: 1.5em; margin-block-start: 0.83em; margin-block-end: 0.83em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h3:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"3"},style:"display: block; font-size: 1.17em; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h4:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"4"},style:"display: block; margin-block-start: 1.33em; margin-block-end: 1.33em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h5:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"5"},style:"display: block; font-size: 0.83em; margin-block-start: 1.67em; margin-block-end: 1.67em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},h6:{proto:()=>HTMLHeadingElement,attrs:{role:"heading","aria-level":"6"},style:"display: block; font-size: 0.67em; margin-block-start: 2.33em; margin-block-end: 2.33em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold;"},span:{proto:()=>HTMLSpanElement},pre:{proto:()=>HTMLElement,style:"display: block; font-family: monospace; white-space: pre; margin: 1em 0; --marp-auto-scaling-white-space: pre;"}},e="data-marp-auto-scaling-wrapper",i="data-marp-auto-scaling-svg",n="data-marp-auto-scaling-container";class s extends HTMLElement{constructor(){super(),this.svgPreserveAspectRatio="xMinYMid meet";const t=t=>([e])=>{const{width:i,height:n}=e.contentRect;this[t]={width:i,height:n},this.updateSVGRect()};this.attachShadow({mode:"open"}),this.containerObserver=new ResizeObserver(t("containerSize")),this.wrapperObserver=new ResizeObserver(((...e)=>{t("wrapperSize")(...e),this.flushSvgDisplay()}))}static get observedAttributes(){return["data-downscale-only"]}connectedCallback(){var t,s,o,r,a;this.shadowRoot.innerHTML=`\n<style>\n  svg[${i}] { display: block; width: 100%; height: auto; vertical-align: top; }\n  span[${n}] { display: table; white-space: var(--marp-auto-scaling-white-space, nowrap); width: max-content; }\n</style>\n<div ${e}>\n  <svg part="svg" ${i}>\n    <foreignObject><span ${n}><slot></slot></span></foreignObject>\n  </svg>\n</div>\n    `.split(/\n\s*/).join(""),this.wrapper=null!==(t=this.shadowRoot.querySelector(`div[${e}]`))&&void 0!==t?t:void 0;const l=this.svg;this.svg=null!==(o=null===(s=this.wrapper)||void 0===s?void 0:s.querySelector(`svg[${i}]`))&&void 0!==o?o:void 0,this.svg!==l&&(this.svgComputedStyle=this.svg?window.getComputedStyle(this.svg):void 0),this.container=null!==(a=null===(r=this.svg)||void 0===r?void 0:r.querySelector(`span[${n}]`))&&void 0!==a?a:void 0,this.observe()}disconnectedCallback(){this.svg=void 0,this.svgComputedStyle=void 0,this.wrapper=void 0,this.container=void 0,this.observe()}attributeChangedCallback(){this.observe()}flushSvgDisplay(){const{svg:t}=this;t&&(t.style.display="inline",requestAnimationFrame((()=>{t.style.display=""})))}observe(){this.containerObserver.disconnect(),this.wrapperObserver.disconnect(),this.wrapper&&this.wrapperObserver.observe(this.wrapper),this.container&&this.containerObserver.observe(this.container),this.svgComputedStyle&&this.observeSVGStyle(this.svgComputedStyle)}observeSVGStyle(t){const e=()=>{const i=(()=>{const e=t.getPropertyValue("--preserve-aspect-ratio");if(e)return e.trim();return`x${(({textAlign:t,direction:e})=>{if(t.endsWith("left"))return"Min";if(t.endsWith("right"))return"Max";if("start"===t||"end"===t){let i="rtl"===e;return"end"===t&&(i=!i),i?"Max":"Min"}return"Mid"})(t)}YMid meet`})();i!==this.svgPreserveAspectRatio&&(this.svgPreserveAspectRatio=i,this.updateSVGRect()),t===this.svgComputedStyle&&requestAnimationFrame(e)};e()}updateSVGRect(){var t,e,i,n,s,o,r;let a=Math.ceil(null!==(e=null===(t=this.containerSize)||void 0===t?void 0:t.width)&&void 0!==e?e:0);const l=Math.ceil(null!==(n=null===(i=this.containerSize)||void 0===i?void 0:i.height)&&void 0!==n?n:0);void 0!==this.dataset.downscaleOnly&&(a=Math.max(a,null!==(o=null===(s=this.wrapperSize)||void 0===s?void 0:s.width)&&void 0!==o?o:0));const c=null===(r=this.svg)||void 0===r?void 0:r.querySelector(":scope > foreignObject");if(null==c||c.setAttribute("width",`${a}`),null==c||c.setAttribute("height",`${l}`),this.svg&&(this.svg.setAttribute("viewBox",`0 0 ${a} ${l}`),this.svg.setAttribute("preserveAspectRatio",this.svgPreserveAspectRatio),this.svg.style.height=a<=0||l<=0?"0":""),this.container){const t=this.svgPreserveAspectRatio.toLowerCase();this.container.style.marginLeft=t.startsWith("xmid")||t.startsWith("xmax")?"auto":"0",this.container.style.marginRight=t.startsWith("xmi")?"auto":"0"}}}const o=(t,{attrs:e={},style:i})=>class extends t{constructor(...t){super(...t);for(const[t,i]of Object.entries(e))this.hasAttribute(t)||this.setAttribute(t,i);this.attachShadow({mode:"open"})}static get observedAttributes(){return["data-auto-scaling"]}connectedCallback(){this._update()}attributeChangedCallback(){this._update()}_update(){const t=i?`<style>:host { ${i} }</style>`:"";let e="<slot></slot>";const{autoScaling:n}=this.dataset;if(void 0!==n){e=`<marp-auto-scaling exportparts="svg:auto-scaling" ${"downscale-only"===n?"data-downscale-only":""}>${e}</marp-auto-scaling>`}this.shadowRoot.innerHTML=t+e}};let r;const a=Symbol();let l;const c="marpitSVGPolyfill:setZoomFactor,",d=Symbol(),g=Symbol();const h=()=>{const t="Apple Computer, Inc."===navigator.vendor,e=t?[u]:[],i={then:e=>(t?(async()=>{if(void 0===l){const t=document.createElement("canvas");t.width=10,t.height=10;const e=t.getContext("2d"),i=new Image(10,10),n=new Promise((t=>{i.addEventListener("load",(()=>t()))}));i.crossOrigin="anonymous",i.src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%201%201%22%3E%3CforeignObject%20width%3D%221%22%20height%3D%221%22%20requiredExtensions%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxhtml%22%3E%3Cdiv%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxhtml%22%20style%3D%22width%3A%201px%3B%20height%3A%201px%3B%20background%3A%20red%3B%20position%3A%20relative%22%3E%3C%2Fdiv%3E%3C%2FforeignObject%3E%3C%2Fsvg%3E",await n,e.drawImage(i,0,0),l=e.getImageData(5,5,1,1).data[3]<128}return l})().then((t=>{null==e||e(t?[u]:[])})):null==e||e([]),i)};return Object.assign(e,i)};let p,m;function u(t){const e="object"==typeof t&&t.target||document,i="object"==typeof t?t.zoom:t;window[g]||(Object.defineProperty(window,g,{configurable:!0,value:!0}),document.body.style.zoom=1.0001,document.body.offsetHeight,document.body.style.zoom=1,window.addEventListener("message",(({data:t,origin:e})=>{if(e===window.origin)try{if(t&&"string"==typeof t&&t.startsWith(c)){const[,e]=t.split(","),i=Number.parseFloat(e);Number.isNaN(i)||(m=i)}}catch(t){console.error(t)}})));let n=!1;Array.from(e.querySelectorAll("svg[data-marpit-svg]"),(t=>{var e,s,o,r;t.style.transform||(t.style.transform="translateZ(0)");const a=i||m||t.currentScale||1;p!==a&&(p=a,n=a);const l=t.getBoundingClientRect(),{length:c}=t.children;for(let i=0;i<c;i+=1){const n=t.children[i];if(n.getScreenCTM){const t=n.getScreenCTM();if(t){const i=null!==(s=null===(e=n.x)||void 0===e?void 0:e.baseVal.value)&&void 0!==s?s:0,c=null!==(r=null===(o=n.y)||void 0===o?void 0:o.baseVal.value)&&void 0!==r?r:0,d=n.children.length;for(let e=0;e<d;e+=1){const s=n.children[e];if("SECTION"===s.tagName){const{style:e}=s;e.transformOrigin||(e.transformOrigin=`${-i}px ${-c}px`),e.transform=`scale(${a}) matrix(${t.a}, ${t.b}, ${t.c}, ${t.d}, ${t.e-l.left}, ${t.f-l.top}) translateZ(0.0001px)`;break}}}}}})),!1!==n&&Array.from(e.querySelectorAll("iframe"),(({contentWindow:t})=>{null==t||t.postMessage(`${c}${n}`,"null"===window.origin?"*":window.origin)}))}function v({once:t=!1,target:e=document}={}){const i=function(t=document){if(t[d])return t[d];let e=!0;const i=()=>{e=!1,delete t[d]};Object.defineProperty(t,d,{configurable:!0,value:i});let n=[],s=!1;(async()=>{try{n=await h()}finally{s=!0}})();const o=()=>{for(const e of n)e({target:t});s&&0===n.length||e&&window.requestAnimationFrame(o)};return o(),i}(e);return t?(i(),()=>{}):i}p=1,m=void 0;const b=Symbol(),w=(e=document)=>{if("undefined"==typeof window)throw new Error("Marp Core's browser script is valid only in browser context.");if(((e=document)=>{const i=window[a];i||customElements.define("marp-auto-scaling",s);for(const n of Object.keys(t)){const s=`marp-${n}`,a=t[n].proto();null!=r||(r=!!document.createElement("div",{is:"marp-auto-scaling"}).outerHTML.startsWith("<div is")),r&&a!==HTMLElement?i||customElements.define(s,o(a,{style:t[n].style}),{extends:n}):(i||customElements.define(s,o(HTMLElement,t[n])),e.querySelectorAll(`${n}[is="${s}"]`).forEach((t=>{t.outerHTML=t.outerHTML.replace(new RegExp(`^<${n}`,"i"),`<${s}`).replace(new RegExp(`</${n}>$`,"i"),`</${s}>`)})))}window[a]=!0})(e),e[b])return e[b];const i=v({target:e}),n=()=>{i(),delete e[b]},l=Object.assign(n,{cleanup:n,update:()=>w(e)});return Object.defineProperty(e,b,{configurable:!0,value:l}),l},y=document.currentScript;w(y?y.getRootNode():document)}();
+</script></foreignObject></svg></div><script>/*!! License: https://unpkg.com/@marp-team/marp-cli@3.4.0/lib/bespoke.js.LICENSE.txt */
+!function(){"use strict";function e(e){return e&&e.__esModule&&Object.prototype.hasOwnProperty.call(e,"default")?e.default:e}var t={from:function(e,t){var n,r=1===(e.parent||e).nodeType?e.parent||e:document.querySelector(e.parent||e),o=[].filter.call("string"==typeof e.slides?r.querySelectorAll(e.slides):e.slides||r.children,(function(e){return"SCRIPT"!==e.nodeName})),i={},a=function(e,t){return(t=t||{}).index=o.indexOf(e),t.slide=e,t},s=function(e,t){i[e]=(i[e]||[]).filter((function(e){return e!==t}))},l=function(e,t){return(i[e]||[]).reduce((function(e,n){return e&&!1!==n(t)}),!0)},c=function(e,t){o[e]&&(n&&l("deactivate",a(n,t)),n=o[e],l("activate",a(n,t)))},d=function(e,t){var r=o.indexOf(n)+e;l(e>0?"next":"prev",a(n,t))&&c(r,t)},u={off:s,on:function(e,t){return(i[e]||(i[e]=[])).push(t),s.bind(null,e,t)},fire:l,slide:function(e,t){if(!arguments.length)return o.indexOf(n);l("slide",a(o[e],t))&&c(e,t)},next:d.bind(null,1),prev:d.bind(null,-1),parent:r,slides:o,destroy:function(e){l("destroy",a(n,e)),i={}}};return(t||[]).forEach((function(e){e(u)})),n||c(0),u}},n=e(t);const r=document.body,o=(...e)=>history.replaceState(...e),i="presenter",a="next",s=["",i,a],l="bespoke-marp-",c=`data-${l}`,d=(e,{protocol:t,host:n,pathname:r,hash:o}=location)=>{const i=e.toString();return`${t}//${n}${r}${i?"?":""}${i}${o}`},u=()=>r.dataset.bespokeView,f=e=>new URLSearchParams(location.search).get(e),m=(e,t={})=>{var n;const r={location,setter:o,...t},i=new URLSearchParams(r.location.search);for(const t of Object.keys(e)){const n=e[t];"string"==typeof n?i.set(t,n):i.delete(t)}try{r.setter({...null!==(n=window.history.state)&&void 0!==n?n:{}},"",d(i,r.location))}catch(e){console.error(e)}},g=(()=>{const e="bespoke-marp";try{return localStorage.setItem(e,e),localStorage.removeItem(e),!0}catch(e){return!1}})(),p=e=>{try{return localStorage.getItem(e)}catch(e){return null}},v=(e,t)=>{try{return localStorage.setItem(e,t),!0}catch(e){return!1}},h=e=>{try{return localStorage.removeItem(e),!0}catch(e){return!1}},y=(e,t)=>{const n="aria-hidden";t?e.setAttribute(n,"true"):e.removeAttribute(n)},b=e=>{e.parent.classList.add(`${l}parent`),e.slides.forEach((e=>e.classList.add(`${l}slide`))),e.on("activate",(t=>{const n=`${l}active`,r=t.slide,o=r.classList,i=!o.contains(n);if(e.slides.forEach((e=>{e.classList.remove(n),y(e,!0)})),o.add(n),y(r,!1),i){const e=`${n}-ready`;o.add(e),document.body.clientHeight,o.remove(e)}}))},w=e=>{let t=0,n=0;Object.defineProperty(e,"fragments",{enumerable:!0,value:e.slides.map((e=>[null,...e.querySelectorAll("[data-marpit-fragment]")]))});const r=r=>void 0!==e.fragments[t][n+r],o=(r,o)=>{t=r,n=o,e.fragments.forEach(((e,t)=>{e.forEach(((e,n)=>{if(null==e)return;const i=t<r||t===r&&n<=o;e.setAttribute(`${c}fragment`,(i?"":"in")+"active");const a=`${c}current-fragment`;t===r&&n===o?e.setAttribute(a,"current"):e.removeAttribute(a)}))})),e.fragmentIndex=o;const i={slide:e.slides[r],index:r,fragments:e.fragments[r],fragmentIndex:o};e.fire("fragment",i)};e.on("next",(({fragment:i=!0})=>{if(i){if(r(1))return o(t,n+1),!1;const i=t+1;e.fragments[i]&&o(i,0)}else{const r=e.fragments[t].length;if(n+1<r)return o(t,r-1),!1;const i=e.fragments[t+1];i&&o(t+1,i.length-1)}})),e.on("prev",(({fragment:i=!0})=>{if(r(-1)&&i)return o(t,n-1),!1;const a=t-1;e.fragments[a]&&o(a,e.fragments[a].length-1)})),e.on("slide",(({index:t,fragment:n})=>{let r=0;if(void 0!==n){const o=e.fragments[t];if(o){const{length:e}=o;r=-1===n?e-1:Math.min(Math.max(n,0),e-1)}}o(t,r)})),o(0,0)},x=document,k=()=>!(!x.fullscreenEnabled&&!x.webkitFullscreenEnabled),$=()=>!(!x.fullscreenElement&&!x.webkitFullscreenElement),E=e=>{e.fullscreen=()=>{k()&&(async()=>{return $()?null===(e=x.exitFullscreen||x.webkitExitFullscreen)||void 0===e?void 0:e.call(x):((e=x.body)=>{var t;return null===(t=e.requestFullscreen||e.webkitRequestFullscreen)||void 0===t?void 0:t.call(e)})();var e})()},document.addEventListener("keydown",(t=>{"f"!==t.key&&"F11"!==t.key||t.altKey||t.ctrlKey||t.metaKey||!k()||(e.fullscreen(),t.preventDefault())}))},L=`${l}inactive`,S=(e=2e3)=>({parent:t,fire:n})=>{const r=t.classList,o=e=>n(`marp-${e?"":"in"}active`);let i;const a=()=>{i&&clearTimeout(i),i=setTimeout((()=>{r.add(L),o()}),e),r.contains(L)&&(r.remove(L),o(!0))};for(const e of["mousedown","mousemove","touchend"])document.addEventListener(e,a);setTimeout(a,0)},P=["AUDIO","BUTTON","INPUT","SELECT","TEXTAREA","VIDEO"],_=e=>{e.parent.addEventListener("keydown",(e=>{if(!e.target)return;const t=e.target;(P.includes(t.nodeName)||"true"===t.contentEditable)&&e.stopPropagation()}))},T=e=>{window.addEventListener("load",(()=>{for(const t of e.slides){const e=t.querySelector("marp-auto-scaling, [data-auto-scaling], [data-marp-fitting]");t.setAttribute(`${c}load`,e?"":"hideable")}}))},I=({interval:e=250}={})=>t=>{document.addEventListener("keydown",(e=>{if(" "===e.key&&e.shiftKey)t.prev();else if("ArrowLeft"===e.key||"ArrowUp"===e.key||"PageUp"===e.key)t.prev({fragment:!e.shiftKey});else if(" "!==e.key||e.shiftKey)if("ArrowRight"===e.key||"ArrowDown"===e.key||"PageDown"===e.key)t.next({fragment:!e.shiftKey});else if("End"===e.key)t.slide(t.slides.length-1,{fragment:-1});else{if("Home"!==e.key)return;t.slide(0)}else t.next();e.preventDefault()}));let n,r,o=0;t.parent.addEventListener("wheel",(i=>{let a=!1;const s=(e,t)=>{e&&(a=a||((e,t)=>((e,t)=>{const n="X"===t?"Width":"Height";return e[`client${n}`]<e[`scroll${n}`]})(e,t)&&((e,t)=>{const{overflow:n}=e,r=e[`overflow${t}`];return"auto"===n||"scroll"===n||"auto"===r||"scroll"===r})(getComputedStyle(e),t))(e,t)),(null==e?void 0:e.parentElement)&&s(e.parentElement,t)};if(0!==i.deltaX&&s(i.target,"X"),0!==i.deltaY&&s(i.target,"Y"),a)return;i.preventDefault();const l=Math.sqrt(i.deltaX**2+i.deltaY**2);if(void 0!==i.wheelDelta){if(void 0===i.webkitForce&&Math.abs(i.wheelDelta)<40)return;if(i.deltaMode===i.DOM_DELTA_PIXEL&&l<4)return}else if(i.deltaMode===i.DOM_DELTA_PIXEL&&l<12)return;r&&clearTimeout(r),r=setTimeout((()=>{n=0}),e);const c=Date.now()-o<e,d=l<=n;if(n=l,c||d)return;let u;(i.deltaX>0||i.deltaY>0)&&(u="next"),(i.deltaX<0||i.deltaY<0)&&(u="prev"),u&&(t[u](),o=Date.now())}))},M=(e=`.${l}osc`)=>{const t=document.querySelector(e);if(!t)return()=>{};const n=(e,n)=>{t.querySelectorAll(`[${c}osc=${JSON.stringify(e)}]`).forEach(n)};return k()||n("fullscreen",(e=>e.style.display="none")),g||n("presenter",(e=>{e.disabled=!0,e.title="Presenter view is disabled due to restricted localStorage."})),e=>{t.addEventListener("click",(t=>{if(t.target instanceof HTMLElement){const{bespokeMarpOsc:n}=t.target.dataset;n&&t.target.blur();const r={fragment:!t.shiftKey};"next"===n?e.next(r):"prev"===n?e.prev(r):"fullscreen"===n?null==e||e.fullscreen():"presenter"===n&&e.openPresenterView()}})),e.parent.appendChild(t),e.on("activate",(({index:t})=>{n("page",(n=>n.textContent=`Page ${t+1} of ${e.slides.length}`))})),e.on("fragment",(({index:t,fragments:r,fragmentIndex:o})=>{n("prev",(e=>e.disabled=0===t&&0===o)),n("next",(n=>n.disabled=t===e.slides.length-1&&o===r.length-1))})),e.on("marp-active",(()=>y(t,!1))),e.on("marp-inactive",(()=>y(t,!0))),k()&&(e=>{for(const t of["","webkit"])x.addEventListener(t+"fullscreenchange",e)})((()=>n("fullscreen",(e=>e.classList.toggle("exit",k()&&$())))))}},O=e=>{window.addEventListener("message",(t=>{if(t.origin!==window.origin)return;const[n,r]=t.data.split(":");if("navigate"===n){const[t,n]=r.split(",");let o=Number.parseInt(t,10),i=Number.parseInt(n,10)+1;i>=e.fragments[o].length&&(o+=1,i=0),e.slide(o,{fragment:i})}}))};var A=["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"];let C=e=>String(e).replace(/[&<>"']/g,(e=>`&${D[e]};`)),D={"&":"amp","<":"lt",">":"gt",'"':"quot","'":"apos"},N="dangerouslySetInnerHTML",B={className:"class",htmlFor:"for"},q={};function K(e,t){let n=[],r="";t=t||{};for(let e=arguments.length;e-- >2;)n.push(arguments[e]);if("function"==typeof e)return t.children=n.reverse(),e(t);if(e){if(r+="<"+e,t)for(let e in t)!1!==t[e]&&null!=t[e]&&e!==N&&(r+=` ${B[e]?B[e]:C(e)}="${C(t[e])}"`);r+=">"}if(-1===A.indexOf(e)){if(t[N])r+=t[N].__html;else for(;n.length;){let e=n.pop();if(e)if(e.pop)for(let t=e.length;t--;)n.push(e[t]);else r+=!0===q[e]?e:C(e)}r+=e?`</${e}>`:""}return q[r]=!0,r}const j=({children:e})=>K(null,null,...e),F=`${l}presenter-`,V={container:`${F}container`,dragbar:`${F}dragbar-container`,next:`${F}next`,nextContainer:`${F}next-container`,noteContainer:`${F}note-container`,noteWrapper:`${F}note-wrapper`,noteButtons:`${F}note-buttons`,infoContainer:`${F}info-container`,infoPage:`${F}info-page`,infoPageText:`${F}info-page-text`,infoPagePrev:`${F}info-page-prev`,infoPageNext:`${F}info-page-next`,noteButtonsBigger:`${F}note-bigger`,noteButtonsSmaller:`${F}note-smaller`,infoTime:`${F}info-time`,infoTimer:`${F}info-timer`},U=e=>{const{title:t}=document;document.title="[Presenter view]"+(t?` - ${t}`:"");const n={},r=e=>(n[e]=n[e]||document.querySelector(`.${e}`),n[e]);document.body.appendChild((e=>{const t=document.createElement("div");return t.className=V.container,t.appendChild(e),t.insertAdjacentHTML("beforeend",K(j,null,K("div",{class:V.nextContainer},K("iframe",{class:V.next,src:"?view=next"})),K("div",{class:V.dragbar}),K("div",{class:V.noteContainer},K("div",{class:V.noteWrapper}),K("div",{class:V.noteButtons},K("button",{class:V.noteButtonsSmaller,tabindex:"-1",title:"Smaller notes font size"},"Smaller notes font size"),K("button",{class:V.noteButtonsBigger,tabindex:"-1",title:"Bigger notes font size"},"Bigger notes font size"))),K("div",{class:V.infoContainer},K("div",{class:V.infoPage},K("button",{class:V.infoPagePrev,tabindex:"-1",title:"Previous"},"Previous"),K("span",{class:V.infoPageText}),K("button",{class:V.infoPageNext,tabindex:"-1",title:"Next"},"Next")),K("time",{class:V.infoTime,title:"Current time"}),K("time",{class:V.infoTimer,title:"Timer"})))),t})(e.parent)),(e=>{let t=!1;r(V.dragbar).addEventListener("mousedown",(()=>{t=!0,r(V.dragbar).classList.add("active")})),window.addEventListener("mouseup",(()=>{t=!1,r(V.dragbar).classList.remove("active")})),window.addEventListener("mousemove",(e=>{if(!t)return;const n=e.clientX/document.documentElement.clientWidth*100;r(V.container).style.setProperty("--bespoke-marp-presenter-split-ratio",`${Math.max(0,Math.min(100,n))}%`)})),r(V.nextContainer).addEventListener("click",(()=>e.next()));const n=r(V.next),o=(i=n,(e,t)=>{var n;return null===(n=i.contentWindow)||void 0===n?void 0:n.postMessage(`navigate:${e},${t}`,"null"===window.origin?"*":window.origin)});var i;n.addEventListener("load",(()=>{r(V.nextContainer).classList.add("active"),o(e.slide(),e.fragmentIndex),e.on("fragment",(({index:e,fragmentIndex:t})=>o(e,t)))}));const a=document.querySelectorAll(".bespoke-marp-note");a.forEach((e=>{e.addEventListener("keydown",(e=>e.stopPropagation())),r(V.noteWrapper).appendChild(e)})),e.on("activate",(()=>a.forEach((t=>t.classList.toggle("active",t.dataset.index==e.slide())))));let s=0;const l=e=>{s=Math.max(-5,s+e),r(V.noteContainer).style.setProperty("--bespoke-marp-note-font-scale",(1.2**s).toFixed(4))},c=()=>l(1),d=()=>l(-1),u=r(V.noteButtonsBigger),f=r(V.noteButtonsSmaller);u.addEventListener("click",(()=>{u.blur(),c()})),f.addEventListener("click",(()=>{f.blur(),d()})),document.addEventListener("keydown",(e=>{"+"===e.key&&c(),"-"===e.key&&d()}),!0),e.on("activate",(({index:t})=>{r(V.infoPageText).textContent=`${t+1} / ${e.slides.length}`}));const m=r(V.infoPagePrev),g=r(V.infoPageNext);m.addEventListener("click",(t=>{m.blur(),e.prev({fragment:!t.shiftKey})})),g.addEventListener("click",(t=>{g.blur(),e.next({fragment:!t.shiftKey})})),e.on("fragment",(({index:t,fragments:n,fragmentIndex:r})=>{m.disabled=0===t&&0===r,g.disabled=t===e.slides.length-1&&r===n.length-1}));let p=new Date;const v=()=>{const e=new Date,t=e=>`${Math.floor(e)}`.padStart(2,"0"),n=e.getTime()-p.getTime(),o=t(n/1e3%60),i=t(n/1e3/60%60),a=t(n/36e5%24);r(V.infoTime).textContent=e.toLocaleTimeString(),r(V.infoTimer).textContent=`${a}:${i}:${o}`};v(),setInterval(v,250),r(V.infoTimer).addEventListener("click",(()=>{p=new Date}))})(e)},X=e=>{if(!(e=>e.syncKey&&"string"==typeof e.syncKey)(e))throw new Error("The current instance of Bespoke.js is invalid for Marp bespoke presenter plugin.");Object.defineProperties(e,{openPresenterView:{enumerable:!0,value:H},presenterUrl:{enumerable:!0,get:R}}),g&&document.addEventListener("keydown",(t=>{"p"!==t.key||t.altKey||t.ctrlKey||t.metaKey||(t.preventDefault(),e.openPresenterView())}))};function H(){const{max:e,floor:t}=Math,n=e(t(.85*window.innerWidth),640),r=e(t(.85*window.innerHeight),360);return window.open(this.presenterUrl,F+this.syncKey,`width=${n},height=${r},menubar=no,toolbar=no`)}function R(){const e=new URLSearchParams(location.search);return e.set("view","presenter"),e.set("sync",this.syncKey),d(e)}const W=e=>{const t=u();return t===a&&e.appendChild(document.createElement("span")),{"":X,[i]:U,[a]:O}[t]},J=e=>{e.on("activate",(t=>{document.querySelectorAll(".bespoke-progress-parent > .bespoke-progress-bar").forEach((n=>{n.style.flexBasis=100*t.index/(e.slides.length-1)+"%"}))}))},Y=e=>{const t=Number.parseInt(e,10);return Number.isNaN(t)?null:t},z=(e={})=>{const t={history:!0,...e};return e=>{let n=!0;const r=e=>{const t=n;try{return n=!0,e()}finally{n=t}},o=(t={fragment:!0})=>{let n=t.fragment?Y(f("f")||""):null;((t,n)=>{const{min:r,max:o}=Math,{fragments:i,slides:a}=e,s=o(0,r(t,a.length-1)),l=o(0,r(n||0,i[s].length-1));s===e.slide()&&l===e.fragmentIndex||e.slide(s,{fragment:l})})((()=>{var t,r;if(location.hash){const[o]=location.hash.slice(1).split(":~:");if(/^\d+$/.test(o))return(null!==(t=Y(o))&&void 0!==t?t:1)-1;const i=document.getElementById(o)||document.querySelector(`a[name="${CSS.escape(o)}"]`);if(i){const{length:t}=e.slides;for(let o=0;o<t;o+=1)if(e.slides[o].contains(i)){const t=null===(r=e.fragments)||void 0===r?void 0:r[o],a=i.closest("[data-marpit-fragment]");if(t&&a){const e=t.indexOf(a);e>=0&&(n=e)}return o}}}return 0})(),n)};e.on("fragment",(({index:e,fragmentIndex:r})=>{n||m({f:0===r||r.toString()},{location:{...location,hash:`#${e+1}`},setter:(...e)=>t.history?history.pushState(...e):history.replaceState(...e)})})),setTimeout((()=>{o(),window.addEventListener("hashchange",(()=>r((()=>{o({fragment:!1}),m({f:void 0})})))),window.addEventListener("popstate",(()=>{n||r((()=>o()))})),n=!1}),0)}},G=(e={})=>{var t;const n=e.key||(null===(t=window.history.state)||void 0===t?void 0:t.marpBespokeSyncKey)||Math.random().toString(36).slice(2),r=`bespoke-marp-sync-${n}`;var i;i={marpBespokeSyncKey:n},m({},{setter:(e,...t)=>o({...e,...i},...t)});const a=()=>{const e=p(r);return e?JSON.parse(e):Object.create(null)},s=e=>{const t=a(),n={...t,...e(t)};return v(r,JSON.stringify(n)),n},l=()=>{window.removeEventListener("pageshow",l),s((e=>({reference:(e.reference||0)+1})))};return e=>{l(),Object.defineProperty(e,"syncKey",{value:n,enumerable:!0});let t=!0;setTimeout((()=>{e.on("fragment",(e=>{t&&s((()=>({index:e.index,fragmentIndex:e.fragmentIndex})))}))}),0),window.addEventListener("storage",(n=>{if(n.key===r&&n.oldValue&&n.newValue){const r=JSON.parse(n.oldValue),o=JSON.parse(n.newValue);if(r.index!==o.index||r.fragmentIndex!==o.fragmentIndex)try{t=!1,e.slide(o.index,{fragment:o.fragmentIndex,forSync:!0})}finally{t=!0}}}));const o=()=>{const{reference:e}=a();void 0===e||e<=1?h(r):s((()=>({reference:e-1})))};window.addEventListener("pagehide",(e=>{e.persisted&&window.addEventListener("pageshow",l),o()})),e.on("destroy",o)}},{PI:Q,abs:Z,sqrt:ee,atan2:te}=Math,ne={passive:!0},re=({slope:e=-.7,swipeThreshold:t=30}={})=>n=>{let r;const o=n.parent,i=e=>{const t=o.getBoundingClientRect();return{x:e.pageX-(t.left+t.right)/2,y:e.pageY-(t.top+t.bottom)/2}};o.addEventListener("touchstart",(({touches:e})=>{r=1===e.length?i(e[0]):void 0}),ne),o.addEventListener("touchmove",(e=>{if(r)if(1===e.touches.length){e.preventDefault();const t=i(e.touches[0]),n=t.x-r.x,o=t.y-r.y;r.delta=ee(Z(n)**2+Z(o)**2),r.radian=te(n,o)}else r=void 0})),o.addEventListener("touchend",(o=>{if(r){if(r.delta&&r.delta>=t&&r.radian){const t=(r.radian-e+Q)%(2*Q)-Q;n[t<0?"next":"prev"](),o.stopPropagation()}r=void 0}}),ne)},oe=new Map;oe.clear(),oe.set("none",{backward:{both:void 0,incoming:void 0,outgoing:void 0},forward:{both:void 0,incoming:void 0,outgoing:void 0}});const ie={both:"",outgoing:"outgoing-",incoming:"incoming-"},ae={forward:"",backward:"-backward"},se=e=>`--marp-bespoke-transition-animation-${e}`,le=e=>`--marp-transition-${e}`,ce=se("name"),de=se("duration"),ue=e=>new Promise((t=>{const n={},r=document.createElement("div"),o=e=>{r.remove(),t(e)};r.addEventListener("animationstart",(()=>o(n))),Object.assign(r.style,{animationName:e,animationDuration:"1s",animationFillMode:"both",animationPlayState:"paused",position:"absolute",pointerEvents:"none"}),document.body.appendChild(r);const i=getComputedStyle(r).getPropertyValue(le("duration"));i&&(n.defaultDuration=i),((e,t)=>{requestAnimationFrame((()=>{e.style.animationPlayState="running",requestAnimationFrame((()=>t(void 0)))}))})(r,o)})),fe=async e=>oe.has(e)?oe.get(e):(e=>{const t={},n=[];for(const[r,o]of Object.entries(ie))for(const[i,a]of Object.entries(ae)){const s=`marp-${o}transition${a}-${e}`;n.push(ue(s).then((e=>{t[i]=t[i]||{},t[i][r]=e?{...e,name:s}:void 0})))}return Promise.all(n).then((()=>t))})(e).then((t=>(oe.set(e,t),t))),me=e=>Object.values(e).flatMap(Object.values).every((e=>!e)),ge=(e,{type:t,backward:n})=>{const r=e[n?"backward":"forward"],o=(()=>{const e=r[t],n=e=>({[ce]:e.name});if(e)return n(e);if(r.both){const e=n(r.both);return"incoming"===t&&(e[se("direction")]="reverse"),e}})();return!o&&n?ge(e,{type:t,backward:!1}):o||{[ce]:"__bespoke_marp_transition_no_animation__"}},pe=e=>{if(e)try{const t=JSON.parse(e);if((e=>{if("object"!=typeof e)return!1;const t=e;return"string"==typeof t.name&&(void 0===t.duration||"string"==typeof t.duration)})(t))return t}catch(e){}},ve="_tSId",he="_tA",ye="bespoke-marp-transition-warming-up",be=window.matchMedia("(prefers-reduced-motion: reduce)"),we="__bespoke_marp_transition_reduced_outgoing__",xe="__bespoke_marp_transition_reduced_incoming__",ke={forward:{both:void 0,incoming:{name:xe},outgoing:{name:we}},backward:{both:void 0,incoming:{name:xe},outgoing:{name:we}}},$e=e=>{if(!document.startViewTransition)return;const t=t=>(void 0!==t&&(e._tD=t),e._tD);let n;t(!1),((...e)=>{const t=[...new Set(e).values()];return Promise.all(t.map((e=>fe(e)))).then()})(...Array.from(document.querySelectorAll("section[data-transition], section[data-transition-back]")).flatMap((e=>[e.dataset.transition,e.dataset.transitionBack].flatMap((e=>{const t=pe(e);return[null==t?void 0:t.name,(null==t?void 0:t.builtinFallback)?`__builtin__${t.name}`:void 0]})).filter((e=>!!e))))).then((()=>{document.querySelectorAll("style").forEach((e=>{e.innerHTML=e.innerHTML.replace(/--marp-transition-duration:[^;}]*[;}]/g,(e=>e.slice(0,-1)+"!important"+e.slice(-1)))}))}));const r=(n,{back:r,cond:o})=>i=>{var a;const s=t();if(s)return!!i[he]||!("object"!=typeof s||(s.skipTransition(),!i.forSync));if(!o(i))return!0;const l=e.slides[e.slide()],c=()=>{var e;return null!==(e=i.back)&&void 0!==e?e:r},d="data-transition"+(c()?"-back":""),u=l.querySelector(`section[${d}]`);if(!u)return!0;const f=pe(null!==(a=u.getAttribute(d))&&void 0!==a?a:void 0);return!f||((async(e,{builtinFallback:t=!0}={})=>{let n=await fe(e);if(me(n)){if(!t)return;return n=await fe(`__builtin__${e}`),me(n)?void 0:n}return n})(f.name,{builtinFallback:f.builtinFallback}).then((e=>{if(!e){t(!0);try{n(i)}finally{t(!1)}return}let r=e;be.matches&&(console.warn("Use a constant animation to transition because preferring reduced motion by viewer has detected."),r=ke);const o=document.getElementById(ve);o&&o.remove();const a=document.createElement("style");a.id=ve,document.head.appendChild(a),((e,t)=>{const n=[`:root{${le("direction")}:${t.backward?-1:1};}`,":root:has(.bespoke-marp-inactive){cursor:none;}"],r=t=>{var n,o,i;const a=(null===(n=e[t].both)||void 0===n?void 0:n.defaultDuration)||(null===(o=e[t].outgoing)||void 0===o?void 0:o.defaultDuration)||(null===(i=e[t].incoming)||void 0===i?void 0:i.defaultDuration);return"forward"===t?a:a||r("forward")},o=t.duration||r(t.backward?"backward":"forward");void 0!==o&&n.push(`::view-transition-group(*){${de}:${o};}`);const i=e=>Object.entries(e).map((([e,t])=>`${e}:${t};`)).join("");return n.push(`::view-transition-old(root){${i(ge(e,{...t,type:"outgoing"}))}}`,`::view-transition-new(root){${i(ge(e,{...t,type:"incoming"}))}}`),n})(r,{backward:c(),duration:f.duration}).forEach((e=>{var t;return null===(t=a.sheet)||void 0===t?void 0:t.insertRule(e)}));const s=document.documentElement.classList;s.add(ye);let l=!1;const d=()=>{l||(n(i),l=!0,s.remove(ye))},u=()=>{t(!1),a.remove(),s.remove(ye)};try{t(!0);const e=document.startViewTransition(d);t(e),e.finished.finally(u)}catch(e){console.error(e),d(),u()}})),!1)};e.on("prev",r((t=>e.prev({...t,[he]:!0})),{back:!0,cond:e=>{var t;return e.index>0&&!((null===(t=e.fragment)||void 0===t||t)&&n.fragmentIndex>0)}})),e.on("next",r((t=>e.next({...t,[he]:!0})),{cond:t=>t.index+1<e.slides.length&&!(n.fragmentIndex+1<n.fragments.length)})),setTimeout((()=>{e.on("slide",r((t=>e.slide(t.index,{...t,[he]:!0})),{cond:t=>{const n=e.slide();return t.index!==n&&(t.back=t.index<n,!0)}}))}),0),e.on("fragment",(e=>{n=e}))};let Ee;const Le=()=>(void 0===Ee&&(Ee="wakeLock"in navigator&&navigator.wakeLock),Ee),Se=async()=>{const e=Le();if(e)try{return await e.request("screen")}catch(e){console.warn(e)}return null},Pe=async()=>{if(!Le())return;let e;const t=()=>{e&&"visible"===document.visibilityState&&Se()};for(const e of["visibilitychange","fullscreenchange"])document.addEventListener(e,t);return e=await Se(),e};((e=document.getElementById(":$p"))=>{(()=>{const e=f("view");r.dataset.bespokeView=e===a||e===i?e:""})();const t=(e=>{const t=f(e);return m({[e]:void 0}),t})("sync")||void 0;n.from(e,((...e)=>{const t=s.findIndex((e=>u()===e));return e.map((([e,n])=>e[t]&&n)).filter((e=>e))})([[1,1,0],G({key:t})],[[1,1,1],W(e)],[[1,1,0],_],[[1,1,1],b],[[1,0,0],S()],[[1,1,1],T],[[1,1,1],z({history:!1})],[[1,1,0],I()],[[1,1,0],E],[[1,0,0],J],[[1,1,0],re()],[[1,0,0],M()],[[1,0,0],$e],[[1,1,1],w],[[1,1,0],Pe]))})()}();</script></body></html>

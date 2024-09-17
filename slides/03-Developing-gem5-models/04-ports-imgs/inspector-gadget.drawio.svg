@@ -1,0 +1,413 @@
+<svg host="65bd71144e" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1030px" height="502px" viewBox="-0.5 -0.5 1030 502" content="&lt;mxfile scale=&quot;1&quot; border=&quot;0&quot;&gt;&lt;diagram name=&quot;Page-1&quot; id=&quot;cb4od1TtC0ULdRkrLdyx&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;">
+    <defs/>
+    <g>
+        <rect x="130" y="1" width="770" height="500" fill="#c8eaf3" stroke="rgb(0, 0, 0)" stroke-width="2" pointer-events="all"/>
+        <rect x="140" y="286" width="690" height="165" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="140" y="286" width="690" height="165" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="540" y="321" width="280" height="120" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="540" y="321" width="280" height="120" fill="#97d077" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="540" y="321" width="240" height="60" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="540" y="321" width="240" height="60" fill="#d5e8d4" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="280" y="171" width="40" height="60" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="280" y="171" width="40" height="60" fill="#00627a" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <path d="M 160 91 L 250 91 L 250 201 L 269.9 201" fill="none" stroke="rgb(0, 0, 0)" stroke-width="3" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 276.65 201 L 267.65 205.5 L 269.9 201 L 267.65 196.5 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-width="3" stroke-miterlimit="10" pointer-events="all"/>
+        <rect x="120" y="61" width="40" height="40" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="120" y="61" width="40" height="40" fill="#e6e6e6" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <path d="M 260 441 L 280 321 L 360 321 L 380 441 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" transform="translate(2,3)rotate(-180,320,381)" pointer-events="all" opacity="0.25"/>
+        <path d="M 260 441 L 280 321 L 360 321 L 380 441 Z" fill="#d5e8d4" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" transform="rotate(-180,320,381)" pointer-events="all"/>
+        <path d="M 390 441 L 410 321 L 490 321 L 510 441 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" transform="translate(2,3)rotate(-180,450,381)" pointer-events="all" opacity="0.25"/>
+        <path d="M 390 441 L 410 321 L 490 321 L 510 441 Z" fill="#d5e8d4" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" transform="rotate(-180,450,381)" pointer-events="all"/>
+        <path d="M 520 441 L 540 321 L 620 321 L 640 441 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" transform="translate(2,3)rotate(-180,580,381)" pointer-events="all" opacity="0.25"/>
+        <path d="M 520 441 L 540 321 L 620 321 L 640 441 Z" fill="#d5e8d4" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" transform="rotate(-180,580,381)" pointer-events="all"/>
+        <path d="M 400 441 L 410 381 L 490 381 L 500 441 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" transform="translate(2,3)rotate(-180,450,411)" pointer-events="all" opacity="0.25"/>
+        <path d="M 400 441 L 410 381 L 490 381 L 500 441 Z" fill="#97d077" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" transform="rotate(-180,450,411)" pointer-events="all"/>
+        <path d="M 270 441 L 280 381 L 360 381 L 370 441 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" transform="translate(2,3)rotate(-180,320,411)" pointer-events="all" opacity="0.25"/>
+        <path d="M 270 441 L 280 381 L 360 381 L 370 441 Z" fill="#97d077" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" transform="rotate(-180,320,411)" pointer-events="all"/>
+        <path d="M 530 441 L 540 381 L 620 381 L 630 441 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" transform="translate(2,3)rotate(-180,580,411)" pointer-events="all" opacity="0.25"/>
+        <path d="M 530 441 L 540 381 L 620 381 L 630 441 Z" fill="#97d077" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" transform="rotate(-180,580,411)" pointer-events="all"/>
+        <rect x="320" y="171" width="40" height="60" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="320" y="171" width="40" height="60" fill="#00627a" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="360" y="171" width="40" height="60" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="360" y="171" width="40" height="60" fill="#00627a" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="400" y="171" width="40" height="60" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="400" y="171" width="40" height="60" fill="#00627a" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="440" y="171" width="40" height="60" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="440" y="171" width="40" height="60" fill="#00627a" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <path d="M 500 231 L 500 251 L 488.24 251" fill="none" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 482.24 251 L 490.24 247 L 488.24 251 L 490.24 255 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <rect x="480" y="171" width="40" height="60" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="480" y="171" width="40" height="60" fill="#008eb0" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="520" y="171" width="40" height="60" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="520" y="171" width="40" height="60" fill="#008eb0" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="560" y="171" width="40" height="60" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="560" y="171" width="40" height="60" fill="#008eb0" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <path d="M 580 241 L 580 312.76" fill="none" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 580 318.76 L 576 310.76 L 580 312.76 L 584 310.76 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 480 161 L 480 141 L 600 141 L 600 161" fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" pointer-events="stroke" transform="translate(2,3)" opacity="0.25"/>
+        <path d="M 480 161 L 480 141 L 600 141 L 600 161" fill="none" stroke="#008eb0" stroke-width="3" stroke-miterlimit="10" pointer-events="stroke"/>
+        <rect x="490" y="141" width="100" height="20" fill="none" stroke="none" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 98px; height: 1px; padding-top: 151px; margin-left: 491px;">
+                        <div data-drawio-colors="color: #008EB0; " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 142, 176); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">
+                                <font face="Courier New">
+                                    insp_window
+                                </font>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="540" y="155" fill="#008EB0" font-family="Helvetica" font-size="12px" text-anchor="middle" font-weight="bold">
+                    insp_window
+                </text>
+            </switch>
+        </g>
+        <path d="M 280 161 L 280 131 L 600 131" fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" pointer-events="stroke" transform="translate(2,3)" opacity="0.25"/>
+        <path d="M 280 161 L 280 131 L 600 131" fill="none" stroke="#00627a" stroke-width="3" stroke-miterlimit="10" pointer-events="stroke"/>
+        <rect x="320" y="131" width="120" height="20" fill="none" stroke="none" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 118px; height: 1px; padding-top: 141px; margin-left: 321px;">
+                        <div data-drawio-colors="color: #00627A; " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 98, 122); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">
+                                <font face="Courier New">
+                                    inspection_buffer_entries
+                                </font>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="380" y="145" fill="#00627A" font-family="Helvetica" font-size="12px" text-anchor="middle" font-weight="bold">
+                    inspection_buffer_en...
+                </text>
+            </switch>
+        </g>
+        <rect x="300" y="331" width="40" height="40" rx="6" ry="6" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="560" y="391" width="40" height="40" rx="6" ry="6" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="470" y="241" width="10" height="20" fill="none" stroke="none" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 8px; height: 1px; padding-top: 251px; margin-left: 471px;">
+                        <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
+                                <font style="font-size: 16px;" color="#ff0000">
+                                    X
+                                </font>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="475" y="255" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
+                    X
+                </text>
+            </switch>
+        </g>
+        <rect x="170" y="291" width="60" height="150" fill="none" stroke="none" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 58px; height: 1px; padding-top: 366px; margin-left: 171px;">
+                        <div data-drawio-colors="color: #008EB0; " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 16px; font-family: Helvetica; color: rgb(0, 142, 176); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">
+                                <font face="Courier New" color="#000000" style="font-size: 16px;">
+                                    Inspecting
+                                    <br style="font-size: 16px;"/>
+                                </font>
+                                <div style="font-size: 16px;">
+                                    <font face="Courier New" color="#000000" style="font-size: 16px;">
+                                        Units
+                                    </font>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="200" y="371" fill="#008EB0" font-family="Helvetica" font-size="16px" text-anchor="middle" font-weight="bold">
+                    Inspect...
+                </text>
+            </switch>
+        </g>
+        <rect x="280" y="101" width="320" height="30" fill="none" stroke="none" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 318px; height: 1px; padding-top: 116px; margin-left: 281px;">
+                        <div data-drawio-colors="color: #000000; " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 16px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">
+                                <font style="font-size: 16px;" face="Courier New">
+                                    Inspection Buffer
+                                </font>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="440" y="121" fill="#000000" font-family="Helvetica" font-size="16px" text-anchor="middle" font-weight="bold">
+                    Inspection Buffer
+                </text>
+            </switch>
+        </g>
+        <path d="M 540 231 L 540 232.76" fill="none" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 540 238.76 L 536 230.76 L 540 232.76 L 544 230.76 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 540 241 L 540 271 L 450 271 L 450 312.76" fill="none" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 450 318.76 L 446 310.76 L 450 312.76 L 454 310.76 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <rect x="640" y="331" width="110" height="40" fill="none" stroke="none" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-end; width: 108px; height: 1px; padding-top: 351px; margin-left: 640px;">
+                        <div data-drawio-colors="color: #008EB0; " style="box-sizing: border-box; font-size: 0px; text-align: right;">
+                            <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 142, 176); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">
+                                <font color="#000000" face="Courier New">
+                                    insp_front_lat
+                                </font>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="748" y="355" fill="#008EB0" font-family="Helvetica" font-size="12px" text-anchor="end" font-weight="bold">
+                    insp_front_lat
+                </text>
+            </switch>
+        </g>
+        <rect x="640" y="391" width="150" height="40" fill="none" stroke="none" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-end; width: 148px; height: 1px; padding-top: 411px; margin-left: 640px;">
+                        <div data-drawio-colors="color: #008EB0; " style="box-sizing: border-box; font-size: 0px; text-align: right;">
+                            <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 142, 176); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">
+                                <font color="#000000" face="Courier New">
+                                    insp_tot_lat
+                                </font>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="788" y="415" fill="#008EB0" font-family="Helvetica" font-size="12px" text-anchor="end" font-weight="bold">
+                    insp_tot_lat
+                </text>
+            </switch>
+        </g>
+        <path d="M 760 372.76 L 760 329.24" fill="none" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 760 378.76 L 756 370.76 L 760 372.76 L 764 370.76 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 760 323.24 L 764 331.24 L 760 329.24 L 756 331.24 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 800 432.76 L 800 329.24" fill="none" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 800 438.76 L 796 430.76 L 800 432.76 L 804 430.76 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 800 323.24 L 804 331.24 L 800 329.24 L 796 331.24 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 870 71 L 430.1 71" fill="none" stroke="rgb(0, 0, 0)" stroke-width="3" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 423.35 71 L 432.35 66.5 L 430.1 71 L 432.35 75.5 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-width="3" stroke-miterlimit="10" pointer-events="all"/>
+        <rect x="870" y="61" width="40" height="40" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="870" y="61" width="40" height="40" fill="#e6e6e6" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <path d="M 449.49 472.76 L 449.82 441" fill="none" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 449.43 478.76 L 445.52 470.72 L 449.49 472.76 L 453.51 470.81 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 579.49 472.76 L 579.82 441" fill="none" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 579.43 478.76 L 575.52 470.72 L 579.49 472.76 L 583.51 470.81 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 319.49 472.76 L 319.82 441" fill="none" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 319.43 478.76 L 315.52 470.72 L 319.49 472.76 L 323.51 470.81 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-width="2" stroke-miterlimit="10" pointer-events="all"/>
+        <rect x="280" y="31" width="140" height="20" fill="none" stroke="none" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 138px; height: 1px; padding-top: 41px; margin-left: 281px;">
+                        <div data-drawio-colors="color: #000000; " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">
+                                <font face="Courier New">
+                                    Response Buffer
+                                </font>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="350" y="45" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle" font-weight="bold">
+                    Response Buffer
+                </text>
+            </switch>
+        </g>
+        <rect x="210" y="91" width="40" height="110" fill="none" stroke="none" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)rotate(-90 230 146)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 108px; height: 1px; padding-top: 146px; margin-left: 176px;">
+                        <div data-drawio-colors="color: #000000; " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">
+                                <font face="Courier New">
+                                    Incoming Requests
+                                </font>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="230" y="150" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle" font-weight="bold">
+                    Incoming Requests
+                </text>
+            </switch>
+        </g>
+        <path d="M 19.5 86 L 19.5 96.5 L 0.5 81 L 19.5 65.5 L 19.5 76 L 100.5 76 L 100.5 65.5 L 119.5 81 L 100.5 96.5 L 100.5 86 Z" fill="#000000" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <rect x="40" y="61" width="40" height="40" rx="6" ry="6" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="40" y="61" width="40" height="40" rx="6" ry="6" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 38px; height: 1px; padding-top: 81px; margin-left: 41px;">
+                        <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
+                                <b>
+                                    <font face="Courier New">
+                                        pkt
+                                    </font>
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="60" y="85" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
+                    pkt
+                </text>
+            </switch>
+        </g>
+        <rect x="120" y="21" width="150" height="40" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="120" y="21" width="150" height="40" fill="#e6e6e6" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="130" y="21" width="130" height="40" fill="none" stroke="none" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 128px; height: 1px; padding-top: 41px; margin-left: 131px;">
+                        <div data-drawio-colors="color: #000000; " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 16px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">
+                                <font face="Courier New">
+                                    cpu_side_port
+                                </font>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="195" y="46" fill="#000000" font-family="Helvetica" font-size="16px" text-anchor="middle" font-weight="bold">
+                    cpu_side_port
+                </text>
+            </switch>
+        </g>
+        <rect x="760" y="21" width="150" height="40" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="760" y="21" width="150" height="40" fill="#e6e6e6" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="770" y="21" width="130" height="40" fill="none" stroke="none" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 128px; height: 1px; padding-top: 41px; margin-left: 771px;">
+                        <div data-drawio-colors="color: #000000; " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 16px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">
+                                <font face="Courier New">
+                                    mem_side_port
+                                </font>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="835" y="46" fill="#000000" font-family="Helvetica" font-size="16px" text-anchor="middle" font-weight="bold">
+                    mem_side_port
+                </text>
+            </switch>
+        </g>
+        <rect x="320" y="181" width="40" height="40" rx="6" ry="6" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="320" y="181" width="40" height="40" rx="6" ry="6" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="360" y="181" width="40" height="40" rx="6" ry="6" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="360" y="181" width="40" height="40" rx="6" ry="6" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="400" y="181" width="40" height="40" rx="6" ry="6" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="400" y="181" width="40" height="40" rx="6" ry="6" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="440" y="181" width="40" height="40" rx="6" ry="6" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="440" y="181" width="40" height="40" rx="6" ry="6" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="480" y="181" width="40" height="40" rx="6" ry="6" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="480" y="181" width="40" height="40" rx="6" ry="6" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="520" y="201" width="40" height="40" rx="6" ry="6" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="520" y="201" width="40" height="40" rx="6" ry="6" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="560" y="201" width="40" height="40" rx="6" ry="6" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="560" y="201" width="40" height="40" rx="6" ry="6" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <path d="M 929.5 86 L 929.5 96.5 L 910.5 81 L 929.5 65.5 L 929.5 76 L 1010.5 76 L 1010.5 65.5 L 1029.5 81 L 1010.5 96.5 L 1010.5 86 Z" fill="#000000" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <rect x="950" y="61" width="40" height="40" rx="6" ry="6" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="950" y="61" width="40" height="40" rx="6" ry="6" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 38px; height: 1px; padding-top: 81px; margin-left: 951px;">
+                        <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
+                                <b>
+                                    <font face="Courier New">
+                                        pkt
+                                    </font>
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="970" y="85" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
+                    pkt
+                </text>
+            </switch>
+        </g>
+        <rect x="260" y="301" width="120" height="10" fill="none" stroke="none" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 118px; height: 1px; padding-top: 306px; margin-left: 261px;">
+                        <div data-drawio-colors="color: #7CAB62; " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(124, 171, 98); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">
+                                <font style="font-size: 12px;" face="Courier New">
+                                    num_insp_units
+                                </font>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="320" y="310" fill="#7CAB62" font-family="Helvetica" font-size="12px" text-anchor="middle" font-weight="bold">
+                    num_insp_units
+                </text>
+            </switch>
+        </g>
+        <path d="M 260 316 L 260 296 L 445 296 M 455 296 M 455 296 L 575 296 M 585 296 M 585 296 L 640 296" fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" pointer-events="stroke" transform="translate(2,3)" opacity="0.25"/>
+        <path d="M 260 316 L 260 296 L 445 296 M 455 296 M 455 296 L 575 296 M 585 296 M 585 296 L 640 296" fill="none" stroke="#7cab62" stroke-width="3" stroke-miterlimit="10" pointer-events="stroke"/>
+        <rect x="280" y="51" width="140" height="40" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="280" y="51" width="140" height="40" fill="#00627a" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <path d="M 280 71 L 170.1 71" fill="none" stroke="rgb(0, 0, 0)" stroke-width="3" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 163.35 71 L 172.35 66.5 L 170.1 71 L 172.35 75.5 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-width="3" stroke-miterlimit="10" pointer-events="all"/>
+        <rect x="280" y="51" width="20" height="40" fill="#008eb0" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <path d="M 300 481 L 840 481 L 840 271.1" fill="none" stroke="rgb(0, 0, 0)" stroke-width="3" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 840 264.35 L 844.5 273.35 L 840 271.1 L 835.5 273.35 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-width="3" stroke-miterlimit="10" pointer-events="all"/>
+        <rect x="820" y="121" width="40" height="140" fill="#000000" stroke="#000000" pointer-events="all" transform="translate(2,3)" opacity="0.25"/>
+        <rect x="820" y="121" width="40" height="140" fill="#00627a" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <path d="M 840 121 L 840 91 L 859.9 91" fill="none" stroke="rgb(0, 0, 0)" stroke-width="3" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 866.65 91 L 857.65 95.5 L 859.9 91 L 857.65 86.5 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-width="3" stroke-miterlimit="10" pointer-events="all"/>
+        <rect x="820" y="121" width="40" height="20" fill="#008eb0" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="740" y="181" width="140" height="20" fill="none" stroke="none" transform="rotate(-90,810,191)" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)rotate(-90 810 191)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 138px; height: 1px; padding-top: 191px; margin-left: 741px;">
+                        <div data-drawio-colors="color: #000000; " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">
+                                <font face="Courier New">
+                                    Output Buffer
+                                </font>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="810" y="195" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle" font-weight="bold">
+                    Output Buffer
+                </text>
+            </switch>
+        </g>
+    </g>
+    <switch>
+        <g requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"/>
+        <a transform="translate(0,-5)" xlink:href="https://www.diagrams.net/doc/faq/svg-export-text-problems" target="_blank">
+            <text text-anchor="middle" font-size="10px" x="50%" y="100%">
+                Text is not SVG - cannot display
+            </text>
+        </a>
+    </switch>
+</svg>

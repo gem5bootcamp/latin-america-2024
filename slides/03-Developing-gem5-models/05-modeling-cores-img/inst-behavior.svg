@@ -1,0 +1,29 @@
+<svg width="400px" height="400px" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <rect x="28" y="230" width="146" height="112" fill="rgb(39, 156, 86)"/>
+    <linearGradient id="8phtppha"/>
+    <radialGradient id="4h681en8"/>
+    <rect fill="rgb(39, 156, 86)" x="237" y="5" width="146" height="112"/>
+    <rect fill="rgb(39, 156, 86)" x="30" y="7" width="146" height="112"/>
+    <text textLength="64.9" font-size="30" fill="rgb(255, 255, 255)" x="71.5" y="75.4">
+        CPU
+    </text>
+    <rect width="146" height="112" x="233" y="229" fill="rgb(39, 156, 86)">
+        </rect>
+    <text textLength="62" font-size="32" x="279" y="78.7" fill="rgb(255, 255, 255)">
+        Inst.
+    </text>
+    <text fill="rgb(255, 255, 255)" font-size="32" x="69" y="297.7" textLength="62">
+    Inst.
+</text>
+    <text fill="rgb(255, 255, 255)" font-size="30" x="273.5" y="296.4" textLength="64.9">
+    CPU
+</text>
+    <text textLength="128" font-size="19" x="35.5" y="182.1" fill="rgb(4, 134, 17)">
+        Static Inst. Objects
+    </text>
+    <text textLength="141" font-size="21" fill="rgb(4, 134, 17)" x="232" y="183.7">Execution Context</text>
+    <polyline points="306.7,115.8 310.8,164.2 317.5,115.8" fill="rgb(4, 134, 17)"/>
+    <polyline fill="rgb(4, 134, 17)" points="94.2,187.5 99.2,226.7 105.8,186.7"/>
+    <polyline fill="rgb(4, 134, 17)" points="92.5,115.8 97.5,160.8 105,115.8"/>
+    <polyline fill="rgb(4, 134, 17)" points="305.8,185.8 310.8,225.8 314.2,185.8"/>
+</svg>
