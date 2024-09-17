@@ -60,3 +60,17 @@ git push
 ## Creating content
 
 See [creating-content.md](creating-content.md) for more information on how to create content for the gem5 bootcamp.
+
+## Launching a new version
+
+Steps to create a new instance of the bootcamp.
+
+1. Create a new repo
+2. Update your local repo with a new remote: `git remote add <name> git@github.com:gem5bootcamp/<repo>.git`
+3. Create a new branch: `git checkout -b <name>`
+4. Update repo to enable github actions. Use `https://github.com/gem5bootcamp/<repo>/actions`
+5. Push new branch to new repo main: `git push <name> <name>:main`
+6. Track the right upstream: `git branch --set-upstream-to=<name>/main`
+7. Update [splash page](web/index.html)
+8. Update [Introduction](slides/01-Introduction/00-introduction-to-bootcamp.md)
+9. Enable github pages to "deploy from branch" `gh-pages`. Use `https://github.com/gem5bootcamp/<repo>/settings/pages`
