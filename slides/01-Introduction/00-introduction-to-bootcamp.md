@@ -14,11 +14,11 @@ author: Jason Lowe-Power
 
 ## About the overall structure of the bootcamp
 
-These slides and are available at <https://bootcamp.gem5.org/> for you to follow along.
+These slides and are available at <https://gem5bootcamp.github.io/latin-america-2024> for you to follow along.
 
-(Note: They will be archived at <https://gem5bootcamp.github.io/2024>)
+(Note: They will be archived at <https://gem5bootcamp.github.io/latin-america-2024>)
 
-The source for the slides, and what you'll be using throughout the bootcamp can be found on github at <https://github.com/gem5bootcamp/2024>
+The source for the slides, and what you'll be using throughout the bootcamp can be found on github at <https://github.com/gem5bootcamp/latin-america-2024>
 
 > Note: Don't clone that repo, yet. We'll do that in a bit.
 
@@ -26,7 +26,7 @@ The source for the slides, and what you'll be using throughout the bootcamp can 
 
 <!-- _class: two-col -->
 
-## A bit about me
+## A bit about us
 
 I am **Prof. Jason Lowe-Power** (he/him).
 I am an associate professor in the Computer Science Department and
@@ -244,20 +244,6 @@ The slides will be a reference, but we'll be doing a lot of live coding!
 ---
 
 ## Bootcamp logistics
-
-We'll be here from 9am - 4pm each day.
-
-Lunch will be ~12 - 1pm.
-
-We'll have a breaks in the morning and afternoon.
-
-Afternoon break will have coffee/snacks.
-
-Tonight: Reception at [Dunloe Brewing](https://dunloebrewing.com/) (Olive Drive Brewery)
-5:30pm - 8:00pm. Walking over at 5pm from here.
-
-Wednesday: Social event at UC Davis ["Games Area"](https://memorialunion.ucdavis.edu/games-area) (Bowling, pool, video games, etc.)
-6:30pm - 9:30pm.
 
 ---
 
