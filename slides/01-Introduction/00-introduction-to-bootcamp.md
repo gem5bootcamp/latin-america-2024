@@ -55,16 +55,16 @@ I lead the Davis Computer Architecture Research (DArchR) Group.
 ### Day 1
 
 - Introduction
+  - [Computer architecture research intro](01-arch-research.md) <!-- 30 min (Tamara) -->
+    - Introduction to computer architecture research
+    - Example research idea: secure memory
+    - Why do we need simulators?
   - [Background on simulation](01-simulation-background.md) <!-- 1 hour (Jason) -->
     - What is is simulation and why does it matter
     - gem5 history
   - [Getting started with gem5](02-getting-started.md) <!-- 30 minutes (Jason) -->
     - Getting into the codespace environment
     - Running your first simulation
-  - [Background on Python and gem5](03-python-background.md) <!--  1.5 hours (Bobby) -->
-    - Python basics
-    - Python in gem5
-    - Object-oriented programming in Python
 - Using gem5
   - [gem5's standard library](../02-Using-gem5/01-stdlib.md) <!--  2 hours (Bobby) -->
   - [gem5 resources](../02-Using-gem5/02-gem5-resources.md) <!--  1 hour (Harshil) -->
