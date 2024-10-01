@@ -1,12 +1,16 @@
 window.get_slide_registry = function() {
     return [
         {
+            "name": "00-Pre-bootcamp",
+            "slides": [
+                "01-python-background",
+            ],
             "name": "01-Introduction",
             "slides": [
                 "00-introduction-to-bootcamp",
-                "01-simulation-background",
-                "02-getting-started",
-                "03-python-background"
+                "01-arch-research",
+                "02-simulation-background",
+                "03-getting-started",
             ]
         },
         {
