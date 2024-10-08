@@ -13,6 +13,22 @@ title: gem5's Standard Library
 
 ## Why a Standard Library?
 
+- Using stdlib you don't need to specify 1,000s-10,000s lines to describe the system.
+- Standard "components" reduces
+  - Duplicated code.
+  - Error-prone configurations.
+  - A lack of portability between different simulation setups.
+
+Previously, there was `se.py` and `fs.py`
+
+- These tried to be everything to everyone
+- "Spaghetti code"
+- The default "interface" to gem5 was massive bash lines and hacks
+
+Think of gem5 more like TensorFlow than a command line tool. **gem5** is a *framework* or *language*.
+
+<!--
+
 When done without the library you must define *every part* of your simulation: Every SimObject, connected correctly to every port, for every part, no matter now small.
 This can result in scripts with hundreds of lines of code even for the most basic of simulations.
 
@@ -23,6 +39,8 @@ This causes:
 - A lack of portability between different simulation setups.
 
 In addition, while there is no "one size fits all" for gem5 users, most users have similar needs and requirements for their simulations, requiring only a few modifications off of some commonly used configuration systems. Prior to the creation of the standard library users would regularly circulate long, complex scripts and hack at them endlessly. Such practices inspired the creation of the gem5 Standard Library.
+
+-->
 
 ---
 
@@ -53,7 +71,11 @@ The types of components are *boards*, *processors*, *memory systems*, and *cache
 
 ---
 
-## Quick note on relationship to gem5 models
+## Remember: gem5 software architecture
+
+![diagram of models, stdlib, and simulation control](../01-Introduction/02-simulation-background-imgs/gem5-software-arch.drawio.svg)
+
+<!--
 
 The C++ code in gem5 specifies *parameterized* **models** (typically referred to "SimObjects" in most gem5 literature). These models are then instantiated in the Python scripts.
 
@@ -62,6 +84,27 @@ The standard library is a way to *wrap* these models in a standard API into, wha
 The gem5 models are fine grained concepts which make little sense for us to divide down further into sub-models or hardcore parameters for (for example, a *core*). A component works on coarser grained concepts typically containing many models instantiated with sensible parameters. For, example a *processor* which contains multiple cores and specifies how they are connected to buses and each other with all parameters set to sensible values.
 
 If you want to create a new component you are encouraged to *extend* (i.e., subclass) the components in the standard library or create new components. This allows you to choose the models within the component and the value of their parameters. We will see some examples of this over the coming lectures.
+
+-->
+
+---
+
+<!-- _class: exercise -->
+
+## Exercise: Build your own board
+
+### Characteristics
+
+- A single core Arm CPU using a "simple" model.
+- Two-level cache hierarchy with 32 KiB 8-way L1 and 512 KiB 16-way L2.
+- Single channel DDR4 2400 memory.
+
+Run BFS from the GAP benchmark suite.
+
+### Questions
+
+- What is the average IPC?
+- What is the total simulated time?
 
 ---
 
@@ -218,6 +261,12 @@ Average Time:        0.00009
 simSeconds                                   0.009093
 simTicks                                   9093461436
 ```
+
+---
+
+<!-- _class: start -->
+
+## Overview of stdlib components
 
 ---
 
@@ -399,402 +448,6 @@ Other options for CPU types
   - Don't use `SimpleProcessor` if you want to configure this.
 - `CPUTypes.ATOMIC`: Used in "atomic" mode (more later)
 - `CPUTypes.KVM`: More later
-
----
-
-## A slightly more complex example
-
-We have went over a basic "getting started" example, then went over the various components we offer.
-Let's create a more complex example, incorporating more features delivered by the standard library.
-
-In this example we will create a system using multiple cores, on an X86 board, in Full System mode.
-
-### First: Let's discuss SE mode and FS mode
-
-SE mode relays application syscalls to the host OS. This means we don't need to simulate an OS for applications to run.
-
-In addition, we can access host resources such as files of libraries to dynamically link in.
-
----
-
-## FS mode
-
-![FS mode bg 25%](01-stdlib-imgs/fs-mode.png)
-
----
-
-## SE mode
-
-![SE mode bg 45%](01-stdlib-imgs/se-mode.png)
-
----
-
-## FS and SE mode: Common pitfalls
-
-- **Don't treat SE mode as "FS  but faster"**: You must understand what you're simulating and whether it will impact results.
-- **Not all syscalls will ever be implemented**: We'd love to have all the syscalls implemented but Linux changes rapidly. We try to cover common use-cases but we can't cover everything. If a Syscall is missing, you can implement it, ignore it, or use FS mode.
-- **Binaries with elevated privileges do not work in SE mode**: If you're running a binary that requires elevated privileges, you'll need to run it in FS mode.
-
----
-
-## SE mode: If in doubt, use FS mode
-
-FS mode does everything SE mode does (and more!) but can take longer to get to the region of interest. You have to wait for the OS to boot each time (unless you [accelerate the simulation](08-accelerating-simulation.md)).
-
-However, as SE mode doesn't simulate the OS, you risk missing important events triggered via syscalls, I/O, or the operating system, which may mean your simulated system doesn't properly reflect the real system.
-
-**Think through what SE mode is doing and if it's right for your use-case.** If in doubt, use FS mode. It's (generally) not worth the risk using SE mode if you're not sure.
-
----
-
-## How to specify FS mode using the standard library
-
-Go to [`materials/02-Using-gem5/01-stdlib/01-02-fs-mode.py`](../../materials/02-Using-gem5/01-stdlib/01-02-fs-mode.py) and and work on this example.
-
----
-
-## Template code (imports)
-
-```python
-from gem5.components.boards.x86_board import X86Board
-from gem5.components.cachehierarchies.ruby.mesi_two_level_cache_hierarchy import (
-    MESITwoLevelCacheHierarchy,
-)
-from gem5.components.memory.single_channel import SingleChannelDDR3_1600
-from gem5.components.processors.cpu_types import CPUTypes
-from gem5.components.processors.simple_switchable_processor import (
-    SimpleSwitchableProcessor,
-)
-from gem5.isas import ISA
-from gem5.resources.resource import obtain_resource
-from gem5.simulate.exit_event import ExitEvent
-from gem5.simulate.simulator import Simulator
-```
-
----
-
-## More template code
-
-This adds a two-level cache hierarchy and a memory system.
-
-```python
-cache_hierarchy = MESITwoLevelCacheHierarchy(
-    l1d_size="16kB",
-    l1d_assoc=8,
-    l1i_size="16kB",
-    l1i_assoc=8,
-    l2_size="256kB",
-    l2_assoc=16,
-    num_l2_banks=1,
-)
-
-memory = SingleChannelDDR3_1600(size="3GB")
-```
-
----
-
-## Let's add a SimpleSwitchableProcessor
-
-Here we set up the processor. This is a special switchable processor in which a starting core type and a switch core type must be specified. Once a configuration is instantiated a user may call `processor.switch()` to switch from the starting core types to the switch core types. In this simulation we start with Timing cores to simulate the OS boot, then switch to the Out-of-order (O3) cores for the command we wish to run after boot.
-
-```python
-processor = SimpleSwitchableProcessor(
-    starting_core_type=CPUTypes.TIMING,
-    switch_core_type=CPUTypes.O3,
-    isa=ISA.X86,
-    num_cores=2,
-)
-```
-
----
-
-## Next, plug components into the board
-
-Here we set up the board. The X86Board allows for Full-System X86 simulations.
-
-```python
-board = X86Board(
-    clk_freq="3GHz",
-    processor=processor,
-    memory=memory,
-    cache_hierarchy=cache_hierarchy,
-)
-```
-
----
-
-## What to do when Linux boots
-
-Here we set the Full System workload.
-The `set_kernel_disk_workload` function for the X86Board takes a kernel, a disk image, and, optionally, a command to run.
-
-This is the command to run after the system has booted. The first `m5 exit` will stop the simulation so we can switch the CPU cores from timing to o3 and continue the simulation to run the echo command, sleep for a second, then, again, call `m5 exit` to terminate the simulation. After simulation has ended you may inspect `m5out/board.pc.com_1.device` to see the echo output.
-
-```python
-command = (
-    "m5 exit;"
-    + "echo 'This is running on O3 CPU cores.';"
-    + "sleep 1;"
-    + "m5 exit;"
-)
-```
-
----
-
-## Setting the workload
-
-This a slightly more convoluted way of specifying a workload.
-Here we specify the kernel, disk image, and the command to run after booting the system.
-
-```python
-board.set_kernel_disk_workload(
-    kernel=obtain_resource("x86-linux-kernel-4.4.186"),
-    disk_image=obtain_resource("x86-ubuntu-18.04-img"),
-    readfile_contents=command,
-)
-```
-
----
-
-## Create the simulator object
-
-Here we set up the simulator. We pass the board to the simulator and run it but also specify what to do when the simulation exits with the `EXIT` exit event. In this case we call the `processor.switch` function on the first exit event. For the 2nd the default action will be triggered which exits the simulator.
-
-Warning: This is using a generator expression to create a tuple of functions to call.
-
-```python
-simulator = Simulator(
-    board=board,
-    on_exit_event={ExitEvent.EXIT: (func() for func in [processor.switch])},
-)
-
-simulator.run()
-```
-
----
-
-## What does the exit event generator do?
-
-An equivalent to this would be run the following commands:
-
-```python
-simulator = Simulator(board=board)
-
-simulator.run()
-processor.switch()
-simulator.run()
-```
-
----
-
-## The simulation loop
-
-![Simulation Loop bg 90%](01-stdlib-imgs/simulation-loop.png)
-
----
-
-## Exit Events
-
-Going back to what we implemented:
-
-```python
-simulator = Simulator(
-    board=board,
-    on_exit_event={ExitEvent.EXIT: (func() for func in [processor.switch])},
-)
-
-simulator.run()
-```
-
-We passed objects to specify exactly what to do on each exit event type via Python generators generator expression. In this case the generator yields `processor.switch` which is called when the exit event `ExitEvent.EXIT` is triggered.
-When the 2nd exit is triggered the default action is triggered as there is nothing left to yield. The default action is to exit the simulation loop.
-
----
-
-## Exit event types
-
-- ExitEvent.EXIT
-- ExitEvent.CHECKPOINT
-- ExitEvent.FAIL
-- ExitEvent.SWITCHCPU
-- ExitEvent.WORKBEGIN
-- ExitEvent.WORKEND
-- ExitEvent.USER_INTERRUPT
-- ExitEvent.MAX_TICK
-
-The Simulator has default behavior for these events, but they can be overridden.
-
----
-
-## Key idea: The `Simulator` object controls simulation
-
-To place our idea of gem5:
-
-- *models* (or *SimObjects*) are the fine-grained objects that are connected together in Python scripts to form a simulation.
-- *components* are the coarse-grained objects that are connected defined as a set of configured models in Python scripts to form and delivered as part of the Standard Library
-- The standard library allows users to specify a board and specify the properties of the board by specify the components that are connected to it.
-- The Simulator takes a board and launches the simulation and gives an API which allows for control of the simulation: specifying the simulation stopping and restarting condition, replacing components "on the fly", defining when the simulation should stop and start, etc.
-
-See [`src/python/gem5/simulate/simulator.py`](../../gem5/src/python/gem5/simulate/simulator.py) for the Simulator source.
-
-We'll see more about this in [Accelerating Simulation](08-accelerating-simulation.md).
-
----
-
-## Simulator parameters
-
-- **`board`**: The `Board` to simulate (required)
-- **`full_system`**: Whether to simulate a full system (default: `False`, can be inferred from the board, not needed specified in most cases)
-- **`on_exit_event`**: A complex data structure that allows you to control the simulation. The simulator exits for many reasons, this allows you to customize what happens. We just saw an example.
-- **`checkpoint_path`**: If we're restoring from a checkpoint, this is the path to the checkpoint. More on checkpoints later.
-- **`id`**: An optional name for this simulation. Used in multisim. More on this in the future.
-
----
-
-## Some useful functions
-
-- **`run()`**: Run the simulation
-- **`get/set_max_ticks(max_tick)`**: Set the absolute tick to stop simulation. Generates a `MAX_TICK` exit event that can be handled.
-- **`schedule_max_insts(inst_number)`**: Set the number of instructions to run before stopping. Generates a `MAX_INSTS` exit event that can be handled. Note that if running multiple cores, this happens if *any* core reaches this number of instructions.
-- **`get_stats()`**: Get the statistics from the simulation. Returns a dictionary of statistics.
-
-See [`src/python/gem5/simulate/simulator.py`](../../gem5/src/python/gem5/simulate/simulator.py) for more details.
-
-We will be covering much more about how to use the `Simulator` object in other parts of the bootcamp.
-
----
-
-## Standard Library components
-
-We've seen how to use the standard library components.
-
-Now we haven't seen how to create new components.
-
-### Designed around *Extension* and *Encapsulation*
-
-> NOT designed for "parameterization"
-
-If you want to create a processor/cache hierarchy/etc. with different parameters:
-Extend using object-oriented semantics.
-
-Let's see an example.
-
----
-
-## Quick reminder of gem5's architecture
-
-We will now create a new component.
-
-We will specialize/extend the "BaseCPUProcessor" to create an ARM processor with a singular out-of-order core.
-
-![diagram of models, stdlib, and simulation control bg right:60% fit](./01-stdlib-imgs/gem5-software-arch.drawio.svg)
-
----
-
-## Let's create a processor with out-of-order cores
-
-Use [`materials/02-Using-gem5/01-stdlib/02-processor.py`](../../materials/02-Using-gem5/01-stdlib/02-processor.py) as a starting point.
-
-Mostly the same as the last example, but now we have the following code instead of using the `SimpleProcessor`:
-
-```python
-my_ooo_processor = MyOutOfOrderProcessor(
-    width=8, rob_size=192, num_int_regs=256, num_fp_regs=256
-)
-```
-
----
-
-<!-- _class: two-col -->
-
-## Create subclass of BaseCPUProcessor/Core
-
-To specialize the parameters, create a subclass.
-
-> Remember, don't just change the parameters of the `BaseCPUProcessor` directly.
-
-```python
-from m5.objects import ArmO3CPU
-from m5.objects import TournamentBP
-class MyOutOfOrderCore(BaseCPUCore):
-    def __init__(self, width, rob_size,
-                 num_int_regs, num_fp_regs):
-        super().__init__(ArmO3CPU(), ISA.Arm)
-```
-
-See [`...gem5/components/processors/base_cpu_core.py`](../../gem5/src/python/gem5/components/processors/base_cpu_core.py)
-And [`src/cpu/o3/BaseO3CPU.py`](../../gem5/src/cpu/o3/BaseO3CPU.py)
-
-```python
-  self.core.fetchWidth = width
-  self.core.decodeWidth = width
-  self.core.renameWidth = width
-  self.core.issueWidth = width
-  self.core.wbWidth = width
-  self.core.commitWidth = width
-
-  self.core.numROBEntries = rob_size
-  self.core.numPhysIntRegs = num_int_regs
-  self.core.numPhysFloatRegs = num_fp_regs
-
-  self.core.branchPred = TournamentBP()
-
-  self.core.LQEntries = 128
-  self.core.SQEntries = 128
-```
-
----
-
-## Now the `MyOutOfOrderProcessor`
-
-The `BaseCPUProcessor` assumes a list of cores that are `BaseCPUCores`.
-
-```python
-class MyOutOfOrderProcessor(BaseCPUProcessor):
-    def __init__(self, width, rob_size, num_int_regs, num_fp_regs):
-        cores = [MyOutOfOrderCore(width, rob_size, num_int_regs, num_fp_regs)]
-        super().__init__(cores)
-```
-
-We'll just make one core and we'll pass the parameters through to it.
-
----
-
-## Now, run it and compare!
-
-```bash
-gem5-mesi 02-processor.py
-```
-
-Takes 2-3 minutes
-
-### Questions
-
-- Is this faster than simple in order?
-- Use `--outdir=m5out/ooo` and `--outdir=simple`
-- Compare the stats.txt (which stat?)
-
----
-
-## Stat comparison
-
-### Simple CPU
-
-```text
-simSeconds                                   0.009073
-board.processor.cores.core.ipc               0.362353
-```
-
-### Our out-of-order CPU
-
-```text
-simSeconds                                   0.003114
-board.processor.cores.core.ipc               1.055705
-```
-
-### Host seconds: `17.09` vs `43.39`
-
-O3 CPU takes more than 2x longer to simulate. More fidelity costs more time.
 
 ---
 
