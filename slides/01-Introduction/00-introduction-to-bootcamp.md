@@ -52,8 +52,6 @@ I lead the Davis Computer Architecture Research (DArchR) Group.
 
 ## Plan for the week
 
-### Day 1
-
 - Introduction
   - [Computer architecture research intro](01-arch-research.md) <!-- 30 min (Tamara) -->
     - Introduction to computer architecture research
@@ -62,68 +60,79 @@ I lead the Davis Computer Architecture Research (DArchR) Group.
   - [Background on simulation](01-simulation-background.md) <!-- 1 hour (Jason) -->
     - What is is simulation and why does it matter
     - gem5 history
-  - [Getting started with gem5](02-getting-started.md) <!-- 30 minutes (Jason) -->
+  - [Getting started with gem5](02-getting-started.md) <!-- 10 minutes (Jason) -->
     - Getting into the codespace environment
     - Running your first simulation
+    - 👉 **EXERCISE**: Run your first simulation <!-- 20 minutes -->
 - Using gem5
-  - [gem5's standard library](../02-Using-gem5/01-stdlib.md) <!--  2 hours (Bobby) -->
-  - [gem5 resources](../02-Using-gem5/02-gem5-resources.md) <!--  1 hour (Harshil) -->
-    - What are resources? (Disks, kernels, binaries, etc.)
-    - How to get resources
-    - How to use resources
-    - Workloads and suites
-    - Local resources
-
-### Day 2
-
-- Using gem5
-  - [Running things in gem5](../02-Using-gem5/03-running-in-gem5.md) <!--  2 hours (Erin / Zhantong) -->
-    - Intro to syscall emulation mode
-    - The gem5-bridge utility and library
+  - [gem5's standard library](../02-Using-gem5/01-stdlib.md)
+    - Quick overview of stdlib ideas (board, processor, cache hierarchy, memory) <!-- 15 minutes -->
+    - **EXERCISE**: Building a simple Arm simulation <!-- 30 minutes -->
+      - Outcome: Run a real workload in SE mode and look at stats
+    - Quick overview of available components in stdlib
+    - The idea of the simulator
+      - Useful simulator functions (set_max_ticks/instructions)
+  - [Modeling memory in gem5](../02-Using-gem5/06-memory.md)
+    - Memory models in gem5 <!-- 15 minutes -->
+  - [Traffic generators](../02-Using-gem5/12-traffic-generators.md)
+    - Using traffic generator (Test board) <!-- 10 minutes -->
+    - **EXERCISE**: Using the traffic generator to test memory <!-- 20 minutes -->
+    - **EXERCISE**: Creating a new (hybrid) traffic generator <!-- 30 minutes -->
+  - [Modeling caches in gem5](../02-Using-gem5/05-cache-hierarchies.md)
+    - 👉 (Note: Remove/update cache intro)
+    - Cache models in gem5 (Ruby and classic) <!--  10 minutes -->
+    - **EXERCISE**: 3 level classic cache hierarchy <!-- 30 minutes -->
+    - 👉 Replacement policies
+    - 👉 Tag policies
+    - Tradeoffs between classic and Ruby <!-- 10 minutes -->
+    - **EXERCISE**: Example of using a Ruby hierarchy <!-- 30 minutes -->
+    - Look at the gem5 generated statistics
+  - [Modeling cores in gem5](../02-Using-gem5/04-cores.md)
+    - Types of CPU models in gem5 <!-- 15 minutes -->
+    - **EXERCISE**: (Optional) Comparison of atomic and timing CPU <!-- 15 minutes -->
+    - Look at the gem5 generated statistics
+    - 👉 **EXERCISE**: Create a two custom out-of-order cores and compare <!-- 30 minutes -->
+    - 👉 Branch predictors <!-- 15 minutes -->
+    - 👉 Overview of ISAs and tradeoffs
+  - [Using gem5 resources](../02-Using-gem5/02-gem5-resources.md)
+    - 🤏 Overview of resources, workloads, and suites <!-- 15 minutes -->
+    - [Multisim](../02-Using-gem5/11-multisim.md) <!-- 10 minutes -->
+    - 👉 **EXERCISE**: Running suite and seeing different results from different apps <!-- 30 minutes -->
+  - [Running applications in gem5](../02-Using-gem5/03-running-in-gem5.md)
+    - Intro to syscall emulation mode <!-- 30 minutes -->
+    - 👉 The gem5-bridge utility and library
     - Cross compiling
-    - Traffic generator (Test board)
-    - Process.map and drivers in SE mode (maybe cut)
-  - [Modeling cores in gem5](../02-Using-gem5/04-cores.md) <!--  1 hour (Mysore / Jason) -->
-    - CPU models in gem5
-    - Using the CPU models
-    - Branch predictors
-    - Look at the gem5 generated statistics
-    - Overview of ISAs and tradeoffs
-  - [Modeling caches in gem5](../02-Using-gem5/05-cache-hierarchies.md) <!--  1.5 hour (Leo / Mahyar) -->
-    - Cache models in gem5 (Ruby and classic)
-    - Using the cache models
-    - Replacement policies
-    - Tag policies
-    - Tradeoffs between classic and Ruby
-    - Look at the gem5 generated statistics
-  - [Modeling memory in gem5](../02-Using-gem5/06-memory.md) <!-- 1 hours (Noah / William (Maryam)) -->
-    - Memory models in gem5
-    - Using the memory models
-    - Testing memory with traffic generators
-    - Comm Monitor
-  - [Full system simulation](../02-Using-gem5/07-full-system.md) <!--(Harshil) 1 hour -->
-    - What is full system simulation?
+    - 👉 **EXERCISE**: Create your own workload <!-- 30 minutes -->
+  - [Full system simulation](../02-Using-gem5/07-full-system.md)
+    - What is full system simulation? <!-- 30 minutes -->
     - Basics of booting up a real system in gem5
-    - Creating disk images using packer and qemu
-    - Extending/modifying a gem5 disk image
+    - Running in FS mode
     - m5term to interact with a running system
-
-### Day 3
-
-- Using gem5
-  - [Accelerating simulation](../02-Using-gem5/08-accelerating-simulation.md) <!--  (Zhantong) 0.5 hours -->
+    - "what do to when linux boots"
+      - commands
+    - Set kernel disk workload
+    - Exit events
+      - Simulation loop
+      - Types of exit events
+    - Creating disk images using packer and qemu <!-- **MAYBE SKIP** -->
+    - Extending/modifying a gem5 disk image <!-- **MAYBE SKIP** -->
+  - [Accelerating simulation](../02-Using-gem5/08-accelerating-simulation.md)
+    - Switchable processor <!-- 15 minutes -->
     - KVM fast forwarding
+    - 👉 **EXERCISE**: Running a simulation with KVM, switching, complex exits, and measuring <!-- 60 minutes -->
     - Checkpointing
-  - [Sampled simulation with gem5](../02-Using-gem5/09-sampling.md) <!--  (Zhantong) 1.5 hours -->
-    - Simpoint & Looppoint ideas
-    - Simpoint & Loopoint analysis
-    - Simpoint & Loopoint checkpoints
+    - 👉 **EXERCISE**: Running many different configs with checkpoint <!-- 30 minutes -->
+  - [Sampled simulation with gem5](../02-Using-gem5/09-sampling.md)
+    - Simpoint ideas <!-- 30 minutes -->
+    - Simpoint analysis
+    - Simpoint checkpoints
     - How to analyze sampled simulation data
-    - Statistical simulation ideas
-    - Statistical simulation running and analysis
-  - [Power modeling](../02-Using-gem5/10-modeling-power.md) <!--  (Jason?) -->
-  - [Multisim](../02-Using-gem5/11-multisim.md) <!-- (Bobby) (10 minutes) -->
-    - Example using multisim
+    - **EXERCISE**: Running a simpoint simulation <!-- 60-90 minutes -->
+    - Loopoint/Elfies <!-- 10 minutes -->
+    - Statistical simulation ideas <!-- 10 minutes -->
+    - **EXERCISE** Statistical simulation running and analysis
+  - [Power modeling](../02-Using-gem5/10-modeling-power.md) <!-- 10 minutes -->
+    - 👉 **EXERCISE**: Running a power simulation <!-- 15 minutes -->
 - Developing gem5 models
   - [SimObject intro](../03-Developing-gem5-models/01-sim-objects-intro.md) <!-- (Mahyar) 0.5 hours -->
     - Development environment, code style, git branches
@@ -144,9 +153,6 @@ I lead the Davis Computer Architecture Research (DArchR) Group.
     - Other SimObjects as parameters
     - Hello/Goodbye example with buffer
     - Clock domains?
-
-### Day 4
-
 - Developing gem5 models
   - [Modeling Cores](../03-Developing-gem5-models/05-modeling-cores.md) <!-- (Bobby) 1.5 hours -->
     - New instructions
