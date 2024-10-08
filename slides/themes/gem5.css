@@ -179,6 +179,14 @@ section.two-col h3 {
 }
 
 /****************************************************/
+/* For exercises */
+section.exercise {
+    border-style: double;
+    border-width: 20px;
+    border-color: var(--gem5-dark)
+}
+
+/****************************************************/
 /* For centering images */
 section.center-image img {
     display: block;
