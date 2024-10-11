@@ -22,5 +22,5 @@
     "markdownlint.config": {
         "default": true,
         "MD026": false
-    },
+    }
 }
