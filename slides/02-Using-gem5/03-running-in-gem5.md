@@ -544,122 +544,75 @@ board.redirect_paths = [RedirectPath(app_path=f"/lib",
 ---
 <!-- _class: start -->
 
-## Traffic Generator in gem5
+## CommMonitor in gem5
 
 ---
+
+## CommMonitor
+
+- SimObject monitoring communication happening between two ports
+- Does not have any effect on timing
+- [`gem5/src/mem/CommMonitor.py`](../../gem5/src/mem/CommMonitor.py)
+
+---
+
 <!-- _class: center-image -->
 
-## Synthetic Traffic Generation
+## CommMonitor
 
-Synthetic traffic generation is a technique for driven memory subsystems without requiring the simulation of processor models and running workload programs. We have to note the following about synthetic traffic generation.
+### Simple system to modify
 
-- It can be used for the following: measuring maximum theoretical bandwidth, testing correctness of cache coherency protocol
-- It can not be used for: measuring the execution time of workloads (even if you have their memory trace)
+![Simple system diagram](02-memory-imgs/comm-monitor-0.drawio.svg)
 
-Synthetic traffic could follow a certain pattern like `sequential (linear)`, `strided`, and `random`. In this section we will look at tools in gem5 that facilitate synthetic traffic generation.
+### Let's simulate:
 
-![Traffic generator center](03-running-in-gem5-imgs/t_gen_diagram.drawio.svg)
+<!-- >    > gem5-x86 –outdir=results/simple materials/extra-topics/02-monitor-and-trace/simple.py -->
+Run
 
----
-
-## gem5: stdlib Components for Synthetic Traffic Generation
-
-gem5's standard library has a collection of components for generating synthetic traffic. All such components inherit from `AbstractGenerator`, found in `src/python/gem5/components/processors`.
-
-- These components simulate memory accesses. They are intended to replace a processor in a system that you configure with gem5.
-- Examples of these components include `LinearGenerator` and `RandomGenerator`.
-
-We will see how to use `LinearGenerator` and `RandomGenerator` to stimulate a memory subsystem. The memory subsystem that we are going to use is going to consist of a cache hierarchy with `private l1 caches and a shared l2 cache` with one channel of `DDR3` memory.
-
-In the next slides we will look at `LinearGenerator` and `RandomGenerator` at a high level. We'll see how to write a configuration script that uses them.
-
----
-<!-- _class: two-col code-70-percent -->
-##
-
-### LinearGenerator
-
-[Python Here](/gem5/src/python/gem5/components/processors/linear_generator.py)
-
-```python
-class LinearGenerator(AbstractGenerator):
-    def __init__(
-        self,
-        num_cores: int = 1,
-        duration: str = "1ms",
-        rate: str = "100GB/s",
-        block_size: int = 64,
-        min_addr: int = 0,
-        max_addr: int = 32768,
-        rd_perc: int = 100,
-        data_limit: int = 0,
-    ) -> None:
-```
-
-### RandomGenerator
-
-[Python Here](/gem5/src/python/gem5/components/processors/random_generator.py)
-
-```python
-class RandomGenerator(AbstractGenerator):
-    def __init__(
-        self,
-        num_cores: int = 1,
-        duration: str = "1ms",
-        rate: str = "100GB/s",
-        block_size: int = 64,
-        min_addr: int = 0,
-        max_addr: int = 32768,
-        rd_perc: int = 100,
-        data_limit: int = 0,
-    ) -> None:
+```sh
+gem5 comm_monitor.py
 ```
 
 ---
-<!-- _class: two-col -->
 
-## LinearGenerator/RandomGenerator: Knobs
+<!-- _class: center-image -->
 
-- **num_cores**
-  - The number of cores in your system
-- **duration**
-  - Length of time to generate traffic
-- **rate**
-  - Rate at which to request data from memory
-    - **Note**: This is *NOT* the rate at which memory will respond. This is the **maximum** rate at which requests will be made
-- **block_size**
-  - The number of bytes accessed with each read/write
+## CommMonitor
 
-###
+### Let's add the CommMonitor
 
-- **min_addr**
-  - The lowest memory address for the generator to access (via reads/writes)
-- **max_addr**
-  - The highest memory address for the generator to access (via reads/writes)
-- **rd_perc**
-  - The percentage of accesses that should be reads
-- **data_limit**
-  - The maximum number of bytes that the generator can access (via reads/writes)
-    - **Note**: if `data_limit` is set to 0, there will be no data limit.
+![Simple system with CommMonitor diagram](02-memory-imgs/comm-monitor-1.drawio.svg)
+
+<!-- ### Let's simulate: -->
+
+<!--  gem5-x86 –outdir=results/simple_comm materials/extra-topics/02-monitor-and-trace/simple_comm.py
+     diff results/simple/stats.txt results/simple_comm/stats.txt -->
 
 ---
-<!-- _class: two-col -->
 
-## Traffic Patterns Visualized
+## CommMonitor
 
-`min_addr`: 0, `max_addr`: 4, `block_size`: 1
+Remove the line:
 
-**Linear**: We want to access addresses 0 through 4 so a linear access would mean accessing memory in the following order.
+```python
+system.l1cache.mem_side = system.membus.cpu_side_ports
+```
 
-**Random**: We want to access addresses 0 through 4 so a random access would mean accessing memory in any order. (In this example, we are showing the order: 1, 3, 2, 0).
+Add the following block under the comment `# Insert CommMonitor here`:
 
-###
+```python
+system.comm_monitor = CommMonitor()
+system.comm_monitor.cpu_side_port = system.l1cache.mem_side
+system.comm_monitor.mem_side_port = system.membus.cpu_side_ports
+```
 
-![linear traffic pattern](03-running-in-gem5-imgs/linear_traffic_pattern.drawio.svg)
+Run:
 
-![random traffic pattern](03-running-in-gem5-imgs/random_traffic_pattern.drawio.svg)
+```sh
+gem5 comm_monitor.py
+```
 
-----
+---
 
 ## Hands-on Time!
 
