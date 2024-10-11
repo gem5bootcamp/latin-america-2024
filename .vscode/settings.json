@@ -18,5 +18,9 @@
     },
     "workbench.editorAssociations": {
         "*.svg": "hediet.vscode-drawio-text"
-    }
+    },
+    "markdownlint.config": {
+        "default": true,
+        "MD026": false  // Ignore trailing punctuation in header
+    },
 }
