@@ -44,7 +44,7 @@ In addition, while there is no "one size fits all" for gem5 users, most users ha
 
 ---
 
-## What is the Standard Library?
+## What is the Standard Library (stdlib)?
 
 The purpose of the gem5 Standard Library is to provide a set of predefined components that can be used to build a simulation that does the majority of the work for you.
 
@@ -105,10 +105,11 @@ Run BFS from the GAP benchmark suite.
 
 - What is the average IPC?
 - What is the total simulated time?
+- What is the output of the simulated program?
 
 ---
 
-## Let's get started!
+## Step 0
 
 <!-- _class: code-80-percent -->
 
@@ -129,7 +130,19 @@ from gem5.simulate.simulator import Simulator
 
 ---
 
-## Let's build a system with a cache hierarchy
+## Step 1: Instantiate a processor
+
+```python
+processor = SimpleProcessor(cpu_type=CPUTypes.TIMING, isa=ISA.ARM, num_cores=1)
+```
+
+`SimpleProcessor` is a component that allows you to customize the model for the underlying cores.
+
+The `cpu_type` parameter specifies the type of CPU model to use.
+
+---
+
+## Step 2: Instantiate a cache hierarchy
 
 ```python
 cache_hierarchy = MESITwoLevelCacheHierarchy(
@@ -150,34 +163,22 @@ The component for the cache hierarchy is parameterized with the sizes and associ
 
 ---
 
-## Next, let's add a memory system
+## Step 3: Instantiate a memory system
 
 ```python
 memory = SingleChannelDDR4_2400()
 ```
 
-This component represents a single-channel DDR3 memory system.
+This component represents a single-channel DDR4 memory system.
 
-There is a `size` parameter that can be used to specify the size of the memory system of the simulated system. You can reduce the size to save simulation time, or use the default for the memory type (e.g., one channel of DDR3 defaults to 8 GiB).
+There is a `size` parameter that can be used to specify the capacity of the memory of the simulated system. You can reduce the size to save simulation time, or use the default for the memory type (e.g., one channel of DDR4 defaults to 8 GiB).
 
-There are also multi channel memories available.
+There are also multi-channel memories available.
 We'll cover this more in [Memory Systems](06-memory.md).
 
 ---
 
-## Next, let's add a processor
-
-```python
-processor = SimpleProcessor(cpu_type=CPUTypes.TIMING, isa=ISA.ARM, num_cores=1)
-```
-
-`SimpleProcessor` is a component that allows you to customize the model for the underlying cores.
-
-The `cpu_type` parameter specifies the type of CPU model to use.
-
----
-
-## Next, plug components into the board
+## Step 4: Plug components into the board
 
 A `SimpleBoard` is a board which can run any ISA in Syscall Emulation (SE) mode.
 It is "Simple" due the relative simplicity of SE mode.
@@ -194,28 +195,28 @@ board = SimpleBoard(
 
 ---
 
-## Next, set up the workload
+## Step 5: Set up the workload
 
 ```python
 board.set_workload(obtain_resource("arm-gapbs-bfs-run"))
 ```
 
-The `obtain_resource` function downloads the files needed to run the specified workload. In this case "arm-gapbs-bfs-run" is a BFS workload from the GAP Benchmark Suite.
+The `obtain_resource` function downloads the files needed to run the specified workload. In this case "arm-gapbs-bfs-run" is a BFS workload from the [GAP Benchmark Suite](https://github.com/sbeamer/gapbs).
 
----
-
-## gem5 Resources
-
-We will return to gem5 Resources later in the bootcamp, but for now, you can think of it as a way to download and manage files needed for your simulation but don't actually specify the simulated computer system hardware.
-Typically it is used to download and manage workloads, disk images, checkpoints needed for the simulation.
+### This uses "gem5 resources"
 
 Here we can search the available resources: <https://resources.gem5.org/>.
 
 Here is the arm-gabps-bfs-run resource: <https://resources.gem5.org/resources/arm-gapbs-bfs-run?version=1.0.0>.
 
+<!--
+We will return to gem5 Resources later in the bootcamp, but for now, you can think of it as a way to download and manage files needed for your simulation but don't actually specify the simulated computer system hardware.
+Typically it is used to download and manage workloads, disk images, checkpoints needed for the simulation.
+-->
+
 ---
 
-## Next, set up the simulation
+## Step 6: Set up the simulation and run
 
 Set up the simulation:
 
@@ -264,9 +265,55 @@ simTicks                                   9093461436
 
 ---
 
+## Exercise questions
+
+### What is the average IPC?
+
+See the `ipc` in the stats.txt file.
+**Answer**:
+
+### What is the total simulated time?
+
+See the `simSeconds` in the stats.txt file.
+**Answer**: 0.009093s
+
+### What is the output of the simulated program?
+
+See the standard output of the program.
+**Answer**: "Generate Time:       0.00462"... etc.
+
+---
+
+<!-- _class: two-col -->
+
+## Future things to consider
+
+- How to change the processor?
+  - The number of cores
+  - The type of CPU model
+  - Details of the CPU model (e.g., pipeline depth)
+  - The ISA
+- How to change the cache hierarchy?
+  - The sizes and associativities of the L1 and L2 caches
+  - The number of L2 banks
+  - How to change the hierarchy (e.g., 3-level, 2-level, write-through)
+
+###
+
+- How to change the memory system?
+  - The size of the memory
+  - The type of memory (e.g., DDR3, DDR4, HBM)
+  - The number of channels
+
+**We'll cover all of this in the coming sections.**
+
+---
+
 <!-- _class: start -->
 
 ## Overview of stdlib components
+
+A brief overview of the different kinds of components in the stdlib
 
 ---
 
