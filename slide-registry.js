@@ -17,11 +17,10 @@ window.get_slide_registry = function() {
             "name": "02-Using-gem5",
             "slides": [
                 "01-stdlib",
-                "02-gem5-resources",
+                "02-memory",
                 "03-running-in-gem5",
                 "04-cores",
                 "05-cache-hierarchies",
-                "06-memory",
                 "07-full-system",
                 "08-accelerating-simulation",
                 "09-sampling",

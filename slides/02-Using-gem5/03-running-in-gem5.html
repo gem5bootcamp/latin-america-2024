@@ -7,7 +7,7 @@
  * @auto-scaling true
  * @size 16:9 1280px 720px
  * @size 4:3 960px 720px
- */div#\:\$p>svg>foreignObject>:where(section):not([root]){--gem5-gem5:#008EB0;--gem5-background:#F6F8FA;--gem5-light:#c8eaf3;--gem5-dark:#00627a;--gem5-gray:#77787b;--code-line-height:calc(var(--marpit-root-font-size, 1rem) * 2);--code-font-size:calc(var(--marpit-root-font-size, 1rem) * 1.4)}div#\:\$p>svg>foreignObject>section{color:black;font-size:calc(var(--marpit-root-font-size, 1rem) * 1.6);font-family:sans-serif;line-height:calc(var(--marpit-root-font-size, 1rem) * 2);padding:70px;background-color:var(--gem5-background);background-image:url("../themes/gem5ColorLong.svg");background-repeat:no-repeat;background-position-x:center;background-size:220px;background-position-y:97%}div#\:\$p>svg>foreignObject>section{--marpit-root-font-size:calc(var(--marpit-root-font-size, 1rem) * 1.6)}div#\:\$p>svg>foreignObject>section li{margin-bottom:calc(var(--marpit-root-font-size, 1rem) * 0.2)}div#\:\$p>svg>foreignObject>section ul{margin-bottom:calc(var(--marpit-root-font-size, 1rem) * 0.5)}
+ */div#\:\$p>svg>foreignObject>:where(section):not([root]){--gem5-gem5:#008EB0;--gem5-background:#F6F8FA;--gem5-light:#c8eaf3;--gem5-dark:#00627a;--gem5-gray:#77787b;--code-line-height:calc(var(--marpit-root-font-size, 1rem) * 2);--code-font-size:calc(var(--marpit-root-font-size, 1rem) * 1.4)}div#\:\$p>svg>foreignObject>section{color:black;font-size:calc(var(--marpit-root-font-size, 1rem) * 1.6);font-family:sans-serif;line-height:calc(var(--marpit-root-font-size, 1rem) * 2);padding:70px;background-color:var(--gem5-background);background-image:url("../themes/gem5ColorLong.svg");background-repeat:no-repeat;background-position-x:center;background-size:220px;background-position-y:97%}div#\:\$p>svg>foreignObject>section{--marpit-root-font-size:calc(var(--marpit-root-font-size, 1rem) * 1.6)}div#\:\$p>svg>foreignObject>section ol{margin-bottom:calc(var(--marpit-root-font-size, 1rem) * 0.2);margin-top:-calc(var(--marpit-root-font-size,1rem) * 0.5)}div#\:\$p>svg>foreignObject>section ul{margin-bottom:calc(var(--marpit-root-font-size, 1rem) * 0.5);margin-top:-calc(var(--marpit-root-font-size,1rem) * 0.5)}
 
 /* Move the title of the slide up a bit */div#\:\$p>svg>foreignObject>section>:first-child,div#\:\$p>svg>foreignObject>section>header:first-child+*{margin-top:0}
 
@@ -49,7 +49,7 @@
 /****************************************************/
 /* For title cards at the beginning of a section, e.g. Intro to ..., etc.
    Has a blue gradient. From Erin and Mysore
-*/div#\:\$p>svg>foreignObject>section.start :is(h2,marp-h2){display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;height:100%;font-size:calc(var(--marpit-root-font-size, 1rem) * 4);font-weight:bold;line-height:75px;background:linear-gradient(to right,rgb(67,124,205),rgb(69,214,202));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+*/div#\:\$p>svg>foreignObject>section.start :is(h2,marp-h2){display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;height:50%;font-size:calc(var(--marpit-root-font-size, 1rem) * 4);font-weight:bold;line-height:75px;background:linear-gradient(to right,rgb(67,124,205),rgb(69,214,202));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}div#\:\$p>svg>foreignObject>section.start p{font-size:calc(var(--marpit-root-font-size, 1rem) * 2);line-height:calc(var(--marpit-root-font-size, 1rem) * 2);text-align:center}
 
 /* Remove the triangle */div#\:\$p>svg>foreignObject>section.start :is(h2,marp-h2):before{border:none}
 
@@ -102,10 +102,10 @@ Typically this "required" baseline CSS is added by `makestuff.js` during build.
 /* Meta color: hue: 200 */div#\:\$p>svg>foreignObject>section .hljs-meta{color:#1f7199}div#\:\$p>svg>foreignObject>section .hljs-meta .hljs-string{color:#38a}
 
 
-/* Misc effects */div#\:\$p>svg>foreignObject>section .hljs-emphasis{font-style:italic}div#\:\$p>svg>foreignObject>section .hljs-strong{font-weight:bold}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]{columns:initial!important;display:block!important;padding:0!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:before,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:before{display:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]{all:initial;display:flex;flex-direction:row;height:100%;overflow:hidden;width:100%}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container][data-marpit-advanced-background-direction=vertical]{flex-direction:column}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split]>div[data-marpit-advanced-background-container]{width:var(--marpit-advanced-background-split,50%)}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split=right]>div[data-marpit-advanced-background-container]{margin-left:calc(100% - var(--marpit-advanced-background-split, 50%))}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure{all:initial;background-position:center;background-repeat:no-repeat;background-size:cover;flex:auto;margin:0}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure>figcaption{position:absolute;border:0;clip:rect(0,0,0,0);height:1px;margin:-1px;overflow:hidden;padding:0;white-space:nowrap;width:1px}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content],div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo]{background:transparent!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo],div#\:\$p>svg[data-marpit-svg]>foreignObject[data-marpit-advanced-background=pseudo]{pointer-events:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background-split]{width:100%;height:100%}</style></head><body><div class="bespoke-marp-osc"><button data-bespoke-marp-osc="prev" tabindex="-1" title="Previous slide">Previous slide</button><span data-bespoke-marp-osc="page"></span><button data-bespoke-marp-osc="next" tabindex="-1" title="Next slide">Next slide</button><button data-bespoke-marp-osc="fullscreen" tabindex="-1" title="Toggle fullscreen (f)">Toggle fullscreen</button><button data-bespoke-marp-osc="presenter" tabindex="-1" title="Open presenter view (p)">Open presenter view</button></div><div id=":$p"><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="1" data-paginate="true" data-class="title" data-theme="gem5" lang="en-US" class="title" data-marpit-pagination="1" style="--paginate:true;--class:title;--theme:gem5;" data-marpit-pagination-total="71">
+/* Misc effects */div#\:\$p>svg>foreignObject>section .hljs-emphasis{font-style:italic}div#\:\$p>svg>foreignObject>section .hljs-strong{font-weight:bold}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]{columns:initial!important;display:block!important;padding:0!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:before,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:before{display:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]{all:initial;display:flex;flex-direction:row;height:100%;overflow:hidden;width:100%}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container][data-marpit-advanced-background-direction=vertical]{flex-direction:column}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split]>div[data-marpit-advanced-background-container]{width:var(--marpit-advanced-background-split,50%)}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split=right]>div[data-marpit-advanced-background-container]{margin-left:calc(100% - var(--marpit-advanced-background-split, 50%))}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure{all:initial;background-position:center;background-repeat:no-repeat;background-size:cover;flex:auto;margin:0}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure>figcaption{position:absolute;border:0;clip:rect(0,0,0,0);height:1px;margin:-1px;overflow:hidden;padding:0;white-space:nowrap;width:1px}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content],div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo]{background:transparent!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo],div#\:\$p>svg[data-marpit-svg]>foreignObject[data-marpit-advanced-background=pseudo]{pointer-events:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background-split]{width:100%;height:100%}</style></head><body><div class="bespoke-marp-osc"><button data-bespoke-marp-osc="prev" tabindex="-1" title="Previous slide">Previous slide</button><span data-bespoke-marp-osc="page"></span><button data-bespoke-marp-osc="next" tabindex="-1" title="Next slide">Next slide</button><button data-bespoke-marp-osc="fullscreen" tabindex="-1" title="Toggle fullscreen (f)">Toggle fullscreen</button><button data-bespoke-marp-osc="presenter" tabindex="-1" title="Open presenter view (p)">Open presenter view</button></div><div id=":$p"><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="1" data-paginate="true" data-class="title" data-theme="gem5" lang="en-US" class="title" data-marpit-pagination="1" style="--paginate:true;--class:title;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="running-things-in-gem5">Running Things in gem5</h2>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="2" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="2" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="2" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="2" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="what-we-will-cover">What we will cover</h2>
 <ul>
 <li>Intro to Syscall Emulation mode</li>
@@ -115,16 +115,16 @@ Typically this "required" baseline CSS is added by `makestuff.js` during build.
 <li>Traffic generator</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="3" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="3" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="3" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="3" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="intro-to-syscall-emulation-mode">Intro to Syscall Emulation Mode</h2>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="4" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="4" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="what-is-syscall-emulation-mode-and-when-to-useavoid-it">What is Syscall Emulation mode, and when to use/avoid it</h2>
 <p><strong>Syscall Emulation (SE)</strong> mode does not model all the devices in a system. It focuses on simulating the CPU and memory system. It only emulates Linux system calls, and only models user-mode code.</p>
 <p>SE mode is a good choice when the experiment does not need to model the OS (such as page table walks), does not need a high fidelity model (emulation is ok), and faster simulation speed is needed.</p>
 <p>However, if the experiment needs to model the OS interaction, or needs to model a system in high fidelity, then we should use the full-system (FS) mode. The FS mode will be covered in <a href="07-full-system.md">07-full-system</a>.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="5" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="5" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="example">Example</h2>
 <h3 id="00-se-hello-world">00-SE-hello-world</h3>
 <p>Under <code>materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world</code>, there is a small example of an SE simulation.<br />
@@ -139,7 +139,7 @@ We can do it with the following command:</p>
 The default output is in <code>m5out/simout.txt</code> and m5out/simerr.txt`.</p>
 </blockquote>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="6" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="6" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="00-se-hello-world-1">00-SE-hello-world</h2>
 <p>Then in <a href="../../materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world/m5out/simout.txt">simout.txt</a>, we should see:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">280945000: board.processor.cores.core: T0 : syscall Calling write(1, 21152, 14)...
@@ -152,10 +152,10 @@ As the timestamp suggests, <strong>SE simulation DOES NOT record the time for th
 <p>Note that in the <code>simout.txt</code> file the standard out from the <em>simulator</em> and the <em>guest</em> are mixed together.</p>
 </blockquote>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="7" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="7" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="m5ops">m5ops</h2>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="8" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="8" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="what-is-m5ops">What is m5ops</h2>
 <ul>
 <li>The <strong>m5ops</strong> (short for m5 opcodes) provide different functionalities that can be used to communicate between ​the simulated workload and the simulator.</li>
@@ -172,7 +172,7 @@ As the timestamp suggests, <strong>SE simulation DOES NOT record the time for th
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="9" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="9" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="important">IMPORTANT</h2>
 <ul>
 <li><strong><em>Not all of the ops do what they say automatically</em></strong></li>
@@ -192,7 +192,7 @@ As the timestamp suggests, <strong>SE simulation DOES NOT record the time for th
 <li>The gem5 standard library might have default behaviors for some of the m5ops. See <a href="https://github.com/gem5/gem5/blob/stable/src/python/gem5/simulate/simulator.py#L301">src/python/gem5/simulate/simulator.py</a> for the default behaviors.</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="10" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="10" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="more-about-m5ops">More about m5ops</h2>
 <p>There are three versions of m5ops:</p>
 <ol>
@@ -204,7 +204,7 @@ As the timestamp suggests, <strong>SE simulation DOES NOT record the time for th
 <p>The address mode m5ops will be covered in <a href="07-full-system.md">07-full-system</a> as gem5-bridge and <a href="08-accelerating-simulation.md">08-accelerating-simulation</a> after the KVM CPU is introduced.<br />
 <strong>In this session, we will only cover the instruction mode.</strong></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="11" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="11" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="when-to-use-m5ops">When to use m5ops</h2>
 <p>There are two main ways of using the m5ops:</p>
 <ol>
@@ -213,7 +213,7 @@ As the timestamp suggests, <strong>SE simulation DOES NOT record the time for th
 </ol>
 <p>In this session, we will focus on learning how to use the m5ops to annotate workloads.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="12" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="12" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="how-to-use-m5ops">How to use m5ops</h2>
 <p>m5ops provides a library of functions for different functionalities. All functions can be found in <a href="https://github.com/gem5/gem5/blob/stable/include/gem5/m5ops.h">gem5/include/gem5/m5ops.h</a>.<br />
 The commonly used functions (they are matched with the commonly used functionalities above):</p>
@@ -229,7 +229,7 @@ The commonly used functions (they are matched with the commonly used functionali
 <p>In order to call these functions in the workload, we will need to link the m5ops library to the workload.<br />
 So first, we need to build the m5ops library.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="13" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="13" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="building-the-m5ops-library">Building the m5ops library</h2>
 <p>The m5 utility is in <a href="https://github.com/gem5/gem5/tree/stable/util/m5">gem5/util/m5</a> directory.​<br />
 In order to build the m5ops library,</p>
@@ -244,7 +244,7 @@ In order to build the m5ops library,</p>
 <li><code>TARGET_ISA</code> has to be in lower case.</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="14" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="14" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="hands-on-time">Hands-on Time!</h2>
 <h3 id="01-build-m5ops-library">01-build-m5ops-library</h3>
 <h3 id="lets-build-the-m5ops-library-for-x86-and-arm64">Let's build the m5ops library for x86 and arm64</h3>
@@ -257,7 +257,7 @@ scons arm64.CROSS_COMPILE=aarch64-linux-gnu- build/arm64/out/m5
 Don't expect things to be similar (e.g., use <code>arm64</code> instead of <code>ARM</code>).</p>
 </blockquote>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="15" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="15" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="linking-the-m5ops-library-to-cc-code%E2%80%8B">Linking the m5ops library to C/C++ code​</h2>
 <p>After building the m5ops library, we can link them to our workload by:​</p>
 <ol>
@@ -276,7 +276,7 @@ Don't expect things to be similar (e.g., use <code>arm64</code> instead of <code
 </li>
 </ol>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="16" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="16" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="hands-on-time-1">Hands-on Time!</h2>
 <h3 id="02-annotate-this">02-annotate-this</h3>
 <h3 id="lets-annotate-the-workload-with-m5_work_begin-and-m5_work_end">Let's annotate the workload with <code>m5_work_begin</code> and <code>m5_work_end</code></h3>
@@ -288,7 +288,7 @@ Don't expect things to be similar (e.g., use <code>arm64</code> instead of <code
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-built_in">write</span>(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;This will be output to standard out\n&quot;</span>, <span class="hljs-number">36</span>);
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-paginate="true" data-class="code-80-percent" data-theme="gem5" lang="en-US" class="code-80-percent" data-marpit-pagination="17" style="--paginate:true;--class:code-80-percent;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-paginate="true" data-class="code-80-percent" data-theme="gem5" lang="en-US" class="code-80-percent" data-marpit-pagination="17" style="--paginate:true;--class:code-80-percent;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="02-annotate-this-1">02-annotate-this</h2>
 <ol start="2">
 <li>Output all the file and folder names in the current directory</li>
@@ -309,7 +309,7 @@ dr = <span class="hljs-built_in">opendir</span>(<span class="hljs-string">&quot;
 std::cout&lt;&lt;std::endl;
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="18" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="18" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="02-annotate-this-2">02-annotate-this</h2>
 <h3 id="our-goal-in-this-exercise">Our goal in this exercise</h3>
 <ul>
@@ -329,7 +329,7 @@ std::cout&lt;&lt;std::endl;
 </li>
 </ol>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="19" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="19" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="02-annotate-this-3">02-annotate-this</h2>
 <p>For step 4, we can modify the <a href="../../materials/02-Using-gem5/03-running-in-gem5/02-annotate-this/Makefile">Makefile</a> to have it run</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-Makefile"><span class="hljs-variable">$(GXX)</span> -o 02-annotate-this 02-annotate-this.cpp \
@@ -339,7 +339,7 @@ std::cout&lt;&lt;std::endl;
 </code></pre>
 <p>If you are having any troubles, the completed version of everything is under <code>materials/02-Using-gem5/03-running-in-gem5/02-annotate-this/complete</code>.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="20" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="20" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="02-annotate-this-4">02-annotate-this</h2>
 <p>If the workload is successfully compiled, we can try to run it with</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">./02-annotate-this
@@ -351,7 +351,7 @@ std::cout&lt;&lt;std::endl;
 <p>This is because the host does not recognize the instruction version of m5ops.</p>
 <p>This is also the reason why we will need to use the address version of m5ops if we use the KVM CPU for our simulation.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="21" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="21" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="hands-on-time-2">Hands-on Time!</h2>
 <h3 id="03-run-x86-se">03-run-x86-SE</h3>
 <h3 id="lets-write-a-handler-to-handle-the-m5-exit-events">Let's write a handler to handle the m5 exit events</h3>
@@ -365,7 +365,7 @@ std::cout&lt;&lt;std::endl;
 warn: No behavior was set by the user for work end. Default behavior is dumping the stats and continuing.
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="22" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="22" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="22" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="22" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="03-run-x86-se-1">03-run-x86-SE</h2>
 <p>As mentioned before, the gem5 standard library might have default behaviors for some of the m5ops. In here, we can see that it has default behaviors for <code>m5_work_begin</code> and <code>m5_work_end</code>.<br />
 Let's detour a bit to see how the gem5 standard library recognizes the exit event and assigns it a default exit handler.<br />
@@ -373,7 +373,7 @@ All standard library defined exit events can be found in <a href="https://github
 All pre-defined exit event handlers can be found in <a href="https://github.com/gem5/gem5/blob/stable/src/python/gem5/simulate/exit_event_generators.py">src/python/gem5/simulate/exit_event_generators.py</a>.</p>
 <p>For example, <code>ExitEvent.WORKBEGIN</code> defaults to using the <code>reset_stats_generator</code>. It means that when we are using the standard library's <code>Simulator</code> object, if there is an exit with exit string <code>&quot;workbegin&quot;</code> or <code>&quot;m5_workbegin instruction encountered&quot;</code>, it will automatically execute <code>m5.stats.reset()</code> unless we overwrite the default behavior using the <code>on_exit_event</code> parameter in the gem5 stdlib <code>Simulator</code> parameter.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="23" data-paginate="true" data-class="two-col code-70-percent" data-theme="gem5" lang="en-US" class="two-col code-70-percent" data-marpit-pagination="23" style="--paginate:true;--class:two-col code-70-percent;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="23" data-paginate="true" data-class="two-col code-70-percent" data-theme="gem5" lang="en-US" class="two-col code-70-percent" data-marpit-pagination="23" style="--paginate:true;--class:two-col code-70-percent;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="03-run-x86-se-2">03-run-x86-SE</h2>
 <p>Let's add custom workbegin and workend handlers, and use the <code>on_exit_event</code> parameter in <code>Simulator</code> parameter to overwrite the default behavior. To do this, add the following into <a href="../../materials/02-Using-gem5/03-running-in-gem5/03-run-x86-SE/03-run-x86-SE.py">03-run-x86-SE.py</a>:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-comment"># define a workbegin handler</span>
@@ -398,7 +398,7 @@ All pre-defined exit event handlers can be found in <a href="https://github.com/
 <span class="hljs-comment">#</span>
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="24" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="24" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="24" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="24" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="03-run-x86-se-3">03-run-x86-SE</h2>
 <p>Let's run this simulation again with the following command</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">gem5 -re 03-run-x86-SE.py
@@ -410,7 +410,7 @@ This will be output to standard out
 </code></pre>
 <p>This shows the log of the debug flag <code>ExecAll</code> that we enabled for our ROI using <code>m5.debug.flags[&quot;ExecAll&quot;].enable()</code>. It shows the entire execution trace for our ROI. As the timestamp on the left suggests again, SE mode <strong>DOES NOT</strong> time the emulated system calls. Also, as the log suggests, we overwrote the default behavior of <code>m5_work_begin</code> and <code>m5_work_end</code>.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="25" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="25" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="25" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="25" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <p>Then, with the output</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">List of Files &amp; Folders:
 ., .., 03-run-SE.py, m5out,
@@ -419,7 +419,7 @@ Simulation Done
 <p>it indicates that SE mode is able to read files on the host machine. Additionally, SE mode is able to write files on the host machine.</p>
 <p>However, again, SE mode is <strong>NOT</strong> able to time the emulated system calls.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="26" data-paginate="true" data-class="code-80-percent" data-theme="gem5" lang="en-US" class="code-80-percent" data-marpit-pagination="26" style="--paginate:true;--class:code-80-percent;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="26" data-paginate="true" data-class="code-80-percent" data-theme="gem5" lang="en-US" class="code-80-percent" data-marpit-pagination="26" style="--paginate:true;--class:code-80-percent;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="tips-on-se-mode">Tips on SE mode</h2>
 <p>With the gem5 stdlib, we usually use the <code>set_se_binary_workload</code> function in the <code>board</code> object to set up the workloads. We can pass in files, arguments, environment variables, and output file paths to the <code>set_se_binary_workload</code> function using the corresponding parameters.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">set_se_binary_workload</span>(<span class="hljs-params">
@@ -436,15 +436,15 @@ Simulation Done
 </code></pre>
 <p>For more information, we can look at <a href="https://github.com/gem5/gem5/blob/stable/src/python/gem5/components/boards/se_binary_workload.py#L71">src/python/gem5/components/boards/se_binary_workload.py</a>.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="27" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="27" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="27" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="27" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="cross-compiling">Cross-compiling</h2>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="28" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="28" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="28" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="28" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="cross-compiling-from-one-isa-to-another%E2%80%8B">Cross-compiling from one ISA to another.​</h2>
 
 <p><img src="03-running-in-gem5-imgs/slide-24.drawio.jpg" alt="Cross compiling center" style="width:800px;" /></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="29" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="29" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="29" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="29" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="hands-on-time-3">Hands-on Time!</h2>
 <h3 id="04-cross-compile-workload">04-cross-compile-workload</h3>
 <h3 id="lets-cross-compile-the-workload-to-arm64-statically-and-dynamically">Let's cross compile the workload to arm64 statically and dynamically</h3>
@@ -457,13 +457,13 @@ Simulation Done
 </code></pre>
 <p>Next, run <code>make</code> in the same directory as the Makefile.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="30" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="30" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="30" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="30" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="04-cross-compile-workload-1">04-cross-compile-workload</h2>
 <h3 id="notes-1">Notes:</h3>
 <p>Note that we are using <code>arm64</code> as the ISA and <code>aarch64-linux-gnu-g++</code> for the cross compiler. This is in contrast to exercise 2, where the ISA was <code>x86</code> and the compiler was <code>g++</code>.</p>
 <p>Also note that the the static compilation command has the flag <code>-static</code>, while the dynamic command has no additional flags.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="31" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="31" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="31" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="31" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="hands-on-time-4">Hands-on Time!</h2>
 <h3 id="05-run-arm-se">05-run-arm-SE</h3>
 <h3 id="lets-run-the-compiled-arm64-workloads-and-see-what-happens">Let's run the compiled arm64 workloads and see what happens</h3>
@@ -476,7 +476,7 @@ Simulation Done
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">gem5 -re --outdir=dynamic 05-run-arm-SE.py --workload-type=dynamic
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="32" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="32" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="32" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="32" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="05-run-arm-se-1">05-run-arm-SE</h2>
 <p>You will see the following error output in <code>dynamic/simout.txt</code> from running the dynamically compiled workload:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-text">src/base/loader/image_file_data.cc:105: fatal: fatal condition fd &lt; 0 occurred: Failed to open file /lib/ld-linux-aarch64.so.1.
@@ -490,7 +490,7 @@ board.redirect_paths = [RedirectPath(app_path=<span class="hljs-string">f&quot;/
 
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="33" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="33" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="33" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="33" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="summary">Summary</h2>
 <h3 id="se-mode-does-not-implement-many-things%E2%80%8B">SE mode does NOT implement many things!​</h3>
 <ul>
@@ -508,128 +508,47 @@ board.redirect_paths = [RedirectPath(app_path=<span class="hljs-string">f&quot;/
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="34" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="71">
-<h2 id="traffic-generator-in-gem5">Traffic Generator in gem5</h2>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="34" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="70">
+<h2 id="commmonitor-in-gem5">CommMonitor in gem5</h2>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="35" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="35" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="71">
-<h2 id="synthetic-traffic-generation">Synthetic Traffic Generation</h2>
-<p>Synthetic traffic generation is a technique for driven memory subsystems without requiring the simulation of processor models and running workload programs. We have to note the following about synthetic traffic generation.</p>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="35" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="35" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
+<h2 id="commmonitor">CommMonitor</h2>
 <ul>
-<li>It can be used for the following: measuring maximum theoretical bandwidth, testing correctness of cache coherency protocol</li>
-<li>It can not be used for: measuring the execution time of workloads (even if you have their memory trace)</li>
+<li>SimObject monitoring communication happening between two ports</li>
+<li>Does not have any effect on timing</li>
+<li><a href="../../gem5/src/mem/CommMonitor.py"><code>gem5/src/mem/CommMonitor.py</code></a></li>
 </ul>
-<p>Synthetic traffic could follow a certain pattern like <code>sequential (linear)</code>, <code>strided</code>, and <code>random</code>. In this section we will look at tools in gem5 that facilitate synthetic traffic generation.</p>
-<p><img src="03-running-in-gem5-imgs/t_gen_diagram.drawio.svg" alt="Traffic generator center" /></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="36" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="36" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
-<h2 id="gem5-stdlib-components-for-synthetic-traffic-generation">gem5: stdlib Components for Synthetic Traffic Generation</h2>
-<p>gem5's standard library has a collection of components for generating synthetic traffic. All such components inherit from <code>AbstractGenerator</code>, found in <code>src/python/gem5/components/processors</code>.</p>
-<ul>
-<li>These components simulate memory accesses. They are intended to replace a processor in a system that you configure with gem5.</li>
-<li>Examples of these components include <code>LinearGenerator</code> and <code>RandomGenerator</code>.</li>
-</ul>
-<p>We will see how to use <code>LinearGenerator</code> and <code>RandomGenerator</code> to stimulate a memory subsystem. The memory subsystem that we are going to use is going to consist of a cache hierarchy with <code>private l1 caches and a shared l2 cache</code> with one channel of <code>DDR3</code> memory.</p>
-<p>In the next slides we will look at <code>LinearGenerator</code> and <code>RandomGenerator</code> at a high level. We'll see how to write a configuration script that uses them.</p>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="37" data-paginate="true" data-class="two-col code-70-percent" data-theme="gem5" lang="en-US" class="two-col code-70-percent" data-marpit-pagination="37" style="--paginate:true;--class:two-col code-70-percent;--theme:gem5;" data-marpit-pagination-total="71">
-<h2 id="-1"></h2>
-<h3 id="lineargenerator">LinearGenerator</h3>
-<p><a href="/gem5/src/python/gem5/components/processors/linear_generator.py">Python Here</a></p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">LinearGenerator</span>(<span class="hljs-title class_ inherited__">AbstractGenerator</span>):
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">
-        self,
-        num_cores: <span class="hljs-built_in">int</span> = <span class="hljs-number">1</span>,
-        duration: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;1ms&quot;</span>,
-        rate: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;100GB/s&quot;</span>,
-        block_size: <span class="hljs-built_in">int</span> = <span class="hljs-number">64</span>,
-        min_addr: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>,
-        max_addr: <span class="hljs-built_in">int</span> = <span class="hljs-number">32768</span>,
-        rd_perc: <span class="hljs-built_in">int</span> = <span class="hljs-number">100</span>,
-        data_limit: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>,
-    </span>) -&gt; <span class="hljs-literal">None</span>:
-</code></pre>
-<h3 id="randomgenerator">RandomGenerator</h3>
-<p><a href="/gem5/src/python/gem5/components/processors/random_generator.py">Python Here</a></p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RandomGenerator</span>(<span class="hljs-title class_ inherited__">AbstractGenerator</span>):
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">
-        self,
-        num_cores: <span class="hljs-built_in">int</span> = <span class="hljs-number">1</span>,
-        duration: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;1ms&quot;</span>,
-        rate: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;100GB/s&quot;</span>,
-        block_size: <span class="hljs-built_in">int</span> = <span class="hljs-number">64</span>,
-        min_addr: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>,
-        max_addr: <span class="hljs-built_in">int</span> = <span class="hljs-number">32768</span>,
-        rd_perc: <span class="hljs-built_in">int</span> = <span class="hljs-number">100</span>,
-        data_limit: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>,
-    </span>) -&gt; <span class="hljs-literal">None</span>:
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="36" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="36" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="70">
+<h2 id="commmonitor-1">CommMonitor</h2>
+<h3 id="simple-system-to-modify">Simple system to modify</h3>
+<p><img src="02-memory-imgs/comm-monitor-0.drawio.svg" alt="Simple system diagram" /></p>
+<h3 id="lets-simulate">Let's simulate:</h3>
+
+<p>Run</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">gem5 comm_monitor.py
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="38" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="38" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="71">
-<h2 id="lineargeneratorrandomgenerator-knobs">LinearGenerator/RandomGenerator: Knobs</h2>
-<ul>
-<li><strong>num_cores</strong>
-<ul>
-<li>The number of cores in your system</li>
-</ul>
-</li>
-<li><strong>duration</strong>
-<ul>
-<li>Length of time to generate traffic</li>
-</ul>
-</li>
-<li><strong>rate</strong>
-<ul>
-<li>Rate at which to request data from memory
-<ul>
-<li><strong>Note</strong>: This is <em>NOT</em> the rate at which memory will respond. This is the <strong>maximum</strong> rate at which requests will be made</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>block_size</strong>
-<ul>
-<li>The number of bytes accessed with each read/write</li>
-</ul>
-</li>
-</ul>
-<h3 id="-2"></h3>
-<ul>
-<li><strong>min_addr</strong>
-<ul>
-<li>The lowest memory address for the generator to access (via reads/writes)</li>
-</ul>
-</li>
-<li><strong>max_addr</strong>
-<ul>
-<li>The highest memory address for the generator to access (via reads/writes)</li>
-</ul>
-</li>
-<li><strong>rd_perc</strong>
-<ul>
-<li>The percentage of accesses that should be reads</li>
-</ul>
-</li>
-<li><strong>data_limit</strong>
-<ul>
-<li>The maximum number of bytes that the generator can access (via reads/writes)
-<ul>
-<li><strong>Note</strong>: if <code>data_limit</code> is set to 0, there will be no data limit.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="37" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="37" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="70">
+<h2 id="commmonitor-2">CommMonitor</h2>
+<h3 id="lets-add-the-commmonitor">Let's add the CommMonitor</h3>
+<p><img src="02-memory-imgs/comm-monitor-1.drawio.svg" alt="Simple system with CommMonitor diagram" /></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="39" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="39" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="71">
-<h2 id="traffic-patterns-visualized">Traffic Patterns Visualized</h2>
-<p><code>min_addr</code>: 0, <code>max_addr</code>: 4, <code>block_size</code>: 1</p>
-<p><strong>Linear</strong>: We want to access addresses 0 through 4 so a linear access would mean accessing memory in the following order.</p>
-<p><strong>Random</strong>: We want to access addresses 0 through 4 so a random access would mean accessing memory in any order. (In this example, we are showing the order: 1, 3, 2, 0).</p>
-<h3 id="-3"></h3>
-<p><img src="03-running-in-gem5-imgs/linear_traffic_pattern.drawio.svg" alt="linear traffic pattern" /></p>
-<p><img src="03-running-in-gem5-imgs/random_traffic_pattern.drawio.svg" alt="random traffic pattern" /></p>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="38" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="38" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
+<h2 id="commmonitor-3">CommMonitor</h2>
+<p>Remove the line:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">system.l1cache.mem_side = system.membus.cpu_side_ports
+</code></pre>
+<p>Add the following block under the comment <code># Insert CommMonitor here</code>:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">system.comm_monitor = CommMonitor()
+system.comm_monitor.cpu_side_port = system.l1cache.mem_side
+system.comm_monitor.mem_side_port = system.membus.cpu_side_ports
+</code></pre>
+<p>Run:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">gem5 comm_monitor.py
+</code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="40" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="39" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="39" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="hands-on-time-5">Hands-on Time!</h2>
 <h3 id="06-traffic-gen">06-traffic-gen</h3>
 <h3 id="lets-run-an-example-on-how-to-use-the-traffic-generator">Let's run an example on how to use the traffic generator</h3>
@@ -641,7 +560,7 @@ board.redirect_paths = [RedirectPath(app_path=<span class="hljs-string">f&quot;/
 <li>Run with a Hybrid Traffic Generator.</li>
 </ol>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="41" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="41" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="40" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-lineargenerator-looking-at-the-code">06-traffic-gen: LinearGenerator: Looking at the Code</h2>
 <p>Go to this section of the code on the right.</p>
 <p>Right now, we have set up a board with a Private L1 Shared L2 Cache Hierarchy (go to <a href="../../materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/components/cache_hierarchy.py"><code>materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/components/cache_hierarchy.py</code></a> to see how it's constructed), and a Single Channel memory system.</p>
@@ -649,7 +568,7 @@ board.redirect_paths = [RedirectPath(app_path=<span class="hljs-string">f&quot;/
 <code>memory = SingleChannelDDR3_1600()</code> with the following lines.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">generator = LinearGenerator(num_cores=<span class="hljs-number">1</span>, rate=<span class="hljs-string">&quot;1GB/s&quot;</span>)
 </code></pre>
-<h3 id="-4"></h3>
+<h3 id="-1"></h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">cache_hierarchy = MyPrivateL1SharedL2CacheHierarchy()
 
 memory = SingleChannelDDR3_1600()
@@ -662,7 +581,7 @@ motherboard = TestBoard(
 )
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-paginate="true" data-class="two-col code-70-percent" data-theme="gem5" lang="en-US" class="two-col code-70-percent" data-marpit-pagination="42" style="--paginate:true;--class:two-col code-70-percent;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="41" data-paginate="true" data-class="two-col code-70-percent" data-theme="gem5" lang="en-US" class="two-col code-70-percent" data-marpit-pagination="41" style="--paginate:true;--class:two-col code-70-percent;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-lineargenerator-completed-code">06-traffic-gen: LinearGenerator: Completed Code</h2>
 <p>The completed code snippet should look like this.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">cache_hierarchy = MyPrivateL1SharedL2CacheHierarchy()
@@ -679,7 +598,7 @@ motherboard = TestBoard(
 )
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="43" data-paginate="true" data-class="code-100-percent" data-theme="gem5" lang="en-US" class="code-100-percent" data-marpit-pagination="43" style="--paginate:true;--class:code-100-percent;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-paginate="true" data-class="code-100-percent" data-theme="gem5" lang="en-US" class="code-100-percent" data-marpit-pagination="42" style="--paginate:true;--class:code-100-percent;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-lineargenerator-running-the-code">06-traffic-gen: LinearGenerator: Running the Code</h2>
 <h3 id="run-the-following-commands-to-see-a-linear-traffic-generator-in-action">Run the following commands to see a Linear Traffic Generator in action</h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh"><span class="hljs-built_in">cd</span> ./materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/
@@ -689,7 +608,7 @@ simple-traffic-generators.py
 </code></pre>
 <p>We will see some of the expected output in the following slide.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="44" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="44" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="43" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="43" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-lineargenerator-results">06-traffic-gen: LinearGenerator Results</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">  59605: system.processor.cores.generator: LinearGen::getNextPacket: r to addr 0, size 64
   59605: system.processor.cores.generator: Next event scheduled at 119210
@@ -704,7 +623,7 @@ simple-traffic-generators.py
 <p>This is because the Linear Traffic Generator  is simulating requests to access memory addresses 0x0000, 0x0040, 0x0080.</p>
 <p>As you can see, the simulated requests are very linear. Each new memory access is 0x0040 bytes above the previous one.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="45" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="45" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="44" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="44" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-random">06-traffic-gen: Random</h2>
 <p>We are not going to do this right now, but if you swapped <code>LinearGenerator</code> with <code>RandomGenerator</code> and kept the parameters the same, the output is going to look like below. Notice how the pattern of addresses is not a linear sequence anymore.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">  59605: system.processor.cores.generator: RandomGen::getNextPacket: r to addr 2000, size 64
@@ -715,7 +634,7 @@ simple-traffic-generators.py
  178815: system.processor.cores.generator: Next event scheduled at 238420
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="46" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="46" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="45" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="45" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="our-focus-lineargenerator-and-abstractgenerator">Our Focus: LinearGenerator and AbstractGenerator</h2>
 <ul>
 <li>We will be focusing on <code>LinearGenerator</code> and <code>RandomGenerator</code> generators (and a new one later!).
@@ -726,7 +645,7 @@ simple-traffic-generators.py
 </ul>
 <p><img src="03-running-in-gem5-imgs/generator_inheritance.drawio.svg" alt="Different Generators" /></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="47" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="47" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="46" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="46" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="detailed-look-on-some-components">Detailed Look on Some Components</h2>
 <ul>
 <li>You can find all generator related standard library components under <a href="https://github.com/gem5/gem5/tree/stable/src/python/gem5/components/processors"><code>src/python/gem5/components/processors</code></a>.</li>
@@ -736,7 +655,7 @@ simple-traffic-generators.py
 </ul>
 <p>Next we will look at extending <code>AbstractGenerator</code> to create <code>HybridGenerator</code> that has both <code>LinearGeneratorCores</code> and <code>RandomGeneratorCores</code>.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="48" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="48" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="47" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="47" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="extending-abstractgenerator">Extending AbstractGenerator</h2>
 <p>gem5 has a lot of tools in its standard library, but if you want to simulate specific memory accesses patterns in your research, there might not be anything in the standard library to do this.</p>
 <p>In this case, you would have to extend <code>AbstractGenerator</code> to create a concrete generator that is tailored to your needs.</p>
@@ -744,19 +663,19 @@ simple-traffic-generators.py
 <p>The goal of <code>HybridGenerator</code> is to simultaneously simulate both linear and random memory accesses.</p>
 <p>To do this, we need <code>LinearGeneratorCores</code> (to simulate linear traffic) and <code>RandomGeneratorCores</code> (to simulate random traffic).</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="49" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="49" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="48" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="48" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-a-quick-side-note-about-lineargeneratorcores">06-traffic-gen: HybridGenerator: A Quick Side Note about LinearGeneratorCores</h2>
 <p><code>LinearGeneratorCores</code> simulate linear traffic.</p>
 <p>When we have multiple <code>LinearGeneratorCores</code>, if we configure each one to have the same <code>min_addr</code> and <code>max_addr</code>, each one will start simulating memory accesses at the same <code>min_addr</code> and go up to the same <code>max_addr</code>. They will be accessing the same addresses at the same time.</p>
 <p>We want <code>LinearGeneratorCore</code> to simulate a more reasonable accesses pattern.</p>
 <p>Therefore, we will have each <code>LinearGeneratorCore</code> simulate accesses to a different chunk of memory. To do this, we will have to split up memory into equal-sized chunks and configure each <code>LinearGeneratorCore</code> to simulate accesses to one of these chunks.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="50" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="50" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="49" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="49" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-a-quick-side-note-about-lineargeneratorcores-cont">06-traffic-gen: HybridGenerator: A Quick Side Note about LinearGeneratorCores Cont.</h2>
 <p>Here's a diagram that shows how each <code>LinearGeneratorCore</code> should access memory.</p>
 <p><img src="03-running-in-gem5-imgs/lin_core_access_diagram.drawio.svg" alt="Linear Generator Core Memory Access Diagram" /></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="51" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="51" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="50" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="50" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-dividing-memory-address-range">06-traffic-gen: HybridGenerator: Dividing Memory Address Range</h2>
 <p>When we create a <code>HybridGenerator</code>, we have to determine which <code>LinearGeneratorCore</code> gets what chunk of memory.</p>
 <p>As previously discussed, we need to partition the memory address range into equally sized sections and configure each <code>LinearGeneratorCore</code> to simulate accesses to a different section.</p>
@@ -764,18 +683,18 @@ simple-traffic-generators.py
 <p>This function takes the range of <code>min_addr</code> to <code>max_addr</code> and partitions it into <code>num_partitions</code> equal-length pieces.</p>
 <p>For example, if <code>min_addr</code> = 0, <code>max_addr</code> = 9, and <code>num_partitions</code> = 3, then <code>partition_range</code> would return &lt;0,3&gt;, &lt;3,6&gt;, &lt;6,9&gt;.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="52" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="52" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="51" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="51" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-a-quick-reminder-about-randomgeneratorcores">06-traffic-gen: HybridGenerator: A quick reminder about RandomGeneratorCores</h2>
 <p>We also have to consider the <code>RandomGeneratorCores</code>.</p>
 <p>It would be reasonable to assume that we should partition them like the <code>LinearGeneratorCores</code>, but this is not the case.</p>
 <p>Even if each <code>RandomGeneratorCore</code> has the same <code>min_addr</code> and <code>max_addr</code>, since each one simulates a random memory access, each one will be simulating accesses to different (random) memory addresses.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="53" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="53" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="52" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="52" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-dividing-memory-address-range-cont">06-traffic-gen: HybridGenerator: Dividing Memory Address Range Cont.</h2>
 <p>In the end, this is how each core will simulate memory accesses.</p>
 <p><img src="./03-running-in-gem5-imgs/core_access_diagram.drawio.svg" alt="Linear vs. Random memory accesses" /></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="54" data-paginate="true" data-class="code-70-percent" data-theme="gem5" lang="en-US" class="code-70-percent" data-marpit-pagination="54" style="--paginate:true;--class:code-70-percent;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="53" data-paginate="true" data-class="code-70-percent" data-theme="gem5" lang="en-US" class="code-70-percent" data-marpit-pagination="53" style="--paginate:true;--class:code-70-percent;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-choosing-a-distribution-of-cores">06-traffic-gen: HybridGenerator: Choosing a Distribution of Cores</h2>
 <p>Now that we know how each core will access memory, next, we need to determine how many <code>LinearGeneratorCores</code> and <code>RandomGeneratorCores</code> we need.</p>
 <p>There are many correct ways to do this, but we will use the following function to determine the number of <code>LinearGeneratorCores</code>.</p>
@@ -790,7 +709,7 @@ simple-traffic-generators.py
 </code></pre>
 <p>The rest of the cores will be <code>RandomGeneratorCores</code>.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="55" data-paginate="true" data-class="two-col code-60-percent" data-theme="gem5" lang="en-US" class="two-col code-60-percent" data-marpit-pagination="55" style="--paginate:true;--class:two-col code-60-percent;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="54" data-paginate="true" data-class="two-col code-60-percent" data-theme="gem5" lang="en-US" class="two-col code-60-percent" data-marpit-pagination="54" style="--paginate:true;--class:two-col code-60-percent;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-constructor">06-traffic-gen: HybridGenerator Constructor</h2>
 <p>Let's start looking at the code!</p>
 <p>Make sure you have the following file open.<br />
@@ -825,13 +744,13 @@ simple-traffic-generators.py
         )
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="56" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="56" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="55" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="55" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-designing-a-hybridgenerator">06-traffic-gen: Designing a HybridGenerator</h2>
 <p>Right now, our <code>HybridGenerator</code> class has a constructor, but we need to return a list of cores.</p>
 <p>In gem5, the method that returns a list of cores is conventionally named <code>_create_cores</code>.</p>
 <p>If you look at our file, <a href="../../materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/components/hybrid_generator.py"><code>hybrid_generator.py</code></a>, you'll see this method called <code>_create_cores</code>.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="57" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="57" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="56" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="56" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-initializing-variables">06-traffic-gen: HybridGenerator: Initializing Variables</h2>
 <p>Let's define <code>_create_cores</code>!</p>
 <p>Let's start by declaring/defining some important variables.</p>
@@ -844,7 +763,7 @@ num_linear_cores = get_num_linear_cores(num_cores)
 num_random_cores = num_cores - num_linear_cores
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="58" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="58" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="57" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="57" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-partitioning-memory-address-range">06-traffic-gen: HybridGenerator: Partitioning Memory Address Range</h2>
 <p>Next, let's define the memory address range for each <code>LinearGeneratorCore</code>.</p>
 <p>If we want to give each <code>LinearGeneratorCore</code> an equal chunk of the given memory address range, we need to partition the range of <code>min_addr</code> to <code>max_addr</code> into <code>num_linear_cores</code> pieces.</p>
@@ -853,7 +772,7 @@ num_random_cores = num_cores - num_linear_cores
 </code></pre>
 <p><code>addr_ranges</code> will be a <code>num_linear_cores</code>-long list of equal-length partitions from <code>min_addr</code> to <code>max_addr</code>.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="59" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="59" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="58" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="58" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-partitioning-memory-address-range-cont">06-traffic-gen: Partitioning Memory Address Range Cont.</h2>
 <p>For example, we have <code>min_addr=0</code>, <code>max_addr=32768</code>, and <code>num_cores=16</code> (8 <code>LinearGeneratorCores</code>), then</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">addr_ranges=
@@ -863,7 +782,7 @@ num_random_cores = num_cores - num_linear_cores
 <p>For the <code>i</code>'th <code>LinearGeneratorCore</code>, we take the <code>i</code>'th entry in <code>addr_ranges</code>. <code>min_addr</code> is the first value that entry, and <code>max_addr</code> is the second value in that entry.</p>
 <p>In this example, <code>LinearGeneratorCore</code> 0 gets initialized with <code>min_addr=0</code> and <code>max_addr=4096</code>, <code>LinearGeneratorCore</code> 1 gets initialized with <code>min_addr=4096</code> and <code>max_addr=8192</code>, etc.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="60" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="60" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="59" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="59" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-creating-a-list-of-cores-lineargeneratorcore">06-traffic-gen: HybridGenerator: Creating a List of Cores: LinearGeneratorCore</h2>
 <p>Next, let's start creating our list of cores.</p>
 <p>First, let's add all the <code>LinearGeneratorCores</code>.</p>
@@ -880,12 +799,12 @@ num_random_cores = num_cores - num_linear_cores
             )
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="61" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="61" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="60" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="60" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-creating-a-list-of-cores-explained-lineargeneratorcore">06-traffic-gen: HybridGenerator: Creating a List of Cores Explained: LinearGeneratorCore</h2>
 <p>In the for loop, we create <code>num_linear_cores</code> <code>LinearGeneratorCores</code> and append each one to our <code>core_list</code>.</p>
 <p>Each <code>LinearGeneratorCore</code> parameter is initialized with the same values from the constructor, except for <code>min_addr</code> and <code>max_addr</code>.</p>
 <p>We change <code>min_addr</code> and <code>max_addr</code> so that each <code>LinearGeneratorCore</code> only simulates accesses to a section of the range of <code>HybridGenerator's</code> <code>min_addr</code> to <code>max_addr</code>.</p>
-<h3 id="-5"></h3>
+<h3 id="-2"></h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_linear_cores):
             core_list.append(LinearGeneratorCore(
                 duration=duration,
@@ -898,11 +817,11 @@ num_random_cores = num_cores - num_linear_cores
             )
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="62" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="62" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="61" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="61" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-creating-a-list-of-cores-randomgeneratorcore">06-traffic-gen: HybridGenerator: Creating a List of Cores: RandomGeneratorCore</h2>
 <p>Now that we've added the <code>LinearGeneratorCores</code>, let's add all the <code>RandomGeneratorCores</code>.</p>
 <p>Add the lines on the right under the comment labeled <code>(4)</code>.</p>
-<h3 id="-6"></h3>
+<h3 id="-3"></h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_random_cores):
             core_list.append(RandomGeneratorCore(
                 duration=duration,
@@ -915,12 +834,12 @@ num_random_cores = num_cores - num_linear_cores
             )
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="63" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="63" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="62" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="62" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-creating-a-list-of-cores-explained-randomgeneratorcore">06-traffic-gen: HybridGenerator: Creating a List of Cores Explained: RandomGeneratorCore</h2>
 <p>Once again, in the for loop, we create <code>num_linear_cores</code> <code>RandomGeneratorCores</code> and append each one to our core_list.</p>
 <p>Each <code>RandomGeneratorCore</code> parameter is initialized with the same values from the constructor, including <code>min_addr</code> and <code>max_addr</code>.</p>
 <p><code>min_addr</code> and <code>max_addr</code> do not change because each <code>RandomGeneratorCore</code> should be able to access the entire range of <code>HybridGenerator's</code> <code>min_addr</code> to <code>max_addr</code>.</p>
-<h3 id="-7"></h3>
+<h3 id="-4"></h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_random_cores):
             core_list.append(RandomGeneratorCore(
                 duration=duration,
@@ -933,7 +852,7 @@ num_random_cores = num_cores - num_linear_cores
             )
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="64" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="64" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="63" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="63" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-returning-and-beginning-configuration">06-traffic-gen: HybridGenerator: Returning and Beginning Configuration</h2>
 <p>We're almost done with this file!</p>
 <p>Let's return our <code>core_list</code> by adding the following line under the comment labeled <code>(5)</code>.</p>
@@ -945,7 +864,7 @@ num_random_cores = num_cores - num_linear_cores
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">from</span> components.hybrid_generator <span class="hljs-keyword">import</span> HybridGenerator
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="65" data-paginate="true" data-class="two-col code-70-percent" data-theme="gem5" lang="en-US" class="two-col code-70-percent" data-marpit-pagination="65" style="--paginate:true;--class:two-col code-70-percent;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="64" data-paginate="true" data-class="two-col code-70-percent" data-theme="gem5" lang="en-US" class="two-col code-70-percent" data-marpit-pagination="64" style="--paginate:true;--class:two-col code-70-percent;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-configuring">06-traffic-gen: HybridGenerator: Configuring</h2>
 <p>In this section of code to the right, you should currently have a <code>LinearGenerator</code>.</p>
 <p>Let's replace it with a <code>HybridGenerator</code>.</p>
@@ -959,7 +878,7 @@ num_random_cores = num_cores - num_linear_cores
     num_cores=<span class="hljs-number">6</span>
 )
 </code></pre>
-<h3 id="-8"></h3>
+<h3 id="-5"></h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">cache_hierarchy = MyPrivateL1SharedL2CacheHierarchy()
 
 memory = SingleChannelDDR3_1600()
@@ -976,10 +895,10 @@ motherboard = TestBoard(
 )
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="66" data-paginate="true" data-class="two-col code-70-percent" data-theme="gem5" lang="en-US" class="two-col code-70-percent" data-marpit-pagination="66" style="--paginate:true;--class:two-col code-70-percent;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="65" data-paginate="true" data-class="two-col code-70-percent" data-theme="gem5" lang="en-US" class="two-col code-70-percent" data-marpit-pagination="65" style="--paginate:true;--class:two-col code-70-percent;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-configuring-cont">06-traffic-gen: HybridGenerator: Configuring Cont.</h2>
 <p>This is what it should look like now.</p>
-<h3 id="-9"></h3>
+<h3 id="-6"></h3>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">cache_hierarchy = MyPrivateL1SharedL2CacheHierarchy()
 
 memory = SingleChannelDDR3_1600()
@@ -996,7 +915,7 @@ motherboard = TestBoard(
 )
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="67" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="67" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="66" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="66" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-running">06-traffic-gen: HybridGenerator: Running</h2>
 <p>Now, that we've created a <code>HybridGenerator</code>, let's run the program again!</p>
 <p>Make sure you're in the following directory.</p>
@@ -1006,7 +925,7 @@ motherboard = TestBoard(
 simple-traffic-generators.py
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="68" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="68" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="67" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="67" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-output">06-traffic-gen: HybridGenerator: Output</h2>
 <p>After running the command, you should see something like below.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">   7451: system.processor.cores5.generator: RandomGen::getNextPacket: r to addr 80a8, size 8
@@ -1024,7 +943,7 @@ simple-traffic-generators.py
 </code></pre>
 <p>As you can see, cores 0, 1, 2, and 3 are <code>LinearGeneratorCores</code>, and cores 4 and 5 are <code>RandomGeneratorCores</code>!</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="69" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="69" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="68" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="68" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-statistics">06-traffic-gen: HybridGenerator: Statistics</h2>
 <p>Now, let's look at some of the statistical differences between our <code>LinearGeneratorCores</code> and <code>RandomGeneratorCores</code>.</p>
 <p>Run the following command to see the miss rate for each core's l1 data cache.</p>
@@ -1032,7 +951,7 @@ simple-traffic-generators.py
 </code></pre>
 <p>On the next slide, you'll see the expected output (with some text removed for readability).</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="70" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="70" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="69" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="69" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="06-traffic-gen-hybridgenerator-statistics-cont">06-traffic-gen: HybridGenerator: Statistics Cont.</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">system.cache_hierarchy.l1dcaches0.ReadReq.missRate::processor.cores0.generator     0.132345
 system.cache_hierarchy.l1dcaches1.ReadReq.missRate::processor.cores1.generator     0.133418
@@ -1046,7 +965,7 @@ system.cache_hierarchy.l1dcaches5.ReadReq.missRate::processor.cores5.generator  
 <p>This is because <code>LinearGeneratorCores</code> access memory linearly. Therefore, they exhibit more locality which in turn results in less misses in the l1dcache.</p>
 <p>On the other hand, since the <code>RandomGeneratorCores</code> access memory randomly, the caches can't take advantage of locality in the same way.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="71" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="71" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="70" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="70" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="70">
 <h2 id="summary-1">Summary</h2>
 <p>Overall, we discussed two different types of traffic generators: <strong>Linear</strong> and <strong>Random</strong>.</p>
 <p><code>LinearGenerators</code> simulate linear memory accesses, and <code>RandomGenerators</code> simulate random memory accesses.</p>
@@ -1064,7 +983,8 @@ system.cache_hierarchy.l1dcaches5.ReadReq.missRate::processor.cores5.generator  
 2. point out the cross compiler and &quot;-static&quot;</p></div><div class="bespoke-marp-note" data-index="30" tabindex="0"><p>What I want to do in this exercise:
 1. first let people run the static one, and let them know this is arm
 2. then let people run the dynamic one which will lead to errors
-3. show people how to redirect lib</p><p>Not sure what to say for &quot;and let them know this is arm&quot;</p></div><div class="bespoke-marp-note" data-index="43" tabindex="0"><p>Is the sentence above accurate?</p></div><div class="bespoke-marp-note" data-index="70" tabindex="0"><p>Speaker Notes:
+3. show people how to redirect lib</p><p>Not sure what to say for &quot;and let them know this is arm&quot;</p></div><div class="bespoke-marp-note" data-index="35" tabindex="0"><p>&gt;    &gt; gem5-x86 –outdir=results/simple materials/extra-topics/02-monitor-and-trace/simple.py</p></div><div class="bespoke-marp-note" data-index="36" tabindex="0"><p>### Let's simulate:</p><p>gem5-x86 –outdir=results/simple_comm materials/extra-topics/02-monitor-and-trace/simple_comm.py
+     diff results/simple/stats.txt results/simple_comm/stats.txt</p></div><div class="bespoke-marp-note" data-index="42" tabindex="0"><p>Is the sentence above accurate?</p></div><div class="bespoke-marp-note" data-index="69" tabindex="0"><p>Speaker Notes:
 
 ## More summaries
 
