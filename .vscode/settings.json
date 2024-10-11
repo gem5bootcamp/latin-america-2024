@@ -21,6 +21,6 @@
     },
     "markdownlint.config": {
         "default": true,
-        "MD026": false  // Ignore trailing punctuation in header
+        "MD026": false
     },
 }
