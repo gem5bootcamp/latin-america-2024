@@ -39,4 +39,37 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Run test
-      run: python3 materials/test-material.py "${{ matrix.file }}"
+      id: run-test
+      continue-on-error: true
+      run: |
+        python3 materials/test-material.py "${{ matrix.file }}"
+        echo "${{ matrix.file }}=$?" >> results.txt
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: results.txt
+
+  aggregate-results:
+    needs: run-tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download test results
+      uses: actions/download-artifact@v3
+      with:
+        name: test-results
+        path: ./results
+
+    - name: Aggregate test results
+      run: |
+        failed=0
+        for test in $(cat ./results/results.txt); do
+          result=$(echo $test | cut -d'=' -f2)
+          if [ "$result" -eq 1 ]; then
+            failed=1
+            echo "Test failed for $(echo $test | cut -d'=' -f1)"
+          fi
+        done
+        exit $failed

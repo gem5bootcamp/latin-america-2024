@@ -31,11 +31,15 @@ def main():
     with open(args.script, "r") as f:
         script = f.read()
 
+    if '"""' not in script:
+        print("Warning: No docstring found")
+        return 2
+
     docstring = script.split('"""')[1]
 
     if "$ gem5" not in docstring:
         print("Warning: No gem5 command found in docstring")
-        return 0
+        return 2
 
     gem5_command = "gem5" + docstring.split("$ gem5")[1].split("\n")[0].strip()
     expected_output = docstring.split("$ gem5")[1].split("\n")[1].strip()
