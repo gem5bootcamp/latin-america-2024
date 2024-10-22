@@ -6,7 +6,8 @@ This boots linux (just the kernel) and exits. However, we will only run it for
 
 This takes just a minute or so to run.
 
-$ gem5 basic.py
+(Note: this should use `$`, but I want to avoid downloading ubuntu in the CI)
+gem5 basic.py
 gem5 Simulator System.  https://www.gem5.org
 ...
 info: Entering event queue @ 0.  Starting simulation
