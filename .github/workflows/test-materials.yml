@@ -19,8 +19,8 @@ jobs:
     - name: Get list of materials
       id: get-materials
       run: |
-        files=$(find materials/ -path "*/completed/*.py" -type f -not -path "*/archive/*" | tr '\n' ' ')
-        echo "::set-output name=files::$files"
+        files=$(find materials/ -path "*/completed/*.py" -type f -not -path "*/archive/*" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+        echo "files=$files" >> $GITHUB_OUTPUT
 
   run-tests:
     needs: find-files
@@ -30,7 +30,7 @@ jobs:
 
     strategy:
       matrix:
-        file: ${{fromJson(needs.find-files.outputs.files)}}
+        file: ${{ fromJson(needs.find-files.outputs.files) }}
 
     steps:
     - name: Check out repository
