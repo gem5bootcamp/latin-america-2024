@@ -1,10 +1,24 @@
 # gem5 bootcamp environment
 
 This repository has been designed for use in gem5 tutorials.
+It contains:
 
-It has been built with the assumption users will utilize [Codespaces](https://github.com/features/codespaces) to learn gem5.
+- The [slides](slides/) that are used in the bootcamp. The slides are rendered with [Marp](https://marp.app/).
+- The [materials](materials/) directory contains templates code and completed code examples of how to use gem5.
+- The [web](web/) directory enables the bootcamp to be hosted on GitHub pages.
+- The [gem5](gem5/) directory is a submodule that contains the gem5 source code and [gem5-resources](gem5-resources/) is a submodule for gem5-resources.
+  - These will usually point to the latest stable release of gem5.
 
-The repository contains the following directories:
+To use this repository, you will need to have a GitHub account and a Codespaces subscription.
+If you are using this repository as part of the official gem5 bootcamp, you will be provided with a codespace subscription.
+
+To view the bootcamp slides, visit the [gem5 bootcamp website](https://gem5bootcamp.github.io/latin-america-2024/).
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for more information on how to contribute to the gem5 bootcamp.
+
+## Using this repository
 
 > **Note:** 'gem5' and 'gem5-resources' are submodules though the [.devcontainer/devcontainer.json](.devcontainer/devcontainer.json) file specifies that a `git submodule update --init --recursive` command is executed when the Codespace Docker container is created.
 >
@@ -16,16 +30,16 @@ The repository contains the following directories:
 The container used by Codespaces is built from [Dockerfile](gem5/util/dockerfiles/devcontainer/Dockerfile).
 It contains:
 
-* All gem5 dependencies (inc. optional dependencies).
-* Prebuilt gem5 binaries:
-  * `/usr/local/bin/gem5-chi` (`/usr/local/bin/gem5`) (gem5 ALL ISAs with CHI protocol)
-  * `/usr/local/bin/gem5-mesi` (default gem5 ALL build with MESI_Two_Level)
-  * `/usr/local/bin/gem5-vega` (x86-only with GPU protocol)
-* A RISCV64 and an AARCH64 GNU cross-compiler:
-  * RISCV64 GNU cross-compiler found in `/opt/cross-compiler/riscv64-linux/`.
-  * AARCH64 GNU cross-compiler found in `/opt/cross-compiler/aarch64-linux/`.
+- All gem5 dependencies (inc. optional dependencies).
+- Prebuilt gem5 binaries:
+  - `/usr/local/bin/gem5-chi` (`/usr/local/bin/gem5`) (gem5 ALL ISAs with CHI protocol)
+  - `/usr/local/bin/gem5-mesi` (default gem5 ALL build with MESI_Two_Level)
+  - `/usr/local/bin/gem5-vega` (x86-only with GPU protocol)
+- A RISCV64 and an AARCH64 GNU cross-compiler:
+  - RISCV64 GNU cross-compiler found in `/opt/cross-compiler/riscv64-linux/`.
+  - AARCH64 GNU cross-compiler found in `/opt/cross-compiler/aarch64-linux/`.
 
-## Beginners' example
+### Beginners' example
 
 The following can be used within the Codespace container to run a basic gem5 simulation straight away:
 
@@ -35,7 +49,7 @@ gem5 gem5/configs/example/gem5_library/arm-hello.py
 
 This will execute a "Hello world!" program inside a simulated ARM system.
 
-## Updating submodules
+### Updating submodules
 
 In this project we have two submodules: 'gem5' and 'gem5-resources'.
 These are automatically obtained when the codespaces is initialized.
@@ -57,11 +71,7 @@ git commit -m "git submodules updated"
 git push
 ```
 
-## Creating content
-
-See [creating-content.md](creating-content.md) for more information on how to create content for the gem5 bootcamp.
-
-## Launching a new version
+## Launching a new version of the bootcamp
 
 Steps to create a new instance of the bootcamp.
 
