@@ -5,8 +5,10 @@ channel DDR4 memory and a MESI two level cache hierarchy. The processor is
 configured to run the ARM ISA and uses an out-of-order CPU model. The system is
 then run with the BFS workload from the GAPBS benchmark suite.
 
-Run with
-gem5-mesi --outdir=m5out/ooo 02-processor.py
+$ gem5-mesi 02-processor.py
+Graph has 1024 nodes and 10496 undirected edges for degree: 10
+...
+Average Time:        0.00002
 """
 
 from gem5.components.boards.simple_board import SimpleBoard

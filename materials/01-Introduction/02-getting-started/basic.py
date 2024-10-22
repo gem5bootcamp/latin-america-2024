@@ -6,7 +6,10 @@ This boots linux (just the kernel) and exits. However, we will only run it for
 
 This takes just a minute or so to run.
 
-gem5 basic.py
+$ gem5 basic.py
+gem5 Simulator System.  https://www.gem5.org
+...
+info: Entering event queue @ 0.  Starting simulation
 """
 
 from gem5.prebuilt.demo.x86_demo_board import X86DemoBoard
