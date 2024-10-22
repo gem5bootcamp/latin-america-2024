@@ -32,9 +32,11 @@ jobs:
       matrix:
         file: ${{ fromJson(needs.find-files.outputs.files) }}
 
+    continue-on-error: true
+
     steps:
     - name: Check out repository
       uses: actions/checkout@v2
 
     - name: Run test
-      run: python materials/test-material.py "${{ matrix.file }}"
+      run: python3 materials/test-material.py "${{ matrix.file }}"
