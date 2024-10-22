@@ -30,7 +30,7 @@ jobs:
 
     strategy:
       matrix:
-        file: ${{ fromJson(needs.find-files.outputs.files) }}
+        file: ${{fromJson(needs.find-files.outputs.files)}}
 
     steps:
     - name: Check out repository
