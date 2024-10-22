@@ -40,12 +40,12 @@ jobs:
 
     - name: Run test
       id: run-test
-      continue-on-error: true
       run: |
         python3 materials/test-material.py "${{ matrix.file }}"
         echo "${{ matrix.file }}=$?" >> results.txt
 
     - name: Upload test results
+      if: success()
       uses: actions/upload-artifact@v3
       with:
         name: test-results
