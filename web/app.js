@@ -227,7 +227,7 @@ function make_category(cat) {
 }
 
 function populate_sidebar(slide_registry) {
-    let sidebar = document.querySelector('.sidebar');
+    let sidebar = document.querySelector('.sidebar-toc');
     for (const cat of slide_registry) {
         sidebar.append(make_category(cat));
     }
