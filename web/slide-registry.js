@@ -5,6 +5,8 @@ window.get_slide_registry = function() {
             "slides": [
                 "01-python-background",
             ],
+        },
+        {
             "name": "01-Introduction",
             "slides": [
                 "00-introduction-to-bootcamp",
