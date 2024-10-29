@@ -30,7 +30,7 @@ jobs:
             MARP_USER: root:root
 
         - name: copy static content (images, css, etc)
-          run: sudo find slides \( -name "*.png" -or -name "*.svg" -or -name "*.css" -or -name "*.jpg" \) -exec sh -c 'mkdir -p web/"$(dirname "{}")"' \; -exec cp {} web/{}
+          run: sudo find slides \( -name "*.png" -or -name "*.svg" -or -name "*.css" -or -name "*.jpg" \) -exec sh -c 'mkdir -p web/"$(dirname "{}")"' \; -exec cp {} web/{} \;
 
         - name: copy gpu pdf
           run: sudo cp slides/04-GPU-model/gpu-slides.pdf web/slides/04-GPU-model/gpu-slides.pdf
