@@ -249,6 +249,14 @@ The slides will be a reference, but we'll be doing a lot of live coding!
 
 ---
 
+## Slido
+
+We'll be using Slido for questions and answers.
+
+<iframe src="https://app.sli.do/event/qpr43XWrbjYJCdE3GHGCWg/embed/polls/428b4b2e-486e-47cb-be20-8bd2d5dd84a1" width="100%" height="440"></iframe>
+
+---
+
 ## Bootcamp logistics
 
 ---
