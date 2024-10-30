@@ -25,7 +25,7 @@ author: Jason Lowe-Power
 
 ## First there was M5
 
-![M5 Logo](./01-simulation-background-imgs/m5.drawio.svg)
+![M5 Logo](./02-simulation-background-imgs/m5.drawio.svg)
 
 ---
 
@@ -33,13 +33,13 @@ author: Jason Lowe-Power
 
 ## M5 at ISCA 2005
 
-![M5 slide from ISCA tutorial height:500px](./01-simulation-background-imgs/m5-isca-2005.png)
+![M5 slide from ISCA tutorial height:500px](./02-simulation-background-imgs/m5-isca-2005.png)
 
 ---
 
 ## Then there was GEMS
 
-![Logos for M5 and GEMS](./01-simulation-background-imgs/m5-gems.drawio.svg)
+![Logos for M5 and GEMS](./02-simulation-background-imgs/m5-gems.drawio.svg)
 
 ---
 
@@ -47,13 +47,13 @@ author: Jason Lowe-Power
 
 ## GEMS at ISCA 2005
 
-![GEMS slide from ISCA tutorial height:500px](./01-simulation-background-imgs/gems-isca-2005.png)
+![GEMS slide from ISCA tutorial height:500px](./02-simulation-background-imgs/gems-isca-2005.png)
 
 ---
 
 ## Now, we have two simulators...
 
-![Logos for M5 and GEMS](./01-simulation-background-imgs/m5-gems.drawio.svg)
+![Logos for M5 and GEMS](./02-simulation-background-imgs/m5-gems.drawio.svg)
 
 ---
 
@@ -75,15 +75,15 @@ Nathan Binkert, Bradford Beckmann, Gabriel Black, Steven K. Reinhardt, Ali Saidi
 
 ## gem5-20+: A new era in computer architecture simulation
 
-![gem5-20+](./01-simulation-background-imgs/gem5-20plus.drawio.png)
+![gem5-20+](./02-simulation-background-imgs/gem5-20plus.drawio.png)
 
 ---
 
 ## gem5's goals
 
-![the computer architecture stack height:500px](./01-simulation-background-imgs/arch-stack.png)
+![the computer architecture stack height:500px](./02-simulation-background-imgs/arch-stack.png)
 
-![bg right agile hardware methodology fit](./01-simulation-background-imgs/agile-hardware.png)
+![bg right agile hardware methodology fit](./02-simulation-background-imgs/agile-hardware.png)
 
 ---
 
@@ -116,7 +116,7 @@ Code of conduct (see repo)
 
 ### _We want to see the community grow!_
 
-![A community of worker bees improving low-level computer hardware bg right](./01-simulation-background-imgs/gem5-community.jpg)
+![A community of worker bees improving low-level computer hardware bg right](./02-simulation-background-imgs/gem5-community.jpg)
 
 ---
 
@@ -126,7 +126,7 @@ Code of conduct (see repo)
 
 ---
 
-![computer systems research and scientific method bg left:60% fit](./01-simulation-background-imgs/systems-research.png)
+![computer systems research and scientific method bg left:60% fit](./02-simulation-background-imgs/systems-research.png)
 
 From [Computer Architecture Performance Evaluation Methods](https://link.springer.com/book/10.1007/978-3-031-01727-8) by Lieven Eeckhout
 
@@ -159,7 +159,7 @@ $$ S_{latency}(s) = \frac{1}{(1-p) + \frac{p}{s}} $$
 
 ### Queuing theory
 
-![Queuing theory bg auto](./01-simulation-background-imgs/queuing.png)
+![Queuing theory bg auto](./02-simulation-background-imgs/queuing.png)
 
 <br><br> <!-- needed for image above -->
 
@@ -224,7 +224,7 @@ $$ L = \lambda W $$
   - Running "on top of" hypervisor
   - Hypervisor is emulating hardware
 
-![layers of your system and of a virtualized system bg right:45% 90%](./01-simulation-background-imgs/vm-nomenclature.drawio.svg)
+![layers of your system and of a virtualized system bg right:45% 90%](./02-simulation-background-imgs/vm-nomenclature.drawio.svg)
 
 ---
 
@@ -241,7 +241,7 @@ $$ L = \lambda W $$
 - **Guest's code:** (or benchmark, workload, etc.)
   - Runs on gem5, not on the host.
 
-![layers of your system and of a virtualized system bg right:45% 90%](./01-simulation-background-imgs/gem5-nomenclature.drawio.svg)
+![layers of your system and of a virtualized system bg right:45% 90%](./02-simulation-background-imgs/gem5-nomenclature.drawio.svg)
 
 ---
 
@@ -257,7 +257,7 @@ $$ L = \lambda W $$
   - Time predicted by the simulator
   - Time for guest code to run on simulator
 
-![layers of your system and of a virtualized system bg right:45% 90%](./01-simulation-background-imgs/gem5-nomenclature.drawio.svg)
+![layers of your system and of a virtualized system bg right:45% 90%](./02-simulation-background-imgs/gem5-nomenclature.drawio.svg)
 
 ---
 
@@ -268,7 +268,7 @@ $$ L = \lambda W $$
 - Accuracy: How close is the simulator to real hardware
 - Coverage: How broadly can the simulator be used?
 
-![Table from Computer Architecture Performance Evaluation Methods](./01-simulation-background-imgs/tradeoffs.png)
+![Table from Computer Architecture Performance Evaluation Methods](./02-simulation-background-imgs/tradeoffs.png)
 
 ---
 
@@ -319,7 +319,7 @@ $$ L = \lambda W $$
 
 ## Software architectures
 
-![diagram of models, stdlib, and simulation control](./01-simulation-background-imgs/gem5-software-arch.drawio.svg)
+![diagram of models, stdlib, and simulation control](./02-simulation-background-imgs/gem5-software-arch.drawio.svg)
 
 ---
 
@@ -348,7 +348,7 @@ In standard library, your extension, or Python runscript
 - Expose **parameters** to Python
 - Set **parameters** and connections in Python
 
-![Picture of Sunny Cove architecture from wikichip bg right fit](./01-simulation-background-imgs/Sunny_cove_block_diagram.png)
+![Picture of Sunny Cove architecture from wikichip bg right fit](./02-simulation-background-imgs/Sunny_cove_block_diagram.png)
 
 ---
 
@@ -384,7 +384,7 @@ At each timestep, gem5:
 2. The event is executed
 3. New events are scheduled
 
-![Example of discrete event simulation bg right:55% fit](./01-simulation-background-imgs/des-1.drawio.svg)
+![Example of discrete event simulation bg right:55% fit](./02-simulation-background-imgs/des-1.drawio.svg)
 
 ---
 
@@ -400,7 +400,7 @@ At each timestep, gem5:
 2. The event is executed
 3. New events are scheduled
 
-![Example of discrete event simulation bg right:55% fit](./01-simulation-background-imgs/des-2.drawio.svg)
+![Example of discrete event simulation bg right:55% fit](./02-simulation-background-imgs/des-2.drawio.svg)
 
 ---
 
@@ -418,21 +418,13 @@ At each timestep, gem5:
 
 > **All SimObjects can enqueue events onto the event queue**
 
-![Example of discrete event simulation bg right:55% fit](./01-simulation-background-imgs/des-3.drawio.svg)
+![Example of discrete event simulation bg right:55% fit](./02-simulation-background-imgs/des-3.drawio.svg)
 
 ---
 
 ## Discrete event simulation example
 
-![Example of discrete event simulation fit](./01-simulation-background-imgs/des-example-1.drawio.svg)
-
----
-
-<!-- _paginate: hold -->
-
-## Discrete event simulation example
-
-![Example of discrete event simulation fit](./01-simulation-background-imgs/des-example-2.drawio.svg)
+![Example of discrete event simulation fit](./02-simulation-background-imgs/des-example-1.drawio.svg)
 
 ---
 
@@ -440,7 +432,15 @@ At each timestep, gem5:
 
 ## Discrete event simulation example
 
-![Example of discrete event simulation fit](./01-simulation-background-imgs/des-example-3.drawio.svg)
+![Example of discrete event simulation fit](./02-simulation-background-imgs/des-example-2.drawio.svg)
+
+---
+
+<!-- _paginate: hold -->
+
+## Discrete event simulation example
+
+![Example of discrete event simulation fit](./02-simulation-background-imgs/des-example-3.drawio.svg)
 
 To model things that take time, schedule the _next_ event in the future (latency of current event).
 Can call functions instead of scheduling events, but they occur _in the same tick_.
@@ -471,7 +471,7 @@ Usually this is 1 ps per tick or $10^{12}$ ticks per second
 - Anything* with a Request port can be connected to any Response port.
 - More on this in [Ports and memory-based SimObjects](../03-Developing-gem5-models/04-ports.md).
 
-![CPU talking to caches with ports](./01-simulation-background-imgs/abstractions-1.drawio.svg)
+![CPU talking to caches with ports](./02-simulation-background-imgs/abstractions-1.drawio.svg)
 
 ---
 
@@ -486,4 +486,4 @@ Usually this is 1 ps per tick or $10^{12}$ ticks per second
 - "Execution Context" is the interface.
 - More on this in [modeling cores](../03-Developing-gem5-models/05-modeling-cores.md).
 
-![ISA-CPU interactions and CPU talking to caches with ports](./01-simulation-background-imgs/abstractions-2.drawio.svg)
+![ISA-CPU interactions and CPU talking to caches with ports](./02-simulation-background-imgs/abstractions-2.drawio.svg)

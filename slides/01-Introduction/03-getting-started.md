@@ -94,7 +94,7 @@ Again, note that this is the repo where the slides are.
 
 <https://github.com/gem5bootcamp/2024/>
 
-![Screenshot of starting a codespace](02-getting-started-imgs/codespaces-screenshot-1.drawio.png)
+![Screenshot of starting a codespace](03-getting-started-imgs/codespaces-screenshot-1.drawio.png)
 
 ---
 
@@ -105,7 +105,7 @@ Again, note that this is the repo where the slides are.
 You can also open it in your local VS Code if you install the Codespaces extension.
 (If you do this, the extensions will not be installed automatically on your local VS Code.)
 
-![Screenshot of the codespace loaded and ready to use width:1100px](02-getting-started-imgs/codespaces-screenshot-2.drawio.png)
+![Screenshot of the codespace loaded and ready to use width:1100px](03-getting-started-imgs/codespaces-screenshot-2.drawio.png)
 
 ---
 
@@ -150,11 +150,11 @@ scons build/ALL/gem5.opt -j [number of cores]
 
 While we do this, feel free to follow along in the slides.
 
-The slides (found in `slides/01-Introduction/02-getting-started.md`) contain the code snippets we will be using. You can copy-paste from there if you get behind.
+The slides (found in `slides/01-Introduction/03-getting-started.md`) contain the code snippets we will be using. You can copy-paste from there if you get behind.
 
 Press the "Preview" button in VS Code to see a rendered version of the slides locally.
 
-![Where to press the preview button](02-getting-started-imgs/preview-button.drawio.png)
+![Where to press the preview button](03-getting-started-imgs/preview-button.drawio.png)
 
 ---
 
@@ -166,8 +166,8 @@ from gem5.resources.resource import obtain_resource
 from gem5.simulate.simulator import Simulator
 ```
 
-This template code is available in the `materials/01-Introduction/02-getting-started/` directory.
-Open the [`basic.py`](../../materials/01-Introduction/02-getting-started/basic.py) file and start editing.
+This template code is available in the `materials/01-Introduction/03-getting-started/` directory.
+Open the [`basic.py`](../../materials/01-Introduction/03-getting-started/basic.py) file and start editing.
 
 Throughout this bootcamp we will be editing/extending files in the materials directory.
 
@@ -214,7 +214,7 @@ See the [gem5 resource page](https://resources.gem5.org/resources/x86-ubuntu-24.
 
 ### [Link](https://resources.gem5.org/resources/x86-ubuntu-24.04-boot-no-systemd?version=1.0.0)
 
-![Screenshot of gem5 resources webpage](02-getting-started-imgs/resources-screenshot.drawio.png)
+![Screenshot of gem5 resources webpage](03-getting-started-imgs/resources-screenshot.drawio.png)
 
 ---
 
