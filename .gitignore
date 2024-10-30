@@ -3,6 +3,9 @@
 **/checkpoint/
 **/resources/
 
+# This is where the compiled slides go
+web/slides
+
 # Jekyll stuff
 _site/
 .sass-cache/
