@@ -9,6 +9,22 @@ title: gem5's Standard Library
 
 ## gem5's Standard Library
 
+Using gem5's python interface
+
+---
+
+## Using gem5
+
+### Remember: gem5's interface is *Python*.
+
+Computer systems are complex. A declarative interface (e.g., `ini` or `json`) files, would be difficult to use.
+
+Assuming we want to write *code* to describe the system we are going to simulate, we don't want to have to write down every single detail every time.
+
+Python is well-suited for these kinds of "domain-specific languages."
+
+You can think of gem5 similar to [TensorFlow](https://www.tensorflow.org/) or [PyTorch](https://pytorch.org/). It's a *framework* or *language* for describing and simulating computer systems.
+
 ---
 
 ## Why a Standard Library?
@@ -267,6 +283,13 @@ simTicks                                   9093461436
 
 ## Exercise questions
 
+<iframe src="https://app.sli.do/event/qpr43XWrbjYJCdE3GHGCWg/embed/polls/63d7ea52-2bb4-45a8-ae01-9aa3ecf044cd" width="800" height="150"></iframe>
+
+<iframe src="https://app.sli.do/event/qpr43XWrbjYJCdE3GHGCWg/embed/polls/ae905f28-f1cd-475f-a758-a59be860157d" width="800" height="150"></iframe>
+
+<iframe src="https://app.sli.do/event/qpr43XWrbjYJCdE3GHGCWg/embed/polls/fe32093c-1c7a-4008-95d3-1010caa51057" width="800" height="150"></iframe>
+
+<!--
 ### What is the average IPC?
 
 See the `ipc` in the stats.txt file.
@@ -277,11 +300,11 @@ See the `ipc` in the stats.txt file.
 See the `simSeconds` in the stats.txt file.
 **Answer**: 0.009093s
 
-### What is the output of the simulated program?
+### What is first line of the output of the simulated program?
 
 See the standard output of the program.
 **Answer**: "Generate Time:       0.00462"... etc.
-
+-->
 ---
 
 <!-- _class: two-col -->

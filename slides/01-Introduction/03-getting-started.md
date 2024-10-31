@@ -92,7 +92,7 @@ This guarantees everyone is using the same environment and will make debugging e
 **AFTER** joining the classroom, you can go to the repository and click on the green "Code" button.
 Again, note that this is the repo where the slides are.
 
-<https://github.com/gem5bootcamp/2024/>
+<https://github.com/gem5bootcamp/latin-america-2024/>
 
 ![Screenshot of starting a codespace](03-getting-started-imgs/codespaces-screenshot-1.drawio.png)
 
@@ -119,10 +119,10 @@ You can also open it in your local VS Code if you install the Codespaces extensi
   - Markdown version of these slides. Used to build the website/slides.
   - You can also preview the slides in VS Code.
 - **`materials/`**
-  - Python scripts and other materials for the tutorial.
-  - Most of the live coding examples will be here.
+  - Python scripts and other materials for the class examples.
   - Completed examples are in the `completed` directories.
-- A few other things for the website, automatic building, VS Code configurations, etc.
+- **`homework/`**
+  - Homework assignments
 
 Both the slides and materials are broken down into sections and lessons.
 We use numbering to keep them in order.
