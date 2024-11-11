@@ -86,6 +86,7 @@ Here are some of the available layouts:
 - `code-XX-percent`: Reduces font-size in code blocks. Valid values for `XX` are any of `[50, 60, 70, 80]`.
 - `no-logo`: Removes the bottom logo.
 - `logo-left`: Positions the bottom logo further to the left. Useful when using `bg right` images that cover the logo.
+- `start`: A section break slide
 
 ### Style rules
 
