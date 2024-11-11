@@ -52,6 +52,8 @@ I lead the Davis Computer Architecture Research (DArchR) Group.
 
 ## Plan for the week
 
+### Day 1
+
 - Introduction
   - [Computer architecture research intro](01-arch-research.md) <!-- 30 min (Tamara) -->
     - Introduction to computer architecture research
@@ -87,6 +89,10 @@ I lead the Davis Computer Architecture Research (DArchR) Group.
     - Tradeoffs between classic and Ruby <!-- 10 minutes -->
     - **EXERCISE**: Example of using a Ruby hierarchy <!-- 30 minutes -->
     - Look at the gem5 generated statistics
+
+### Day 2
+
+- Using gem5
   - [Modeling cores in gem5](../02-Using-gem5/04-cores.md)
     - Types of CPU models in gem5 <!-- 15 minutes -->
     - **EXERCISE**: (Optional) Comparison of atomic and timing CPU <!-- 15 minutes -->
@@ -103,6 +109,40 @@ I lead the Davis Computer Architecture Research (DArchR) Group.
     - 👉 The gem5-bridge utility and library
     - Cross compiling
     - 👉 **EXERCISE**: Create your own workload <!-- 30 minutes -->
+
+**Now we have a full "baseline" that's running!**
+
+### Day 3
+
+- Developing gem5 models
+  - [SimObject intro](../03-Developing-gem5-models/01-sim-objects-intro.md) <!-- (Mahyar) 0.5 hours -->
+    - Development environment, code style, git branches
+    - The most simple `SimObject`
+    - Simple run script
+    - How to add parameters to a `SimObject`
+  - [Debugging and debug flags](../03-Developing-gem5-models/02-debugging-gem5.md) <!-- (Mahyar) 0.5 hours -->
+    - How to enable debug flags (examples of DRAM and Exec)
+    - `--debug-help`
+    - Adding a new debug flag
+    - Functions other than DPRINTF
+    - Panic/fatal/assert
+    - gdb?
+  - [Event-driven simulation](../03-Developing-gem5-models/03-event-driven-sim.md) <!-- (Mahyar) 1 hours -->
+    - Creating a simple callback event
+    - Scheduling events
+    - Modeling bandwidth and latency with events
+    - Other SimObjects as parameters
+    - Hello/Goodbye example with buffer
+    - Clock domains?
+
+### Day 4
+
+- Using gem5 for research
+  - Developing models to test secure memory
+
+### Day 5
+
+- Advanced running in gem5
   - [Full system simulation](../02-Using-gem5/07-full-system.md)
     - What is full system simulation? <!-- 30 minutes -->
     - Basics of booting up a real system in gem5
@@ -131,29 +171,14 @@ I lead the Davis Computer Architecture Research (DArchR) Group.
     - Loopoint/Elfies <!-- 10 minutes -->
     - Statistical simulation ideas <!-- 10 minutes -->
     - **EXERCISE** Statistical simulation running and analysis
-  - [Power modeling](../02-Using-gem5/10-modeling-power.md) <!-- 10 minutes -->
-    - 👉 **EXERCISE**: Running a power simulation <!-- 15 minutes -->
-- Developing gem5 models
-  - [SimObject intro](../03-Developing-gem5-models/01-sim-objects-intro.md) <!-- (Mahyar) 0.5 hours -->
-    - Development environment, code style, git branches
-    - The most simple `SimObject`
-    - Simple run script
-    - How to add parameters to a `SimObject`
-  - [Debugging and debug flags](../03-Developing-gem5-models/02-debugging-gem5.md) <!-- (Mahyar) 0.5 hours -->
-    - How to enable debug flags (examples of DRAM and Exec)
-    - `--debug-help`
-    - Adding a new debug flag
-    - Functions other than DPRINTF
-    - Panic/fatal/assert
-    - gdb?
-  - [Event-driven simulation](../03-Developing-gem5-models/03-event-driven-sim.md) <!-- (Mahyar) 1 hours -->
-    - Creating a simple callback event
-    - Scheduling events
-    - Modeling bandwidth and latency with events
-    - Other SimObjects as parameters
-    - Hello/Goodbye example with buffer
-    - Clock domains?
-- Developing gem5 models
+- **Putting it all together**
+  - Running FS simulation with secure memory
+
+###
+
+### Extra stuff
+
+- Advanced developing gem5 models
   - [Modeling Cores](../03-Developing-gem5-models/05-modeling-cores.md) <!-- (Bobby) 1.5 hours -->
     - New instructions
     - How the execution model works
@@ -171,17 +196,6 @@ I lead the Davis Computer Architecture Research (DArchR) Group.
     - Base utilities (e.g., bitset)
     - Random numbers
     - Signal ports?
-- [GPU modeling](../04-GPU-model/01-intro.md) <!-- (Matt S.) -->
-
-### Day 5
-
-- Developing gem5 models
-  - [Ports and memory-based SimObjects](../03-Developing-gem5-models/04-ports.md) <!-- (Mahyar) 1 hours -->
-    - Idea of ports (request/response), packets, interface
-    - A simple memory object that forwards things
-    - Connecting ports and writing config files
-    - Adding stats to a SimObject
-    - Adding latency and and modeling buffers/computing time
   - [Using the CHI protocol](../03-Developing-gem5-models/07-chi-protocol.md) <!-- (Jason) 0.5 hours -->
     - How is CHI different from other protocols?
     - Configuring a CHI hierarchy
@@ -189,14 +203,14 @@ I lead the Davis Computer Architecture Research (DArchR) Group.
     - Garnet intro
     - Building/running/configuring networks
     - Debugging
-- Other simulators <!-- (Jason?) -->
-  - [SST](../05-Other-simulators/01-sst.md)
-  - [DRAMSim/DRAMSys](../05-Other-simulators/02-dram.md)
-  - [SystemC](../05-Other-simulators/03-systemc.md)
-- Contributing to gem5 <!-- (Bobby) -->
-  - [gem5 contributing process](../06-Contributing-to-gem5/01-contributing.md)
-  - [gem5 testing](../06-Contributing-to-gem5/02-testing.md)
-
+  - [Ports and memory-based SimObjects](../03-Developing-gem5-models/04-ports.md) <!-- (Mahyar) 1 hours -->
+    - Idea of ports (request/response), packets, interface
+    - A simple memory object that forwards things
+    - Connecting ports and writing config files
+    - Adding stats to a SimObject
+    - Adding latency and and modeling buffers/computing time
+  - [Power modeling](../02-Using-gem5/10-modeling-power.md) <!-- 10 minutes -->
+    - 👉 **EXERCISE**: Running a power simulation <!-- 15 minutes -->
 ---
 
 ## Our goals for the gem5 bootcamp
