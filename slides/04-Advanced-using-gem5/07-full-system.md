@@ -11,6 +11,63 @@ title: Full system simulation in gem5
 
 ---
 
+<!-- _class: start -->
+## Intro to Syscall Emulation Mode
+
+---
+
+## What is Syscall Emulation mode, and when to use/avoid it
+
+**Syscall Emulation (SE)** mode does not model all the devices in a system. It focuses on simulating the CPU and memory system. It only emulates Linux system calls, and only models user-mode code.
+
+SE mode is a good choice when the experiment does not need to model the OS (such as page table walks), does not need a high fidelity model (emulation is ok), and faster simulation speed is needed.
+
+However, if the experiment needs to model the OS interaction, or needs to model a system in high fidelity, then we should use the full-system (FS) mode. The FS mode will be covered in [07-full-system](07-full-system.md).
+
+---
+
+## Example
+
+### 00-SE-hello-world
+
+Under `materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world`, there is a small example of an SE simulation.
+[00-SE-hello-world.py](../../materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world/00-SE-hello-world.py) will run the [00-SE-hello-world](../../materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world/00-SE-hello-world.c) binary with a simple X86 configuration.
+This binary prints the string `Hello, World!`.
+If we use the debug flag `SyscallAll` with it, we will able to see what syscalls are simulated.
+We can do it with the following command:
+
+```bash
+gem5 -re --debug-flags=SyscallAll 00-SE-hello-world.py
+```
+
+> `-re` is an alias for `--stdout-file` and `--stderr-file` to redirect the output to a file.
+> The default output is in `m5out/simout.txt` and m5out/simerr.txt`.
+
+---
+
+## 00-SE-hello-world
+
+Then in [simout.txt](../../materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world/m5out/simout.txt), we should see:
+
+```bash
+280945000: board.processor.cores.core: T0 : syscall Calling write(1, 21152, 14)...
+Hello, World!
+280945000: board.processor.cores.core: T0 : syscall Returned 14.
+```
+
+On the left is the timestamp for the simulation.
+As the timestamp suggests, **SE simulation DOES NOT record the time for the syscall**.
+
+> Note that in the `simout.txt` file the standard out from the *simulator* and the *guest* are mixed together.
+
+---
+
+<!-- _class: start -->
+
+## Full system mode
+
+---
+
 ## What is Full System Simulation?
 
 gem5's **Full System (FS) mode** simulates an entire computer system. This is in contrast to SE mode which uses the host OS.
