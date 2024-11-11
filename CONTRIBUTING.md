@@ -53,6 +53,19 @@ Each slide deck is numbered so that it appears in order in the file system.
 The slide deck should be named with the format `XX-<name>.md`, where `XX` is the number of the slide deck.
 The name should be short and easy to remember.
 
+#### Changing numbers / reordering
+
+This is a big pain!
+However, I have included a script `move.sh` which allows you to move everything from one number prefix to another.
+
+For example, the code below will move the images and the markdown for `08-<whatever>` to `09-<whatever>`.
+This uses `git mv` so you can simply commit after doing the move.
+
+```sh
+cd slides/02-Using-gem5
+../../move.sh 08 09
+```
+
 ### Adding diagrams
 
 To add diagrams, you can use the [draw.io VS Code extension](https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio).
