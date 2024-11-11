@@ -23,6 +23,21 @@ Note: The local paths for the css file and the markdown don't work great. YMMV.
 docker run --rm -v $PWD:/home/marp/app/ -e MARP_USER=$UID:$GID -e LANG=$LANG marpteam/marp-cli <markdown file>
 ```
 
+### Testing changes locally
+
+Below is a one-liner that builds the website the same way as via GitHub Actions.
+Once you run this, you can run a local webserver in `web/` to view the slides.
+
+```sh
+docker run --rm -v $PWD:/home/marp/app/ -e MARP_USER=$UID:$GID -e LANG=$LANG marpteam/marp-cli --html -o web/slides/ -I slides -c .vscode/settings.json && find slides \( -name "*.png" -or -name "*.svg" -or -name "*.css" -or -name "*.jpg" \) -exec sh -c 'mkdir -p web/"$(dirname "{}")"' \; -exec cp {} web/{} \;
+```
+
+To view the slides:
+
+```sh
+python -m http.server 8000
+```
+
 ### Writing content
 
 The first slide should be the title slide and should have the title and author in the yaml frontmatter.
