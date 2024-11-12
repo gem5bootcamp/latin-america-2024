@@ -3,6 +3,7 @@ window.get_slide_registry = function() {
         {
             "name": "00-Pre-bootcamp",
             "slides": [
+                "00-pre-bootcamp",
                 "01-python-background",
             ],
         },
@@ -20,14 +21,12 @@ window.get_slide_registry = function() {
             "slides": [
                 "01-stdlib",
                 "02-memory",
-                "03-running-in-gem5",
-                "04-cores",
-                "05-cache-hierarchies",
-                "07-full-system",
-                "08-accelerating-simulation",
-                "09-sampling",
-                "10-modeling-power",
-                "11-multisim"
+                "03-traffic-generators",
+                "04-cache-hierarchies",
+                "05-cores",
+                "06-gem5-resources",
+                "07-custom-benchmarks",
+                "08-multisim"
             ]
         },
         {
@@ -36,34 +35,16 @@ window.get_slide_registry = function() {
                 "01-sim-objects-intro",
                 "02-debugging-gem5",
                 "03-event-driven-sim",
-                "04-ports",
-                "05-modeling-cores",
-                "06-modeling-cache-coherence",
-                "07-chi-protocol",
-                "08-ruby-network",
-                "09-extending-gem5-models"
+                "04-ports"
             ],
         },
         {
-            "name": "04-GPU-model",
+            "name": "04-Advanced-using-gem5",
             "slides": [
-                "01-GPU-model"
-            ]
-        },
-        {
-            "name": "05-Other-simulators",
-            "slides": [
-                "01-sst",
-                "02-dram",
-                "03-systemc"
-            ]
-        },
-        {
-            "name": "06-Contributing",
-            "slides": [
-                "01-contributing",
-                "02-testing",
-                "03-gem5-at-home"
+                "01-full-system",
+                "02-accelerating-simulation",
+                "03-sampling",
+                "04-gem5-at-home"
             ]
         }
     ];
