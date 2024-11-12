@@ -11,8 +11,6 @@ title: Modeling Memory in gem5
 
 DRAM and other memory devices!
 
-**TO DO**: Improve the exercise and improve discussion of memory interleaving.
-
 ---
 
 ## Reminder: gem5's software architecture
@@ -101,49 +99,24 @@ The main way gem5's memory is normally configured is the number of channels and 
 
 ---
 
-## Address Interleaving
-
-### Idea: we can parallelize memory accesses
-
-- For example, we can access multiple banks/channels/etc at the same time
-- Use part of the address as a selector to choose which bank/channel to access
-- Allows contiguous address ranges to interleave between banks/channels
-
----
-
-<!-- _class: center-image -->
-
-## Address Interleaving
-
-### For example...
-
-![Diagram showing an example of address interleaving](02-memory-imgs/address-interleaving.drawio.svg)
-
----
-
-## Address Interleaving
-
-### Using address interleaving in gem5
-
-- We can use AddrRange constructors to define a selector function
-  - [`src/base/addr_range.hh`](../../gem5/src/base/addr_range.hh)
-
-- Example: standard library's multi-channel memory
-  - [`gem5/src/python/gem5/components/memory/multi_channel.py`](../../gem5/src/python/gem5/components/memory/multi_channel.py)
-
----
-
 ## Memory in the standard library
 
 The standard library wraps the DRAM/memory models into `MemorySystem`s.
 
 Many examples are already implemented in the standard library for you.
 
-See [`gem5/src/python/gem5/components/memory/multi_channel.py`](../../gem5/src/python/gem5/components/memory/multi_channel.py) and [`gem5/src/python/gem5/components/memory/single_channel.py`](../../gem5/src/python/gem5/components/memory/single_channel.py) for examples.
+- `SimpleMemory` is a simple memory system that allows you to specify the latency, bandwidth, and variation in latency.
+  - `SimpleMemory` is the *gem5 model* and `SingleChannelSimpleMemory` is the standard library *`MemorySystem`* component.
+  - See [`SingleChannelSimpleMemory`](gem5/src/python/gem5/components/memory/simple.py) for details.
+- The standard library also has components for many different DRAM devices in both single and multi channel configurations.
+  - These leverage the `ChanneledMemory` wrapper which handles the interleaving by using the lower order bits of the address to select the channel.
+  - See [`multi_channel.py`](/gem5/src/python/gem5/components/memory/multi_channel.py) and [`SingleChannel`](/gem5/src/python/gem5/components/memory/single_channel.py) for details.
+  - The preconfigured DRAM interfaces can be found in [`dram_interfaces`](/gem5/src/python/gem5/components/memory/dram_interfaces/)
 
-Additionally,
+---
 
-- `SimpleMemory()` allows the user to not worry about timing parameters and instead, just give the desired latency, bandwidth, and latency variation.
-- `ChanneledMemory()` encompasses a whole memory system (both the controller and the interface).
-- `ChanneledMemory` provides a simple way to use multiple memory channels.
-- `ChanneledMemory` handles things like scheduling policy and interleaving for you.
+## Next steps
+
+In the next slide deck, we will introduce how to run synthetic memory benchmarks in gem5.
+
+With these benchmarks, we will come back to evaluate different memory system designs.

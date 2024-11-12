@@ -17,14 +17,14 @@ Using synthetic traffic generators to test memory systems.
 
 ## Synthetic Traffic Generation
 
-Synthetic traffic generation is a technique for driven memory subsystems without requiring the simulation of processor models and running workload programs. We have to note the following about synthetic traffic generation.
+Synthetic traffic generation is a technique for driving memory subsystems without requiring the simulation of processor models and running workload programs. We have to note the following about synthetic traffic generation.
 
 - It can be used for the following: measuring maximum theoretical bandwidth, testing correctness of cache coherency protocol
-- It can not be used for: measuring the execution time of workloads (even if you have their memory trace)
+- It can not be used for: measuring the execution time of workloads
 
-Synthetic traffic could follow a certain pattern like `sequential (linear)`, `strided`, and `random`. In this section we will look at tools in gem5 that facilitate synthetic traffic generation.
+Synthetic traffic could follow a certain pattern like *sequential (linear)*, *strided*, and *random*. In this section we will look at tools in gem5 that facilitate synthetic traffic generation.
 
-![Traffic generator center](03-running-in-gem5-imgs/t_gen_diagram.drawio.svg)
+![Traffic generator center](03-traffic-generators-imgs/t_gen_diagram.drawio.svg)
 
 ---
 
@@ -35,7 +35,7 @@ gem5's standard library has a collection of components for generating synthetic 
 - These components simulate memory accesses. They are intended to replace a processor in a system that you configure with gem5.
 - Examples of these components include `LinearGenerator` and `RandomGenerator`.
 
-We will see how to use `LinearGenerator` and `RandomGenerator` to stimulate a memory subsystem. The memory subsystem that we are going to use is going to consist of a cache hierarchy with `private l1 caches and a shared l2 cache` with one channel of `DDR3` memory.
+We will see how to use `LinearGenerator` and `RandomGenerator` to stimulate a memory subsystem.
 
 In the next slides we will look at `LinearGenerator` and `RandomGenerator` at a high level. We'll see how to write a configuration script that uses them.
 
@@ -97,9 +97,6 @@ class RandomGenerator(AbstractGenerator):
     - **Note**: This is *NOT* the rate at which memory will respond. This is the **maximum** rate at which requests will be made
 - **block_size**
   - The number of bytes accessed with each read/write
-
-###
-
 - **min_addr**
   - The lowest memory address for the generator to access (via reads/writes)
 - **max_addr**
@@ -121,11 +118,9 @@ class RandomGenerator(AbstractGenerator):
 
 **Random**: We want to access addresses 0 through 4 so a random access would mean accessing memory in any order. (In this example, we are showing the order: 1, 3, 2, 0).
 
-###
+![linear traffic pattern](03-traffic-generators-imgs/linear_traffic_pattern.drawio.svg)
 
-![linear traffic pattern](03-running-in-gem5-imgs/linear_traffic_pattern.drawio.svg)
-
-![random traffic pattern](03-running-in-gem5-imgs/random_traffic_pattern.drawio.svg)
+![random traffic pattern](03-traffic-generators-imgs/random_traffic_pattern.drawio.svg)
 
 ---
 
@@ -135,13 +130,77 @@ class RandomGenerator(AbstractGenerator):
 
 In this exercise you will use different traffic patterns to better understand the performance characteristics of gem5's memory models.
 
-Try to answer the questions before you run the experiments, then update your answers afterwards.
+Try to answer the questions before you run the experiments.
 
 ### Questions
 
 - When using the SimpleMemory model, how does the memory bandwidth change with different traffic patterns? Why or why not?
 - When using DDR4 memory, how does the memory bandwidth change with different traffic patterns? Why or why not?
 - Compare the performance of DDR4 to LPDDR2. Which has better bandwidth? What about latency? (Or, is this the wrong way to measure latency?)
+- Run with a single channel of DDR4 and compare that to the performance of 8 channels of LPDDR2. What is the bandwidth difference?
+
+---
+
+## Step 1: Create a test board for SimpleMemory
+
+Use the `TestBoard` instead of the `SimpleBoard` for this experiment.
+See [`TestBoard`](/gem5/src/python/gem5/components/boards/test_board.py) for hints.
+
+Use the `SingleChannelSimpleMemory` for the memory system.
+Set the latency to be 20ns, the bandwidth to be 32GiB/s, the latency variance to be 0s (zero seconds), and the size to be 1GiB.
+
+Use `NoCache` for the cache hierarchy.
+
+Use a `LinearGenerator` with a rate of 16GiB/s as the "processor" (which is called `generator` in this case).
+
+---
+
+<!-- _class: two-col -->
+
+## Step 1: Answer
+
+```python
+board = TestBoard(
+    clk_freq="3GHz", # ignored
+    generator=LinearGenerator(num_cores=1, rate="16GiB/s"),
+    memory=SingleChannelSimpleMemory(
+        latency="20ns", bandwidth="32GiB/s",
+        latency_var="0s", size="1GiB"),
+    cache_hierarchy=NoCache(),
+)
+```
+
+The generator and the memory have their own clock domains to the `clk_freq` parameter is ignored.
+
+For the memory system, we are using a `SingleChannelSimpleMemory` with a latency of 20ns and a bandwidth of 32GiB/s. We set the latency variance to 0s and the size to 1 GiB (just needs to be bigger than the generator will generate).
+
+The `LinearGenerator` is generating traffic at 16GiB/s and the `SimpleMemory` has a bandwidth of 32GiB/s.
+
+We are using a `NoCache` cache hierarchy to simplify the experiment.
+With `NoCache`, the memory system is directly connected to the processor.
+
+---
+
+## Step 2: Run the experiment
+
+Run your script in gem5!
+
+Look at the results in the stats file.
+
+---
+
+## Step 2: Answer
+
+```sh
+cd materials/02-Using-gem5/03-traffic-generators/
+gem5 memory-test.py
+```
+
+Look in `m5out/stats.txt` for the results.
+
+`board.processor.cores.generator.readBW` is 17180800000 (or 17.1808 GB/s).
+
+Note that the bandwidth is given in GB (*not* GiB). I.e., 1 GB = 10^9 bytes.
 
 ---
 
@@ -415,7 +474,7 @@ We are not going to do this right now, but if you swapped `LinearGenerator` with
 - We will be focusing on `LinearGenerator` and `RandomGenerator` generators (and a new one later!).
   - They are essentially the same, but one performs linear memory accesses and one performs random memory accesses
 
-![Different Generators](03-running-in-gem5-imgs/generator_inheritance.drawio.svg)
+![Different Generators](03-traffic-generators-imgs/generator_inheritance.drawio.svg)
 
 ---
 
@@ -460,7 +519,7 @@ Therefore, we will have each `LinearGeneratorCore` simulate accesses to a differ
 
 Here's a diagram that shows how each `LinearGeneratorCore` should access memory.
 
-![Linear Generator Core Memory Access Diagram](03-running-in-gem5-imgs/lin_core_access_diagram.drawio.svg)
+![Linear Generator Core Memory Access Diagram](03-traffic-generators-imgs/lin_core_access_diagram.drawio.svg)
 
 
 ---
@@ -495,7 +554,7 @@ Even if each `RandomGeneratorCore` has the same `min_addr` and `max_addr`, since
 
 In the end, this is how each core will simulate memory accesses.
 
-![Linear vs. Random memory accesses](./03-running-in-gem5-imgs/core_access_diagram.drawio.svg)
+![Linear vs. Random memory accesses](./03-traffic-generators-imgs/core_access_diagram.drawio.svg)
 
 ---
 
