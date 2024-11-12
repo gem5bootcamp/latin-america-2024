@@ -148,25 +148,54 @@ from gem5.simulate.simulator import Simulator
 
 ## Step 1: Instantiate a processor
 
+Use the `SimpleProcessor` class to create a simple processor that will run in timing mode, uses the Arm ISA, and has 1 core.
+
+See [`SimpleProcessor`](/gem5/src/python/gem5/components/processors/simple_processor.py) for hints.
+
+---
+
+<!-- _class: hidden -->
+
+## Step 1: Answer
+
 ```python
 processor = SimpleProcessor(cpu_type=CPUTypes.TIMING, isa=ISA.ARM, num_cores=1)
 ```
 
 `SimpleProcessor` is a component that allows you to customize the model for the underlying cores.
 
-The `cpu_type` parameter specifies the type of CPU model to use.
+The `cpu_type` parameter specifies the [type of CPU model](/gem5/src/python/gem5/components/processors/cpu_types.py) to use.
+(We'll see more on this later.)
+
+The `isa` parameter specifies the ISA that the CPU will execute.
+gem5 supports many different ISAs.
+
+The `num_cores` parameter specifies the number of cores in the processor.
+The `SimpleProcessor` assumes homogenous cores.
 
 ---
 
 ## Step 2: Instantiate a cache hierarchy
 
+Use the `MESITwoLevelCacheHierarchy` for the cache hierarchy.
+
+Use 32 KiB 8-way L1 caches, 256 KiB 16-way L2 caches, and a single L2 bank.
+
+See [`MESITwoLevelCacheHierarchy`](/gem5/src/python/gem5/components/cachehierarchies/ruby/mesi_two_level_cache_hierarchy.py) for hints.
+
+---
+
+<!-- _class: hidden -->
+
+## Step 2: Answer
+
 ```python
 cache_hierarchy = MESITwoLevelCacheHierarchy(
-    l1d_size="16kB",
+    l1d_size="32KiB",
     l1d_assoc=8,
-    l1i_size="16kB",
+    l1i_size="32KiB",
     l1i_assoc=8,
-    l2_size="256kB",
+    l2_size="256KiB",
     l2_assoc=16,
     num_l2_banks=1,
 )
@@ -180,6 +209,14 @@ The component for the cache hierarchy is parameterized with the sizes and associ
 ---
 
 ## Step 3: Instantiate a memory system
+
+Use the `SingleChannelDDR4_2400` for the memory system.
+
+See [`SingleChannel` classes](/gem5/src/python/gem5/components/memory/single_channel.py) for hints.
+
+---
+
+## Step 3: Answer
 
 ```python
 memory = SingleChannelDDR4_2400()
@@ -196,9 +233,18 @@ We'll cover this more in [Memory Systems](06-memory.md).
 
 ## Step 4: Plug components into the board
 
+Use the `SimpleBoard` class to create a board that will run the simulation.
+Use a 3 GHz clock frequency.
+
+See [`SimpleBoard`](/gem5/src/python/gem5/components/boards/simple_board.py) for hints.
+
+---
+
+## Step 4: Answer
+
 A `SimpleBoard` is a board which can run any ISA in Syscall Emulation (SE) mode.
 It is "Simple" due the relative simplicity of SE mode.
- Most boards are tied to a specific ISA and require more complex designs to run Full System (FS) simulation.
+Most boards are tied to a specific ISA and require more complex designs to run Full System (FS) simulation.
 
 ```python
 board = SimpleBoard(
@@ -212,6 +258,17 @@ board = SimpleBoard(
 ---
 
 ## Step 5: Set up the workload
+
+Use the `set_workload` method of the board to set the workload.
+See the [`set_workload` function](gem5/src/python/gem5/components/boards/abstract_board.py) for hints.
+
+Use the `obtain_resource` function to download the files needed to run the specified workload.
+
+Use the "[arm-gapbs-bfs-run](https://resources.gem5.org/resources/arm-gapbs-bfs-run?version=1.0.0)" workload.
+
+---
+
+## Step 5: Answer
 
 ```python
 board.set_workload(obtain_resource("arm-gapbs-bfs-run"))
@@ -234,6 +291,15 @@ Typically it is used to download and manage workloads, disk images, checkpoints 
 
 ## Step 6: Set up the simulation and run
 
+Use the `Simulator` class to set up the simulation and run it.
+See the [`Simulator` class](/gem5/src/python/gem5/simulate/simulator.py) for hints.
+
+Use the `run` method to run the simulation.
+
+---
+
+## Step 6: Answer
+
 Set up the simulation:
 
 ```python
@@ -249,6 +315,32 @@ simulator.run()
 gem5-mesi 01-components.py
 ```
 
+---
+
+## Exercise questions
+
+<iframe src="https://app.sli.do/event/qpr43XWrbjYJCdE3GHGCWg/embed/polls/63d7ea52-2bb4-45a8-ae01-9aa3ecf044cd" width="800" height="150"></iframe>
+
+<iframe src="https://app.sli.do/event/qpr43XWrbjYJCdE3GHGCWg/embed/polls/ae905f28-f1cd-475f-a758-a59be860157d" width="800" height="150"></iframe>
+
+<iframe src="https://app.sli.do/event/qpr43XWrbjYJCdE3GHGCWg/embed/polls/fe32093c-1c7a-4008-95d3-1010caa51057" width="800" height="150"></iframe>
+
+<!--
+### What is the average IPC?
+
+See the `ipc` in the stats.txt file.
+**Answer**:
+
+### What is the total simulated time?
+
+See the `simSeconds` in the stats.txt file.
+**Answer**: 0.009093s
+
+### What is first line of the output of the simulated program?
+
+See the standard output of the program.
+**Answer**: "Generate Time:       0.00462"... etc.
+-->
 ---
 
 <!-- _class: code-70-percent -->
@@ -279,32 +371,6 @@ simSeconds                                   0.009093
 simTicks                                   9093461436
 ```
 
----
-
-## Exercise questions
-
-<iframe src="https://app.sli.do/event/qpr43XWrbjYJCdE3GHGCWg/embed/polls/63d7ea52-2bb4-45a8-ae01-9aa3ecf044cd" width="800" height="150"></iframe>
-
-<iframe src="https://app.sli.do/event/qpr43XWrbjYJCdE3GHGCWg/embed/polls/ae905f28-f1cd-475f-a758-a59be860157d" width="800" height="150"></iframe>
-
-<iframe src="https://app.sli.do/event/qpr43XWrbjYJCdE3GHGCWg/embed/polls/fe32093c-1c7a-4008-95d3-1010caa51057" width="800" height="150"></iframe>
-
-<!--
-### What is the average IPC?
-
-See the `ipc` in the stats.txt file.
-**Answer**:
-
-### What is the total simulated time?
-
-See the `simSeconds` in the stats.txt file.
-**Answer**: 0.009093s
-
-### What is first line of the output of the simulated program?
-
-See the standard output of the program.
-**Answer**: "Generate Time:       0.00462"... etc.
--->
 ---
 
 <!-- _class: two-col -->
