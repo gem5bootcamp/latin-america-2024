@@ -129,15 +129,14 @@ class RandomGenerator(AbstractGenerator):
 ## Exercise: Measuring memory performance
 
 In this exercise you will use different traffic patterns to better understand the performance characteristics of gem5's memory models.
-
-Try to answer the questions before you run the experiments.
+Use a 32 GiB/s `SimpleMemory` with latency of 20ns. Linear and random traffic with a rate of 16, 32, and 64 GiB/s, and 100% and 50% read percentages. (You may not need to run everything.)
 
 ### Questions
 
-- When using the SimpleMemory model, how does the memory bandwidth change with different traffic patterns? Why or why not?
-- When using DDR4 memory, how does the memory bandwidth change with different traffic patterns? Why or why not?
-- Compare the performance of DDR4 to LPDDR2. Which has better bandwidth? What about latency? (Or, is this the wrong way to measure latency?)
-- Run with a single channel of DDR4 and compare that to the performance of 8 channels of LPDDR2. What is the bandwidth difference?
+- When using the SimpleMemory model, how does the memory bandwidth change with different read-write ratios? Why or why not?
+- When using DDR4 memory, how does the memory bandwidth change with different traffic read-write ratios? Why or why not?
+- Compare the performance of DDR4 to LPDDR5. Which has better bandwidth? What about latency? (Or, is this the wrong way to measure latency?)
+- Run with a single channel of DDR4 and compare that to the performance of 4 channels of LPDDR5. What is the bandwidth difference?
 
 ---
 
@@ -204,38 +203,42 @@ Note that the bandwidth is given in GB (*not* GiB). I.e., 1 GB = 10^9 bytes.
 
 ---
 
-## Running an example with the standard library
+<!-- _class: code-80-percent -->
 
-Open [`materials/02-Using-gem5/06-memory/run-mem.py`](../../materials/02-Using-gem5/06-memory/run-mem.py)
+## Step 3: Vary the write percentage and read percentage
 
-This file uses traffic generators (seen [previously](03-running-in-gem5.md)) to generate memory traffic at 64GiB.
-
-Let's see what happens when we use a simple memory. Add the following line for the memory system.
+For this step, you can add arguments to your script with the `argparse` Python library. This way, you don't have to keep modifying your script.
+You may also want to use `simstats` to get the bandwidth instead of reading `stats.txt`.
 
 ```python
-memory = SingleChannelSimpleMemory(latency="50ns", bandwidth="32GiB/s", size="8GiB", latency_var="10ns")
-```
-
-Run with the following. Use `-c <LinearGenerator,RandomGenerator>` to specify the traffic generators and `-r <read percentage>` to specify the percentage of reads.
-
-```sh
-gem5 run-mem.py
+stats = simulator.get_simstats()
+seconds = stats.simTicks.value / stats.simFreq.value
+total_bytes = (
+    stats.board.processor.cores[0].generator.bytesRead.value
+    + stats.board.processor.cores[0].generator.bytesWritten.value
+)
+latency = (
+    stats.board.processor.cores[0].generator.totalReadLatency.value
+    / stats.board.processor.cores[0].generator.totalReads.value
+)
+print(f"Total bandwidth: {total_bytes / seconds / 2**30:0.2f} GiB/s")
+print(f"Average latency: {latency / stats.simFreq.value * 1e9:0.2f} ns")
 ```
 
 ---
 
-## Vary the latency and bandwidth
+## Step 3: Answer
 
 Results for running with 16 GiB/s, 32 GiB/s, 64 GiB/s, and 100% reads and 50% reads.
 
-| Bandwidth | Read Percentage | Linear Speed (GB/s) | Random Speed (GB/s) |
+| Bandwidth | Read Percentage | Linear Speed (GiB/s) | Random Speed (GiB/s) |
 |-----------|-----------------|---------------------|---------------------|
-| 16 GiB/s  | 100%            | 17.180288           | 17.180288           |
-|           | 50%             | 17.180288           | 17.180288           |
-| 32 GiB/s  | 100%            | 34.351296           | 34.351296           |
-|           | 50%             | 34.351296           | 34.351296           |
-| 64 GiB/s  | 100%            | 34.351296           | 34.351296           |
-|           | 50%             | 34.351296           | 34.351296           |
+| 16 GiB/s  | 100%            | 16.00               | 16.00               |
+|           | 50%             | 16.00               | 16.00               |
+| 32 GiB/s  | 100%            | 31.99               | 31.99               |
+|           | 50%             | 31.99               | 31.99               |
+| 64 GiB/s  | 100%            | 32.11               | 32.11               |
+|           | 50%             | 32.11               | 32.11               |
 
 With the `SimpleMemory` you don't see any complex behavior in the memory model (but it **is** fast).
 
@@ -260,36 +263,26 @@ def SingleChannelDDR4_2400(
 
 ---
 
-## Running Channeled Memory
+## Step 4: Using DDR4 memory
 
-- Lets go back to our script and replace the SingleChannelSimpleMemory with this!
+Use the `SingleChannelDDR4_2400` memory system with the `LinearGenerator` and `RandomGenerator` to see how the memory bandwidth changes with different traffic read-write ratios.
 
-Replace
+You may want to add another argument to the `argparse` to specify the memory system.
 
-```python
-SingleChannelSimpleMemory(latency="50ns", bandwidth="32GiB/s", size="8GiB", latency_var="10ns")
-```
-
-with
-
-```python
-SingleChannelDDR4_2400()
-```
-
-### Let's see what happens when we run our test
+Note: You may not need to run all possibly combinations. Try to run the minimum to answer the questions.
 
 ---
 
-## Vary the latency and bandwidth
+## Step 4: Answer
 
 Results for running with 16 GiB/s, 32 GiB/s, and 100% reads and 50% reads.
 
-| Bandwidth | Read Percentage | Linear Speed (GB/s) | Random Speed (GB/s) |
+| Bandwidth | Read Percentage | Linear Speed (GiB/s) | Random Speed (GiB/s) |
 |-----------|-----------------|---------------------|---------------------|
-| 16 GiB/s  | 100%            | 13.85856            | 14.557056           |
-|           | 50%             | 13.003904           | 13.811776           |
-| 32 GiB/s  | 100%            | 13.85856            | 14.541312           |
-|           | 50%             | 13.058112           | 13.919488           |
+| 16 GiB/s  | 100%            | 12.92               | 12.15               |
+|           | 50%             | 15.58               |  18.41              |
+| 32 GiB/s  | 100%            | 12.05               | 12.92               |
+|           | 50%             | 15.93               | 16.99               |
 
 As expected, because of read-to-write turn around, reading 100% is more efficient than 50% reads.
 Also as expected, the bandwidth is lower than the SimpleMemory (only about 75% utilization).
@@ -298,196 +291,78 @@ Somewhat surprising, the memory modeled has enough banks to handle random traffi
 
 ---
 
-## Adding a new channeled memory
+## Step 5: Run with LPDDR5
 
-- Open [`materials/02-Using-gem5/06-memory/lpddr2.py`](../../materials/02-Using-gem5/06-memory/lpddr2.py)
-- If we wanted to add LPDDR2 as a new memory in the standard library, we first make sure there's a DRAM interface for it in the [`dram_interfaces` directory](../../gem5/src/python/gem5/components/memory/dram_interfaces/lpddr2.py)
-- Then we need to make sure we import it by adding the following to the top of your `lpddr2.py`:
-```python
-from gem5.components.memory.abstract_memory_system import AbstractMemorySystem
-from gem5.components.memory.dram_interfaces.lpddr2 import LPDDR2_S4_1066_1x32
-from gem5.components.memory.memory import ChanneledMemory
-from typing import Optional
-```
+Note that we don't have a `SingleChannelLPDDR5` memory system in the standard library. We will have to add it.
+
+Import the *interface* from the `dram_interfaces` package and create a `SingleChannelLPDDR5` memory system.
+
+You can use the `ChanneledMemory` class to create this new memory system.
+
+See [`ChanneledMemory`](/gem5/src/python/gem5/components/memory/memory.py) for hints.
 
 ---
 
-## Adding a new channeled memory
-
-Then add the following to the body of `lpddr2.py`:
+## Step 5: Answer
 
 ```python
-def SingleChannelLPDDR2(
-    size: Optional[str] = None,
-) -> AbstractMemorySystem:
-    return ChanneledMemory(LPDDR2_S4_1066_1x32, 1, 64, size=size)
+def get_memory(mem_type: str):
+    if mem_type == "simple":
+        return SingleChannelSimpleMemory(
+            latency="20ns", bandwidth="32GiB/s", latency_var="0s", size="1GiB"
+        )
+    elif mem_type == "DDR4":
+        return SingleChannelDDR4_2400()
+    elif mem_type == "SC_LPDDR5":
+        return ChanneledMemory(LPDDR5_6400_1x16_BG_BL32, 1, 64)
 ```
 
-Then we import this new class to our script with:
-
-```python
-from lpddr2 import SingleChannelLPDDR2
-```
-
-### Let's test this again!
+The last line will create a new memory system with LPDDR5 using a single channel.
 
 ---
 
-## Vary the latency and bandwidth
+## Step 5: Answer Cont.
 
-Results for running with 16 GiB/s, and 100% reads and 50% reads.
+| Bandwidth | Read Percentage | Linear Speed (GiB/s) | Random Speed (GiB/s) |
+|-----------|-----------------|----------------------|----------------------|
+| 16 GiB/s  | 100%            | 11.10                | 11.15                |
+|           | 50%             | 8.76                 | 10.42                |
+| 32 GiB/s  | 100%            | 11.10                | 11.16                |
+|           | 50%             | 8.78                 | 10.45                |
 
-| Bandwidth | Read Percentage | Linear Speed (GB/s) | Random Speed (GB/s) |
-|-----------|-----------------|---------------------|---------------------|
-| 16 GiB/s  | 100%            | 4.089408            | 4.079552            |
-|           | 50%             | 3.65664             | 3.58816             |
-
-LPDDR2 doesn't perform as well as DDR4.
-
----
-
-## 06-traffic-gen
-
-### Let's run an example on how to use the traffic generator
-
-Open the following file.
-[`materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/simple-traffic-generators.py`](../../materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/simple-traffic-generators.py)
-
-Steps:
-
-1. Run with a Linear Traffic Generator.
-2. Run with a Hybrid Traffic Generator.
-
----
-<!-- _class: two-col -->
-
-## 06-traffic-gen: LinearGenerator: Looking at the Code
-
-
-Go to this section of the code on the right.
-
-Right now, we have set up a board with a Private L1 Shared L2 Cache Hierarchy (go to [`materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/components/cache_hierarchy.py`](../../materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/components/cache_hierarchy.py) to see how it's constructed), and a Single Channel memory system.
-
-Add a traffic generator right below
-`memory = SingleChannelDDR3_1600()` with the following lines.
-
-```python
-generator = LinearGenerator(num_cores=1, rate="1GB/s")
-```
-
-###
-
-```python
-cache_hierarchy = MyPrivateL1SharedL2CacheHierarchy()
-
-memory = SingleChannelDDR3_1600()
-
-motherboard = TestBoard(
-    clk_freq="3GHz",
-    generator=generator,
-    memory=memory,
-    cache_hierarchy=cache_hierarchy,
-)
-```
-
----
-<!-- _class: two-col code-70-percent -->
-
-## 06-traffic-gen: LinearGenerator: Completed Code
-
-The completed code snippet should look like this.
-
-```python
-cache_hierarchy = MyPrivateL1SharedL2CacheHierarchy()
-
-memory = SingleChannelDDR3_1600()
-
-generator = LinearGenerator(num_cores=1, rate="1GB/s")
-
-motherboard = TestBoard(
-    clk_freq="3GHz",
-    generator=generator,
-    memory=memory,
-    cache_hierarchy=cache_hierarchy,
-)
-```
-
----
-<!-- _class: code-100-percent -->
-
-## 06-traffic-gen: LinearGenerator: Running the Code
-
-### Run the following commands to see a Linear Traffic Generator in action
-
-```sh
-cd ./materials/02-Using-gem5/03-running-in-gem5/06-traffic-gen/
-
-gem5 --debug-flags=TrafficGen --debug-end=1000000 \
-simple-traffic-generators.py
-```
-
-We will see some of the expected output in the following slide.
+So, LPDDR5 doesn't perform quite as well as DDR4.
+Not only is the bandwidth lower, but the latency is higher.
 
 ---
 
-## 06-traffic-gen: LinearGenerator Results
+## Step 6: Run with multiple channels
 
-```sh
-  59605: system.processor.cores.generator: LinearGen::getNextPacket: r to addr 0, size 64
-  59605: system.processor.cores.generator: Next event scheduled at 119210
- 119210: system.processor.cores.generator: LinearGen::getNextPacket: r to addr 40, size 64
- 119210: system.processor.cores.generator: Next event scheduled at 178815
- 178815: system.processor.cores.generator: LinearGen::getNextPacket: r to addr 80, size 64
- 178815: system.processor.cores.generator: Next event scheduled at 238420
-```
-
-Throughout this output, we see `r to addr --`. This means that the traffic generator is simulating a **read** request to access memory address `0x--`.
-
-<!-- Is the sentence above accurate? -->
-
-Above, we see `r to addr 0` in line 1, `r to addr 40` in line 3, and `r to addr 80` in line 5.
-
-This is because the Linear Traffic Generator  is simulating requests to access memory addresses 0x0000, 0x0040, 0x0080.
-
-As you can see, the simulated requests are very linear. Each new memory access is 0x0040 bytes above the previous one.
+Now, let's run with multiple channels of LPDDR5.
+You can use the same `ChanneledMemory` interface to create a memory system with 4 channels.
 
 ---
 
-## 06-traffic-gen: Random
+## Step 6: Answer
 
-We are not going to do this right now, but if you swapped `LinearGenerator` with `RandomGenerator` and kept the parameters the same, the output is going to look like below. Notice how the pattern of addresses is not a linear sequence anymore.
-
-```sh
-  59605: system.processor.cores.generator: RandomGen::getNextPacket: r to addr 2000, size 64
-  59605: system.processor.cores.generator: Next event scheduled at 119210
- 119210: system.processor.cores.generator: RandomGen::getNextPacket: r to addr 7900, size 64
- 119210: system.processor.cores.generator: Next event scheduled at 178815
- 178815: system.processor.cores.generator: RandomGen::getNextPacket: r to addr 33c0, size 64
- 178815: system.processor.cores.generator: Next event scheduled at 238420
-```
-
----
-<!-- _class: center-image -->
-
-## Our Focus: LinearGenerator and AbstractGenerator
-
-- We will be focusing on `LinearGenerator` and `RandomGenerator` generators (and a new one later!).
-  - They are essentially the same, but one performs linear memory accesses and one performs random memory accesses
-
-![Different Generators](03-traffic-generators-imgs/generator_inheritance.drawio.svg)
+| Bandwidth | Read Percentage | Linear Speed (GiB/s) | Random Speed (GiB/s) |
+|-----------|-----------------|----------------------|----------------------|
+| 16 GiB/s  | 100%            | 16.00                | 16.00                |
+|           | 50%             | 16.00                | 16.00                |
+| 32 GiB/s  | 100%            | 31.99                | 31.98                |
+|           | 50%             | 30.28                | 31.98                |
+| 64 GiB/s  | 100%            | 44.31                | 43.75                |
+|           | 50%             | 38.23                | 56.60                |
 
 ---
 
-## Detailed Look on Some Components
+<!-- _class: start -->
 
-- You can find all generator related standard library components under [`src/python/gem5/components/processors`](https://github.com/gem5/gem5/tree/stable/src/python/gem5/components/processors).
-- Looking at [`AbstractGenerator.__init__`](https://github.com/gem5/gem5/blob/stable/src/python/gem5/components/processors/abstract_generator.py#L53), you'll see that this class takes a list of `AbstractGeneratorCores` as the input. Example classes that inherit from `AbstractGenerator` are `LinearGenerator` and `RandomGenerator`.
-- We will look at classes that extend `AbstractGeneratorCore` that will will create **synthetic traffic** by using a `SimObject` called `PyTrafficGen`. For more information you can look at `src/cpu/testers/traffic_gen`.
-- `LinearGenerator` can have multiple `LinearGeneratorCores` and `RandomGenerator` can have multiple `RandomGeneratorCores`.
+## Extra exercise
 
-Next we will look at extending `AbstractGenerator` to create `HybridGenerator` that has both `LinearGeneratorCores` and `RandomGeneratorCores`.
+Creating a new generator.
 
 ---
+
 ## Extending AbstractGenerator
 
 gem5 has a lot of tools in its standard library, but if you want to simulate specific memory accesses patterns in your research, there might not be anything in the standard library to do this.
