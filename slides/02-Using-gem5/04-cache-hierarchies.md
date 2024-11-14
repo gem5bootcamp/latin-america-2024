@@ -25,7 +25,7 @@ Between the cores and the caches (and the memory controllers and caches) are `Po
 
 ###
 
-![Placement of the Cache Hierarchy in gem5](05-cache-hierarchies-img/CPU_CacheHierarchy_MemCtrl.svg)
+![Placement of the Cache Hierarchy in gem5](04-cache-hierarchies-imgs/CPU_CacheHierarchy_MemCtrl.drawio.png)
 
 ---
 
@@ -61,7 +61,7 @@ More on Ruby in [Modeling Cache Coherence in gem5](../03-Developing-gem5-models/
 
 A coherence problem can arise if multiple cores have access to multiple copies of a data (e.g., in multiple caches) and at least one access is a write
 
-![Cores and Coherency across caches](05-cache-hierarchies-img/cache_line_1.svg)
+![Cores and Coherency across caches](04-cache-hierarchies-imgs/cache_line_1.svg)
 
 ---
 
@@ -69,7 +69,7 @@ A coherence problem can arise if multiple cores have access to multiple copies o
 
 A coherence problem can arise if multiple cores have access to multiple copies of a data (e.g., in multiple caches) and at least one access is a write
 
-![Cores and Coherency across caches with write request](05-cache-hierarchies-img/cache_line_2.svg)
+![Cores and Coherency across caches with write request](04-cache-hierarchies-imgs/cache_line_2.svg)
 
 ---
 
@@ -77,13 +77,7 @@ A coherence problem can arise if multiple cores have access to multiple copies o
 
 A coherence problem can arise if multiple cores have access to multiple copies of a data (e.g., in multiple caches) and at least one access is a write
 
-![Cores and Coherency across caches with write request](05-cache-hierarchies-img/cache_line_2.svg)
-
----
-
-## Classic Cache: Hierarchy of crossbars
-
-![Categories of Crossbars](05-cache-hierarchies-img/crossbar.drawio.svg)
+![Cores and Coherency across caches with write request](04-cache-hierarchies-imgs/cache_line_2.svg)
 
 ---
 
@@ -91,35 +85,180 @@ A coherence problem can arise if multiple cores have access to multiple copies o
 
 Each crossbar can connect *n* cpu-side ports and *m* memory-side ports.
 
-![Example 3 level hierarchy with private L1s, private L2s, and a shared L3 connected to multiple memory channels bg right 85%](05-cache-hierarchies-img/classic_hierarchy.drawio.svg)
-
-Let's create a three level hierarchy with private L1s, private L2s, and a shared L3 connected to multiple memory channels.
+![Example 3 level hierarchy with private L1s, private L2s, and a shared L3 connected to multiple memory channels bg right 85%](04-cache-hierarchies-imgs/classic_hierarchy.drawio.svg)
 
 ---
 
-## Step 1: declare the hierarchy
+<!-- _class: exercise two-col -->
 
-Open [`materials/02-Using-gem5/05-cache-hierarchies/three_level.py`](../../materials/02-Using-gem5/05-cache-hierarchies/three_level.py)
+## Exercise 1: Measure the bandwidth and latency the caches
 
-The constructor is already provided.
+Use the Private L1, Private L2 cache hierarchy to measure the bandwidth and latency of the cache-based system.
+Use a Dual channel DDR4 memory.
+Set the cache sizes to 32KiB and 256KiB for L1 and L2 respectively.
+
+Use the traffic generator from the previous section to generate traffic.
+
+### Questions for exercise 1
+
+#### A. What is the bandwidth and latency for
+
+1. The L1 cache?
+2. The L2 cache?
+3. The memory?
+
+#### B. What is the hit/miss ratios for the cache in your tests?
+
+---
+
+## Step 1: Use a classic cache hierarchy
+
+Use the `PrivateL1PrivateL2CacheHierarchy`.
+
+See [`PrivateL1PrivateL2CacheHierarchy`](/gem5/src/python/gem5/components/cachehierarchies/classic/private_l1_private_l2_cache_hierarchy.py) for details.
+
+Think about what the value for `max_addr` should be for the generator to test L1, L2, and memory.
+
+Think about whether you want to use the random or linear generator.
+
+---
+
+<!-- _class: two-col -->
+
+## Step 1: Answer
 
 ```python
-class PrivateL1PrivateL2SharedL3CacheHierarchy(AbstractClassicCacheHierarchy):
-    def __init__(self, l1d_size, l1i_size, l2_size, l3_size, l1d_assoc=8, l1i_assoc=8, l2_assoc=16, l3_assoc=32):
-        AbstractClassicCacheHierarchy.__init__(self)
-        self._l1d_size = l1d_size
-        self._l1i_size = l1i_size
-        self._l2_size = l2_size
-        self._l3_size = l3_size
-        self._l1d_assoc = l1d_assoc
-        self._l1i_assoc = l1i_assoc
-        self._l2_assoc = l2_assoc
-        self._l3_assoc = l3_assoc
+board = TestBoard(
+    generator=RandomGenerator(
+        num_cores=1, max_addr=max_addr,
+        rd_perc=75, duration="1ms"
+    ),
+    cache_hierarchy=PrivateL1PrivateL2CacheHierarchy(
+        l1d_size="32KiB",
+        l1i_size="32KiB",
+        l2_size="256KiB",
+    ),
+    memory=DualChannelDDR4_2400(),
+    clk_freq="3GHz",
+)
+```
+
+You want to get 100% hits in the cache when testing each level and as close to 0% when you are testing the next level or memory.
+
+Use a max address of 16384 to test the L1 cache, 131072 to test the L2 cache, and 1048576 to test the memory.
+
+Use the random generator to maximize the hits in the cache you are testing.
+
+Looking at "missRate::total" will show that there's 100% hits in the level we are evaluating.
+
+---
+
+## Creating custom cache hierarchies
+
+The standard library will not have all components that you will need.
+
+Our next goal is to take a model from gem5 and wrap it in the standard library API.
+
+Specifically, we will create a three-level cache hierarchy with private L1s, private L2s, and a shared L3 connected to multiple memory channels.
+
+Before we dive into that exercise, we need to cover a few gem5 topics.
+
+---
+
+## Classic cache models
+
+The classic cache consists of two main models, the [`Cache`](/gem5/src/mem/cache/Cache.py) and the [`XBar`](/gem5/src/mem/XBar.py).
+
+### `Cache`
+
+This is an object that represents a cache in gem5. It has a number of parameters that can be set to configure the cache.
+The cache has a `cpu_side` and a `mem_side` that can be connected to other components.
+
+### `XBar`
+
+This is a crossbar that can connect multiple ports together. It has a `cpu_side_ports` and a `mem_side_ports` that can be connected to other components.
+The CPU-side and memory-side can connect to multiple objects.
+
+---
+
+## gem5 Ports
+
+### Ports
+
+Ports are the way that gem5 models communicate with each other. They are used to send packets between models.
+We will see more about ports in the [Modeling memory objects in gem5: Ports](../03-Developing-gem5-models/04-ports.md) section.
+
+### Using ports
+
+In gem5, to connect two ports together, you just need to use the `=` operator.
+
+```python
+cache = Cache()
+xbar = XBar()
+
+cache.mem_side = xbar.cpu_side_ports
 ```
 
 ---
 
-## Add a membus
+## Specializing gem5 models
+
+In gem5, you can specialize a model by specifying the parameters that you want to change.
+
+For instance, if you want to create a cache with a size of 32 KiB and an associativity of 4, you can do the following:
+
+```python
+class MyCache(Cache):
+    def __init__(self):
+        super().__init__()
+        self.size = "32KiB"
+        self.assoc = 4
+```
+
+You can override any of the *parameters* in the [`Cache`](/gem5/src/mem/cache/Cache.py) class this way.
+
+---
+
+<!-- _class: exercise -->
+
+## Exercise 2: Create a three level cache hierarchy
+
+Create a three level cache hierarchy with private L1s, private L2s, and a shared L3 connected to multiple memory channels as shown on the previous slide.
+Run your tests with all cores.
+
+Note: For some of these steps, you'll just have to take our word for it. There are many things that have "legacy" reasons.
+
+### Questions for exercise 2:
+
+What is the bandwidth and latency for
+
+1. The L1 cache?
+2. The L2 cache?
+3. The L3 cache?
+4. The memory?
+
+---
+
+## Step 2: declare the hierarchy and add a membus
+
+(Note: Step 1 is exercise 1.)
+
+Open [`materials/02-Using-gem5/04-cache-hierarchies/three_level.py`](../../materials/02-Using-gem5/05-cache-hierarchies/three_level.py)
+We are creating a new class which will implement an abstract class `AbstractCacheHierarchy`.
+By implementing this class, we can use it in the standard library as a cache hierarchy in our test board (or even in a CPU-based board).
+
+The constructor is already provided.
+
+### Add a membus to the constructor
+
+This will be your first time using a "raw" gem5 model (i.e., not something in the stdlib).
+
+For this, use a `SystemXBar` with a width of 64.
+See `SystemXBar` in [/gem5/src/mem/xbar.py](/gem5/src/mem/xbar.py).
+
+---
+
+## Step 2: Answer
 
 ```python
 self.membus = SystemXBar(width=64)
@@ -131,9 +270,19 @@ We will make it 64 Bytes wide (as wide as the cache line) so that it's maximum b
 
 ---
 
-## Implement the hierarchy interface
+## Step 3: Implement the hierarchy interface
 
 The board needs to be able to get the port to connect to memory.
+
+You will be implementing some of the abstract functions from `AbstractCacheHierarchy`.
+
+See [`AbstractCacheHierarchy`](/gem5/src/python/gem5/components/cachehierarchies/abstract_cache_hierarchy.py) for details.
+
+You need to implement `get_mem_side_port` and `get_cpu_side_port` in this step.
+
+---
+
+## Step 3: Answer
 
 ```python
 def get_mem_side_port(self):
@@ -147,24 +296,32 @@ def get_cpu_side_port(self):
     return self.membus.cpu_side_ports
 ```
 
+---
+
+## Step 4: Implement `incorporate_cache`
+
 The main function is **`incorporate_cache`** which is called by the board after the `Processor` and `Memory` are ready to be connected together.
+
+In the `incorporate_cache` function, we will create the caches and connect them together.
+
+First, (given below) we will connect the system port.
+
+Then, we will connect the memory ports to the memory bus.
+You can get the list of ports for memory from the [`MemorySystem`](/gem5/src/python/gem5/components/memory/abstract_memory_system.py) object.
+Then, we can connect all of these ports to the memory side of memory bus.
+
+Then, we will create the L3 crossbar based on the [L2 crossbar](/gem5/src/mem/XBar.py) parameters.
 
 ```python
 def incorporate_cache(self, board):
+    board.connect_system_port(self.membus.cpu_side_ports)
 ```
 
 ---
 
-## Incorporate the caches
-
-In the `incorporate_cache` function, we will create the caches and connect them together.
-
-First, connect the system port (for functional accesses) and connect the memory to the membus.
-We will also go ahead and create the L3 crossbar based on the L2 crossbar parameters.
+## Step 4: Answer
 
 ```python
-board.connect_system_port(self.membus.cpu_side_ports)
-
 # Connect the memory system to the memory port on the board.
 for _, port in board.get_memory().get_mem_ports():
     self.membus.mem_side_ports = port
@@ -173,11 +330,46 @@ for _, port in board.get_memory().get_mem_ports():
 self.l3_bus = L2XBar()
 ```
 
+Here, we connect all of the memory ports to the membus.
+Note that for gem5 ports, to connect things together, you just have to use the `=` operator.
+
+We are using a "L2XBar" for the L3 crossbar because "L2XBar" is just a crossbar that has been configured to not be the system xbar.
+
+---
+
+## Step 5: Create the core clusters
+
+Let's move away from the `incorporate_cache` function for a moment and create the core clusters.
+
+Our goal is that each core cluster should have a core connected to its private caches (L1I, L1D, L2) and the L2.
+We'll then connect the L2 to the L3 via the L3 crossbar.
+
+You'll be modifying the `_create_core_cluster` function.
+
+---
+
+## Step 5: More details
+
+A `SubSystem` is a special object that can hold multiple objects (with a shared clock/voltage domain).
+
+1. Create a `SubSystem` object in the `_create_core_cluster` function.
+2. Create the L1I and L1D caches as sub-objects of the cluster subsystem.
+3. Create an L2 cache as a sub-object of the cluster subsystem.
+4. Create an L2 crossbar (`L2XBar`) as a sub-object of the cluster subsystem.
+5. Use the `core.connect_icache` and `core.connect_dcache` functions to connect the L1I and L1D caches to the core.
+6. Connect the L1I and L1D caches to the L2 crossbar.
+7. Connect the L2 cache to the L2 crossbar.
+8. Connect the L2 cache to the L3 bus.
+
+Use the [`L1DCache`](/gem5/src/python/gem5/components/cachehierarchies/classic/caches/l1dcache.py), [`L1ICache`](/gem5/src/python/gem5/components/cachehierarchies/classic/caches/l1dcache.py) and [`L2Cache`](/gem5/src/python/gem5/components/cachehierarchies/classic/caches/l2cache.py) objects from the standard library.
+
+> Note: there is extra code in this function. Ignore this for now.
+
 ---
 
 <!-- _class: code-80-percent  -->
 
-## Creating core clusters
+## Step 5: Answer
 
 Since each core is going to have many private caches, let's create a cluster.
 In this cluster, we will create L1I/D and L2 caches, the L2 crossbar and connect things.
@@ -235,9 +427,17 @@ return cluster
 
 ---
 
-## Back to incorporate_cache
+## Step 6: Create a cluster for each core
+
+Back to `incorporate_cache`...
 
 Now that we have the cluster, we can create the clusters.
+
+Create a list of clusters, one for each of the cores in the processor.
+
+---
+
+## Step 6: Answer
 
 ```python
 self.clusters = [
@@ -250,9 +450,20 @@ self.clusters = [
 
 ---
 
-## The L3 cache
+## Step 7: Create an L3 cache
 
-For the L1/L2 caches we used pre-configured caches from the standard library. For the L3, we will create our own configuration. We need to specify the values for the parameters in [Cache](../../gem5/src/mem/cache/Cache.py).
+The standard library has L1 and L2 caches, but not an L3 cache.
+So, we need to create an L3 cache.
+
+Make the L3 cache a subclass of the `Cache` object.
+Allow it to have a configurable size and associativity.
+
+For the other parameters, use 20 cycles for the tag and data latency, 1 cycle for the response latency, 20 MSHRs, 12 targets per MSHR, and set `writeback_clean` to `False`.
+Set the "clusivity" to "mostly_incl". In other words, this will be a mostly inclusive cache.
+
+---
+
+## Step 7: Answer
 
 ```python
 class L3Cache(Cache):
@@ -271,9 +482,22 @@ class L3Cache(Cache):
 
 ---
 
-## Connect the L3 cache
+## Step 8: Connect the L3 cache
 
-Now, we can finish `incorporate_cache` by connecting the L3 cache to the L3 crossbar.
+Again, back to `incorporate_cache`...
+
+Create an instance of your L3 cache object, pass through the size and associativity, then connect the L3 cache to the L3 crossbar and the memory bus.
+
+Also, add this code at the end of the `incorporate_cache` function. (Trust me.)
+
+```python
+if board.has_coherent_io():
+    self._setup_io_cache(board)
+```
+
+---
+
+## Step 8: Answer
 
 ```python
 self.l3_cache = L3Cache(size=self._l3_size, assoc=self._l3_assoc)
@@ -281,32 +505,26 @@ self.l3_cache = L3Cache(size=self._l3_size, assoc=self._l3_assoc)
 # Connect the L3 cache to the system crossbar and L3 crossbar
 self.l3_cache.mem_side = self.membus.cpu_side_ports
 self.l3_cache.cpu_side = self.l3_bus.mem_side_ports
-
-if board.has_coherent_io():
-    self._setup_io_cache(board)
 ```
 
 ---
 
-## Testing our cache hierarchy
+## Step 9: Re run the test from Exercise 1 with 3 levels
 
-See [`materials/02-Using-gem5/05-cache-hierarchies/test-cache.py`](../../materials/02-Using-gem5/05-cache-hierarchies/test-cache.py).
+Go back to the `test-cache.py` file that you created and import your new cache hierarchy.
 
-Run the test script to see if the cache hierarchy is working.
+Extend this to also be able to test the performance of the L3 cache.
 
-```bash
-gem5 test-cache.py
-```
+---
 
-This uses linear traffic, though we could also use your traffic generator from the previous section.
+## Answers to questions
 
-You can also run a real workload with the cache hierarchy.
+What is the bandwidth and latency for
 
-```bash
-gem5 run-is.py
-```
-
-This has both full-system (with x86) and SE mode (with Arm).
+1. The L1 cache?
+2. The L2 cache?
+3. The L3 cache?
+4. The memory?
 
 ---
 
@@ -338,13 +556,13 @@ Parameters:
 2. Caches + Interface
 3. Interconnect
 
-![System with Ruby Caches bg right fit](05-cache-hierarchies-img/ruby_cache.drawio.svg)
+![System with Ruby Caches bg right fit](04-cache-hierarchies-imgs/ruby_cache.drawio.svg)
 
 ---
 
 ## Ruby
 
-![ On chip interconnect + controllers bg 60%](05-cache-hierarchies-img/ruby.drawio.svg)
+![ On chip interconnect + controllers bg 60%](04-cache-hierarchies-imgs/ruby.drawio.svg)
 
 ---
 
@@ -383,19 +601,19 @@ Three different implementations: Naive, false sharing on the output, and chunkin
 
 ### "Naive" implementation
 
-![naive](05-cache-hierarchies-img/parallel-alg-1.png)
+![naive](04-cache-hierarchies-imgs/parallel-alg-1.png)
 
 ---
 
 ## False sharing
 
-![false_sharing](05-cache-hierarchies-img/parallel-alg-4.png)
+![false_sharing](04-cache-hierarchies-imgs/parallel-alg-4.png)
 
 ---
 
 ## Chunking and no false sharing
 
-![blocking](05-cache-hierarchies-img/parallel-alg-6.png)
+![blocking](04-cache-hierarchies-imgs/parallel-alg-6.png)
 
 ---
 

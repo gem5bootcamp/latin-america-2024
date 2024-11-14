@@ -108,27 +108,27 @@ class PrivateL1PrivateL2SharedL3CacheHierarchy(AbstractClassicCacheHierarchy):
         )
         cluster.l2cache = L2Cache(size=self._l2_size, assoc=self._l2_assoc)
 
-        cluster.iptw_cache = MMUCache(size="8KiB", writeback_clean=False)
-        cluster.dptw_cache = MMUCache(size="8KiB", writeback_clean=False)
-
         cluster.l2_bus = L2XBar()
 
         # Connect the core to the caches
         core.connect_icache(cluster.l1icache.cpu_side)
         core.connect_dcache(cluster.l1dcache.cpu_side)
-        core.connect_walker_ports(
-            cluster.iptw_cache.cpu_side, cluster.dptw_cache.cpu_side
-        )
 
         # Connect the caches to the L2 bus
         cluster.l1dcache.mem_side = cluster.l2_bus.cpu_side_ports
         cluster.l1icache.mem_side = cluster.l2_bus.cpu_side_ports
-        cluster.iptw_cache.mem_side = cluster.l2_bus.cpu_side_ports
-        cluster.dptw_cache.mem_side = cluster.l2_bus.cpu_side_ports
 
         cluster.l2cache.cpu_side = cluster.l2_bus.mem_side_ports
 
         cluster.l2cache.mem_side = l3_bus.cpu_side_ports
+
+        cluster.iptw_cache = MMUCache(size="8KiB", writeback_clean=False)
+        cluster.dptw_cache = MMUCache(size="8KiB", writeback_clean=False)
+        core.connect_walker_ports(
+            cluster.iptw_cache.cpu_side, cluster.dptw_cache.cpu_side
+        )
+        cluster.iptw_cache.mem_side = cluster.l2_bus.cpu_side_ports
+        cluster.dptw_cache.mem_side = cluster.l2_bus.cpu_side_ports
 
         if isa == ISA.X86:
             int_req_port = self.membus.mem_side_ports
