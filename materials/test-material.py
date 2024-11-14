@@ -21,6 +21,7 @@ import re
 import subprocess
 import sys
 
+
 def main():
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("script", type=str)
@@ -41,15 +42,29 @@ def main():
         print("Warning: No gem5 command found in docstring")
         return 2
 
-    gem5_command = "gem5" + docstring.split("$ gem5")[1].split("\n")[0].strip()
+    if "$ gem5-mesi" in docstring:
+        gem5_binary = "gem5-mesi"
+    elif "$ gem5-vega" in docstring:
+        gem5_binary = "gem5-vega"
+    else:
+        gem5_binary = "gem5"
+
+    gem5_command = (
+        gem5_binary + docstring.split("$ gem5")[1].split("\n")[0].strip()
+    )
     expected_output = docstring.split("$ gem5")[1].split("\n")[1].strip()
     expected_output.replace("...", ".*")
 
     print(f"Running: {gem5_command}")
 
     # run the command and get the stdout
-    result = subprocess.run(gem5_command, shell=True, capture_output=True,
-                            text=True, cwd=Path(f"{args.script}").parent)
+    result = subprocess.run(
+        gem5_command,
+        shell=True,
+        capture_output=True,
+        text=True,
+        cwd=Path(f"{args.script}").parent,
+    )
 
     if result.returncode != 0:
         print(f"Error: {result.returncode}")
