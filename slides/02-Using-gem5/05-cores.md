@@ -11,6 +11,28 @@ title: Modeling CPU cores in gem5
 
 ---
 
+## gem5 simulator
+
+*Remember*, gem5 is an execute-in-execute simulator.
+
+We have looked at what happens to memory requests going through the caches and memory system.
+
+Now, let's see how applications and their instructions are executed in gem5.
+
+---
+
+## Executing an instruction
+
+- **Fetch**: Get the next instruction from memory using the instruction cache port
+  - Possibly checks the branch predictor to see if the instruction is a branch
+- **Decode**: Calls into the ISA to decode the instruction and get an instance of the `StaticInst` class
+- **Execute**: Calls into the `ExecContext` instance to execute the instruction. Actually update the registers
+- **Memory**: If the instruction needs to access memory, it uses a different path than execute to send request to the data cache
+
+![ISA-CPU interactions and CPU talking to caches with ports](../01-Introduction/02-simulation-background-imgs/abstractions-2.drawio.svg)
+
+---
+
 ## Outline
 
 - **Learn about CPU models in gem5​**
@@ -26,13 +48,7 @@ title: Modeling CPU cores in gem5
 
 ## gem5 CPU Models
 
-![width:1150px Diagram to show inheritance for gem5 CPU Models](04-cores-imgs/Summary-of-models.drawio.svg)
-
----
-
-<!-- _class: start --->
-
-## Simple CPU
+![width:1150px Diagram to show inheritance for gem5 CPU Models](05-cores-imgs/Summary-of-models.drawio.svg)
 
 ---
 
@@ -55,7 +71,7 @@ Split transactions
 Models queuing delay and
 resource contention
 
-![bg auto width:1250px Diagram to show different CPU Model Timings](04-cores-imgs/Simple-CPU.drawio.svg)
+![bg auto width:1250px Diagram to show different CPU Model Timings](05-cores-imgs/Simple-CPU.drawio.svg)
 
 ---
 
@@ -63,32 +79,30 @@ resource contention
 
 ### AtomicSimpleCPU
 
-- Uses **_Atomic_** memory accesses
+- Uses ***Atomic*** memory accesses
   - No resource contentions or queuing delay
   - Mostly used for fast-forwarding and warming of caches
 
 ### TimingSimpleCPU
 
-- Uses **_Timing_** memory accesses
+- Uses ***Timing*** memory accesses
   - Execute non-memory operations in one cycle
   - Models the timing of memory accesses in detail
 
 ---
 
-<!-- _class: center-image -->
-
 ## O3CPU (Out of Order CPU Model)
 
-- **_Timing_** memory accesses _execute-in-execute_ semantics
+- ***Timing*** memory accesses *execute-in-execute* semantics
 - Time buffers between stages
 
-![width:1000px O3CPU](04-cores-imgs/O3CPU.drawio.svg)
+![width:1000px O3CPU](05-cores-imgs/O3CPU.drawio.svg)
 
 ---
 
 ## The O3CPU Model has many parameters
 
-[src/cpu/o3/BaseO3CPU.py](../../gem5/src/cpu/o3/BaseO3CPU.py)
+[src/cpu/o3/BaseO3CPU.py](/gem5/src/cpu/o3/BaseO3CPU.py)
 
 ```python
 decodeToFetchDelay = Param.Cycles(1, "Decode to fetch delay")
@@ -107,11 +121,113 @@ We will do this soon.
 
 ---
 
+## Minor CPU
+
+- **Overview**: The Minor CPU model in gem5 is an in-order pipelined processor designed to help computer architects understand event-driven simulators.
+- **Purpose**: The Minor CPU model provides a simplified yet detailed implementation of an in-order pipelined processor, making it easier to grasp the concepts of pipeline stages and their interactions.
+
+### Key Features:
+
+- **In-Order Execution**: The Minor CPU executes instructions in the order they are fetched.
+- **Pipeline Stages**: It consists of four main pipeline stages: Fetch1, Fetch2, Decode, and Execute.
+- **SimObjects**: Each stage is implemented as a SimObject, allowing for modular and detailed simulation.
+
+---
+
+## Minor CPU design
+
+### Pipeline Stages:
+
+- **Fetch1**: Handles ITLB access and instruction fetch from main memory.
+- **Fetch2**: Responsible for instruction decoding.
+- **Decode**: Performs book-keeping tasks.
+- **Execute**: Manages instruction issue, execution, memory access, writeback, and commit.
+
+### Implementation:
+
+- **Latches**: The stages are connected via latches, which are used to transfer data between stages.
+- **Evaluate Method**: Each stage has an `evaluate()` method that defines the actions performed at each CPU tick.
+
+---
+
 ## MinorCPU
 
-![bg auto width:700px Diagram to show different CPU Models](04-cores-imgs/MinorCPU.drawio.svg)
+![bg auto width:700px Diagram to show different CPU Models](05-cores-imgs/MinorCPU.drawio.svg)
 
 <!-- 'https://nitish2112.github.io/post/gem5-minor-cpu/' Add "footer: " within the comment to make it appear on the slide-->
+
+---
+
+## Minor CPU parameters
+
+Like the O3CPU, the Minor CPU model has many parameters that can be modified to change the behavior of the CPU.
+[src/cpu/minor/BaseMinorCPU.py](/gem5/src/cpu/minor/BaseMinorCPU.py)
+
+```python
+fetch1FetchLimit = Param.Unsigned(
+    1, "Number of line fetches allowable in flight at once"
+)
+fetch1ToFetch2ForwardDelay = Param.Cycles(
+    1, "Forward cycle delay from Fetch1 to Fetch2 (1 means next cycle)"
+)
+...
+executeIssueLimit = Param.Unsigned(
+    2, "Number of issuable instructions in Execute each cycle"
+)
+```
+
+---
+
+## Customizing instruction performance
+
+Both the O3CPU and Minor CPU models allow you to customize the performance of instructions by changing the parameters of the CPU model.
+
+These models have functional units and pools of functional units.
+
+- `MinorFU` and `MinorFUPool` for the Minor CPU
+- `FUDesc` and `FUPool` for the O3CPU
+
+The pool of functional units is what the CPU uses to execute instructions.
+E.g., you could have an integer unit, a floating-point unit, and a memory unit.
+
+Each unit has a "count" for the number of parallel units available and a list of operations that the unit can execute.
+
+Each operation can be customized to execute a class of instructions and for each class of instructions it can have a latency and a throughput.
+
+---
+
+<!-- _class: two-col -->
+
+## Example of a functional unit pool
+
+From [src/cpu/o3/FUPool.py](/gem5/src/cpu/o3/FUPool.py) and [src/cpu/o3/FuncUnitConfig.py](/gem5/src/cpu/o3/FuncUnitConfig.py)
+
+```python
+class IntALU(FUDesc):
+    opList = [OpDesc(opClass="IntAlu")]
+    count = 6
+class IntMultDiv(FUDesc):
+    opList = [
+        OpDesc(opClass="IntMult", opLat=3),
+        OpDesc(opClass="IntDiv", opLat=20, pipelined=False),
+    ]
+    count = 2
+...
+class DefaultFUPool(FUPool):
+    FUList = [IntALU(),IntMultDiv(),FP_ALU(),FP_MultDiv(),
+        ReadPort(),SIMD_Unit(),PredALU(),WritePort(),
+        RdWrPort(),IprPort(),
+    ]
+```
+
+###
+
+In this example, there are 6 parallel integer units which can execute all of the instructions tagged as "IntAlu". By default, they will complete in 1 cycle with a 1 cycle throughput.
+
+The `IntMultDiv` unit has 2 parallel units, one of which can execute integer multiplication in 3 cycles and the other can execute integer division in 20 cycles.
+For the multiply, a new instructions can start every cycle and for the division, the unit is not pipelined.
+
+The pool has a list of all the functional units that are available to the CPU.
 
 ---
 
@@ -144,13 +260,13 @@ We will do this soon.
 - Timing
 - Caches, BP
 
-![bg width:1250px Diagram to show different CPU Models](04-cores-imgs/Summary-of-models-bg.drawio.svg)
+![bg width:1250px Diagram to show different CPU Models](05-cores-imgs/Summary-of-models-bg.drawio.svg)
 
 ---
 
 ## Interaction of CPU model with other parts of gem5
 
-![bg auto width:1050px Diagram to show CPU Model Interactions](04-cores-imgs/CPU-interaction-model.drawio.svg)
+![bg auto width:1050px Diagram to show CPU Model Interactions](05-cores-imgs/CPU-interaction-model.drawio.svg)
 
 ---
 
@@ -167,140 +283,91 @@ We will do this soon.
 
 ---
 
-<!-- _class: start -->
+## Exercise 1: Comparing CPU models
 
-## Let's use these CPU Models!
+In this exercise, we will compare the performance of different CPU models in gem5.
+You will compare the performance of the AtomicSimpleCPU, TimingSimpleCPU, MinorCPU, and O3CPU.
+Use the "[riscv-matrix-multiply-run](https://resources.gem5.org/resources/riscv-matrix-multiply?database=gem5-resources&version=1.0.0)" workload.
 
----
+### Questions:
 
-## Material to use
-
-### Start by opening the following file
-
-[materials/02-Using-gem5/04-cores/cores.py](../../materials/02-Using-gem5/04-cores/cores.py)
-
-### Steps
-
-1. Configure a simple system with Atomic CPU
-2. Configure the same system with Timing CPU
-3. Reduce the cache size
-4. Change the CPU type back to Atomic
-
-We will be running a workload called matrix-multiply on **different CPU types and cache sizes**.
+1. Compare the total number of instructions simulated by each CPU model. What do you observe?
+2. Compare the total simulated time for each CPU model. What do you observe?
+3. Change the parameters of the cache hierarchy and compare the performance of the Atomic and Timing CPU models. What do you observe?
 
 ---
 
-## Let's configure a simple system with Atomic CPU
+## Step 1: Create the processor
 
-[materials/02-Using-gem5/04-cores/cores.py](../../materials/02-Using-gem5/04-cores/cores.py)
+In your script, use the `SimpleProcessor`.
+See [`SimpleProcessor`](/gem5/src/python/gem5/components/processors/simple_processor.py) for more information.
 
-```python
-from gem5.components.boards.simple_board import SimpleBoard
-from gem5.components.cachehierarchies.classic.private_l1_cache_hierarchy import PrivateL1CacheHierarchy
-from gem5.components.memory.single_channel import SingleChannelDDR3_1600
-from gem5.components.processors.cpu_types import CPUTypes
-from gem5.components.processors.simple_processor import SimpleProcessor
-from gem5.isas import ISA
-from gem5.resources.resource import obtain_resource
-from gem5.simulate.simulator import Simulator
+Since you're going to be running the "riscv-matrix-multiply" workload, make sure you set up your processor to use the RISC-V ISA.
 
+The workload is single threaded, so there's no need to set up multiple cores.
 
-# A simple script to test with different CPU models
-# We will run a simple application (matrix-multiply) with AtomicSimpleCPU and TimingSimpleCPU
-# using two different cache sizes
-...
-```
+Choose the appropriate [CPU type](/gem5/src/python/gem5/components/processors/cpu_types.py) for the processor.
 
 ---
 
-## Let's start with Atomic CPU
-
-`cpu_type` in cores.py should already be set to Atomic.
+## Step 1: Answer
 
 ```python
-# By default, use Atomic CPU
-cpu_type = CPUTypes.ATOMIC
-
-# Uncomment for steps 2 and 3
-# cpu_type = CPUTypes.TIMING
+processor = SimpleProcessor(
+    cpu_type=CPUTypes.ATOMIC,
+    isa=ISA.RISCV,
+    num_cores=1
+)
 ```
 
-Let's run it!
-
-```sh
-cd /workspaces/2024/materials/02-Using-gem5/04-cores
-gem5 --outdir=atomic-normal-cache cores.py
-```
-
-Make sure the out directory is set to **atomic-normal-cache**.
+You can also use `CPUTypes.TIMING` for the TimingSimpleCPU, `CPUTypes.MINOR` for the MinorCPU, and `CPUTypes.O3` for the O3CPU.
 
 ---
 
-## Next, try Timing CPU
+## Step 2: Create the board, set up the workload, and run the simulation
 
-Change `cpu_type` in cores.py to Timing.
+You can use the `SimpleBoard` component to create a simple system with a single processor.
+See [`SimpleBoard`](/gem5/src/python/gem5/components/boards/simple_board.py) for more information.
 
-```python
-# By default, use Atomic CPU
-# cpu_type = CPUTypes.ATOMIC
+With the `SimpleBoard`, you can set the processor, memory (use `SingleChannelDDR4_2400`), and cache hierarchy (use `PrivateL1CacheHierarchy`).
 
-# Uncomment for steps 2 and 3
-cpu_type = CPUTypes.TIMING
-```
+Then, use `obtain_resource` to get the workload and run the simulation.
+See [`obtain_resource`](/gem5/src/python/gem5/resources/resource.py) for more information.
+We'll talk more about this in the next section.
 
-Let's run it!
-
-```sh
-gem5 --outdir=timing-normal-cache cores.py
-```
-
-Make sure the out directory is set to **timing-normal-cache**.
+> You may want to use `gem5 --outdir=<outdir-name>` to separate the output directories for each simulation.
 
 ---
 
-## Now, try changing the Cache Size
-
-Go to this line of code.
+## Step 2: Answer
 
 ```python
-cache_hierarchy = PrivateL1CacheHierarchy(l1d_size="32KiB", l1i_size="32KiB")
+board = SimpleBoard(
+    processor=processor,
+    memory=SingleChannelDDR4_2400(),
+    cache_hierarchy=PrivateL1CacheHierarchy()
+)
+workload = obtain_resource("riscv-matrix-multiply")
+board.set_workload(workload)
+sim = Simulator(board=board)
+sim.run()
 ```
 
-Change `l1d_size` and `l1i_size` to 1KiB.
-
-```python
-cache_hierarchy = PrivateL1CacheHierarchy(l1d_size="1KiB", l1i_size="1KiB")
-```
-
-Let's run it!
-
-```sh
-gem5 --outdir=timing-small-cache ./materials/02-Using-gem5/04-cores/cores.py
-```
-
-Make sure the out directory is set to **timing-small-cache**.
+Run this with Atomic, Timing, Minor, and O3 CPUs.
 
 ---
 
-## Now let's try a Small Cache with Atomic CPU
+## Step 3: Change the cache size and compare atomic and timing
 
-Set `cpu_type` in cores.py to Atomic.
+Change the cache size in the `PrivateL1CacheHierarchy` component and run the simulation again.
 
-```python
-# By default, use Atomic CPU
-cpu_type = CPUTypes.ATOMIC
+---
 
-# Uncomment for steps 2 and 3
-# cpu_type = CPUTypes.TIMING
-```
+## Exercise 1: Question answers
 
-Let's run it!
-
-```sh
-gem5 --outdir=atomic-small-cache cores.py
-```
-
-Make sure the out directory is set to **atomic-small-cache**.
+1. Compare the total number of instructions simulated by each CPU model. What do you observe?
+2. Compare the total simulated time for each CPU model. What do you observe?
+3. Change the parameters of the cache hierarchy and compare the performance of the Atomic and Timing CPU models. What do you observe?
 
 ---
 
@@ -325,23 +392,34 @@ Make sure the out directory is set to **atomic-small-cache**.
 
 ## Look at the Number of Operations
 
+Assuming you called your output directories `atomic-normal-cache`, `atomic-small-cache`, `timing-normal-cache`, and `timing-small-cache`, you can look at the number of operations (instructions) simulated by each CPU model.
+
 Run the following command.
 
 ```sh
-grep -ri "simOps" *cache
+grep "simOps" *cache/stats.txt
 ```
 
 Here are the expected results. (Note: Some text is removed for readability.)
 
 ```sh
-atomic-normal-cache/stats.txt:simOps                                       33954560
-atomic-small-cache/stats.txt:simOps                                        33954560
-timing-normal-cache/stats.txt:simOps                                       33954560
-timing-small-cache/stats.txt:simOps                                        33954560
+atomic-normal-cache/stats.txt:simOps                                       33955020
+atomic-small-cache/stats.txt:simOps                                        33955020
+timing-normal-cache/stats.txt:simOps                                       33955020
+timing-small-cache/stats.txt:simOps                                        33955020
 ```
 
-> "Ops" may be different from "Instructions" because gem5 breaks instructions down into "micro-ops."
-> x86 is highly microcoded, all ISAs have some microcoded instructions in gem5.
+---
+
+## Ops vs Instructions
+
+The ISAs in gem5 have some "microcoded" instructions that are broken down into multiple operations.
+Thus, you will often see more "ops" than "instructions" in the statistics.
+
+The x86 ISA has more complex instructions that are broken down into multiple operations.
+In x86, you should expect to see almost double the number of ops compared to instructions.
+
+It is the *ops* not the instructions that are executed by the CPU model.
 
 ---
 
@@ -398,17 +476,7 @@ In general, if you don't specify the out-directory, it will be **`m5out/stats.tx
 
 ---
 
-<!-- _class: start -->
-
-## Let's configure a custom processor!
-
----
-
-## Material to use
-
-[materials/02-Using-gem5/04-cores/cores-complex.py](../../materials/02-Using-gem5/04-cores/cores-complex.py)
-
-[materials/02-Using-gem5/04-cores/components/processors.py](../../materials/02-Using-gem5/04-cores/components/processors.py)
+## Exercise 2: Create a custom processor
 
 ### Steps
 
@@ -419,134 +487,166 @@ In general, if you don't specify the out-directory, it will be **`m5out/stats.tx
 
 We will be running the same workload (matrix-multiply) on **two custom processors**.
 
----
+### Questions
 
-## Configuring two processors
-
-We will make one fast processor (**_Big_**) and one slow processor (**_Little_**).
-
-To do this, we will change **4** parameters in each processor.
-
-- **width**
-  - Width of fetch, decode, rename, issue, wb, and commit stages
-- **rob_size**
-  - The number of entries in the reorder buffer
-- **num_int_regs**
-  - The number of physical integer registers
-- **num_fp_regs**
-  - The number of physical vector/floating point registers
+1. What is the IPC of the big and little processors?
+2. What is the speedup of the big processor?
+3. What is the bottleneck in the little processor?
 
 ---
 
-<!-- _class: two-col -->
+## Step 1: Create specialized models
 
-## Configuring Big
+In this step, you need to override the parameters of the O3CPU model to create two new classes: `BigO3` and `LittleO3`.
 
-Open the following file:
-[materials/02-Using-gem5/04-cores/components/processors.py](../../materials/02-Using-gem5/04-cores/components/processors.py)
+Remember, the O3CPU is a gem5 *SimObject* and we are going to wrap it to make it a standard library component.
+This is a little more complicated for the processor since it is made up of many cores (and gem5 doesn't have a very well-defined core interface).
 
-On the right, you'll see what `class Big` currently looks like.
+Create a new file called `my_processor.py` in the same directory as your script.
+Add new classes, `BigO3` and `LittleO3`, to this file. They will inherit from the `RiscvO3CPU` class and override the parameters.
 
-Change the parameter values so that they are as follows:
+> Important: The CPU models are specialized for each ISA, so you need to make sure the ISA is included in your gem5 binary to have the RISC-V O3CPU.
 
-- `width=10`
-- `rob_size=40`
-- `num_int_regs=50`
-- `num_fp_regs=50`
+---
 
-###
+## Step 1: Continued
+
+In your specialized classes, override the parameters of the O3CPU model to create the `BigO3` and `LittleO3` classes.
+
+Specifically, change the `fetchWidth`, `decodeWidth`, `renameWidth`, `issueWidth`, `wbWidth`, `commitWidth` to either 2 or 8 (for little and big).
+
+For the little processor, set the `numROBEntries`, `numIntRegs`, and `numFpRegs` parameters to 30, 40, and 40 respectively.
+
+For the big processor, set the `numROBEntries`, `numIntRegs`, and `numFpRegs` parameters to 256, 512, and 512 respectively.
+
+See [`BaseO3CPU`](/gem5/src/cpu/o3/BaseO3CPU.py) for more information.
+
+---
+
+<!-- _class: two-col code-80-percent -->
+
+## Step 1: Answer
 
 ```python
-class Big(O3CPU):
+class BigO3(RiscvO3CPU):
+    def __init__(self):
+        super().__init__()
+        self.fetchWidth = 8
+        self.decodeWidth = 8
+        self.renameWidth = 8
+        self.dispatchWidth = 8
+        self.issueWidth = 8
+        self.wbWidth = 8
+        self.commitWidth = 8
+
+        self.numROBEntries = 256
+        self.numPhysIntRegs = 512
+        self.numPhysFloatRegs = 512
+```
+
+```python
+class LittleO3(RiscvO3CPU):
+    def __init__(self):
+        super().__init__()
+        self.fetchWidth = 2
+        self.decodeWidth = 2
+        self.renameWidth = 2
+        self.dispatchWidth = 2
+        self.issueWidth = 2
+        self.wbWidth = 2
+        self.commitWidth = 2
+
+        self.numROBEntries = 30
+        self.numPhysIntRegs = 40
+        self.numPhysFloatRegs = 40
+```
+
+---
+
+## Step 2: Create stdlib core wrappers
+
+In the same file, create two new classes: `BigCore` and `LittleCore`.
+These classes will inherit from the `BaseCPUCore` class and override the `cpu` with your specialized O3CPU.
+
+See [`BaseCPUCore`](/gem5/src/python/gem5/components/processors/base_cpu_core.py) for more information.
+
+---
+
+## Step 2: Answer
+
+```python
+class BigCore(BaseCPUCore):
+    def __init__(self):
+        core = BigO3()
+        super().__init__(core, ISA.RISCV)
+
+class LittleCore(BaseCPUCore):
+    def __init__(self):
+        core = LittleO3()
+        super().__init__(core, ISA.RISCV)
+```
+
+---
+
+## Step 3: Create the processors
+
+Now, add two new classes: `BigProcessor` and `LittleProcessor`.
+These classes will inherit from the `BaseCPUProcessor` class and override the cores with your specialized O3CPU.
+`BaseCPUProcessor` is a class that creates a stdlib processor with stdlib cores.
+
+In the `BigProcessor` and `LittleProcessor` classes, you need to override the constructor to construct the cores.
+
+See [`BaseCPUProcessor`](/gem5/src/python/gem5/components/processors/base_cpu_processor.py) for more information.
+
+---
+
+## Step 3: Answer
+
+```python
+class BigProcessor(BaseCPUProcessor):
     def __init__(self):
         super().__init__(
-            width=0,
-            rob_size=0,
-            num_int_regs=0,
-            num_fp_regs=0,
+            cores=[BigCore()]
+        )
+
+class LittleProcessor(BaseCPUProcessor):
+    def __init__(self):
+        super().__init__(
+            cores=[LittleCore()]
         )
 ```
 
 ---
 
-<!-- _class: two-col -->
+## Step 4: Update the run script
 
-## Configuring Little
+Update the run script to use the custom processors.
 
-Now, on the right, you'll see what `class Little` currently looks like.
+---
 
-Change the parameter values so that they are as follows:
-
-- `width=2`
-- `rob_size=30`
-- `num_int_regs=40`
-- `num_fp_regs=40`
-
-###
+## Step 4: Answer
 
 ```python
-class Little(O3CPU):
-    def __init__(self):
-        super().__init__(
-            width=0,
-            rob_size=0,
-            num_int_regs=0,
-            num_fp_regs=0,
-        )
+from my_processor import BigProcessor, LittleProcessor
+if args.cpu_type == "Big":
+    processor = BigProcessor()
+elif args.cpu_type == "Little":
+    processor = LittleProcessor()
+
+board = SimpleBoard(
+    clk_freq="3GHz",
+    processor=processor,
+    memory=SingleChannelDDR4_2400("1GiB"),
+    cache_hierarchy=PrivateL1CacheHierarchy(
+        l1d_size="32KiB", l1i_size="32KiB"
+    ),
+)
 ```
 
 ---
 
-## Run with Big processor
+## Exercise 2: Question answers
 
-We will be running the following file.
-[materials/02-Using-gem5/04-cores/cores-complex.py](../../materials/02-Using-gem5/04-cores/cores-complex.py)
-
-First, we will run matrix-multiply with our `Big` processor.
-
-Run with the following command:
-
-```sh
-gem5 --outdir=big-proc cores-complex.py -p big
-```
-
-Make sure the out directory is set to **`big-proc`**.
-
----
-
-## Run with Little processor
-
-Next, we will run matrix-multiply with our `Little` processor.
-
-Run with the following command:
-
-```sh
-gem5 --outdir=little-proc cores-complex.py -p little
-```
-
-Make sure the out directory is set to **`little-proc`**.
-
----
-
-## Comparing Big and Little processors
-
-Run the following command.
-
-```sh
-grep -ri "simSeconds" *proc && grep -ri "numCycles" *proc
-```
-
-Here are the expected results. (Note: Some text is removed for readability.)
-
-```sh
-big-proc/stats.txt:simSeconds                                           0.028124
-little-proc/stats.txt:simSeconds                                        0.036715
-big-proc/stats.txt:board.processor.cores.core.numCycles                 56247195
-little-proc/stats.txt:board.processor.cores.core.numCycles              73430220
-```
-
-Our `Little` processor takes more time and more cycles than our `Big` processor.
-
-<!-- This is likely mostly because our Little processor has to access the cache more times since it has less physical registers to work with
-
-grep -ri "l1dcaches.overallAccesses::total" big-proc Little-proc -->
+1. What is the IPC of the big and little processors?
+2. What is the speedup of the big processor?
+3. What is the bottleneck in the little processor?
