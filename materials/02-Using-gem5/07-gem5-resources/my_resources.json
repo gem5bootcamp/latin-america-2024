@@ -1,0 +1,23 @@
+[
+    {
+        "category":
+        "id":
+        "description":
+        "architecture":
+        "tags": [],
+        "source": "",
+        "url":
+        "license": "",
+        "author":
+        "resource_version":
+        "gem5_versions":
+    },
+    {
+        "category":
+        "id":
+        "function":
+        "resources":
+        "resource_version":
+        "gem5_versions":
+    }
+]

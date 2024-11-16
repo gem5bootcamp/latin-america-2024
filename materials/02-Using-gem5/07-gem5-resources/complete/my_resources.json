@@ -1,0 +1,34 @@
+[
+    {
+        "category": "binary",
+        "id": "matrix-multiply",
+        "description": "A simple matrix multiplication binary with ROI annotations",
+        "architecture": "X86",
+        "tags": [],
+        "source": "",
+        "url": "file:///workspaces/latin-america-2024/materials/02-Using-gem5/06-custom-benchmarks/completed/matrix-multiply",
+        "license": "",
+        "author": [
+            "<Your name>"
+        ],
+        "resource_version": "1.0.0",
+        "gem5_versions": [
+            "24.0"
+        ]
+    },
+    {
+        "category": "workload",
+        "id": "matrix-multiply-run",
+        "function": "set_se_binary_workload",
+        "resources": {
+            "binary": {
+                "id": "matrix-multiply",
+                "resource_version": "1.0.0"
+            }
+        },
+        "resource_version": "1.0.0",
+        "gem5_versions": [
+            "24.0"
+        ]
+    }
+]
