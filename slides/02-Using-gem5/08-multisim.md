@@ -81,7 +81,7 @@ Multisim has several advantages over simply writing a script to run multiple gem
 
 ---
 
-### Some caveats (it's new: be patient)
+## Some caveats (it's new: be patient)
 
 This features is new as of version 24.0.
 
@@ -145,6 +145,8 @@ gem5 -m gem5.utils.multisim my_script.py {id}
 ```
 
 ---
+
+<!-- _class: exercise -->
 
 ## Exercise: Use suites and workloads
 
