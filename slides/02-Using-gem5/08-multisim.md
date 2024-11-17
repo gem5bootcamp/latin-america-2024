@@ -38,7 +38,7 @@ _If not a singular gem5 process utilizing multiple threads, why not multiple gem
 
 ## People already do this... kind of...
 
-Go to the [`materials/02-Using-gem5/11-multisim/01-multiprocessing-via-script`](../../materials/02-Using-gem5/11-multisim/01-multiprocessing-via-script/) directory to see a completed example of how **NOT** to run multiple gem5 processes.
+You could use bash scripts to accomplish this.
 
 This is typical but not recommended.
 
@@ -66,6 +66,8 @@ Via the Python `multiprocessing` module, the parent gem5 process queues up simul
 
 ---
 
+## Multisim
+
 Multisim has several advantages over simply writing a script to run multiple gem5 processes:
 
 1. We (the gem5 devs) handle this for you.
@@ -88,86 +90,174 @@ However, this short tutorial should give you a good idea of how to use it going 
 
 ---
 
-## Let's go through an example
+## Using multisim
 
-Start by opening [`materials/02-Using-gem5/11-multisim/02-multiprocessing-via-multisim/multisim-experiment.py`](../../materials/02-Using-gem5/11-multisim/02-multiprocessing-via-multisim/multisim-experiment.py).
+The main idea is that you will
 
-This configuration script is almost identical to the script in the previous example but with the argparse code removed and the multisim import added:
+1. Create multiple boards that you want to run with a workload set on each board.
+2. Create a simulator for each of the boards that you want to run. You can customize the simulator as well.
+3. Add the simulator to the `multisim` object.
+4. Execute all of the simulations that have been added to the `multisim` object.
 
-### To start:  Declare the maximum number of processors
+Caveats:
 
-```python
-# Sets the maximum number of concurrent processes to be 2.
-multisim.set_num_processes(2)
-```
-
-If this is not set gem5 will default to consume all available threads.
-We **strongly** recommend setting this value to avoid overconsuming your system's resources.
-Put this line near the top of your configuration script.
+- The output may be a bit messy if you use stdout.
+- The output directories will be named after the `id` parameter of the simulator.
+- There are still some rough edges.
 
 ---
 
-## Use simple Python constructs to define multiple simulations
+## Examples of using multisim
 
-```python
-for data_cache_size in ["8kB","16kB"]:
-    for instruction_cache_size in ["8kB","16kB"]:
-        cache_hierarchy = PrivateL1CacheHierarchy(
-            l1d_size=data_cache_size,
-            l1i_size=instruction_cache_size,
-        )
-```
-
-Replace the cache hierarchy in [`multisim-experiment.py`](../../materials/02-Using-gem5/11-multisim/02-multiprocessing-via-multisim/multisim-experiment.py) with this  and indent the code after the cache hierarchy so all of it is within the inner for loop (`for instruction_cache_size ...`).
-
----
-
-## Create and add the simulation to the MultiSim object
-
-The key difference: The simulator object is passed to the
-MultiSim module via the `add_simulator` function.
-
-The `run` function is not called here. Instead it is involved in the MultiSim module's execution.
+To add a board and simulator to multisim, use `multisim.add_simulator`. Do this once for each simulation you want to do.
 
 ```python
 multisim.add_simulator(
     Simulator(
         board=board,
-        id=f"process_{data_cache_size}_{instruction_cache_size}"
+        id="my_simulator"
     )
 )
 ```
 
-The `id` parameter is used to identify the simulation. Setting this is strongly encouraged. Each output directory will be named after the `id` parameter.
+---
+
+## Using the multisim execution module
+
+You can use the `multisim` module to run the simulations, list them, or run one simulation.
+
+Run all simulations:
+
+```shell
+gem5 -m gem5.utils.multisim my_script.py
+```
+
+List all simulations:
+
+```shell
+gem5 -m gem5.utils.multisim my_script.py --list
+```
+
+Run a single simulation:
+
+```shell
+gem5 -m gem5.utils.multisim my_script.py {id}
+```
 
 ---
 
-## Execute multiple simulations
+## Exercise: Use suites and workloads
 
-A completed example can be found at [`materials/02-Using-gem5/11-multisim/completed/02-multiprocessing-via-multisim/multisim-experiment.py`](../../materials/02-Using-gem5/11-multisim/completed/02-multiprocessing-via-multisim/multisim-experiment.py).
+In this exercise, we will first simply print all of the workloads in a suite.
 
-```shell
-cd /workspaces/2024/materials/02-Using-gem5/11-multisim/completed/02-multiprocessing-via-multisim
-gem5 -m gem5.utils.multisim multisim-experiment.py
-```
+Then we will run one of the workloads from the suite.
 
-Check the "m5out" directory to see the segregated output files for each simulation.
+Finally, we will use `multisim` to run all of the workloads in parallel and compare the results for different workloads and configurations.
+
+We will use the `BigProcessor` and `LittleProcessor` classes from the previous exercise.
+
+### Questions
+
+1. What is the IPC of each workload on the big and little processors?
+2. How much speedup did we achieve by using `multisim`?
 
 ---
 
-## Execute single simulations from a MultiSim config
+## Step 1: Create the configurations
 
-You can also execute a single simulation from a MultiSim configuration script.
-To do so just pass the configuration script directly to gem5 (i.e., do not use `-m gem5.multisim multisim-experiment.py`).
+Let's go back and copy the Big and Little processor configurations from the previous exercise.
+Modify the `BigProcessor` and `LittleProcessor` classes to have a `get_name` **class method** that returns the name of the processor.
 
-To list the IDs of the simulations in a MultiSim configuration script:
+This will allow us to easily identify the processor in the output.
 
-```shell
-gem5 {config} --list
+---
+
+<!-- _class: two-col -->
+
+## Step 1: Answer
+
+```python
+class BigProcessor(BaseCPUProcessor):
+    def __init__(self):
+        super().__init__(
+            cores=[BigCore()]
+        )
+
+    @classmethod
+    def get_name(cls):
+        return "big"
 ```
 
-To execute a single simulation, pass the ID:
+###
+
+```python
+class LittleProcessor(BaseCPUProcessor):
+    def __init__(self):
+        super().__init__(
+            cores=[LittleCore()]
+        )
+
+    @classmethod
+    def get_name(cls):
+        return "little"
+```
+
+---
+
+## Step 2: Write the script to create the simulators
+
+Use the "riscv-getting-started-benchmark-suite" to get a set of workloads to run.
+
+Run all of these workloads on both the big and little processors.
+
+For the ID of the simulation, you can use `f"{processor_type.get_name()}-{benchmark.get_id()}"`.
+
+Remember, in this script you are just adding the simulators to the `multisim` object.
+
+Use the `multisim.set_num_processes` method to set the number of processes to run in parallel to "2".
+
+**Important**: Each simulator must have its own *instance* of the comonents. I.e., you cannot reuse the same instance of the processor for multiple simulators.
+
+---
+
+## Step 2: Answer
+
+```python
+multisim.set_num_processes(2)
+for processor_type in [BigProcessor, LittleProcessor]:
+    for benchmark in obtain_resource("riscv-getting-started-benchmark-suite"):
+        board = SimpleBoard( clk_freq="3GHz",
+            processor=processor_type(), memory=SingleChannelDDR4_2400("1GiB"),
+            cache_hierarchy=PrivateL1CacheHierarchy(
+                l1d_size="32KiB", l1i_size="32KiB"
+            ),
+        )
+        board.set_workload(benchmark)
+        simulator = Simulator(
+            board=board, id=f"{processor_type.get_name()}-{benchmark.get_id()}"
+        )
+        multisim.add_simulator(simulator)
+```
+
+---
+
+## Step 3: Run the simulations
+
+Run the simulations using the `multisim` module.
+
+This may take a while as some of these workloads larger than what we have used so far.
+
+---
+
+## Step 3: Answer
 
 ```shell
-gem5 {config} {id}
+gem5 -m gem5.utils.multisim my-cores-run.py
 ```
+
+---
+
+## Exercise: Questions
+
+1. What is the IPC of each workload on the big and little processors?
+2. How much speedup did we achieve by using `multisim`?
