@@ -421,20 +421,20 @@ For this assignment, you will use the same components across your experiments.
 However, for parts of the assignment, you might want to change the number of processor cores or the latency of a crossbar in your cache interconnect.
 Refer to the list below for more information on the components you will be using.
 
-- boards: you will only use `HW5X86Board`.
+- boards: you will only use `HWX86Board`.
 You can find its definition in `components/boards.py`.
-- processors: you will only use `HW5O3CPU`.
+- processors: you will only use `HWO3CPU`.
 You can find its definition in `components/processors.py`.
 **NOTE**: you will notice that the component creates a processor with an extra core.
 This is a weird gem5 thing.
 Please ignore this.
 However, when you look at your statistics you should ignore statistics for `board.processor.core.cores0` and
 `board.cache_hierarchy.ruby_system.l1_controllers0`.
-- cache hierarchies: you will only use `HW5MESITwoLevelCacheHierarchy`.
+- cache hierarchies: you will only use `HWMESITwoLevelCacheHierarchy`.
 You can find its definition in `components/cache_hierarchies.py`.
 **NOTE**: you will notice that its `__init__` takes **one** argument.
 You will have to assign different values to `xbar_latency` as instructed in the later parts of this assignment.
-- memories: You will only use `HW5DDR4`.
+- memories: You will only use `HWDDR4`.
 You can find its definition in `components/memories.py`.
 - clock frequency: Use `3GHz` as your clock frequency.
 
@@ -442,7 +442,7 @@ You can find its definition in `components/memories.py`.
 
 Now, we are going to use a software simulation framework to look at the details of how the hardware operates to answer the "speculation" part of [question 3](#question-3).
 
-To run your experiments, create a configuration script that allows you to run *any of the 6 implementations* of the workload with *any number of cores* for `HW5O3CPU` with *any latency* for `xbar_latency` in `HW5MESITwoLevelCacheHierarchy`.
+To run your experiments, create a configuration script that allows you to run *any of the 6 implementations* of the workload with *any number of cores* for `HWO3CPU` with *any latency* for `xbar_latency` in `HWMESITwoLevelCacheHierarchy`.
 
 ### **IMPORTANT NOTE**
 
