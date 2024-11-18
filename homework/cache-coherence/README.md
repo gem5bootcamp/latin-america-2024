@@ -9,9 +9,8 @@ Title: Cache Coherence in gem5
 - [Introduction](#introduction)
 - [Workload](#workload)
 - [Real hardware experiments](#real-hardware-experiments)
-- [Experimental setup](#experimental-setup)
+- [gem5 Experimental](#gem5)
 - [Analysis and simulation](#analysis-and-simulation)
-- [Hints](#hints)
 
 ## Introduction
 
