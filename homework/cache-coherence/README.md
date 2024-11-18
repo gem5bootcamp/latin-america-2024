@@ -396,7 +396,7 @@ So far at the bootcamp, we went through how to create configurations to run expe
 
 There are two main components when creating a gem5 configurations: the board and the workload.
 In side a gem5 stdlib board, we need to specify the processor, the cache hierarchy, the memory, and the frequency.
-[01-components.py](/workspaces/latin-america-2024/materials/02-Using-gem5/01-stdlib/completed/01-components.py) is a good example of a simple gem5 configuration.
+[01-components.py](../../materials/02-Using-gem5/01-stdlib/completed/01-components.py) is a good example of a simple gem5 configuration.
 
 In this exercise, you can find all the board related components under the directory `components` and the workload under the directory `workloads`.
 You can use them by importing them to your gem5 configuration.
@@ -434,6 +434,7 @@ However, when you look at your statistics you should ignore statistics for `boar
 You can find its definition in `components/cache_hierarchies.py`.
 **NOTE**: you will notice that its `__init__` takes **one** argument.
 You will have to assign different values to `xbar_latency` as instructed in the later parts of this assignment.
+For question 4-8, the `xbar_latency` should be 10 cycles.
 - memories: You will only use `HWDDR4`.
 You can find its definition in `components/memories.py`.
 - clock frequency: Use `3GHz` as your clock frequency.
@@ -580,7 +581,7 @@ So:
 
 ### Question 9
 
-Run using a crossbar latency of 1 cycle and 25 cycles (in addition to the 10 cycles that you have already run).
+Run using a `xbar_latency` of 1 cycle and 25 cycles (in addition to the 10 cycles that you have already run).
 
 As you increase the cache-to-cache latency, how does it affect the importance of the different optimizations?
 
