@@ -276,8 +276,8 @@ Strongly tied to <code>SimObject</code> definition file.</li>
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="15" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="50">
-<h2 id="hellosimobject">HelloSimObject</h2>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-paginate="true" data-class="exercise two-col" data-theme="gem5" lang="en-US" class="exercise two-col" data-marpit-pagination="15" style="--paginate:true;--class:exercise two-col;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="exercise-hellosimobject">Exercise: HelloSimObject</h2>
 <p>We will start building our first <code>SimObject</code> called <code>HelloSimObject</code>, and we will look at one of the <code>SimObject</code> files.</p>
 <p>We will start with the following steps.</p>
 <ol>
@@ -524,11 +524,33 @@ exit_event = m5.simulate()
 </code></pre>
 <script src="https://asciinema.org/a/ffjsHBq6mPCR1DPxT15WCkm58.js" id="asciicast-ffjsHBq6mPCR1DPxT15WCkm58" async="true"></script>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="34" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="50">
-<h2 id="end-of-step-1">End of Step 1</h2>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="34" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="overview-of-exercise">Overview of exercise</h2>
+<ul>
+<li>We created a <code>SimObject</code> called <code>HelloSimObject</code>.
+<ul>
+<li>A SimObject is the base for all models in gem5.</li>
+<li>SimObjects are implemented in C++ but exposed to the python configuration scripts.</li>
+<li>SimObjects can enqueue events and have parameters (as we'll see soon).</li>
+</ul>
+</li>
+<li>We defined the <code>HelloSimObject</code> in Python and C++.
+<ul>
+<li>Each SimObject needs a definition file, a header file, a source file, and a to be declared in the <code>SConscript</code> file.</li>
+<li>The Python definition file is used to interface with the C++ backend and exposes parameters, the header and C++ source files implement the model, and the <code>SConscript</code> file tells gem5 to build the model.</li>
+</ul>
+</li>
+<li>We created a configuration script that uses <code>HelloSimObject</code>.
+<ul>
+<li>So far, all SimObjects have been hidden in the stdlib</li>
+<li>We saw how to create a <code>Root</code> object and instantiate a <code>SimObject</code> in a configuration script.</li>
+<li>We also saw how to run the simulation &quot;manually&quot; without the stdlib.</li>
+</ul>
+</li>
+</ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="35" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="35" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="50">
-<h2 id="a-little-bit-of-a-detour-m5instantiate">A Little Bit of a Detour: m5.instantiate</h2>
+<h2 id="a-short-detour-m5instantiate">A short Detour: m5.instantiate</h2>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="36" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="36" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
 <h2 id="detour-m5instantiate-simobject-constructors-and-connecting-ports">Detour: m5.instantiate: SimObject Constructors and Connecting Ports</h2>
@@ -597,8 +619,17 @@ exit_event = m5.simulate()
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="41" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="41" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="50">
 <h2 id="params">Params</h2>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="42" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="50">
-<h2 id="step-2-simobject-params">Step 2: SimObject Params</h2>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-paginate="true" data-class="exercise" data-theme="gem5" lang="en-US" class="exercise" data-marpit-pagination="42" style="--paginate:true;--class:exercise;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="exercise-adding-simobject-params">Exercise adding SimObject Params</h2>
+<p>In this exercise, we will add a parameter to our <code>HelloSimObject</code> and use it in the constructor.<br />
+We will add a parameter called <code>num_hellos</code> to our <code>HelloSimObject</code> and use it to print <code>Hello from HelloSimObject's constructor!</code> multiple times.</p>
+<p>We will modify the following files:</p>
+<ul>
+<li>The SimObject definition file.</li>
+<li>The implementation of the SimObject in C++.</li>
+<li>The configuration script.</li>
+</ul>
+<p>SimObject parameters are where gem5's software architecture shows its strength. These provide an easy way to parameterize your models and control the values via python.</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="43" data-paginate="true" data-class="code-60-percent" data-theme="gem5" lang="en-US" class="code-60-percent" data-marpit-pagination="43" style="--paginate:true;--class:code-60-percent;--theme:gem5;" data-marpit-pagination-total="50">
 <h2 id="lets-talk-about-params-model-vs-params">Let's Talk About Params: Model vs Params</h2>
@@ -702,13 +733,26 @@ exit_event = m5.simulate()
 </code></pre>
 <script src="https://asciinema.org/a/P1nULfk7VRZGvQURZJryl7mAK.js" id="asciicast-P1nULfk7VRZGvQURZJryl7mAK" async="true"></script>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="49" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="49" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="50">
-<h2 id="end-of-step-2">End of Step 2</h2>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="49" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="49" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="50">
+<h2 id="summary-of-adding-parameters">Summary of adding parameters</h2>
+<ul>
+<li>Parameters are a powerful tool in gem5. They allow you to easily change the behavior of your models via python (instead of having to recompile the C++ each time).</li>
+<li>We saw an example of an integer parameter, but there are many other types of parameters you can use.
+<ul>
+<li>Strings, floats, enums, and more.</li>
+<li>Addresses, address ranges</li>
+<li>Vectors of other parameters</li>
+<li>Ports</li>
+<li>We'll also see how you can use other SimObjects as parameters as well.</li>
+</ul>
+</li>
+<li>See <a href="/gem5/src/python/m5/params.py"><code>params.py</code></a> for more information on the different types of parameters you can use.</li>
+</ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="50" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="50" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="50">
 <h2 id="summary-of-steps">Summary of Steps</h2>
 <ul>
-<li>Creating a basic <code>SimObject</code>
+<li><strong>Creating a basic <code>SimObject</code></strong>
 <ul>
 <li><a href="../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py"><code>SimObject</code> definition file</a> (.py)
 <ul>
@@ -742,7 +786,7 @@ exit_event = m5.simulate()
 </li>
 </ul>
 </li>
-<li>Adding a parameter (<code>num_hellos</code>)
+<li><strong>Adding a parameter (<code>num_hellos</code>)</strong>
 <ul>
 <li>Update the <a href="../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py">definition file</a> and the <a href="../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.cc">source file</a>.</li>
 <li>Write a new <a href="../../gem5/configs/bootcamp/hello-sim-object/second-hello-example.py">configuration file</a>.</li>
