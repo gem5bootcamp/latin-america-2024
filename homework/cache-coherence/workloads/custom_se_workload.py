@@ -24,10 +24,10 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from gem5.resources.workload import CustomWorkload
+from gem5.resources.resource import WorkloadResource
 
 
-class CustomSEWorkload(CustomWorkload):
+class CustomSEWorkload(WorkloadResource):
     def __init__(self, parameters: dict):
         super().__init__(
             function="set_se_binary_workload", parameters=parameters
