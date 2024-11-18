@@ -11,9 +11,6 @@ Title: Cache Coherence in gem5
 - [Real hardware experiments](#real-hardware-experiments)
 - [Experimental setup](#experimental-setup)
 - [Analysis and simulation](#analysis-and-simulation)
-- [Submission](#submission)
-- [Grading](#grading)
-- [Academic misconduct reminder](#academic-misconduct-reminder)
 - [Hints](#hints)
 
 ## Introduction
@@ -59,11 +56,8 @@ Also, in all examples we will assume that the threads can *race* on the `result`
 
 You can find the compiled binary for this implementation in X86 under `workloads/array_sum/naive-native`.
 You can use this binary to run the program on real hardware.
-**You have to run the native workloads in either the CSIF machines or your local computer.**
-Github codespaces are limited to 2 cores system only.
-Instructions on how to get started with the CSIF machines can be found at [here: CSIF machines](https://csif.cs.ucdavis.edu/).
+**You have to run the native workloads in your local computer.**
 You'd need to recompile the binaries.
-This should allow you to use > 2 threads.
 Here is an example of how you could run the binary on native hardware.
 This example sums up an array of size `32768 elements` with `8 threads`.
 
@@ -374,6 +368,7 @@ It should say something like `cpu cores       : 8`
 
 **NOTE**: We will only support running on x86 Linux machines.
 If you want to use a different system, we probably won't be able to help, and you're not guaranteed the correct results.
+Running them on the GitHub Codespace might result in noisy measurements.
 
 On your *real hardware* run the 6 parallel algorithms with 1, 2, 4, 8, 16 threads (up to the maximum threads on your hardware).
 I.e., if you only have 4 cores, don't run 8 and 16.
@@ -398,10 +393,20 @@ For algorithm 1, does increasing the number of threads improve performance or hu
 
 ## gem5
 
-For those of you who are not familiar with [gem5](https://www.gem5.org/), gem5 is a *cycle-level* simulator that simulates the entire system (cores, memory, caches, devices) at the hardware level.
+So far at the bootcamp, we went through how to create configurations to run experiements in gem5.
 
-The *input* to gem5 is a *Python* script that configures the system and runs the simulation.
-Refer to [Assignment 0]({{'modules/gem5/assignment0' | relative_url}}) to learn how to create your configuration script.
+There are two main components when creating a gem5 configurations: the board and the workload.
+In side a gem5 stdlib board, we need to specify the processor, the cache hierarchy, the memory, and the frequency.
+[01-components.py](/workspaces/latin-america-2024/materials/02-Using-gem5/01-stdlib/completed/01-components.py) is a good example of a simple gem5 configuration.
+
+In this exercise, you can find all the board related components under the directory `components` and the workload under the directory `workloads`.
+You can use them by importing them to your gem5 configuration.
+
+In this exercise, we will use the `gem5-mesi` to run our experiments. For exampole:
+
+```command
+gem5-mesi [your config]
+```
 
 ### gem5's output
 
@@ -582,44 +587,3 @@ As you increase the cache-to-cache latency, how does it affect the importance of
 
 You don't have to run all algorithms.
 You can probably get away with just running algorithm 1 and algorithm 6.
-
-## Submission
-
-Use clear reasoning and visualization to drive your conclusions.
-
-Submit all your code through your assignment repository. Please make sure to include code/scripts for the following.
-
-- `Instruction.md`: should include instructions on how to run your simulations.
-- Automation: code/scripts to run your simulations.
-- Configuration: python file configuring the systems you need to simulate.
-- `Answers.md`: should include the answers to the questions in the assignment.
-
-## Grading
-
-Like your submission, your grade is split into two parts.
-
-1. Reproducibility Package (50 points):
-    a. Instruction and automation to run simulations for different sections and dump statistics (10 points)
-        - Instructions (5 points)
-        - Automation (5 points)
-    b. configuration script(s) (40 points)
-2. Report (50 points): the grading breakdown is as follows (they are subject to change, but they show the relative breakdown) :
-
-Total points = 50
-
-| #Question       | Points (201A) | Points (154B) |
-|-----------------|--------|---|
-| Question 1	    | 2.5      | 4 |
-| Question 2.a	  | 2.5	     | 4 |
-| Question 2.b	  | 2.5      | 4 |
-| Question 3.a    | 5     | 4 |
-| Question 3.b    | 2.5      | 4 |
-| Question 4.a	  | 2.5      | 2.5 |
-| Question 4.b	  | 2.5      | 2.5 |
-| Question 5	    | 5     | 5 |
-| Question 6	    | 5     | 5 |
-| Question 7	    | 5     | 5 |
-| Question 8.a	  | 5     | 5 |
-| Question 8.b	  | 5     | 5 |
-| Question 9	    | 5     | 0 |
-
