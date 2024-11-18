@@ -227,9 +227,9 @@ Speaker Notes
     - Adding `num_hellos`
  -->
 
-<!-- _class: two-col -->
+<!-- _class: exercise two-col -->
 
-## HelloSimObject
+## Exercise: HelloSimObject
 
 We will start building our first `SimObject` called `HelloSimObject`, and we will look at one of the `SimObject` files.
 
@@ -697,15 +697,26 @@ Run with the following command in the base **gem5** directory.
 <script src="https://asciinema.org/a/ffjsHBq6mPCR1DPxT15WCkm58.js" id="asciicast-ffjsHBq6mPCR1DPxT15WCkm58" async="true"></script>
 
 ---
-<!-- _class: start -->
 
-## End of Step 1
+## Overview of exercise
+
+- We created a `SimObject` called `HelloSimObject`.
+  - A SimObject is the base for all models in gem5.
+  - SimObjects are implemented in C++ but exposed to the python configuration scripts.
+  - SimObjects can enqueue events and have parameters (as we'll see soon).
+- We defined the `HelloSimObject` in Python and C++.
+  - Each SimObject needs a definition file, a header file, a source file, and a to be declared in the `SConscript` file.
+  - The Python definition file is used to interface with the C++ backend and exposes parameters, the header and C++ source files implement the model, and the `SConscript` file tells gem5 to build the model.
+- We created a configuration script that uses `HelloSimObject`.
+  - So far, all SimObjects have been hidden in the stdlib
+  - We saw how to create a `Root` object and instantiate a `SimObject` in a configuration script.
+  - We also saw how to run the simulation "manually" without the stdlib.
 
 ---
 
 <!-- _class: start -->
 
-## A Little Bit of a Detour: m5.instantiate
+## A short Detour: m5.instantiate
 
 ---
 
@@ -841,9 +852,20 @@ You might have noticed that we also call `m5.simulate` in our configuration scri
 ## Params
 
 ---
-<!-- _class: start -->
+<!-- _class: exercise -->
 
-## Step 2: SimObject Params
+## Exercise adding SimObject Params
+
+In this exercise, we will add a parameter to our `HelloSimObject` and use it in the constructor.
+We will add a parameter called `num_hellos` to our `HelloSimObject` and use it to print `Hello from HelloSimObject's constructor!` multiple times.
+
+We will modify the following files:
+
+- The SimObject definition file.
+- The implementation of the SimObject in C++.
+- The configuration script.
+
+SimObject parameters are where gem5's software architecture shows its strength. These provide an easy way to parameterize your models and control the values via python.
 
 ---
 
@@ -1034,9 +1056,17 @@ Run with the following command in the base **gem5** directory.
 <script src="https://asciinema.org/a/P1nULfk7VRZGvQURZJryl7mAK.js" id="asciicast-P1nULfk7VRZGvQURZJryl7mAK" async="true"></script>
 
 ---
-<!-- _class: start -->
 
-## End of Step 2
+## Summary of adding parameters
+
+- Parameters are a powerful tool in gem5. They allow you to easily change the behavior of your models via python (instead of having to recompile the C++ each time).
+- We saw an example of an integer parameter, but there are many other types of parameters you can use.
+  - Strings, floats, enums, and more.
+  - Addresses, address ranges
+  - Vectors of other parameters
+  - Ports
+  - We'll also see how you can use other SimObjects as parameters as well.
+- See [`params.py`](/gem5/src/python/m5/params.py) for more information on the different types of parameters you can use.
 
 ---
 
@@ -1044,20 +1074,20 @@ Run with the following command in the base **gem5** directory.
 
 ## Summary of Steps
 
-- Creating a basic `SimObject`
-    - [`SimObject` definition file](../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py) (.py)
-        - Defines the sets of parameters for the model.
-    - [`SimObject` header file](../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.hh) (.hh)
-        - Declares the `SimObject` class in C++.
-    - [`SimObject` source file](../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.cc) (.cc extension):
-        - Implements the `SimObject` functionalities.
-    - [`SConscript`](../../gem5/src/bootcamp/hello-sim-object/SConscript)
-        -  Register our `SimObject` with gem5.
-    - Auto-generated [`SimObjectParams` header file](../../gem5/build/NULL/params/HelloSimObject.hh) (.hh)
-        - Declares a C++ struct storing all the parameters of the `SimObject`.
-    - [Configuration file](../../gem5/configs/bootcamp/hello-sim-object/first-hello-example.py) (.py)
-        - Instantiate `SimObject` and run the simulation.
-- Adding a parameter (`num_hellos`)
-    - Update the [definition file](../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py) and the [source file](../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.cc).
-    - Write a new [configuration file](../../gem5/configs/bootcamp/hello-sim-object/second-hello-example.py).
-    - Re-compile and re-run.
+- **Creating a basic `SimObject`**
+  - [`SimObject` definition file](../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py) (.py)
+    - Defines the sets of parameters for the model.
+  - [`SimObject` header file](../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.hh) (.hh)
+    - Declares the `SimObject` class in C++.
+  - [`SimObject` source file](../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.cc) (.cc extension):
+    - Implements the `SimObject` functionalities.
+  - [`SConscript`](../../gem5/src/bootcamp/hello-sim-object/SConscript)
+    - Register our `SimObject` with gem5.
+  - Auto-generated [`SimObjectParams` header file](../../gem5/build/NULL/params/HelloSimObject.hh) (.hh)
+    - Declares a C++ struct storing all the parameters of the `SimObject`.
+  - [Configuration file](../../gem5/configs/bootcamp/hello-sim-object/first-hello-example.py) (.py)
+    - Instantiate `SimObject` and run the simulation.
+- **Adding a parameter (`num_hellos`)**
+  - Update the [definition file](../../gem5/src/bootcamp/hello-sim-object/HelloSimObject.py) and the [source file](../../gem5/src/bootcamp/hello-sim-object/hello_sim_object.cc).
+  - Write a new [configuration file](../../gem5/configs/bootcamp/hello-sim-object/second-hello-example.py).
+  - Re-compile and re-run.
