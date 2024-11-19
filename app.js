@@ -123,10 +123,16 @@ function sidebar_category_onclick(e) {
  * Relative Link to Git Translation !!TEMPORARY!!
  * ========================================================================= */
 
-const bootcamp_base = 'https://github.com/gem5bootcamp/2024/tree/main/';
+const bootcamp_base = 'https://github.com/gem5bootcamp/latin-america-2024/tree/main/';
 const gem5_base = 'https://github.com/gem5/gem5/tree/stable/';
 const gem5_resources_base = 'https://github.com/gem5/gem5-resources/tree/stable/';
+
 function translate_rel_link(base_url, link) {
+    // Check if the link is an absolute URL
+    if (link.startsWith('http://') || link.startsWith('https://')) {
+        return link;
+    }
+
     if (!link.includes(window.location.origin)) {
         /* All non-relative links, just return the original */
         return link;

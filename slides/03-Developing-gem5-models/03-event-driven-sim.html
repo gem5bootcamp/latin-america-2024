@@ -379,17 +379,17 @@ This is where you should schedule any initial events that are needed to start th
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="24" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="20" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="57">
 <h2 id="nexthelloevent-hellosimobject-constructor">nextHelloEvent: HelloSimObject: Constructor</h2>
 <p>Now, let's change our definition of the constructor of <code>HelloSimObject</code> to initialize <code>nextHelloEvent</code>. Let's add the following line to the initialization list in <code>HelloSimObject::HelloSimObject</code> which you can find in <code>src/bootcamp/hello-sim-object/hello_sim_object.cc</code>.</p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">    <span class="hljs-built_in">nextHelloEvent</span>([<span class="hljs-keyword">this</span>](){ <span class="hljs-built_in">processNextHelloEvent</span>(); }, <span class="hljs-built_in">name</span>() + <span class="hljs-string">&quot;nextHelloEvent&quot;</span>)
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">    <span class="hljs-built_in">nextHelloEvent</span>([<span class="hljs-keyword">this</span>](){ <span class="hljs-built_in">processNextHelloEvent</span>(); }, <span class="hljs-built_in">name</span>() + <span class="hljs-string">&quot;.nextHelloEvent&quot;</span>)
 </code></pre>
 <p>Here, we're initializing <code>nextHelloEvent</code> with a <code>callback</code> function that calls <code>processNextHelloEvent</code> and a name for the event.</p>
 <p>The syntax shows that we're &quot;capturing&quot; <code>this</code> in the lambda function. This is necessary because the lambda function needs to access the member function <code>processNextHelloEvent</code>.</p>
-<p>We are calling this event <code>name()</code> (which is the python variable name used for the instance of this SimObject) <code>+ &quot;nextHelloEvent&quot;</code>. This is a common pattern to name events.</p>
+<p>We are calling this event <code>name()</code> (which is the python variable name used for the instance of this SimObject) <code>+ &quot;.nextHelloEvent&quot;</code>. This is a common pattern to name events.</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="25" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="21" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="57">
 <h2 id="nexthelloevent-cpp-file">nextHelloEvent: Cpp file</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">HelloSimObject::<span class="hljs-built_in">HelloSimObject</span>(<span class="hljs-type">const</span> HelloSimObjectParams&amp; params):
     <span class="hljs-built_in">SimObject</span>(params),
-    <span class="hljs-built_in">nextHelloEvent</span>([<span class="hljs-keyword">this</span>](){ <span class="hljs-built_in">processNextHelloEvent</span>(); }, <span class="hljs-built_in">name</span>() + <span class="hljs-string">&quot;nextHelloEvent&quot;</span>)
+    <span class="hljs-built_in">nextHelloEvent</span>([<span class="hljs-keyword">this</span>](){ <span class="hljs-built_in">processNextHelloEvent</span>(); }, <span class="hljs-built_in">name</span>() + <span class="hljs-string">&quot;.nextHelloEvent&quot;</span>)
 {
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; params.num_hellos; i++) {
         std::cout &lt;&lt; <span class="hljs-string">&quot;i: &quot;</span> &lt;&lt; i &lt;&lt; <span class="hljs-string">&quot;, Hello from HelloSimObject&#x27;s constructor!&quot;</span> &lt;&lt; std::endl;
@@ -434,7 +434,7 @@ This is where you should schedule any initial events that are needed to start th
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">HelloSimObject::<span class="hljs-built_in">HelloSimObject</span>(<span class="hljs-type">const</span> HelloSimObjectParams&amp; params):
     <span class="hljs-built_in">SimObject</span>(params),
     <span class="hljs-built_in">remainingHellosToPrintByEvent</span>(params.num_hellos),
-    <span class="hljs-built_in">nextHelloEvent</span>([<span class="hljs-keyword">this</span>](){ <span class="hljs-built_in">processNextHelloEvent</span>(); }, <span class="hljs-built_in">name</span>() + <span class="hljs-string">&quot;nextHelloEvent&quot;</span>)
+    <span class="hljs-built_in">nextHelloEvent</span>([<span class="hljs-keyword">this</span>](){ <span class="hljs-built_in">processNextHelloEvent</span>(); }, <span class="hljs-built_in">name</span>() + <span class="hljs-string">&quot;.nextHelloEvent&quot;</span>)
 {
     <span class="hljs-built_in">fatal_if</span>(params.num_hellos &lt;= <span class="hljs-number">0</span>, <span class="hljs-string">&quot;num_hellos should be positive!&quot;</span>);
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; params.num_hellos; i++) {
@@ -567,7 +567,7 @@ HelloSimObject::<span class="hljs-built_in">HelloSimObject</span>(<span class="h
     <span class="hljs-built_in">SimObject</span>(params),
     <span class="hljs-built_in">remainingHellosToPrintByEvent</span>(params.num_hellos),
     <span class="hljs-built_in">nextHelloEvent</span>(
-        [<span class="hljs-keyword">this</span>](){ <span class="hljs-built_in">processNextHelloEvent</span>(); }, <span class="hljs-built_in">name</span>() + <span class="hljs-string">&quot;nextHelloEvent&quot;</span>
+        [<span class="hljs-keyword">this</span>](){ <span class="hljs-built_in">processNextHelloEvent</span>(); }, <span class="hljs-built_in">name</span>() + <span class="hljs-string">&quot;.nextHelloEvent&quot;</span>
     )
 {
     <span class="hljs-built_in">fatal_if</span>(params.num_hellos &lt;= <span class="hljs-number">0</span>, <span class="hljs-string">&quot;num_hellos should be positive!&quot;</span>);
@@ -745,7 +745,7 @@ The event should be named <code>nextGoodByeEvent</code> and you should create a 
 
 GoodByeSimObject::<span class="hljs-built_in">GoodByeSimObject</span>(<span class="hljs-type">const</span> GoodByeSimObjectParams&amp; params):
     <span class="hljs-built_in">SimObject</span>(params),
-    <span class="hljs-built_in">nextGoodByeEvent</span>([<span class="hljs-keyword">this</span>]() { <span class="hljs-built_in">processNextGoodByeEvent</span>(); }, <span class="hljs-built_in">name</span>() + <span class="hljs-string">&quot;nextGoodByeEvent&quot;</span> )
+    <span class="hljs-built_in">nextGoodByeEvent</span>([<span class="hljs-keyword">this</span>]() { <span class="hljs-built_in">processNextGoodByeEvent</span>(); }, <span class="hljs-built_in">name</span>() + <span class="hljs-string">&quot;.nextGoodByeEvent&quot;</span> )
 {}
 
 <span class="hljs-function"><span class="hljs-type">void</span>
