@@ -56,6 +56,7 @@ Also, in all examples we will assume that the threads can *race* on the `result`
 You can find the compiled binary for this implementation in X86 under `workloads/array_sum/naive-native`.
 You can use this binary to run the program on real hardware.
 **You have to run the native workloads in your local computer.**
+**If a local machine is not available, you might use GitHub Codespace with caution due to noisy measurements.**
 You'd need to recompile the binaries.
 Here is an example of how you could run the binary on native hardware.
 This example sums up an array of size `32768 elements` with `8 threads`.
@@ -368,6 +369,7 @@ It should say something like `cpu cores       : 8`
 **NOTE**: We will only support running on x86 Linux machines.
 If you want to use a different system, we probably won't be able to help, and you're not guaranteed the correct results.
 Running them on the GitHub Codespace might result in noisy measurements.
+Please process the noisy measurements with caution if this is the case.
 
 On your *real hardware* run the 6 parallel algorithms with 1, 2, 4, 8, 16 threads (up to the maximum threads on your hardware).
 I.e., if you only have 4 cores, don't run 8 and 16.
@@ -401,7 +403,7 @@ In side a gem5 stdlib board, we need to specify the processor, the cache hierarc
 In this exercise, you can find all the board related components under the directory `components` and the workload under the directory `workloads`.
 You can use them by importing them to your gem5 configuration.
 
-In this exercise, we will use the `gem5-mesi` to run our experiments. For exampole:
+In this exercise, we will use the `gem5-mesi` to run our experiments. For example:
 
 ```command
 gem5-mesi [your config]
