@@ -53,15 +53,13 @@ Research Interests: Computer architecture security
 Boulder Computer Architecture Research Lab (BCARL)
 <https://www.colorado.edu/faculty/lehmantamara/>
 
-
-
-![CU Boulder Logo w:450px center](../Boulder%20centered.jpg)
+![CU Boulder Logo w:450px center](00-introduction-to-bootcamp-imgs/Boulder%20centered.jpg)
 
 >Note: interested in applying to the PhD program at CU Boulder? Ask me how to waive the application fee. Application deadline is **December 15th 2024**.
 
 ---
 
-## The bootcamp team
+## Contributors to the bootcamp
 
 ![Everyone who has contributed to the bootcamp width:1200px](00-introduction-to-bootcamp-imgs/devs.drawio.svg)
 
