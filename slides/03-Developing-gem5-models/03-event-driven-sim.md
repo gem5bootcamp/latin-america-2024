@@ -382,14 +382,14 @@ class HelloSimObject: public SimObject
 Now, let's change our definition of the constructor of `HelloSimObject` to initialize `nextHelloEvent`. Let's add the following line to the initialization list in `HelloSimObject::HelloSimObject` which you can find in `src/bootcamp/hello-sim-object/hello_sim_object.cc`.
 
 ```cpp
-    nextHelloEvent([this](){ processNextHelloEvent(); }, name() + "nextHelloEvent")
+    nextHelloEvent([this](){ processNextHelloEvent(); }, name() + ".nextHelloEvent")
 ```
 
 Here, we're initializing `nextHelloEvent` with a `callback` function that calls `processNextHelloEvent` and a name for the event.
 
 The syntax shows that we're "capturing" `this` in the lambda function. This is necessary because the lambda function needs to access the member function `processNextHelloEvent`.
 
-We are calling this event `name()` (which is the python variable name used for the instance of this SimObject) `+ "nextHelloEvent"`. This is a common pattern to name events.
+We are calling this event `name()` (which is the python variable name used for the instance of this SimObject) `+ ".nextHelloEvent"`. This is a common pattern to name events.
 
 ---
 
@@ -398,7 +398,7 @@ We are calling this event `name()` (which is the python variable name used for t
 ```cpp
 HelloSimObject::HelloSimObject(const HelloSimObjectParams& params):
     SimObject(params),
-    nextHelloEvent([this](){ processNextHelloEvent(); }, name() + "nextHelloEvent")
+    nextHelloEvent([this](){ processNextHelloEvent(); }, name() + ".nextHelloEvent")
 {
     for (int i = 0; i < params.num_hellos; i++) {
         std::cout << "i: " << i << ", Hello from HelloSimObject's constructor!" << std::endl;
@@ -465,7 +465,7 @@ This is how `HelloSimObject::HelloSimObject` should look after the changes.
 HelloSimObject::HelloSimObject(const HelloSimObjectParams& params):
     SimObject(params),
     remainingHellosToPrintByEvent(params.num_hellos),
-    nextHelloEvent([this](){ processNextHelloEvent(); }, name() + "nextHelloEvent")
+    nextHelloEvent([this](){ processNextHelloEvent(); }, name() + ".nextHelloEvent")
 {
     fatal_if(params.num_hellos <= 0, "num_hellos should be positive!");
     for (int i = 0; i < params.num_hellos; i++) {
@@ -625,7 +625,7 @@ HelloSimObject::HelloSimObject(const HelloSimObjectParams& params):
     SimObject(params),
     remainingHellosToPrintByEvent(params.num_hellos),
     nextHelloEvent(
-        [this](){ processNextHelloEvent(); }, name() + "nextHelloEvent"
+        [this](){ processNextHelloEvent(); }, name() + ".nextHelloEvent"
     )
 {
     fatal_if(params.num_hellos <= 0, "num_hellos should be positive!");
@@ -869,7 +869,7 @@ namespace gem5
 
 GoodByeSimObject::GoodByeSimObject(const GoodByeSimObjectParams& params):
     SimObject(params),
-    nextGoodByeEvent([this]() { processNextGoodByeEvent(); }, name() + "nextGoodByeEvent" )
+    nextGoodByeEvent([this]() { processNextGoodByeEvent(); }, name() + ".nextGoodByeEvent" )
 {}
 
 void
