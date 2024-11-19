@@ -17,7 +17,7 @@ Title: Cache Coherence in gem5
 In this assignment, you will explore the performance bottlenecks in poorly-written parallel code.
 We will take a very simple application, summing the values in an array, and see how if you are not careful how you parallelize the application, the performance will become quite poor.
 
-Then, after seeing which algorithms perform well and poorly on real hardware, we will use a cycle-level simulator ([gem5](https://www.gem5.org/)) with a detailed cache model to understand the performance.
+Then, after seeing which algorithms perform well and poorly on real hardware, we will use [gem5](https://www.gem5.org/), a cycle-level simulator, with a detailed cache model to understand the performance.
 
 ## Workload
 
