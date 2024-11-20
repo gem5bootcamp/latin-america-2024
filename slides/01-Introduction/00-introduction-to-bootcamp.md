@@ -42,7 +42,24 @@ I lead the Davis Computer Architecture Research (DArchR) Group.
 
 ---
 
-## The bootcamp team
+<!-- _class: two-col -->
+
+## A bit about us
+
+I am **Prof. Tamara Silbergleit Lehman** (she/her).
+I am an assistant professor in the Electrical, Computer and Energy Engineering (ECEE) Department at the University of Colorado Boulder (CU Boulder).
+Research Interests: Computer architecture security
+
+Boulder Computer Architecture Research Lab (BCARL)
+<https://www.colorado.edu/faculty/lehmantamara/>
+
+![CU Boulder Logo w:450px center](00-introduction-to-bootcamp-imgs/Boulder%20centered.jpg)
+
+>Note: interested in applying to the PhD program at CU Boulder? Ask me how to waive the application fee. Application deadline is **December 15th 2024**.
+
+---
+
+## Contributors to the bootcamp
 
 ![Everyone who has contributed to the bootcamp width:1200px](00-introduction-to-bootcamp-imgs/devs.drawio.svg)
 

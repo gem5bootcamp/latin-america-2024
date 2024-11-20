@@ -27,7 +27,7 @@
 from gem5.components.boards.simple_board import SimpleBoard
 
 # A board class designed to be flexible and general. For this assignment, it
-# has been renamed to HW4X86Board. Please refer to
+# has been renamed to HWX86Board. Please refer to
 #     gem5/src/python/components/boards/simple_board.py
 # for more detailed documentation. Below is the function signature for
 # the constructor to the SimpleBoard class.
@@ -42,4 +42,4 @@ from gem5.components.boards.simple_board import SimpleBoard
 #     )
 
 
-HW5X86Board = SimpleBoard
+HWX86Board = SimpleBoard

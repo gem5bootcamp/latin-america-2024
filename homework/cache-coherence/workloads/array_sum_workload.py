@@ -26,7 +26,7 @@
 
 import pathlib
 
-from gem5.resources.resource import CustomResource
+from gem5.resources.resource import BinaryResource
 from .custom_se_workload import CustomSEWorkload
 
 this_dir = pathlib.Path(__file__).parent.absolute()
@@ -34,7 +34,9 @@ this_dir = pathlib.Path(__file__).parent.absolute()
 
 class NaiveArraySumWorkload(CustomSEWorkload):
     def __init__(self, array_size: int, num_threads: int):
-        array_sum_bin = CustomResource(str(this_dir / "array_sum/naive-gem5"))
+        array_sum_bin = BinaryResource(
+            local_path=str(this_dir / "array_sum/naive-gem5")
+        )
         super().__init__(
             parameters={
                 "binary": array_sum_bin,
@@ -45,8 +47,8 @@ class NaiveArraySumWorkload(CustomSEWorkload):
 
 class ChunkingArraySumWorkload(CustomSEWorkload):
     def __init__(self, array_size: int, num_threads: int):
-        array_sum_bin = CustomResource(
-            str(this_dir / "array_sum/chunking-gem5")
+        array_sum_bin = BinaryResource(
+            local_path=str(this_dir / "array_sum/chunking-gem5")
         )
         super().__init__(
             parameters={
@@ -58,8 +60,8 @@ class ChunkingArraySumWorkload(CustomSEWorkload):
 
 class NoResultRaceArraySumWorkload(CustomSEWorkload):
     def __init__(self, array_size: int, num_threads: int):
-        array_sum_bin = CustomResource(
-            str(this_dir / "array_sum/res-race-opt-gem5")
+        array_sum_bin = BinaryResource(
+            local_path=str(this_dir / "array_sum/res-race-opt-gem5")
         )
         super().__init__(
             parameters={
@@ -71,8 +73,8 @@ class NoResultRaceArraySumWorkload(CustomSEWorkload):
 
 class ChunkingNoResultRaceArraySumWorkload(CustomSEWorkload):
     def __init__(self, array_size: int, num_threads: int):
-        array_sum_bin = CustomResource(
-            str(this_dir / "array_sum/chunking-res-race-opt-gem5")
+        array_sum_bin = BinaryResource(
+            local_path=str(this_dir / "array_sum/chunking-res-race-opt-gem5")
         )
         super().__init__(
             parameters={
@@ -84,8 +86,8 @@ class ChunkingNoResultRaceArraySumWorkload(CustomSEWorkload):
 
 class NoCacheBlockRaceArraySumWorkload(CustomSEWorkload):
     def __init__(self, array_size: int, num_threads: int):
-        array_sum_bin = CustomResource(
-            str(this_dir / "array_sum/block-race-opt-gem5")
+        array_sum_bin = BinaryResource(
+            local_path=str(this_dir / "array_sum/block-race-opt-gem5")
         )
         super().__init__(
             parameters={
@@ -97,8 +99,8 @@ class NoCacheBlockRaceArraySumWorkload(CustomSEWorkload):
 
 class ChunkingNoBlockRaceArraySumWorkload(CustomSEWorkload):
     def __init__(self, array_size: int, num_threads: int):
-        array_sum_bin = CustomResource(
-            str(this_dir / "array_sum/all-opt-gem5")
+        array_sum_bin = BinaryResource(
+            local_path=str(this_dir / "array_sum/all-opt-gem5")
         )
         super().__init__(
             parameters={

@@ -29,7 +29,7 @@ from m5.objects import DDR4_2400_8x8
 from gem5.components.memory.memory import ChanneledMemory
 
 
-# HW5DDR4 models a 1 GiB single channel DDR4 DRAM memory with a data
+# HWDDR4 models a 1 GiB single channel DDR4 DRAM memory with a data
 # bus clocked at 2400MHz. This model extends ChanneledMemory from gem5's
 # standard libary. Please refer to
 #     gem5/src/python/gem5/components/memory/memory.py
@@ -47,7 +47,7 @@ from gem5.components.memory.memory import ChanneledMemory
 #     )
 
 
-class HW5DDR4(ChanneledMemory):
+class HWDDR4(ChanneledMemory):
     def __init__(self):
         super().__init__(
             dram_interface_class=DDR4_2400_8x8,

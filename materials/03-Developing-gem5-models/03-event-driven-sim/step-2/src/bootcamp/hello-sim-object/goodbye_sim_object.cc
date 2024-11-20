@@ -8,7 +8,7 @@ namespace gem5
 
 GoodByeSimObject::GoodByeSimObject(const GoodByeSimObjectParams& params):
     SimObject(params),
-    nextGoodByeEvent([this]() { processNextGoodByeEvent(); }, name() + "nextGoodByeEvent" )
+    nextGoodByeEvent([this]() { processNextGoodByeEvent(); }, name() + ".nextGoodByeEvent" )
 {}
 
 void

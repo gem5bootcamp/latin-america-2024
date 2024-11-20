@@ -51,7 +51,7 @@ from m5.objects import (
     RubyPortProxy,
 )
 
-class HW5MESITwoLevelCacheHierarchy(
+class HWMESITwoLevelCacheHierarchy(
     AbstractRubyCacheHierarchy, AbstractTwoLevelCacheHierarchy
 ):
     """A two level private L1 shared L2 MESI hierarchy.

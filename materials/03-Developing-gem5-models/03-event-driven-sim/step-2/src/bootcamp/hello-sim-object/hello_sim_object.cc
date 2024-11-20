@@ -12,7 +12,7 @@ HelloSimObject::HelloSimObject(const HelloSimObjectParams& params):
     SimObject(params),
     remainingHellosToPrintByEvent(params.num_hellos),
     goodByeObject(params.goodbye_object),
-    nextHelloEvent([this](){ processNextHelloEvent(); }, name() + "nextHelloEvent")
+    nextHelloEvent([this](){ processNextHelloEvent(); }, name() + ".nextHelloEvent")
 {
     fatal_if(params.num_hellos <= 0, "num_hellos should be positive!");
     for (int i = 0; i < params.num_hellos; i++) {
