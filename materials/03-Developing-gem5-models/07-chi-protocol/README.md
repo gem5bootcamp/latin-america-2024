@@ -1,2 +1,0 @@
-# CHI protocol exercises
-
