@@ -8,6 +8,7 @@ Title: Secure Memory Metadata Cache in gem5
 - [Introduction](#introduction)
 - [Metadata Cache Functionality](#Metadata-Cache-Functionality)
 - [Experimental setup](#experimental-setup)
+- [Implementation](#implementation)
 - [Analysis](#analysis)
 - [Submission](#submission)
 
@@ -20,15 +21,29 @@ In this assignment, you will extend the gem5 implementation of the secure memory
 The secure memory metadata cache offers two benefits. Like the core data cache, it helps to alleviate the memory accesses that are needed to fetch all the metadata to both decrypt and integrity verify data read from memory. Recall that when there is a last level cache miss, the memory controller has to request an additional 3 memory blocks at least, if not more: (1) the decryption counter (2) the data hash (3) the integrity node that verifies the integrity of the encryption counter. The number of integrity tree levels traversed depends on the secure memory region size. For example, if the secure memory region size is 4GB, then the integrity tree will have 7 levels, and as a result, 7 additional memory accesses will be required (on top of the data hash and decryption counter). 
 
 
-For this homework we will assume that all of the memory will be protected, and as a result the integrity tree will have x number of levels (memory size will be xGB). Your metadata cache should be placed to the side of the memory controller so that it can access it when needing to decrypt and integrity verify last level cache misses. The metadata cache access should happen before creating the correspoding memory requests but after the data memory request has been sent to the memory device. The metadata cache wil store all metadata blocks used for decrypting and encrypting data fetched from/written to memory, and metadata blocks required to verify the integrity of the data fetched from memory (including both the data hashes and the integrity tree nodes at every level). There will be three different types of metadata that the cache will hold:
+For this homework we will assume that all of the memory will be protected, assuming a memory capacity of 2GB. Your metadata cache should be placed to the side of the memory controller so that it can access it when needing to decrypt and integrity verify last level cache misses. The metadata cache access should happen before creating the correspoding memory requests but after the data memory request has been sent to the memory device. The metadata cache wil store all metadata blocks used for decrypting and encrypting data fetched from/written to memory, and metadata blocks required to verify the integrity of the data fetched from memory (including both the data hashes and the integrity tree nodes at every level). There will be three different types of metadata that the cache will hold:
      - The counters used to encrypt and decrypt data. These are grouped into 64 byte blocks each containing 64 8-bit minor counters (for the 64B data block) and one 8-byte major counter (for the page). 
      - The data hash to verify the integrity of the data. These are also grouped into 64 byte blocks, resulting in 8 8-byte hashes.
      - The hashes to verify the encryption counter integrity, which are the nodes that conformt the integrity tree. These hashes are also grouped into 64 byte blocks, each containing 8 8-byte hashes.
-If the requested node is found in the metadata cache, a cache hit should be repoerted, and the integrity verification traversal of the tree will stop immediately. If a counter block is found in the cache, there is no need to traverse the integrity tree, as the integrity of the counter was verified when it was brought into the cache. If a data hash is found in the cache, then it can be used to verify the integrity of the data fetched from memory. If an integrity tree node is found in the cache, then the traversal of the tree can stop a the level to which the node belongs to, as its integrity was verified when the integrity tree node was brought into the cache. A miss in the cache triggers an immediate memory request to be created for that address and a check in the cache for its parent node (unless it is a data hash block). The traversal of the tree stops at the root, since it is always assumed to be on-chip (not in the metadata cache but in its own separate register)./
+If the requested node is found in the metadata cache, a cache hit should be reported, and the integrity verification traversal of the tree will stop immediately. If a counter block is found in the cache, there is no need to traverse the integrity tree, as the integrity of the counter was verified when it was brought into the cache. If a data hash is found in the cache, then it can be used to verify the integrity of the data fetched from memory. If an integrity tree node is found in the cache, then the traversal of the tree can stop a the level to which the node belongs to, as its integrity was verified when the integrity tree node was brought into the cache. A miss in the cache triggers an immediate memory request to be created for that address and a check in the cache for its parent node (unless it is a data hash block). The traversal of the tree stops at the root, since it is always assumed to be on-chip (not in the metadata cache but in its own separate register).
 
-We will use the existing pseudo LRU eviction policy implementation and the writeback base cache design. We will assume the cache is 32KB 4-way set associative (except where explicitly stated to vary these parameters) with a 1 cycle access latency for both the data and the tags. 
+The default parameters for the cache will include the LRU replacement policy, the writeback base cache design, a size of 32KB 4-way set associative with a 1 cycle access latency for both the data and the tags. 
 
----
+## Implementation
+The first change we will have to make will be to include the ports (the send and receive ports) to be able to declare a cache inside the SecureMemory component that we created during the workshop. You fill make these changes in the file called SecureMemoryTutorial.py which is in src/mem/secmem-tutorial/.  The code in this file will look something like below:
+
+```metadata_cache_request_port  = RequestPort("Cache access port, sends requests for metadata")
+   metadata_cache_response_port = RequestPort("Response side port, receives responses from the metadata cache")
+   ``` 
+
+The next change you will have to make will be inisde the secure.py file which is in src/python/gem5/components/memory/. In this file you will have to import the L1DCache module so that you can instantiate the metadata cache:
+
+```
+from m5.objects import L1Cache
+...
+self.metadata_cache = L1Cache()```
+
+
 ## Experimental setup
 
 For this assignment, you will use the model you developed during the worshop with the same parameters across your experiments.
