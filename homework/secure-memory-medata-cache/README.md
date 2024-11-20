@@ -66,9 +66,9 @@ You will have to pass `exit_event_handler` as a keyword argument named `on_exit_
 
 ```python
 simulator = Simulator(board={name of your board}, full_system=False, on_exit_event=exit_event_handler)
-``
----
+```
 
+---
 ## Analysis
 Now, we are going to use the output of the gem5 simulation to understand how the metadta cache impacts the performance of the secure memroy system
 
