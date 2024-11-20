@@ -54,7 +54,7 @@ if __name__ == "__m5_main__":
             l2_size="256KiB",
             l3_size="2MiB",
         ),
-        memory=DualChannelDDR4_2400(),
+        memory=DualChannelDDR4_2400(size="1GiB"),
         clk_freq="3GHz",
     )
 

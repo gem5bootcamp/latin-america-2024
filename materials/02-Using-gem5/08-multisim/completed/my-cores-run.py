@@ -3,7 +3,7 @@ This script runs the RISC-V Getting Started benchmark suite on two different
 processors: BigProcessor and LittleProcessor.
 This script uses the MultiSim module to run the simulations in parallel.
 
-$ gem5 -m gem5.utils.multisim my-cores-run-suite.py
+$ gem5 -m gem5.utils.multisim my-cores-run.py
 """
 
 from gem5.components.boards.simple_board import SimpleBoard
