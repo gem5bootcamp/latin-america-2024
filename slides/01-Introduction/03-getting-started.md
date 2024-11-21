@@ -144,9 +144,30 @@ scons build/ALL/gem5.opt -j [number of cores]
 <script src="https://asciinema.org/a/6rAd24brgGqb3Sj8Kmvy1msaG.js" id="asciicast-6rAd24brgGqb3Sj8Kmvy1msaG" async="true"></script>
 
 ---
+
+<!-- _class: exercise -->
+
+## First Exercise
+
+In this exercise, you will get familiar with the codespace environment and run your first gem5 simulation.
+
+### Steps:
+
+1. Open the codespace and configure the codespace to show the slides
+2. Write a simple gem5 runscript
+3. Run gem5
+4. Explore the output
+
+### Questions
+
+1. How can you tell that Linux began booting?
+2. How many instructions executed?
+
+---
+
 <!-- _class: center-image -->
 
-## Time for a live coding example
+## Step 1: Open the codespace
 
 While we do this, feel free to follow along in the slides.
 
@@ -158,7 +179,17 @@ Press the "Preview" button in VS Code to see a rendered version of the slides lo
 
 ---
 
-## Let’s start by writing a simulation configuration
+## Step 2: simulation configuration
+
+Create a new directory: `exercises/01-Introduction/03-getting-started`.
+
+Create a new python file: `basic.py` in the `exercises/01-Introduction/03-getting-started` directory.
+
+Import the `X86DemoBoard` class and the `obtain_resource` and `Simulator` functions.
+
+---
+
+## Step 2: Answer
 
 ```python
 from gem5.prebuilt.demo.x86_demo_board import X86DemoBoard
@@ -166,16 +197,17 @@ from gem5.resources.resource import obtain_resource
 from gem5.simulate.simulator import Simulator
 ```
 
-This template code is available in the `materials/01-Introduction/03-getting-started/` directory.
-Open the [`basic.py`](../../materials/01-Introduction/03-getting-started/basic.py) file and start editing.
+---
 
-Throughout this bootcamp we will be editing/extending files in the materials directory.
+## Step 3: Let’s be lazy and use a prebuilt board
 
-Links to the code are available in the slides if you're using VS Code.
+Create an instance of the `X86DemoBoard` class.
+
+Source is available: [src/python/gem5/prebuilt/demo/x86_demo_board.py](/gem5/src/python/gem5/prebuilt/demo/x86_demo_board.py).
 
 ---
 
-## Let’s be lazy and use a prebuilt board
+## Step 3: Answer
 
 ```python
 board = X86DemoBoard()
@@ -188,11 +220,21 @@ The X86DemoBoard has the following properties:
 - A MESI Two Level Cache Hierarchy, with 32kB data and instruction case and a 1MB L2 Cache.
 - Will be run as a Full-System simulation.
 
-Source is available: [src/python/gem5/prebuilt/demo/x86_demo_board.py](../../gem5/src/python/gem5/prebuilt/demo/x86_demo_board.py).
+---
+
+## Step 4: Load some software
+
+Let's run a simple workload that boots Ubuntu 24.04 without systemd for x86.
+
+You can search the workloads available on the [gem5 resources page](https://resources.gem5.org/).
+
+Use the `obtain_resource` function to download the workload.
+
+You can find more information about the [`obtain_resource`](/gem5/src/python/gem5/resources/resource.py) function in the gem5 source code.
 
 ---
 
-## Let's load some software
+## Step 4: Answer
 
 ```python
 board.set_workload(
@@ -208,17 +250,19 @@ See the [gem5 resource page](https://resources.gem5.org/resources/x86-ubuntu-24.
 
 ---
 
-<!-- _class: center-image -->
+## Step 5: Create a simulator object and run the simulation
 
-## gem5 resources web portal
+Create a simulator object and run the simulation for 20 billion ticks (20 ms).
 
-### [Link](https://resources.gem5.org/resources/x86-ubuntu-24.04-boot-no-systemd?version=1.0.0)
+You can find more information about the [`Simulator`](/gem5/src/python/gem5/simulate/simulator.py) class in the gem5 source code.
 
-![Screenshot of gem5 resources webpage](03-getting-started-imgs/resources-screenshot.drawio.png)
+You should pass one parameter to the `Simulator`, which is the board you want to run.
+
+Make sure you only run it for 20ms, otherwise it will take a long time.
 
 ---
 
-## Now, let's create a simulator to actually run
+## Step 5: Answer
 
 ```python
 sim = Simulator(board)
@@ -227,7 +271,15 @@ sim.run(20_000_000_000) # 20 billion ticks or 20 ms
 
 ---
 
-## That's it!
+## Step 6: Run the simulation
+
+Use the `gem5-mesi` workload to run your python script.
+
+Remember, gem5 is just a Python interpreter.
+
+---
+
+## Step 6: Answer
 
 ```python
 from gem5.prebuilt.demo.x86_demo_board import X86DemoBoard
@@ -249,7 +301,15 @@ gem5-mesi basic.py
 
 ---
 
-## Results
+## Step 7: Explore the output
+
+gem5 will create a new directory called `m5out/` in the current directory.
+
+In this directory, you will find the output of the simulation.
+
+---
+
+## Step 7: Answer
 
 gem5 has a lot of output.
 It's both verbose on stdout, but also writes many files in `m5out/`.
@@ -263,6 +323,13 @@ In `m5out/` you'll see:
 - `citations.bib`: Citations for the models and resources used.
 - `config.ini/json`: The configuration file used.
 - `config*.pdf/svg`: A visualization of the configuration for the system and the caches.
+
+---
+
+## Exercise 1: Questions
+
+1. How can you tell that Linux began booting?
+2. How many instructions executed?
 
 ---
 
