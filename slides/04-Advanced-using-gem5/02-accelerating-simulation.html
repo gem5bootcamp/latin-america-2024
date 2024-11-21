@@ -60,6 +60,13 @@
 /* For reducing size of code blocks */div#\:\$p>svg>foreignObject>section.code-50-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.33)}div#\:\$p>svg>foreignObject>section.code-50-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.5)}div#\:\$p>svg>foreignObject>section.code-60-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.48)}div#\:\$p>svg>foreignObject>section.code-60-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.6)}div#\:\$p>svg>foreignObject>section.code-70-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.65)}div#\:\$p>svg>foreignObject>section.code-70-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.7)}div#\:\$p>svg>foreignObject>section.code-80-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.8)}div#\:\$p>svg>foreignObject>section.code-80-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.8)}
 
 /****************************************************/
+/* For tables */div#\:\$p>svg>foreignObject>section table{color:blue;background-color:white;border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black}div#\:\$p>svg>foreignObject>section th{color:black
+    /* border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black; */}
+
+/****************************************************/
 /* For code block */div#\:\$p>svg>foreignObject>section :is(pre,marp-pre){padding:10px;border-radius:5px;line-height:var(--code-line-height);background-color:#ffffff;box-shadow:1px 2px 4px var(--gem5-gray)}div#\:\$p>svg>foreignObject>section code{font-family:"Roboto Mono",monospace;background-color:#ffffff;font-size:var(--code-font-size)}
 
 /* Forces inherited height for code in headers */div#\:\$p>svg>foreignObject>section :is(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6)) code{font-size:inherit!important}
@@ -174,8 +181,8 @@ Typically this "required" baseline CSS is added by `makestuff.js` during build.
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="10" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="44">
 <h2 id="hands-on-time">Hands-on Time!</h2>
 <h3 id="01-annotate-this">01-annotate-this</h3>
-<p>Materials are under <a href="/materials/02-Using-gem5/08-accelerating-simulation/01-annotate-this/">materials/02-Using-gem5/08-accelerating-simulation/01-annotate-this</a>.<br />
-<a href="../../materials/02-Using-gem5/08-accelerating-simulation/01-annotate-this/01-annotate-this.cpp"><code>01-annotate-this.cpp</code></a> is the same workload we used in <a href="03-running-in-gem5.md">03-running-in-gem5</a>, but this time, we need to use the address version of m5ops to annotate it.</p>
+<p>Materials are under <a href="/materials/04-Advanced-using-gem5/08-accelerating-simulation/01-annotate-this/">materials/04-Advanced-using-gem5/08-accelerating-simulation/01-annotate-this</a>.<br />
+<a href="../../materials/04-Advanced-using-gem5/08-accelerating-simulation/01-annotate-this/01-annotate-this.cpp"><code>01-annotate-this.cpp</code></a> is the same workload we used in <a href="03-running-in-gem5.md">03-running-in-gem5</a>, but this time, we need to use the address version of m5ops to annotate it.</p>
 <p>We first need to get the functions we need from the m5ops library.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-comment">// Include the gem5 m5ops header file</span>
 <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;gem5/m5ops.h&gt;</span></span>
@@ -233,7 +240,7 @@ Therefore, we need to call <code>m5_work_begin_addr</code> and <code>m5_work_end
 <li>Add <strong><code>gem5/util/m5/src</code></strong> to the compiler's include search path</li>
 <li>Add <code>-no-pie</code> to not make a position independent executable</li>
 </ol>
-<p>For our <a href="../../materials/02-Using-gem5/08-accelerating-simulation/01-annotate-this/Makefile">Makefile</a>, we have the following compiler command:</p>
+<p>For our <a href="../../materials/04-Advanced-using-gem5/08-accelerating-simulation/01-annotate-this/Makefile">Makefile</a>, we have the following compiler command:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-Makefile"><span class="hljs-variable">$(GXX)</span> -o 01-annotate-this 01-annotate-this.cpp -no-pie \
   -I<span class="hljs-variable">$(GEM5_PATH)</span>/<span class="hljs-keyword">include</span> \
   -L<span class="hljs-variable">$(GEM5_PATH)</span>/util/m5/build/<span class="hljs-variable">$(ISA)</span>/out \
@@ -266,8 +273,8 @@ gem5 resources provides us with the <code>npb-ep-a</code> workload that allows u
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="16" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="44">
 <h2 id="02-kvm-time-1">02-kvm-time</h2>
-<p>All materials can be found in <a href="/materials/02-Using-gem5/08-accelerating-simulation/02-kvm-time">materials/02-Using-gem5/08-accelerating-simulation/02-kvm-time</a>.</p>
-<p>We will be editing <a href="../../materials/02-Using-gem5/08-accelerating-simulation/02-kvm-time/02-kvm-time.py"><code>02-kvm-time.py</code></a></p>
+<p>All materials can be found in <a href="/materials/04-Advanced-using-gem5/08-accelerating-simulation/02-kvm-time">materials/04-Advanced-using-gem5/08-accelerating-simulation/02-kvm-time</a>.</p>
+<p>We will be editing <a href="../../materials/04-Advanced-using-gem5/08-accelerating-simulation/02-kvm-time/02-kvm-time.py"><code>02-kvm-time.py</code></a></p>
 <h3 id="goal">Goal</h3>
 <ol>
 <li>Use KVM to fast-forward the simulation until the beginning of the ROI.</li>
@@ -339,7 +346,7 @@ processor = SimpleSwitchableProcessor(
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-paginate="true" data-class="no-logo code-80-percent" data-theme="gem5" lang="en-US" class="no-logo code-80-percent" data-marpit-pagination="21" style="--paginate:true;--class:no-logo code-80-percent;--theme:gem5;" data-marpit-pagination-total="44">
 <h2 id="02-kvm-time-5">02-kvm-time</h2>
 <p>If we run it with</p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash"><span class="hljs-built_in">cd</span> materials/02-Using-gem5/08-accelerating-simulation/02-kvm-time
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash"><span class="hljs-built_in">cd</span> materials/04-Advanced-using-gem5/08-accelerating-simulation/02-kvm-time
 gem5 -re 02-kvm-time.py
 </code></pre>
 <p>We will see the following error in our terminal</p>
@@ -474,8 +481,8 @@ However, we have a different goal this time. Also we will have a much simpler sy
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="32" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="32" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="44">
 <h2 id="03-checkpoint-and-restore-1">03-checkpoint-and-restore</h2>
-<p>All materials can be found under <a href="/materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore">materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore</a>.<br />
-We will first edit <a href="../../materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-take-a-checkpoint.py"><code>03-take-a-checkpoint.py</code></a> to take a checkpoint. We will be calling it as the checkpointing script.</p>
+<p>All materials can be found under <a href="/materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore">materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore</a>.<br />
+We will first edit <a href="../../materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-take-a-checkpoint.py"><code>03-take-a-checkpoint.py</code></a> to take a checkpoint. We will be calling it as the checkpointing script.</p>
 <p>In the checkpointing script, let's first give the system the simplest cache hierarchy, which is no cache at all.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-comment"># Let&#x27;s setup a NoCache cache hierarchy</span>
 <span class="hljs-keyword">from</span> gem5.components.cachehierarchies.classic.no_cache <span class="hljs-keyword">import</span> NoCache
@@ -535,8 +542,8 @@ Simulation Done
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="36" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="36" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="44">
 <h2 id="03-checkpoint-and-restore-5">03-checkpoint-and-restore</h2>
-<p>We should also find the checkpoint saved at <code>materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt</code>.<br />
-If you're interested, you can look at the <a href="/materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt/m5.cpt"><code>m5.cpt</code></a> inside the <code>03-cpt</code> directory to see what is being saved.</p>
+<p>We should also find the checkpoint saved at <code>materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt</code>.<br />
+If you're interested, you can look at the <a href="/materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt/m5.cpt"><code>m5.cpt</code></a> inside the <code>03-cpt</code> directory to see what is being saved.</p>
 <p>It is possible for a gem5 checkpoint to be outdated if the checkpoint is taken with an older version of gem5 and being restored with a newer version of gem5.<br />
 In this case, we might need to update it with <a href="../../gem5/util/cpt_upgrader.py"><code>gem5/util/cpt_upgrader.py</code></a> of the newer version gem5.</p>
 </section>
@@ -544,14 +551,14 @@ In this case, we might need to update it with <a href="../../gem5/util/cpt_upgra
 <h2 id="03-checkpoint-and-restore-6">03-checkpoint-and-restore</h2>
 <h3 id="lets-restore-the-checkpoint">Let's restore the checkpoint!</h3>
 <p>We will be using the exact same system that we used in 02-kvm-time to restore the checkpoint we just took.</p>
-<p>The restoring script is <a href="../../materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-restore-the-checkpoint.py"><code>materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-restore-the-checkpoint.py</code></a>.</p>
+<p>The restoring script is <a href="../../materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-restore-the-checkpoint.py"><code>materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-restore-the-checkpoint.py</code></a>.</p>
 <p>We can pass in the path to the checkpoint as a parameter to the <code>simulator</code> object.<br />
 We can also pass in the path using the <code>board</code> object. More details can be found <a href="https://github.com/gem5/gem5/blob/stable/src/python/gem5/components/boards/kernel_disk_workload.py#L142">here</a>.</p>
 <p>For this example, we will pass in the path to the <code>simulator</code> object.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">simulator = Simulator(
     board=board,
 <span class="hljs-comment"># Pass in the checkpoint path</span>
-    checkpoint_path=<span class="hljs-string">&quot;/workspaces/2024/materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt&quot;</span>
+    checkpoint_path=<span class="hljs-string">&quot;/workspaces/2024/materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt&quot;</span>
 <span class="hljs-comment">#</span>
 )
 </code></pre>
@@ -562,20 +569,20 @@ We can also pass in the path using the <code>board</code> object. More details c
 </code></pre>
 <p><strong>Note</strong>: We set the simulation to be exited after 1,000,000,000 Ticks in the restoring script, but in an actual scenario, we might want to stop at the end of the ROI.</p>
 <p>To do this, we would need to use <code>simulator.run()</code> with no arguments and a workend exit event handler. An example can be found at <a href="/gem5/configs/example/gem5_library/x86-npb-benchmarks.py"><code>gem5/configs/example/gem5_library/x86-npb-benchmarks.py</code></a>.</p>
-<p>Other than the <code>simulator</code> and the <code>processor</code> being a non-switchable SimpleProcessor, everything is the same as the script we used in <a href="../../materials/02-Using-gem5/08-accelerating-simulation/02-kvm-time/02-kvm-time.py"><code>02-kvm-time.py</code></a>.</p>
-<p>We can run this <a href="../../materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-restore-the-checkpoint.py">restoring script</a> with</p>
+<p>Other than the <code>simulator</code> and the <code>processor</code> being a non-switchable SimpleProcessor, everything is the same as the script we used in <a href="../../materials/04-Advanced-using-gem5/08-accelerating-simulation/02-kvm-time/02-kvm-time.py"><code>02-kvm-time.py</code></a>.</p>
+<p>We can run this <a href="../../materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-restore-the-checkpoint.py">restoring script</a> with</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">gem5 -re --outdir=restore-m5-out 03-restore-the-checkpoint.py
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="39" data-paginate="true" data-class="center-image" data-theme="gem5" lang="en-US" class="center-image" data-marpit-pagination="39" style="--paginate:true;--class:center-image;--theme:gem5;" data-marpit-pagination-total="44">
 <h2 id="03-checkpoint-and-restore-8">03-checkpoint-and-restore</h2>
-<p>After the simulation finishes, we should see in <a href="../../materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/restore-m5-out/simerr.txt"><code>simerr.txt</code></a></p>
+<p>After the simulation finishes, we should see in <a href="../../materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/restore-m5-out/simerr.txt"><code>simerr.txt</code></a></p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">src/sim/simulate.cc:199: info: Entering event queue @ 14788319800411.  Starting simulation...
 src/dev/x86/pc.cc:117: warn: Don<span class="hljs-string">&#x27;t know what interrupt to clear for console.
 build/ALL/arch/x86/generated/exec-ns.cc.inc:27: warn: instruction &#x27;</span>verw_Mw_or_Rv<span class="hljs-string">&#x27; unimplemented
 </span></code></pre>
 <p>Unlike a simulation that starts from the beginning, a simulation that restores a checkpoint will start at the Tick when the checkpoint was taken.</p>
-<p>If we search for <code>curTick</code> in the <a href="../../materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt/m5.cpt"><code>m5.cpt</code></a> file under the checkpoint folder, we will see the Tick when the checkpoint was taken. It might not be exactly the same as the sample shown here  because KVM brings variation to the Ticks, but the starting Tick in the restoring simulation should match with the <code>curTick</code> in the <code>m5.cpt</code> file.</p>
+<p>If we search for <code>curTick</code> in the <a href="../../materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt/m5.cpt"><code>m5.cpt</code></a> file under the checkpoint folder, we will see the Tick when the checkpoint was taken. It might not be exactly the same as the sample shown here  because KVM brings variation to the Ticks, but the starting Tick in the restoring simulation should match with the <code>curTick</code> in the <code>m5.cpt</code> file.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">curTick=14788319800411
 </code></pre>
 </section>

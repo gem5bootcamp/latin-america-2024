@@ -60,6 +60,13 @@
 /* For reducing size of code blocks */div#\:\$p>svg>foreignObject>section.code-50-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.33)}div#\:\$p>svg>foreignObject>section.code-50-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.5)}div#\:\$p>svg>foreignObject>section.code-60-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.48)}div#\:\$p>svg>foreignObject>section.code-60-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.6)}div#\:\$p>svg>foreignObject>section.code-70-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.65)}div#\:\$p>svg>foreignObject>section.code-70-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.7)}div#\:\$p>svg>foreignObject>section.code-80-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.8)}div#\:\$p>svg>foreignObject>section.code-80-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.8)}
 
 /****************************************************/
+/* For tables */div#\:\$p>svg>foreignObject>section table{color:blue;background-color:white;border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black}div#\:\$p>svg>foreignObject>section th{color:black
+    /* border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black; */}
+
+/****************************************************/
 /* For code block */div#\:\$p>svg>foreignObject>section :is(pre,marp-pre){padding:10px;border-radius:5px;line-height:var(--code-line-height);background-color:#ffffff;box-shadow:1px 2px 4px var(--gem5-gray)}div#\:\$p>svg>foreignObject>section code{font-family:"Roboto Mono",monospace;background-color:#ffffff;font-size:var(--code-font-size)}
 
 /* Forces inherited height for code in headers */div#\:\$p>svg>foreignObject>section :is(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6)) code{font-size:inherit!important}
@@ -117,8 +124,8 @@ Typically this "required" baseline CSS is added by `makestuff.js` during build.
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="4" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="23">
 <h2 id="example">Example</h2>
 <h3 id="00-se-hello-world">00-SE-hello-world</h3>
-<p>Under <code>materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world</code>, there is a small example of an SE simulation.<br />
-<a href="../../materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world/00-SE-hello-world.py">00-SE-hello-world.py</a> will run the <a href="../../materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world/00-SE-hello-world.c">00-SE-hello-world</a> binary with a simple X86 configuration.<br />
+<p>Under <code>materials/04-Advanced-using-gem5/03-running-in-gem5/00-SE-hello-world</code>, there is a small example of an SE simulation.<br />
+<a href="../../materials/04-Advanced-using-gem5/03-running-in-gem5/00-SE-hello-world/00-SE-hello-world.py">00-SE-hello-world.py</a> will run the <a href="../../materials/04-Advanced-using-gem5/03-running-in-gem5/00-SE-hello-world/00-SE-hello-world.c">00-SE-hello-world</a> binary with a simple X86 configuration.<br />
 This binary prints the string <code>Hello, World!</code>.<br />
 If we use the debug flag <code>SyscallAll</code> with it, we will able to see what syscalls are simulated.<br />
 We can do it with the following command:</p>
@@ -131,7 +138,7 @@ The default output is in <code>m5out/simout.txt</code> and m5out/simerr.txt`.</p
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="5" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="23">
 <h2 id="00-se-hello-world-1">00-SE-hello-world</h2>
-<p>Then in <a href="../../materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world/m5out/simout.txt">simout.txt</a>, we should see:</p>
+<p>Then in <a href="../../materials/04-Advanced-using-gem5/03-running-in-gem5/00-SE-hello-world/m5out/simout.txt">simout.txt</a>, we should see:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">280945000: board.processor.cores.core: T0 : syscall Calling write(1, 21152, 14)...
 Hello, World!
 280945000: board.processor.cores.core: T0 : syscall Returned 14.
@@ -312,7 +319,7 @@ As the timestamp suggests, <strong>SE simulation DOES NOT record the time for th
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-paginate="true" data-class="no-logo" data-theme="gem5" lang="en-US" class="no-logo" data-marpit-pagination="19" style="--paginate:true;--class:no-logo;--theme:gem5;" data-marpit-pagination-total="23">
 <h2 id="lets-use-the-base-ubuntu-image-to-create-a-disk-image-with-the-gapbs-benchmarks">Let's use the base Ubuntu image to create a disk image with the GAPBS benchmarks</h2>
-<p>Update the <a href="../../materials/02-Using-gem5/07-full-system/x86-ubuntu-gapbs/x86-ubuntu.pkr.hcl">x86-ubuntu.pkr.hcl</a> file.</p>
+<p>Update the <a href="../../materials/04-Advanced-using-gem5/07-full-system/x86-ubuntu-gapbs/x86-ubuntu.pkr.hcl">x86-ubuntu.pkr.hcl</a> file.</p>
 <p>The general structure of the Packer file would be the same but with a few key changes:</p>
 <ul>
 <li>We will now add an argument in the <code>source &quot;qemu&quot; &quot;initialize&quot;</code> block.
@@ -350,20 +357,20 @@ gzip -d x86-ubuntu-24-04.gz
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="22" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="22" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="23">
 <h2 id="changes-to-the-post-installation-script">Changes to the post installation script</h2>
 <p>For this post installation script we need to get the dependencies and build the GAPBS benchmarks.</p>
-<p>Add this to the <a href="../../materials/02-Using-gem5/07-full-system/x86-ubuntu-gapbs/scripts/post-installation.sh">post-installation.sh</a> script</p>
+<p>Add this to the <a href="../../materials/04-Advanced-using-gem5/07-full-system/x86-ubuntu-gapbs/scripts/post-installation.sh">post-installation.sh</a> script</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">git <span class="hljs-built_in">clone</span> https://github.com/sbeamer/gapbs
 <span class="hljs-built_in">cd</span> gapbs
 make
 </code></pre>
 <p>Let's run the Packer script and use this disk image in gem5!</p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash"><span class="hljs-built_in">cd</span> /workspaces/2024/materials/02-Using-gem5/07-full-system
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash"><span class="hljs-built_in">cd</span> /workspaces/2024/materials/04-Advanced-using-gem5/07-full-system
 x86-ubuntu-gapbs/build.sh
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="23" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="23" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="23">
 <h2 id="lets-use-our-built-disk-image-in-gem5">Let's use our built disk image in gem5</h2>
-<p>Let's add the md5sum and the path to our <a href="../../materials/02-Using-gem5/07-full-system/completed/local-gapbs-resource.json">local JSON </a>.</p>
-<p>Let's run the <a href="../../materials/02-Using-gem5/07-full-system/completed/x86-fs-gapbs-kvm-run.py">gem5 GAPBS config</a>.</p>
+<p>Let's add the md5sum and the path to our <a href="../../materials/04-Advanced-using-gem5/07-full-system/completed/local-gapbs-resource.json">local JSON </a>.</p>
+<p>Let's run the <a href="../../materials/04-Advanced-using-gem5/07-full-system/completed/x86-fs-gapbs-kvm-run.py">gem5 GAPBS config</a>.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">GEM5_RESOURCE_JSON_APPEND=./completed/local-gapbs-resource.json gem5 x86-fs-gapbs-kvm-run.py
 </code></pre>
 <p>This script should run the bfs benchmark.</p>

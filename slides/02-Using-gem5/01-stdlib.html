@@ -60,6 +60,13 @@
 /* For reducing size of code blocks */div#\:\$p>svg>foreignObject>section.code-50-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.33)}div#\:\$p>svg>foreignObject>section.code-50-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.5)}div#\:\$p>svg>foreignObject>section.code-60-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.48)}div#\:\$p>svg>foreignObject>section.code-60-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.6)}div#\:\$p>svg>foreignObject>section.code-70-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.65)}div#\:\$p>svg>foreignObject>section.code-70-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.7)}div#\:\$p>svg>foreignObject>section.code-80-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.8)}div#\:\$p>svg>foreignObject>section.code-80-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.8)}
 
 /****************************************************/
+/* For tables */div#\:\$p>svg>foreignObject>section table{color:blue;background-color:white;border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black}div#\:\$p>svg>foreignObject>section th{color:black
+    /* border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black; */}
+
+/****************************************************/
 /* For code block */div#\:\$p>svg>foreignObject>section :is(pre,marp-pre){padding:10px;border-radius:5px;line-height:var(--code-line-height);background-color:#ffffff;box-shadow:1px 2px 4px var(--gem5-gray)}div#\:\$p>svg>foreignObject>section code{font-family:"Roboto Mono",monospace;background-color:#ffffff;font-size:var(--code-font-size)}
 
 /* Forces inherited height for code in headers */div#\:\$p>svg>foreignObject>section :is(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6)) code{font-size:inherit!important}
@@ -173,10 +180,9 @@ Typically this "required" baseline CSS is added by `makestuff.js` during build.
 <li>What is the output of the simulated program?</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-paginate="true" data-class="code-80-percent" data-theme="gem5" lang="en-US" class="code-80-percent" data-marpit-pagination="9" style="--paginate:true;--class:code-80-percent;--theme:gem5;" data-marpit-pagination-total="34">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="9" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="34">
 <h2 id="step-0">Step 0</h2>
-
-<p>In <a href="../../materials/02-Using-gem5/01-stdlib/01-components.py"><code>materials/02-Using-gem5/01-stdlib/01-components.py</code></a> you'll see some imports already included for you.</p>
+<p>Here are the imports you need to get started. It's a lot, but we'll see each one of them as we go through the bootcamp over the next few days.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">from</span> gem5.components.boards.simple_board <span class="hljs-keyword">import</span> SimpleBoard
 <span class="hljs-keyword">from</span> gem5.components.processors.simple_processor <span class="hljs-keyword">import</span> SimpleProcessor
 <span class="hljs-keyword">from</span> gem5.components.cachehierarchies.ruby.mesi_two_level_cache_hierarchy <span class="hljs-keyword">import</span> (

@@ -204,6 +204,7 @@ section.border-image img {
 section.logo-left {
     background-position-x: 21%;
 }
+
 section.no-logo {
     background-image: none;
 }
@@ -282,6 +283,7 @@ section.outline h3 {
 section.code-50-percent pre {
     line-height: calc(var(--code-line-height) * 0.33);
 }
+
 section.code-50-percent pre code {
     font-size: calc(var(--code-font-size) * 0.5);
 }
@@ -289,6 +291,7 @@ section.code-50-percent pre code {
 section.code-60-percent pre {
     line-height: calc(var(--code-line-height) * 0.48);
 }
+
 section.code-60-percent pre code {
     font-size: calc(var(--code-font-size) * 0.6);
 }
@@ -296,6 +299,7 @@ section.code-60-percent pre code {
 section.code-70-percent pre {
     line-height: calc(var(--code-line-height) * 0.65);
 }
+
 section.code-70-percent pre code {
     font-size: calc(var(--code-font-size) * 0.7);
 }
@@ -303,8 +307,29 @@ section.code-70-percent pre code {
 section.code-80-percent pre {
     line-height: calc(var(--code-line-height) * 0.8);
 }
+
 section.code-80-percent pre code {
     font-size: calc(var(--code-font-size) * 0.8);
+}
+
+/****************************************************/
+/* For tables */
+
+section table {
+    color: blue;
+    background-color: white;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+section th {
+    color: black;
+    /* border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black; */
 }
 
 /****************************************************/
@@ -330,7 +355,7 @@ code {
 }
 
 /* Targets only inline code */
-:not(pre) > code {
+:not(pre)>code {
     font-size: calc(var(--code-font-size) * 0.9);
     padding: 2px 6px;
     border: 1px solid var(--gem5-gray);

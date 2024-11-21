@@ -60,6 +60,13 @@
 /* For reducing size of code blocks */div#\:\$p>svg>foreignObject>section.code-50-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.33)}div#\:\$p>svg>foreignObject>section.code-50-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.5)}div#\:\$p>svg>foreignObject>section.code-60-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.48)}div#\:\$p>svg>foreignObject>section.code-60-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.6)}div#\:\$p>svg>foreignObject>section.code-70-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.65)}div#\:\$p>svg>foreignObject>section.code-70-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.7)}div#\:\$p>svg>foreignObject>section.code-80-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.8)}div#\:\$p>svg>foreignObject>section.code-80-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.8)}
 
 /****************************************************/
+/* For tables */div#\:\$p>svg>foreignObject>section table{color:blue;background-color:white;border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black}div#\:\$p>svg>foreignObject>section th{color:black
+    /* border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black; */}
+
+/****************************************************/
 /* For code block */div#\:\$p>svg>foreignObject>section :is(pre,marp-pre){padding:10px;border-radius:5px;line-height:var(--code-line-height);background-color:#ffffff;box-shadow:1px 2px 4px var(--gem5-gray)}div#\:\$p>svg>foreignObject>section code{font-family:"Roboto Mono",monospace;background-color:#ffffff;font-size:var(--code-font-size)}
 
 /* Forces inherited height for code in headers */div#\:\$p>svg>foreignObject>section :is(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6)) code{font-size:inherit!important}
@@ -313,7 +320,7 @@ The JSON file should have the following fields:</p>
 <p>Create a JSON file called <code>my_resources.json</code> for the matrix-multiply binary that you created in the previous exercise.</p>
 <p>Create both a binary resource for the binary and a workload to run the binary.<br />
 Call the binary &quot;matrix-multiply&quot; and the workload &quot;matrix-multiply-run&quot;.</p>
-<p>There is a template JSON file in the materials folder.</p>
+<p>There is a template JSON file in the <code>exercises/02-Using-gem5/07-gem5-resources</code> folder.</p>
 <p>Use <code>GEM5_RESOURCE_JSON_APPEND=my_resources.json gem5 run-mm.py</code> to run the simulation.</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-paginate="true" data-class="two-col code-80-percent" data-theme="gem5" lang="en-US" class="two-col code-80-percent" data-marpit-pagination="17" style="--paginate:true;--class:two-col code-80-percent;--theme:gem5;" data-marpit-pagination-total="18">
@@ -328,7 +335,7 @@ Call the binary &quot;matrix-multiply&quot; and the workload &quot;matrix-multip
         <span class="hljs-attr">&quot;tags&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
         <span class="hljs-attr">&quot;source&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span>
         <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;file:///workspaces/latin-america-2024/
-                materials/02-Using-gem5/06-custom-benchmarks/
+                exercises/02-Using-gem5/06-custom-benchmarks/
                 completed/matrix-multiply&quot;</span><span class="hljs-punctuation">,</span>
         <span class="hljs-attr">&quot;license&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span>
         <span class="hljs-attr">&quot;author&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>

@@ -60,6 +60,13 @@
 /* For reducing size of code blocks */div#\:\$p>svg>foreignObject>section.code-50-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.33)}div#\:\$p>svg>foreignObject>section.code-50-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.5)}div#\:\$p>svg>foreignObject>section.code-60-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.48)}div#\:\$p>svg>foreignObject>section.code-60-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.6)}div#\:\$p>svg>foreignObject>section.code-70-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.65)}div#\:\$p>svg>foreignObject>section.code-70-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.7)}div#\:\$p>svg>foreignObject>section.code-80-percent :is(pre,marp-pre){line-height:calc(var(--code-line-height) * 0.8)}div#\:\$p>svg>foreignObject>section.code-80-percent :is(pre,marp-pre) code{font-size:calc(var(--code-font-size) * 0.8)}
 
 /****************************************************/
+/* For tables */div#\:\$p>svg>foreignObject>section table{color:blue;background-color:white;border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black}div#\:\$p>svg>foreignObject>section th{color:black
+    /* border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black; */}
+
+/****************************************************/
 /* For code block */div#\:\$p>svg>foreignObject>section :is(pre,marp-pre){padding:10px;border-radius:5px;line-height:var(--code-line-height);background-color:#ffffff;box-shadow:1px 2px 4px var(--gem5-gray)}div#\:\$p>svg>foreignObject>section code{font-family:"Roboto Mono",monospace;background-color:#ffffff;font-size:var(--code-font-size)}
 
 /* Forces inherited height for code in headers */div#\:\$p>svg>foreignObject>section :is(:is(h1,marp-h1),:is(h2,marp-h2),:is(h3,marp-h3),:is(h4,marp-h4),:is(h5,marp-h5),:is(h6,marp-h6)) code{font-size:inherit!important}
@@ -102,10 +109,10 @@ Typically this "required" baseline CSS is added by `makestuff.js` during build.
 /* Meta color: hue: 200 */div#\:\$p>svg>foreignObject>section .hljs-meta{color:#1f7199}div#\:\$p>svg>foreignObject>section .hljs-meta .hljs-string{color:#38a}
 
 
-/* Misc effects */div#\:\$p>svg>foreignObject>section .hljs-emphasis{font-style:italic}div#\:\$p>svg>foreignObject>section .hljs-strong{font-weight:bold}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]{columns:initial!important;display:block!important;padding:0!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:before,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:before{display:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]{all:initial;display:flex;flex-direction:row;height:100%;overflow:hidden;width:100%}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container][data-marpit-advanced-background-direction=vertical]{flex-direction:column}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split]>div[data-marpit-advanced-background-container]{width:var(--marpit-advanced-background-split,50%)}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split=right]>div[data-marpit-advanced-background-container]{margin-left:calc(100% - var(--marpit-advanced-background-split, 50%))}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure{all:initial;background-position:center;background-repeat:no-repeat;background-size:cover;flex:auto;margin:0}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure>figcaption{position:absolute;border:0;clip:rect(0,0,0,0);height:1px;margin:-1px;overflow:hidden;padding:0;white-space:nowrap;width:1px}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content],div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo]{background:transparent!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo],div#\:\$p>svg[data-marpit-svg]>foreignObject[data-marpit-advanced-background=pseudo]{pointer-events:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background-split]{width:100%;height:100%}</style></head><body><div class="bespoke-marp-osc"><button data-bespoke-marp-osc="prev" tabindex="-1" title="Previous slide">Previous slide</button><span data-bespoke-marp-osc="page"></span><button data-bespoke-marp-osc="next" tabindex="-1" title="Next slide">Next slide</button><button data-bespoke-marp-osc="fullscreen" tabindex="-1" title="Toggle fullscreen (f)">Toggle fullscreen</button><button data-bespoke-marp-osc="presenter" tabindex="-1" title="Open presenter view (p)">Open presenter view</button></div><div id=":$p"><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="1" data-paginate="true" data-class="title" data-theme="gem5" lang="en-US" class="title" data-marpit-pagination="1" style="--paginate:true;--class:title;--theme:gem5;" data-marpit-pagination-total="46">
+/* Misc effects */div#\:\$p>svg>foreignObject>section .hljs-emphasis{font-style:italic}div#\:\$p>svg>foreignObject>section .hljs-strong{font-weight:bold}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]{columns:initial!important;display:block!important;padding:0!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]:before,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:after,div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content]:before{display:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]{all:initial;display:flex;flex-direction:row;height:100%;overflow:hidden;width:100%}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container][data-marpit-advanced-background-direction=vertical]{flex-direction:column}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split]>div[data-marpit-advanced-background-container]{width:var(--marpit-advanced-background-split,50%)}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background][data-marpit-advanced-background-split=right]>div[data-marpit-advanced-background-container]{margin-left:calc(100% - var(--marpit-advanced-background-split, 50%))}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure{all:initial;background-position:center;background-repeat:no-repeat;background-size:cover;flex:auto;margin:0}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=background]>div[data-marpit-advanced-background-container]>figure>figcaption{position:absolute;border:0;clip:rect(0,0,0,0);height:1px;margin:-1px;overflow:hidden;padding:0;white-space:nowrap;width:1px}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=content],div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo]{background:transparent!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background=pseudo],div#\:\$p>svg[data-marpit-svg]>foreignObject[data-marpit-advanced-background=pseudo]{pointer-events:none!important}div#\:\$p>svg>foreignObject>section[data-marpit-advanced-background-split]{width:100%;height:100%}</style></head><body><div class="bespoke-marp-osc"><button data-bespoke-marp-osc="prev" tabindex="-1" title="Previous slide">Previous slide</button><span data-bespoke-marp-osc="page"></span><button data-bespoke-marp-osc="next" tabindex="-1" title="Next slide">Next slide</button><button data-bespoke-marp-osc="fullscreen" tabindex="-1" title="Toggle fullscreen (f)">Toggle fullscreen</button><button data-bespoke-marp-osc="presenter" tabindex="-1" title="Open presenter view (p)">Open presenter view</button></div><div id=":$p"><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="1" data-paginate="true" data-class="title" data-theme="gem5" lang="en-US" class="title" data-marpit-pagination="1" style="--paginate:true;--class:title;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="modeling-caches-in-gem5">Modeling caches in gem5</h2>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="2" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="2" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="2" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="2" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="cache-hierarchy-in-gem5">Cache Hierarchy in gem5</h2>
 <p>One of the main types of components in gem5 is the <strong>cache hierarchy</strong>.</p>
 <p>In the standard library, the cache hierarchy has the <code>Processor</code> (with multiple cores) on one side and the <code>Memory</code> on the other side.</p>
@@ -114,7 +121,7 @@ Typically this "required" baseline CSS is added by `makestuff.js` during build.
 <h3 id=""></h3>
 <p><img src="04-cache-hierarchies-imgs/CPU_CacheHierarchy_MemCtrl.drawio.png" alt="Placement of the Cache Hierarchy in gem5" /></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="3" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="3" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="3" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="3" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="types-of-caches-in-gem5">Types of caches in gem5</h2>
 <p>There are two types of cache models in gem5:</p>
 <ol>
@@ -126,7 +133,7 @@ Typically this "required" baseline CSS is added by `makestuff.js` during build.
 More on Ruby in <a href="../03-Developing-gem5-models/06-modeling-cache-coherence.md">Modeling Cache Coherence in gem5</a>.</p>
 <p><strong>Classic</strong> caches are simpler and faster, but less flexible and detailed. The coherence protocol is not parameterized and the hierarchies and topologies are fixed.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="4" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="4" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="outline">Outline</h2>
 <ul>
 <li>Background on cache coherency</li>
@@ -144,26 +151,26 @@ More on Ruby in <a href="../03-Developing-gem5-models/06-modeling-cache-coherenc
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="5" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="5" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="what-is-coherency">What is Coherency</h2>
 <p>A coherence problem can arise if multiple cores have access to multiple copies of a data (e.g., in multiple caches) and at least one access is a write</p>
 <p><img src="04-cache-hierarchies-imgs/cache_line_1.svg" alt="Cores and Coherency across caches" /></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="6" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="6" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="what-is-coherency-1">What is Coherency</h2>
 <p>A coherence problem can arise if multiple cores have access to multiple copies of a data (e.g., in multiple caches) and at least one access is a write</p>
 <p><img src="04-cache-hierarchies-imgs/cache_line_2.svg" alt="Cores and Coherency across caches with write request" /></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="7" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="7" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="what-is-coherency-2">What is Coherency</h2>
 <p>A coherence problem can arise if multiple cores have access to multiple copies of a data (e.g., in multiple caches) and at least one access is a write</p>
 <p><img src="04-cache-hierarchies-imgs/cache_line_2.svg" alt="Cores and Coherency across caches with write request" /></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="8" style="--paginate:true;--theme:gem5;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="46" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;04-cache-hierarchies-imgs/classic_hierarchy.drawio.svg&quot;);background-size:85%;"><figcaption>Example 3 level hierarchy with private L1s, private L2s, and a shared L3 connected to multiple memory channels</figcaption></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="8" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="8" style="--paginate:true;--theme:gem5;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="46" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="8" style="--paginate:true;--theme:gem5;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="41" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;04-cache-hierarchies-imgs/classic_hierarchy.drawio.svg&quot;);background-size:85%;"><figcaption>Example 3 level hierarchy with private L1s, private L2s, and a shared L3 connected to multiple memory channels</figcaption></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="8" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="8" style="--paginate:true;--theme:gem5;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="41" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
 <h2 id="classic-cache-coherent-crossbar">Classic Cache: Coherent Crossbar</h2>
 <p>Each crossbar can connect <em>n</em> cpu-side ports and <em>m</em> memory-side ports.</p>
 </section>
-</foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="8" style="" data-marpit-pagination-total="46" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-paginate="true" data-class="exercise two-col" data-theme="gem5" lang="en-US" class="exercise two-col" data-marpit-pagination="9" style="--paginate:true;--class:exercise two-col;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="8" style="" data-marpit-pagination-total="41" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-paginate="true" data-class="exercise two-col" data-theme="gem5" lang="en-US" class="exercise two-col" data-marpit-pagination="9" style="--paginate:true;--class:exercise two-col;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="exercise-1-measure-the-bandwidth-and-latency-the-caches">Exercise 1: Measure the bandwidth and latency the caches</h2>
 <p>Use the Private L1, Private L2 cache hierarchy to measure the bandwidth and latency of the cache-based system.<br />
 Use a Dual channel DDR4 memory.<br />
@@ -178,14 +185,14 @@ Set the cache sizes to 32KiB and 256KiB for L1 and L2 respectively.</p>
 </ol>
 <h4 id="b-what-is-the-hitmiss-ratios-for-the-cache-in-your-tests">B. What is the hit/miss ratios for the cache in your tests?</h4>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="10" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="10" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-1-use-a-classic-cache-hierarchy">Step 1: Use a classic cache hierarchy</h2>
 <p>Use the <code>PrivateL1PrivateL2CacheHierarchy</code>.</p>
 <p>See <a href="/gem5/src/python/gem5/components/cachehierarchies/classic/private_l1_private_l2_cache_hierarchy.py"><code>PrivateL1PrivateL2CacheHierarchy</code></a> for details.</p>
 <p>Think about what the value for <code>max_addr</code> should be for the generator to test L1, L2, and memory.</p>
 <p>Think about whether you want to use the random or linear generator.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="11" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="11" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-1-answer">Step 1: Answer</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">board = TestBoard(
     generator=RandomGenerator(
@@ -206,14 +213,14 @@ Set the cache sizes to 32KiB and 256KiB for L1 and L2 respectively.</p>
 <p>Use the random generator to maximize the hits in the cache you are testing.</p>
 <p>Looking at &quot;missRate::total&quot; will show that there's 100% hits in the level we are evaluating.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="12" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="12" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="creating-custom-cache-hierarchies">Creating custom cache hierarchies</h2>
 <p>The standard library will not have all components that you will need.</p>
 <p>Our next goal is to take a model from gem5 and wrap it in the standard library API.</p>
 <p>Specifically, we will create a three-level cache hierarchy with private L1s, private L2s, and a shared L3 connected to multiple memory channels.</p>
 <p>Before we dive into that exercise, we need to cover a few gem5 topics.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="13" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="13" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="classic-cache-models">Classic cache models</h2>
 <p>The classic cache consists of two main models, the <a href="/gem5/src/mem/cache/Cache.py"><code>Cache</code></a> and the <a href="/gem5/src/mem/XBar.py"><code>XBar</code></a>.</p>
 <h3 id="cache"><code>Cache</code></h3>
@@ -223,7 +230,7 @@ The cache has a <code>cpu_side</code> and a <code>mem_side</code> that can be co
 <p>This is a crossbar that can connect multiple ports together. It has a <code>cpu_side_ports</code> and a <code>mem_side_ports</code> that can be connected to other components.<br />
 The CPU-side and memory-side can connect to multiple objects.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="14" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="14" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="gem5-ports">gem5 Ports</h2>
 <h3 id="ports">Ports</h3>
 <p>Ports are the way that gem5 models communicate with each other. They are used to send packets between models.<br />
@@ -236,7 +243,7 @@ xbar = XBar()
 cache.mem_side = xbar.cpu_side_ports
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="15" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="15" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="specializing-gem5-models">Specializing gem5 models</h2>
 <p>In gem5, you can specialize a model by specifying the parameters that you want to change.</p>
 <p>For instance, if you want to create a cache with a size of 32 KiB and an associativity of 4, you can do the following:</p>
@@ -248,7 +255,7 @@ cache.mem_side = xbar.cpu_side_ports
 </code></pre>
 <p>You can override any of the <em>parameters</em> in the <a href="/gem5/src/mem/cache/Cache.py"><code>Cache</code></a> class this way.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-paginate="true" data-class="exercise" data-theme="gem5" lang="en-US" class="exercise" data-marpit-pagination="16" style="--paginate:true;--class:exercise;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-paginate="true" data-class="exercise" data-theme="gem5" lang="en-US" class="exercise" data-marpit-pagination="16" style="--paginate:true;--class:exercise;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="exercise-2-create-a-three-level-cache-hierarchy">Exercise 2: Create a three level cache hierarchy</h2>
 <p>Create a three level cache hierarchy with private L1s, private L2s, and a shared L3 connected to multiple memory channels as shown on the previous slide.<br />
 Run your tests with all cores.</p>
@@ -262,10 +269,10 @@ Run your tests with all cores.</p>
 <li>The memory?</li>
 </ol>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="17" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="17" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-2-declare-the-hierarchy-and-add-a-membus">Step 2: declare the hierarchy and add a membus</h2>
 <p>(Note: Step 1 is exercise 1.)</p>
-<p>Open <a href="../../materials/02-Using-gem5/05-cache-hierarchies/three_level.py"><code>materials/02-Using-gem5/04-cache-hierarchies/three_level.py</code></a><br />
+<p>Open <code>exercises/02-Using-gem5/04-cache-hierarchies/three_level.py</code><br />
 We are creating a new class which will implement an abstract class <code>AbstractCacheHierarchy</code>.<br />
 By implementing this class, we can use it in the standard library as a cache hierarchy in our test board (or even in a CPU-based board).</p>
 <p>The constructor is already provided.</p>
@@ -274,21 +281,21 @@ By implementing this class, we can use it in the standard library as a cache hie
 <p>For this, use a <code>SystemXBar</code> with a width of 64.<br />
 See <code>SystemXBar</code> in <a href="/gem5/src/mem/xbar.py">/gem5/src/mem/xbar.py</a>.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="18" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="18" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-2-answer">Step 2: Answer</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">self.membus = SystemXBar(width=<span class="hljs-number">64</span>)
 </code></pre>
 <p>This will be what connects the cache to memory.</p>
 <p>We will make it 64 Bytes wide (as wide as the cache line) so that it's maximum bandwidth.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="19" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="19" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-3-implement-the-hierarchy-interface">Step 3: Implement the hierarchy interface</h2>
 <p>The board needs to be able to get the port to connect to memory.</p>
 <p>You will be implementing some of the abstract functions from <code>AbstractCacheHierarchy</code>.</p>
 <p>See <a href="/gem5/src/python/gem5/components/cachehierarchies/abstract_cache_hierarchy.py"><code>AbstractCacheHierarchy</code></a> for details.</p>
 <p>You need to implement <code>get_mem_side_port</code> and <code>get_cpu_side_port</code> in this step.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="20" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="20" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-3-answer">Step 3: Answer</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_mem_side_port</span>(<span class="hljs-params">self</span>):
     <span class="hljs-keyword">return</span> self.membus.mem_side_ports
@@ -298,7 +305,7 @@ See <code>SystemXBar</code> in <a href="/gem5/src/mem/xbar.py">/gem5/src/mem/xba
     <span class="hljs-keyword">return</span> self.membus.cpu_side_ports
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="21" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="21" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-4-implement-incorporate_cache">Step 4: Implement <code>incorporate_cache</code></h2>
 <p>The main function is <strong><code>incorporate_cache</code></strong> which is called by the board after the <code>Processor</code> and <code>Memory</code> are ready to be connected together.</p>
 <p>In the <code>incorporate_cache</code> function, we will create the caches and connect them together.</p>
@@ -311,7 +318,7 @@ Then, we can connect all of these ports to the memory side of memory bus.</p>
     board.connect_system_port(self.membus.cpu_side_ports)
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="22" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="22" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="22" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="22" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-4-answer">Step 4: Answer</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-comment"># Connect the memory system to the memory port on the board.</span>
 <span class="hljs-keyword">for</span> _, port <span class="hljs-keyword">in</span> board.get_memory().get_mem_ports():
@@ -324,14 +331,14 @@ self.l3_bus = L2XBar()
 Note that for gem5 ports, to connect things together, you just have to use the <code>=</code> operator.</p>
 <p>We are using a &quot;L2XBar&quot; for the L3 crossbar because &quot;L2XBar&quot; is just a crossbar that has been configured to not be the system xbar.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="23" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="23" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="23" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="23" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-5-create-the-core-clusters">Step 5: Create the core clusters</h2>
 <p>Let's move away from the <code>incorporate_cache</code> function for a moment and create the core clusters.</p>
 <p>Our goal is that each core cluster should have a core connected to its private caches (L1I, L1D, L2) and the L2.<br />
 We'll then connect the L2 to the L3 via the L3 crossbar.</p>
 <p>You'll be modifying the <code>_create_core_cluster</code> function.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="24" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="24" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="24" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="24" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-5-more-details">Step 5: More details</h2>
 <p>A <code>SubSystem</code> is a special object that can hold multiple objects (with a shared clock/voltage domain).</p>
 <ol>
@@ -349,7 +356,7 @@ We'll then connect the L2 to the L3 via the L3 crossbar.</p>
 <p>Note: there is extra code in this function. Ignore this for now.</p>
 </blockquote>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="25" data-paginate="true" data-class="code-80-percent" data-theme="gem5" lang="en-US" class="code-80-percent" data-marpit-pagination="25" style="--paginate:true;--class:code-80-percent;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="25" data-paginate="true" data-class="code-80-percent" data-theme="gem5" lang="en-US" class="code-80-percent" data-marpit-pagination="25" style="--paginate:true;--class:code-80-percent;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-5-answer">Step 5: Answer</h2>
 <p>Since each core is going to have many private caches, let's create a cluster.<br />
 In this cluster, we will create L1I/D and L2 caches, the L2 crossbar and connect things.</p>
@@ -372,7 +379,7 @@ In this cluster, we will create L1I/D and L2 caches, the L2 crossbar and connect
     cluster.l2cache.mem_side = l3_bus.cpu_side_ports
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="26" data-paginate="true" data-class="code-60-percent" data-theme="gem5" lang="en-US" class="code-60-percent" data-marpit-pagination="26" style="--paginate:true;--class:code-60-percent;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="26" data-paginate="true" data-class="code-60-percent" data-theme="gem5" lang="en-US" class="code-60-percent" data-marpit-pagination="26" style="--paginate:true;--class:code-60-percent;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="full-system-specific-things">Full-system specific things</h2>
 <p>You have been given some code to set up other caches, interrupts, etc. that are needed for full system simulation in x86 and Arm.</p>
 <p>You can ignore this for now.</p>
@@ -396,13 +403,13 @@ cluster.dptw_cache.mem_side = cluster.l2_bus.cpu_side_ports
 <span class="hljs-keyword">return</span> cluster
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="27" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="27" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="27" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="27" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-6-create-a-cluster-for-each-core">Step 6: Create a cluster for each core</h2>
 <p>Back to <code>incorporate_cache</code>...</p>
 <p>Now that we have the cluster, we can create the clusters.</p>
 <p>Create a list of clusters, one for each of the cores in the processor.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="28" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="28" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="28" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="28" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-6-answer">Step 6: Answer</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">self.clusters = [
     self._create_core_cluster(
@@ -412,7 +419,7 @@ cluster.dptw_cache.mem_side = cluster.l2_bus.cpu_side_ports
 ]
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="29" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="29" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="29" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="29" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-7-create-an-l3-cache">Step 7: Create an L3 cache</h2>
 <p>The standard library has L1 and L2 caches, but not an L3 cache.<br />
 So, we need to create an L3 cache.</p>
@@ -421,7 +428,7 @@ Allow it to have a configurable size and associativity.</p>
 <p>For the other parameters, use 20 cycles for the tag and data latency, 1 cycle for the response latency, 20 MSHRs, 12 targets per MSHR, and set <code>writeback_clean</code> to <code>False</code>.<br />
 Set the &quot;clusivity&quot; to &quot;mostly_incl&quot;. In other words, this will be a mostly inclusive cache.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="30" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="30" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="30" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="30" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-7-answer">Step 7: Answer</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">L3Cache</span>(<span class="hljs-title class_ inherited__">Cache</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, size, assoc</span>):
@@ -437,7 +444,7 @@ Set the &quot;clusivity&quot; to &quot;mostly_incl&quot;. In other words, this w
         self.clusivity = <span class="hljs-string">&quot;mostly_incl&quot;</span>
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="31" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="31" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="31" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="31" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-8-connect-the-l3-cache">Step 8: Connect the L3 cache</h2>
 <p>Again, back to <code>incorporate_cache</code>...</p>
 <p>Create an instance of your L3 cache object, pass through the size and associativity, then connect the L3 cache to the L3 crossbar and the memory bus.</p>
@@ -446,7 +453,7 @@ Set the &quot;clusivity&quot; to &quot;mostly_incl&quot;. In other words, this w
     self._setup_io_cache(board)
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="32" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="32" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="32" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="32" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-8-answer">Step 8: Answer</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">self.l3_cache = L3Cache(size=self._l3_size, assoc=self._l3_assoc)
 
@@ -455,12 +462,12 @@ self.l3_cache.mem_side = self.membus.cpu_side_ports
 self.l3_cache.cpu_side = self.l3_bus.mem_side_ports
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="33" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="33" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="33" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="33" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="step-9-re-run-the-test-from-exercise-1-with-3-levels">Step 9: Re run the test from Exercise 1 with 3 levels</h2>
 <p>Go back to the <code>test-cache.py</code> file that you created and import your new cache hierarchy.</p>
 <p>Extend this to also be able to test the performance of the L3 cache.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="34" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="34" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="answers-to-questions">Answers to questions</h2>
 <p>What is the bandwidth and latency for</p>
 <ol>
@@ -470,7 +477,7 @@ self.l3_cache.cpu_side = self.l3_bus.mem_side_ports
 <li>The memory?</li>
 </ol>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="35" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="35" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="35" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="35" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="classic-cache-parameters">Classic Cache: Parameters</h2>
 <ul>
 <li>src/mem/cache/Cache.py
@@ -489,10 +496,10 @@ self.l3_cache.cpu_side = self.l3_bus.mem_side_ports
 <li>replacement policy</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="36" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="36" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="36" data-paginate="true" data-class="start" data-theme="gem5" lang="en-US" class="start" data-marpit-pagination="36" style="--paginate:true;--class:start;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="ruby">Ruby</h2>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="37" style="--paginate:true;--theme:gem5;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="46" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;04-cache-hierarchies-imgs/ruby_cache.drawio.svg&quot;);background-size:contain;"><figcaption>System with Ruby Caches</figcaption></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="37" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="37" style="--paginate:true;--theme:gem5;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="46" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="37" style="--paginate:true;--theme:gem5;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="41" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;04-cache-hierarchies-imgs/ruby_cache.drawio.svg&quot;);background-size:contain;"><figcaption>System with Ruby Caches</figcaption></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="37" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="37" style="--paginate:true;--theme:gem5;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="41" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
 <h2 id="ruby-cache">Ruby Cache</h2>
 <ol>
 <li>Coherence Controller</li>
@@ -500,10 +507,10 @@ self.l3_cache.cpu_side = self.l3_bus.mem_side_ports
 <li>Interconnect</li>
 </ol>
 </section>
-</foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="37" style="" data-marpit-pagination-total="46" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="38" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46" data-marpit-advanced-background="background"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;04-cache-hierarchies-imgs/ruby.drawio.svg&quot;);background-size:60%;"><figcaption>On chip interconnect + controllers</figcaption></figure></div></section></foreignObject><foreignObject width="1280" height="720"><section id="38" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="38" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46" data-marpit-advanced-background="content">
+</foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="37" style="" data-marpit-pagination-total="41" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="38" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41" data-marpit-advanced-background="background"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;04-cache-hierarchies-imgs/ruby.drawio.svg&quot;);background-size:60%;"><figcaption>On chip interconnect + controllers</figcaption></figure></div></section></foreignObject><foreignObject width="1280" height="720"><section id="38" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="38" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41" data-marpit-advanced-background="content">
 <h2 id="ruby-1">Ruby</h2>
 </section>
-</foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="38" style="" data-marpit-pagination-total="46" data-marpit-advanced-background="pseudo"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="39" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="39" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="38" style="" data-marpit-pagination-total="41" data-marpit-advanced-background="pseudo"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="39" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="39" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="ruby-components">Ruby Components</h2>
 <ul>
 <li><strong>Controller models</strong> (cache controller, directory controller)</li>
@@ -513,54 +520,33 @@ self.l3_cache.cpu_side = self.l3_bus.mem_side_ports
 </ul>
 <h3 id="ruby-cache-controller-models">Ruby Cache: Controller Models</h3>
 <p>Code for controllers is &quot;generated&quot; via SLICC compilers</p>
-<p>We'll see much more detail in <a href="../03-Developing-gem5-models/06-modeling-cache-coherence.md">Modeling Cache Coherence in gem5</a>.</p>
+<p>You can see much more detail in <a href="https://bootcamp.gem5.org/#03-Developing-gem5-models/06-modeling-cache-coherence">Modeling Cache Coherence in gem5</a> (Not covered this week).</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="40" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
-<h2 id="ruby-cache-example">Ruby Cache: Example</h2>
-<p>Let's do an example using the MESI protocol and see what new stats we can get with Ruby.</p>
-<p>We're going to look at some different implementations of a parallel algorithm (summing an array).</p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c">parallel_for (<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>; i &lt; length; i++) {
-    *result += <span class="hljs-built_in">array</span>[i];
-}
-</code></pre>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="41" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="41" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
-<h2 id="different-implementations-naive">Different implementations: Naive</h2>
-<p>Three different implementations: Naive, false sharing on the output, and chunking with no false sharing.</p>
-<h3 id="naive-implementation">&quot;Naive&quot; implementation</h3>
-<p><img src="04-cache-hierarchies-imgs/parallel-alg-1.png" alt="naive" /></p>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="42" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
-<h2 id="false-sharing">False sharing</h2>
-<p><img src="04-cache-hierarchies-imgs/parallel-alg-4.png" alt="false_sharing" /></p>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="43" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="43" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
-<h2 id="chunking-and-no-false-sharing">Chunking and no false sharing</h2>
-<p><img src="04-cache-hierarchies-imgs/parallel-alg-6.png" alt="blocking" /></p>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="44" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="44" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
-<h2 id="using-ruby">Using Ruby</h2>
-<p>We can use Ruby to see the difference in cache behavior between these implementations.</p>
-<p>Run the script <a href="../../materials/02-Using-gem5/05-cache-hierarchies/test-ruby.py"><code>materials/02-Using-gem5/05-cache-hierarchies/ruby-example/run.py</code></a>.</p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">gem5-mesi --outdir=m5out/naive run.py naive
-</code></pre>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">gem5-mesi --outdir=m5out/false_sharing run.py false_sharing
-</code></pre>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash">gem5-mesi --outdir=m5out/chunking run.py chunking
-</code></pre>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="45" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="45" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
-<h2 id="stats-to-compare">Stats to compare</h2>
-<p>Compare the following stats:</p>
-<p>The time it took in simulation and the read/write sharing</p>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="40" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="41">
+<h2 id="ruby-vs-classic">Ruby vs Classic</h2>
+<h3 id="ruby-caches">Ruby Caches</h3>
 <ul>
-<li><code>board.cache_hierarchy.ruby_system.L1Cache_Controller.Fwd_GETS</code>: Number of times things were read-shared</li>
-<li><code>board.cache_hierarchy.ruby_system.L1Cache_Controller.Fwd_GETX</code>: Number of times things were write-shared</li>
+<li>Detailed cache coherence</li>
+<li>Any topology</li>
+<li>Network models</li>
+<li>Hierarchy fixed to protocol
+<ul>
+<li>Except CHI</li>
 </ul>
-<p>(Note: Ignore the first thing in the array for these stats. It's a long story...)</p>
-<p>We'll cover more about how to configure Ruby in <a href="../03-Developing-gem5-models/06-modeling-cache-coherence.md">Modeling Cache Coherence in gem5</a>.</p>
+</li>
+<li>Very complex</li>
+<li>Slow</li>
+</ul>
+<h3 id="classic-caches">Classic Caches</h3>
+<ul>
+<li>Easy to configure</li>
+<li>Fast</li>
+<li>Limited to a hierarchy of crossbars</li>
+<li>Cannot configure the protocol</li>
+<li>Cheats for coherence</li>
+</ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="46" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="46" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="46">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="41" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="41" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="41">
 <h2 id="summary">Summary</h2>
 <ul>
 <li>Cache hierarchies are a key part of gem5</li>
