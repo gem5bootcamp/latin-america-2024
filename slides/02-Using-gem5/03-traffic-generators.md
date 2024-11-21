@@ -195,7 +195,7 @@ Look at the results in the stats file.
 ## Step 2: Answer
 
 ```sh
-cd materials/02-Using-gem5/03-traffic-generators/
+cd exercises/02-Using-gem5/03-traffic-generators/
 gem5 memory-test.py
 ```
 

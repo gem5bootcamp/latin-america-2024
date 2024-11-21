@@ -30,8 +30,8 @@ However, if the experiment needs to model the OS interaction, or needs to model 
 
 ### 00-SE-hello-world
 
-Under `materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world`, there is a small example of an SE simulation.
-[00-SE-hello-world.py](../../materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world/00-SE-hello-world.py) will run the [00-SE-hello-world](../../materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world/00-SE-hello-world.c) binary with a simple X86 configuration.
+Under `materials/04-Advanced-using-gem5/03-running-in-gem5/00-SE-hello-world`, there is a small example of an SE simulation.
+[00-SE-hello-world.py](../../materials/04-Advanced-using-gem5/03-running-in-gem5/00-SE-hello-world/00-SE-hello-world.py) will run the [00-SE-hello-world](../../materials/04-Advanced-using-gem5/03-running-in-gem5/00-SE-hello-world/00-SE-hello-world.c) binary with a simple X86 configuration.
 This binary prints the string `Hello, World!`.
 If we use the debug flag `SyscallAll` with it, we will able to see what syscalls are simulated.
 We can do it with the following command:
@@ -47,7 +47,7 @@ gem5 -re --debug-flags=SyscallAll 00-SE-hello-world.py
 
 ## 00-SE-hello-world
 
-Then in [simout.txt](../../materials/02-Using-gem5/03-running-in-gem5/00-SE-hello-world/m5out/simout.txt), we should see:
+Then in [simout.txt](../../materials/04-Advanced-using-gem5/03-running-in-gem5/00-SE-hello-world/m5out/simout.txt), we should see:
 
 ```bash
 280945000: board.processor.cores.core: T0 : syscall Calling write(1, 21152, 14)...
@@ -267,7 +267,7 @@ Let's go over the Packer file.
 
 ## Let's use the base Ubuntu image to create a disk image with the GAPBS benchmarks
 
-Update the [x86-ubuntu.pkr.hcl](../../materials/02-Using-gem5/07-full-system/x86-ubuntu-gapbs/x86-ubuntu.pkr.hcl) file.
+Update the [x86-ubuntu.pkr.hcl](../../materials/04-Advanced-using-gem5/07-full-system/x86-ubuntu-gapbs/x86-ubuntu.pkr.hcl) file.
 
 The general structure of the Packer file would be the same but with a few key changes:
 
@@ -314,7 +314,7 @@ sha256sum ./x86-ubuntu-24-04.gz
 
 For this post installation script we need to get the dependencies and build the GAPBS benchmarks.
 
-Add this to the [post-installation.sh](../../materials/02-Using-gem5/07-full-system/x86-ubuntu-gapbs/scripts/post-installation.sh) script
+Add this to the [post-installation.sh](../../materials/04-Advanced-using-gem5/07-full-system/x86-ubuntu-gapbs/scripts/post-installation.sh) script
 
 ```bash
 git clone https://github.com/sbeamer/gapbs
@@ -325,16 +325,16 @@ make
 Let's run the Packer script and use this disk image in gem5!
 
 ```bash
-cd /workspaces/2024/materials/02-Using-gem5/07-full-system
+cd /workspaces/2024/materials/04-Advanced-using-gem5/07-full-system
 x86-ubuntu-gapbs/build.sh
 ```
 ---
 
 ## Let's use our built disk image in gem5
 
-Let's add the md5sum and the path to our [local JSON ](../../materials/02-Using-gem5/07-full-system/completed/local-gapbs-resource.json).
+Let's add the md5sum and the path to our [local JSON ](../../materials/04-Advanced-using-gem5/07-full-system/completed/local-gapbs-resource.json).
 
-Let's run the [gem5 GAPBS config](../../materials/02-Using-gem5/07-full-system/completed/x86-fs-gapbs-kvm-run.py).
+Let's run the [gem5 GAPBS config](../../materials/04-Advanced-using-gem5/07-full-system/completed/x86-fs-gapbs-kvm-run.py).
 
 ```bash
 GEM5_RESOURCE_JSON_APPEND=./completed/local-gapbs-resource.json gem5 x86-fs-gapbs-kvm-run.py

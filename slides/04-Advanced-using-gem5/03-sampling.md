@@ -165,9 +165,9 @@ After exiting the simulation, there will be a zip file with the basic block vect
 
 ### 01-simpoint
 
-All materials can be found under [materials/02-Using-gem5/09-sampling/01-simpoint](../../materials/02-Using-gem5/09-sampling/01-simpoint). The completed version is under [materials/02-Using-gem5/09-sampling/01-simpoint/complete](../../materials/02-Using-gem5/09-sampling/01-simpoint/complete).
+All materials can be found under [materials/04-Advanced-using-gem5/09-sampling/01-simpoint](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint). The completed version is under [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/complete](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/complete).
 In this exercise, we will only run scripts without modifying them.
-We will only work with [materials/02-Using-gem5/09-sampling/01-simpoint/simpoint-analysis.py](../../materials/02-Using-gem5/09-sampling/01-simpoint/simpoint-analysis.py) and [materials/02-Using-gem5/09-sampling/01-simpoint/simpoint3.2-cmd.sh](../../materials/02-Using-gem5/09-sampling/01-simpoint/simpoint3.2-cmd.sh).
+We will only work with [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint-analysis.py](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint-analysis.py) and [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint3.2-cmd.sh](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint3.2-cmd.sh).
 
 ### Goal
 
@@ -186,7 +186,7 @@ gem5 -re --outdir=simpoint-analysis-m5out simpoint-analysis.py
 ```
 
 In this exercise, we are trying to create SimPoints for a simple workload.
-The source code of the simple workload can be found in [materials/02-Using-gem5/09-sampling/01-simpoint/workload/simple_workload.c](../../materials/02-Using-gem5/09-sampling/01-simpoint/workload/simple_workload.c).
+The source code of the simple workload can be found in [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/workload/simple_workload.c](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/workload/simple_workload.c).
 
 This simple workload allocates an array of one thousand 64 bit elements, assigns each a number, then sums it all up with one thousand iterations.
 We can expect the program behavior of this workload to be really repetitive.
@@ -195,7 +195,7 @@ We can expect the program behavior of this workload to be really repetitive.
 
 ## 01-simpoint
 
-The script [materials/02-Using-gem5/09-sampling/01-simpoint/simpoint-analysis.py](../../materials/02-Using-gem5/09-sampling/01-simpoint/simpoint-analysis.py) uses the `SimPoint` probe listener object that we introduced earlier to collect basic block information for this simple workload.
+The script [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint-analysis.py](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint-analysis.py) uses the `SimPoint` probe listener object that we introduced earlier to collect basic block information for this simple workload.
 It connects the ATOMIC CPU core to the `SimPoint` probe listener using
 
 ```python
@@ -210,7 +210,7 @@ In this example, we set the `interval_length` as 1,000,000, which means that we 
 
 ## 01-simpoint
 
-After the simulation finishes, we will see a zip file named `simpoint.bb.gz` under the [simpoint-analysis-m5out](../../materials/02-Using-gem5/09-sampling/01-simpoint/simpoint-analysis-m5out) folder.
+After the simulation finishes, we will see a zip file named `simpoint.bb.gz` under the [simpoint-analysis-m5out](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint-analysis-m5out) folder.
 We can unzip it with the following command:
 
 ```bash
@@ -262,11 +262,11 @@ There are many methods to do it. In this exercise, we will be using the SimPoint
 
 ## 01-simpoint
 
-The tool is already compiled under [materials/02-Using-gem5/09-sampling/01-simpoint/simpoint](../../materials/02-Using-gem5/09-sampling/01-simpoint/simpoint).
-We also provided a runscript with the following command in [materials/02-Using-gem5/09-sampling/01-simpoint/simpoint3.2-cmd.sh](../../materials/02-Using-gem5/09-sampling/01-simpoint/simpoint3.2-cmd.sh).
+The tool is already compiled under [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint).
+We also provided a runscript with the following command in [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint3.2-cmd.sh](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint3.2-cmd.sh).
 
 ```bash
-/workspaces/2024/materials/02-Using-gem5/09-sampling/01-simpoint/simpoint \
+/workspaces/2024/materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint \
     -inputVectorsGzipped -loadFVFile simpoint-analysis-m5out/simpoint.bb.gz -k 5 -saveSimpoints \
     results.simpts -saveSimpointWeights results.weights
 ```
@@ -313,7 +313,7 @@ To do it in gem5, we will be using [set_se_simpoint_workoad](https://github.com/
 
 ## 01-simpoint
 
-All materials can be found under [materials/02-Using-gem5/09-sampling/01-simpoint](../../materials/02-Using-gem5/09-sampling/01-simpoint). The completed version is under [materials/02-Using-gem5/09-sampling/01-simpoint/complete](../../materials/02-Using-gem5/09-sampling/01-simpoint/complete).
+All materials can be found under [materials/04-Advanced-using-gem5/09-sampling/01-simpoint](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint). The completed version is under [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/complete](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/complete).
 We will not be modifying any scripts.
 
 ### Goal
@@ -330,7 +330,7 @@ gem5 -re --outdir=simpoint-checkpoint-m5out simpoint-checkpoint.py
 
 ## 01-simpoint
 
-Let's look at [materials/02-Using-gem5/09-sampling/01-simpoint/simpoint-checkpoint.py](../../materials/02-Using-gem5/09-sampling/01-simpoint/simpoint-checkpoint.py).
+Let's look at [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint-checkpoint.py](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint-checkpoint.py).
 
 There are three key parts:
 
@@ -339,13 +339,13 @@ There are three key parts:
 from gem5.utils.simpoint import SimPoint
 simpoint_info = SimPoint(
     simpoint_interval=1_000_000,
-    simpoint_file_path=Path("/workspaces/2024/materials/02-Using-gem5/09-sampling/01-simpoint/results.simpts"),
-    weight_file_path=Path("/workspaces/2024/materials/02-Using-gem5/09-sampling/01-simpoint/results.weights"),
+    simpoint_file_path=Path("/workspaces/2024/materials/04-Advanced-using-gem5/09-sampling/01-simpoint/results.simpts"),
+    weight_file_path=Path("/workspaces/2024/materials/04-Advanced-using-gem5/09-sampling/01-simpoint/results.weights"),
     warmup_interval=1_000_000
 )
 # key 2: pass in the SimPoint object to set up the workload
 board.set_se_simpoint_workload(
-    binary=BinaryResource(local_path=Path("/workspaces/2024/materials/02-Using-gem5/09-sampling/01-simpoint/workload/simple_workload").as_posix()),
+    binary=BinaryResource(local_path=Path("/workspaces/2024/materials/04-Advanced-using-gem5/09-sampling/01-simpoint/workload/simple_workload").as_posix()),
     simpoint=simpoint_info
 )
 # key 3: register exit event handler to take the checkpoints
@@ -367,8 +367,8 @@ Let's zoom in to key 1.
 from gem5.utils.simpoint import SimPoint
 simpoint_info = SimPoint(
     simpoint_interval=1_000_000,
-    simpoint_file_path=Path("/workspaces/2024/materials/02-Using-gem5/09-sampling/01-simpoint/results.simpts"),
-    weight_file_path=Path("/workspaces/2024/materials/02-Using-gem5/09-sampling/01-simpoint/results.weights"),
+    simpoint_file_path=Path("/workspaces/2024/materials/04-Advanced-using-gem5/09-sampling/01-simpoint/results.simpts"),
+    weight_file_path=Path("/workspaces/2024/materials/04-Advanced-using-gem5/09-sampling/01-simpoint/results.weights"),
     warmup_interval=1_000_000
 )
 ```
@@ -401,7 +401,7 @@ We can declare where we want to store the SimPoint checkpoints by passing in the
 
 ## 01-simpoint
 
-After we finish checkpointing, we should find all of the SimPoint checkpoints under [materials/02-Using-gem5/09-sampling/01-simpoint/simpoint-checkpoint](../../materials/02-Using-gem5/09-sampling/01-simpoint/simpoint-checkpoint) because we pass in `simpoint-checkpoint` to the `simpoints_save_checkpoint_generator` as our directory to save the SimPoint checkpoints.
+After we finish checkpointing, we should find all of the SimPoint checkpoints under [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint-checkpoint](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint-checkpoint) because we pass in `simpoint-checkpoint` to the `simpoints_save_checkpoint_generator` as our directory to save the SimPoint checkpoints.
 
 There should be three checkpoint folders called `cpt.SimPoint0`, `cpt.SimPoint1`, and `cpt.SimPoint2`.
 
@@ -429,16 +429,16 @@ $$
 
 ## 01-simpoint
 
-All materials can be found under [materials/02-Using-gem5/09-sampling/01-simpoint](../../materials/02-Using-gem5/09-sampling/01-simpoint). The completed version is under [materials/02-Using-gem5/09-sampling/01-simpoint/complete](../../materials/02-Using-gem5/09-sampling/01-simpoint/complete).
+All materials can be found under [materials/04-Advanced-using-gem5/09-sampling/01-simpoint](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint). The completed version is under [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/complete](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/complete).
 We will still not modify any scripts.
 
 Unlike the simple systems we used for SimPoint analysis and SimPoint checkpointing, we now need to use the systems for which we actually want to measure the performance.
 
-We will be using [materials/02-Using-gem5/09-sampling/01-simpoint/simpoint-run.py](../../materials/02-Using-gem5/09-sampling/01-simpoint/simpoint-run.py) to run our SimPoints.
-For our baseline, we are using [materials/02-Using-gem5/09-sampling/01-simpoint/full-detailed-run.py](../../materials/02-Using-gem5/09-sampling/01-simpoint/full-detailed-run.py), which runs the whole simple workload with the detailed system.
+We will be using [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint-run.py](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint-run.py) to run our SimPoints.
+For our baseline, we are using [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/full-detailed-run.py](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/full-detailed-run.py), which runs the whole simple workload with the detailed system.
 
 Let's start by running the SimPoints before explaining how it works due to time constraints.
-We provided a runscript to run all three in [materials/02-Using-gem5/09-sampling/01-simpoint/run-all-simpoint.sh](../../materials/02-Using-gem5/09-sampling/01-simpoint/run-all-simpoint.sh)
+We provided a runscript to run all three in [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/run-all-simpoint.sh](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/run-all-simpoint.sh)
 
 ```bash
 ./run-all-simpoint.sh
@@ -448,7 +448,7 @@ We provided a runscript to run all three in [materials/02-Using-gem5/09-sampling
 
 ## 01-simpoint
 
-Let's look at [materials/02-Using-gem5/09-sampling/01-simpoint/simpoint-run.py](../../materials/02-Using-gem5/09-sampling/01-simpoint/simpoint-run.py). It has a detailed system that matches the one that is used in our baseline [materials/02-Using-gem5/09-sampling/01-simpoint/full-detailed-run.py](../../materials/02-Using-gem5/09-sampling/01-simpoint/full-detailed-run.py).
+Let's look at [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint-run.py](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/simpoint-run.py). It has a detailed system that matches the one that is used in our baseline [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/full-detailed-run.py](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/full-detailed-run.py).
 
 There are a few key points that we want to look at. Let's start with the ones we are familiar with.
 
@@ -457,13 +457,13 @@ There are a few key points that we want to look at. Let's start with the ones we
 from gem5.utils.simpoint import SimPoint
 simpoint_info = SimPoint(
     simpoint_interval=1_000_000,
-    simpoint_file_path=Path("/workspaces/2024/materials/02-Using-gem5/09-sampling/01-simpoint/results.simpts"),
-    weight_file_path=Path("/workspaces/2024/materials/02-Using-gem5/09-sampling/01-simpoint/results.weights"),
+    simpoint_file_path=Path("/workspaces/2024/materials/04-Advanced-using-gem5/09-sampling/01-simpoint/results.simpts"),
+    weight_file_path=Path("/workspaces/2024/materials/04-Advanced-using-gem5/09-sampling/01-simpoint/results.weights"),
     warmup_interval=1_000_000
 )
 # key 2:
 board.set_se_simpoint_workload(
-    binary=BinaryResource(local_path=Path("/workspaces/2024/materials/02-Using-gem5/09-sampling/01-simpoint/workload/simple_workload").as_posix()),
+    binary=BinaryResource(local_path=Path("/workspaces/2024/materials/04-Advanced-using-gem5/09-sampling/01-simpoint/workload/simple_workload").as_posix()),
     simpoint=simpoint_info,
     checkpoint=Path(f"simpoint-checkpoint/cpt.SimPoint{args.sid}")
 )
@@ -541,7 +541,7 @@ Also, we should have the baseline output in `full-detailed-run-m5out`.
 
 Let's try to use the SimPoints' performance to predict the overall IPC!
 
-We have a Python script ready to do the prediction in [materials/02-Using-gem5/09-sampling/01-simpoint/predict_overall_ipc.py](../../materials/02-Using-gem5/09-sampling/01-simpoint/predict_overall_ipc.py).
+We have a Python script ready to do the prediction in [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/predict_overall_ipc.py](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/predict_overall_ipc.py).
 
 We can run it with
 
@@ -622,7 +622,7 @@ All the weights and loop information should come with the ELFies workload.
 
 We can run ELFies with the [ELFieInfo class](https://github.com/gem5/gem5/blob/stable/src/python/gem5/resources/elfie.py#L36).
 
-There is an example in [materials/02-Using-gem5/09-sampling/02-elfies/run-elfies.py](../../materials/02-Using-gem5/09-sampling/02-elfies/run-elfies.py)
+There is an example in [materials/04-Advanced-using-gem5/09-sampling/02-elfies/run-elfies.py](../../materials/04-Advanced-using-gem5/09-sampling/02-elfies/run-elfies.py)
 
 We can run it with the following command but it is not suggested because it will take too long.
 
@@ -631,7 +631,7 @@ gem5 -re run-elfies.py
 ```
 
 It is a 8-threaded experiment with a detailed system that might run for eight hundred million instructions so it will take some time to finish.
-We have a completed m5out under the [materials/02-Using-gem5/09-sampling/02-elfies/complete/m5out](../../materials/02-Using-gem5/09-sampling/02-elfies/complete/m5out) if you are interested in looking at the output.
+We have a completed m5out under the [materials/04-Advanced-using-gem5/09-sampling/02-elfies/complete/m5out](../../materials/04-Advanced-using-gem5/09-sampling/02-elfies/complete/m5out) if you are interested in looking at the output.
 
 ---
 
@@ -728,10 +728,10 @@ Before running the simulation, we need to decide a few statistical parameters.
 
 ### 03-SMARTS
 
-All materials can be found under [materials/02-Using-gem5/09-sampling/03-SMARTS](../../materials/02-Using-gem5/09-sampling/03-SMARTS). The completed version is under [materials/02-Using-gem5/09-sampling/03-SMARTS/complete](../../materials/02-Using-gem5/09-sampling/03-SMARTS/complete).
+All materials can be found under [materials/04-Advanced-using-gem5/09-sampling/03-SMARTS](../../materials/04-Advanced-using-gem5/09-sampling/03-SMARTS). The completed version is under [materials/04-Advanced-using-gem5/09-sampling/03-SMARTS/complete](../../materials/04-Advanced-using-gem5/09-sampling/03-SMARTS/complete).
 We will not modify any scripts.
 
-[materials/02-Using-gem5/09-sampling/03-SMARTS/SMARTS.py](../../materials/02-Using-gem5/09-sampling/03-SMARTS/SMARTS.py) is an example of how to use exit event handlers to perform SMARTS.
+[materials/04-Advanced-using-gem5/09-sampling/03-SMARTS/SMARTS.py](../../materials/04-Advanced-using-gem5/09-sampling/03-SMARTS/SMARTS.py) is an example of how to use exit event handlers to perform SMARTS.
 
 We can run it with the following command
 
@@ -739,7 +739,7 @@ We can run it with the following command
 gem5 -re SMARTS.py
 ```
 
-This script will use SMARTS on the workload from 01-simpoint, so we can use the baseline performance from [materials/02-Using-gem5/09-sampling/01-simpoint/full-detailed-run.py](../../materials/02-Using-gem5/09-sampling/01-simpoint/full-detailed-run.py) to validate our predicted performance using SMARTS.
+This script will use SMARTS on the workload from 01-simpoint, so we can use the baseline performance from [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/full-detailed-run.py](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/full-detailed-run.py) to validate our predicted performance using SMARTS.
 
 ---
 
@@ -791,9 +791,9 @@ When it reaches the end of the detailed simulation, it dumps the stats; then it 
 
 ## 03-SMARTS
 
-Now we understand what the `smarts_generator` will do, let's look at the system we are using in [materials/02-Using-gem5/09-sampling/03-SMARTS/SMARTS.py](../../materials/02-Using-gem5/09-sampling/03-SMARTS/SMARTS.py).
+Now we understand what the `smarts_generator` will do, let's look at the system we are using in [materials/04-Advanced-using-gem5/09-sampling/03-SMARTS/SMARTS.py](../../materials/04-Advanced-using-gem5/09-sampling/03-SMARTS/SMARTS.py).
 
-It uses exactly the same system as  [materials/02-Using-gem5/09-sampling/01-simpoint/full-detailed-run.py](../../materials/02-Using-gem5/09-sampling/01-simpoint/full-detailed-run.py), except that it uses a `SimpleSwitchableProcessor` to switch between ATOMIC CPU and O3 CPU for fast-forwarding and detailed simulation.
+It uses exactly the same system as  [materials/04-Advanced-using-gem5/09-sampling/01-simpoint/full-detailed-run.py](../../materials/04-Advanced-using-gem5/09-sampling/01-simpoint/full-detailed-run.py), except that it uses a `SimpleSwitchableProcessor` to switch between ATOMIC CPU and O3 CPU for fast-forwarding and detailed simulation.
 
 If the simulation is run with
 
@@ -801,7 +801,7 @@ If the simulation is run with
 gem5 -re SMARTS.py
 ```
 
-we can run [materials/02-Using-gem5/09-sampling/03-SMARTS/predict_ipc.py](../../materials/02-Using-gem5/09-sampling/03-SMARTS/predict_ipc.py) to predict the overall IPC and calculate the relative error with the baseline IPC.
+we can run [materials/04-Advanced-using-gem5/09-sampling/03-SMARTS/predict_ipc.py](../../materials/04-Advanced-using-gem5/09-sampling/03-SMARTS/predict_ipc.py) to predict the overall IPC and calculate the relative error with the baseline IPC.
 
 ```bash
 python3 predict_ipc.py
@@ -811,7 +811,7 @@ python3 predict_ipc.py
 
 ## 03-SMARTS
 
-What [materials/02-Using-gem5/09-sampling/03-SMARTS/predict_ipc.py](../../materials/02-Using-gem5/09-sampling/03-SMARTS/predict_ipc.py) does is read the IPC from each sample, sum the IPCs, and divide by the total number of samples to calculate the average IPC of the program.
+What [materials/04-Advanced-using-gem5/09-sampling/03-SMARTS/predict_ipc.py](../../materials/04-Advanced-using-gem5/09-sampling/03-SMARTS/predict_ipc.py) does is read the IPC from each sample, sum the IPCs, and divide by the total number of samples to calculate the average IPC of the program.
 
 $\text{Average IPC} = \frac{\sum_{i=1}^{n} \text{IPC}_i}{n}$
 

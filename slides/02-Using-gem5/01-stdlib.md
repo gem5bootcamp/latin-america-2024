@@ -127,9 +127,7 @@ Run BFS from the GAP benchmark suite.
 
 ## Step 0
 
-<!-- _class: code-80-percent -->
-
-In [`materials/02-Using-gem5/01-stdlib/01-components.py`](../../materials/02-Using-gem5/01-stdlib/01-components.py) you'll see some imports already included for you.
+Here are the imports you need to get started. It's a lot, but we'll see each one of them as we go through the bootcamp over the next few days.
 
 ```python
 from gem5.components.boards.simple_board import SimpleBoard

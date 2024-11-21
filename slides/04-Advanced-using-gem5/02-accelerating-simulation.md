@@ -107,8 +107,8 @@ def _setup_board(self) -> None:
 
 ### 01-annotate-this
 
-Materials are under [materials/02-Using-gem5/08-accelerating-simulation/01-annotate-this](/materials/02-Using-gem5/08-accelerating-simulation/01-annotate-this/).
-[`01-annotate-this.cpp`](../../materials/02-Using-gem5/08-accelerating-simulation/01-annotate-this/01-annotate-this.cpp) is the same workload we used in [03-running-in-gem5](03-running-in-gem5.md), but this time, we need to use the address version of m5ops to annotate it.
+Materials are under [materials/04-Advanced-using-gem5/08-accelerating-simulation/01-annotate-this](/materials/04-Advanced-using-gem5/08-accelerating-simulation/01-annotate-this/).
+[`01-annotate-this.cpp`](../../materials/04-Advanced-using-gem5/08-accelerating-simulation/01-annotate-this/01-annotate-this.cpp) is the same workload we used in [03-running-in-gem5](03-running-in-gem5.md), but this time, we need to use the address version of m5ops to annotate it.
 
 We first need to get the functions we need from the m5ops library.
 
@@ -191,7 +191,7 @@ We also need to
 1. Add **`gem5/util/m5/src`** to the compiler's include search path
 2. Add `-no-pie` to not make a position independent executable
 
-For our [Makefile](../../materials/02-Using-gem5/08-accelerating-simulation/01-annotate-this/Makefile), we have the following compiler command:
+For our [Makefile](../../materials/04-Advanced-using-gem5/08-accelerating-simulation/01-annotate-this/Makefile), we have the following compiler command:
 
 ```Makefile
 $(GXX) -o 01-annotate-this 01-annotate-this.cpp -no-pie \
@@ -245,9 +245,9 @@ You can find the details of the workload at the [gem5 resources website](https:/
 
 ## 02-kvm-time
 
-All materials can be found in [materials/02-Using-gem5/08-accelerating-simulation/02-kvm-time](/materials/02-Using-gem5/08-accelerating-simulation/02-kvm-time).
+All materials can be found in [materials/04-Advanced-using-gem5/08-accelerating-simulation/02-kvm-time](/materials/04-Advanced-using-gem5/08-accelerating-simulation/02-kvm-time).
 
-We will be editing [`02-kvm-time.py`](../../materials/02-Using-gem5/08-accelerating-simulation/02-kvm-time/02-kvm-time.py)
+We will be editing [`02-kvm-time.py`](../../materials/04-Advanced-using-gem5/08-accelerating-simulation/02-kvm-time/02-kvm-time.py)
 
 ### Goal
 
@@ -339,7 +339,7 @@ simulator = Simulator(
 If we run it with
 
 ```bash
-cd materials/02-Using-gem5/08-accelerating-simulation/02-kvm-time
+cd materials/04-Advanced-using-gem5/08-accelerating-simulation/02-kvm-time
 gem5 -re 02-kvm-time.py
 ```
 
@@ -528,8 +528,8 @@ However, we have a different goal this time. Also we will have a much simpler sy
 
 ## 03-checkpoint-and-restore
 
-All materials can be found under [materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore](/materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore).
-We will first edit [`03-take-a-checkpoint.py`](../../materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-take-a-checkpoint.py) to take a checkpoint. We will be calling it as the checkpointing script.
+All materials can be found under [materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore](/materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore).
+We will first edit [`03-take-a-checkpoint.py`](../../materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-take-a-checkpoint.py) to take a checkpoint. We will be calling it as the checkpointing script.
 
 In the checkpointing script, let's first give the system the simplest cache hierarchy, which is no cache at all.
 
@@ -615,8 +615,8 @@ Simulation Done
 
 ## 03-checkpoint-and-restore
 
-We should also find the checkpoint saved at `materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt`.
-If you're interested, you can look at the [`m5.cpt`](/materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt/m5.cpt) inside the `03-cpt` directory to see what is being saved.
+We should also find the checkpoint saved at `materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt`.
+If you're interested, you can look at the [`m5.cpt`](/materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt/m5.cpt) inside the `03-cpt` directory to see what is being saved.
 
 It is possible for a gem5 checkpoint to be outdated if the checkpoint is taken with an older version of gem5 and being restored with a newer version of gem5.
 In this case, we might need to update it with [`gem5/util/cpt_upgrader.py`](../../gem5/util/cpt_upgrader.py) of the newer version gem5.
@@ -633,7 +633,7 @@ In this case, we might need to update it with [`gem5/util/cpt_upgrader.py`](../.
 
 We will be using the exact same system that we used in 02-kvm-time to restore the checkpoint we just took.
 
-The restoring script is [`materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-restore-the-checkpoint.py`](../../materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-restore-the-checkpoint.py).
+The restoring script is [`materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-restore-the-checkpoint.py`](../../materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-restore-the-checkpoint.py).
 
 We can pass in the path to the checkpoint as a parameter to the `simulator` object.
 We can also pass in the path using the `board` object. More details can be found [here](https://github.com/gem5/gem5/blob/stable/src/python/gem5/components/boards/kernel_disk_workload.py#L142).
@@ -644,7 +644,7 @@ For this example, we will pass in the path to the `simulator` object.
 simulator = Simulator(
     board=board,
 # Pass in the checkpoint path
-    checkpoint_path="/workspaces/2024/materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt"
+    checkpoint_path="/workspaces/2024/materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt"
 #
 )
 ```
@@ -661,9 +661,9 @@ simulator.run(1_000_000_000)
 
 To do this, we would need to use `simulator.run()` with no arguments and a workend exit event handler. An example can be found at [`gem5/configs/example/gem5_library/x86-npb-benchmarks.py`](/gem5/configs/example/gem5_library/x86-npb-benchmarks.py).
 
-Other than the `simulator` and the `processor` being a non-switchable SimpleProcessor, everything is the same as the script we used in [`02-kvm-time.py`](../../materials/02-Using-gem5/08-accelerating-simulation/02-kvm-time/02-kvm-time.py).
+Other than the `simulator` and the `processor` being a non-switchable SimpleProcessor, everything is the same as the script we used in [`02-kvm-time.py`](../../materials/04-Advanced-using-gem5/08-accelerating-simulation/02-kvm-time/02-kvm-time.py).
 
-We can run this [restoring script](../../materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-restore-the-checkpoint.py) with
+We can run this [restoring script](../../materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-restore-the-checkpoint.py) with
 
 ```bash
 gem5 -re --outdir=restore-m5-out 03-restore-the-checkpoint.py
@@ -673,7 +673,7 @@ gem5 -re --outdir=restore-m5-out 03-restore-the-checkpoint.py
 
 ## 03-checkpoint-and-restore
 
-After the simulation finishes, we should see in [`simerr.txt`](../../materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/restore-m5-out/simerr.txt)
+After the simulation finishes, we should see in [`simerr.txt`](../../materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/restore-m5-out/simerr.txt)
 
 ```bash
 src/sim/simulate.cc:199: info: Entering event queue @ 14788319800411.  Starting simulation...
@@ -683,7 +683,7 @@ build/ALL/arch/x86/generated/exec-ns.cc.inc:27: warn: instruction 'verw_Mw_or_Rv
 
 Unlike a simulation that starts from the beginning, a simulation that restores a checkpoint will start at the Tick when the checkpoint was taken.
 
-If we search for `curTick` in the [`m5.cpt`](../../materials/02-Using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt/m5.cpt) file under the checkpoint folder, we will see the Tick when the checkpoint was taken. It might not be exactly the same as the sample shown here  because KVM brings variation to the Ticks, but the starting Tick in the restoring simulation should match with the `curTick` in the `m5.cpt` file.
+If we search for `curTick` in the [`m5.cpt`](../../materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt/m5.cpt) file under the checkpoint folder, we will see the Tick when the checkpoint was taken. It might not be exactly the same as the sample shown here  because KVM brings variation to the Ticks, but the starting Tick in the restoring simulation should match with the `curTick` in the `m5.cpt` file.
 
 ```bash
 curTick=14788319800411

@@ -243,7 +243,7 @@ What is the bandwidth and latency for
 
 (Note: Step 1 is exercise 1.)
 
-Open [`materials/02-Using-gem5/04-cache-hierarchies/three_level.py`](../../materials/02-Using-gem5/05-cache-hierarchies/three_level.py)
+Open `exercises/02-Using-gem5/04-cache-hierarchies/three_level.py`
 We are creating a new class which will implement an abstract class `AbstractCacheHierarchy`.
 By implementing this class, we can use it in the standard library as a cache hierarchy in our test board (or even in a CPU-based board).
 
@@ -577,78 +577,31 @@ Parameters:
 
 Code for controllers is "generated" via SLICC compilers
 
-We'll see much more detail in [Modeling Cache Coherence in gem5](../03-Developing-gem5-models/06-modeling-cache-coherence.md).
+You can see much more detail in [Modeling Cache Coherence in gem5](https://bootcamp.gem5.org/#03-Developing-gem5-models/06-modeling-cache-coherence) (Not covered this week).
 
 ---
 
-## Ruby Cache: Example
+<!-- _class: two-col -->
 
-Let's do an example using the MESI protocol and see what new stats we can get with Ruby.
+## Ruby vs Classic
 
-We're going to look at some different implementations of a parallel algorithm (summing an array).
+### Ruby Caches
 
-```c
-parallel_for (int i=0; i < length; i++) {
-    *result += array[i];
-}
-```
+- Detailed cache coherence
+- Any topology
+- Network models
+- Hierarchy fixed to protocol
+  - Except CHI
+- Very complex
+- Slow
 
----
+### Classic Caches
 
-## Different implementations: Naive
-
-Three different implementations: Naive, false sharing on the output, and chunking with no false sharing.
-
-### "Naive" implementation
-
-![naive](04-cache-hierarchies-imgs/parallel-alg-1.png)
-
----
-
-## False sharing
-
-![false_sharing](04-cache-hierarchies-imgs/parallel-alg-4.png)
-
----
-
-## Chunking and no false sharing
-
-![blocking](04-cache-hierarchies-imgs/parallel-alg-6.png)
-
----
-
-## Using Ruby
-
-We can use Ruby to see the difference in cache behavior between these implementations.
-
-Run the script [`materials/02-Using-gem5/05-cache-hierarchies/ruby-example/run.py`](../../materials/02-Using-gem5/05-cache-hierarchies/test-ruby.py).
-
-```bash
-gem5-mesi --outdir=m5out/naive run.py naive
-```
-
-```bash
-gem5-mesi --outdir=m5out/false_sharing run.py false_sharing
-```
-
-```bash
-gem5-mesi --outdir=m5out/chunking run.py chunking
-```
-
----
-
-## Stats to compare
-
-Compare the following stats:
-
-The time it took in simulation and the read/write sharing
-
-- `board.cache_hierarchy.ruby_system.L1Cache_Controller.Fwd_GETS`: Number of times things were read-shared
-- `board.cache_hierarchy.ruby_system.L1Cache_Controller.Fwd_GETX`: Number of times things were write-shared
-
-(Note: Ignore the first thing in the array for these stats. It's a long story...)
-
-We'll cover more about how to configure Ruby in [Modeling Cache Coherence in gem5](../03-Developing-gem5-models/06-modeling-cache-coherence.md).
+- Easy to configure
+- Fast
+- Limited to a hierarchy of crossbars
+- Cannot configure the protocol
+- Cheats for coherence
 
 ---
 

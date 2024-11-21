@@ -280,7 +280,7 @@ Create a JSON file called `my_resources.json` for the matrix-multiply binary tha
 Create both a binary resource for the binary and a workload to run the binary.
 Call the binary "matrix-multiply" and the workload "matrix-multiply-run".
 
-There is a template JSON file in the materials folder.
+There is a template JSON file in the `exercises/02-Using-gem5/07-gem5-resources` folder.
 
 Use `GEM5_RESOURCE_JSON_APPEND=my_resources.json gem5 run-mm.py` to run the simulation.
 
@@ -301,7 +301,7 @@ Use `GEM5_RESOURCE_JSON_APPEND=my_resources.json gem5 run-mm.py` to run the simu
         "tags": [],
         "source": "",
         "url": "file:///workspaces/latin-america-2024/
-                materials/02-Using-gem5/06-custom-benchmarks/
+                exercises/02-Using-gem5/06-custom-benchmarks/
                 completed/matrix-multiply",
         "license": "",
         "author": [
