@@ -33,11 +33,11 @@ The new gem5-20 paper discusses the changes since the 2011 paper and provides an
 
 In the bootcamp, we will be building a secure memory component. The following papers are a good introduction to secure memory:
 
-- [AEGIS: A single-chip secure processor](./00-pre-bootcamp-imgs/AEGIS-SecureProcessor.pdf)
-- [Efficient Memory Integrity Verification and Encryption for Secure Processor](./00-pre-bootcamp-imgs/Efficient_memory_integrity_verification_and_encryption_for_secure_processors.pdf)
-- [Caches and Hash Trees for Efficient Memory Integrity Verification](./00-pre-bootcamp-imgs/Caches_and_hash_trees_for_efficient_memory_integrity_verification.pdf)
-- [Using Address Independent Seed Encryption and Bonsai Merkle Trees to Make Secure Processors OS- and Performance-Friendly](./00-pre-bootcamp-imgs/Using_Address_Independent_Seed_Encryption_and_Bonsai_Merkle_Trees_to_Make_Secure_Processors_OS-_and_Performance-Friendly.pdf)
-- [PoisonIvy: Safe Speculation for Secure Memory](./00-pre-bootcamp-imgs/PoisonIvy_Safe_speculation_for_secure_memory.pdf)
+- [AEGIS: A single-chip secure processor](./00-pre-bootcamp-imgs/AEGIS-SecureProcessor.pdf "download")
+- [Efficient Memory Integrity Verification and Encryption for Secure Processor](./00-pre-bootcamp-imgs/Efficient_memory_integrity_verification_and_encryption_for_secure_processors.pdf "download")
+- [Caches and Hash Trees for Efficient Memory Integrity Verification](./00-pre-bootcamp-imgs/Caches_and_hash_trees_for_efficient_memory_integrity_verification.pdf "download")
+- [Using Address Independent Seed Encryption and Bonsai Merkle Trees to Make Secure Processors OS- and Performance-Friendly](./00-pre-bootcamp-imgs/Using_Address_Independent_Seed_Encryption_and_Bonsai_Merkle_Trees_to_Make_Secure_Processors_OS-_and_Performance-Friendly.pdf "download")
+- [PoisonIvy: Safe Speculation for Secure Memory](./00-pre-bootcamp-imgs/PoisonIvy_Safe_speculation_for_secure_memory.pdf "download")
 
 ---
 
