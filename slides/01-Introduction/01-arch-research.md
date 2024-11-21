@@ -19,3 +19,5 @@ author: Tamara Lehman
 3. Why do we need simulators?
 
 ### How we're going to use this research idea throughout the week
+
+Full slide deck in slides/01-Introduction/IntroToCompArchResearch.pptx

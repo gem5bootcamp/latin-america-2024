@@ -142,6 +142,8 @@ Use a 32 GiB/s `SimpleMemory` with latency of 20ns. Linear and random traffic wi
 
 ## Step 1: Create a test board for SimpleMemory
 
+Starting from the skeleton code provided in `/workspaces/latin-america-2024/materials/02-Using-gem5/03-traffic-generators/memory-test.py`, write code to create memory traces using the linear generator.
+
 Use the `TestBoard` instead of the `SimpleBoard` for this experiment.
 See [`TestBoard`](/gem5/src/python/gem5/components/boards/test_board.py) for hints.
 
@@ -167,6 +169,9 @@ board = TestBoard(
         latency_var="0s", size="1GiB"),
     cache_hierarchy=NoCache(),
 )
+
+simulator = Simulator(board=board)
+simulator.run()
 ```
 
 The generator and the memory have their own clock domains to the `clk_freq` parameter is ignored.
@@ -175,8 +180,7 @@ For the memory system, we are using a `SingleChannelSimpleMemory` with a latency
 
 The `LinearGenerator` is generating traffic at 16GiB/s and the `SimpleMemory` has a bandwidth of 32GiB/s.
 
-We are using a `NoCache` cache hierarchy to simplify the experiment.
-With `NoCache`, the memory system is directly connected to the processor.
+We are using a `NoCache` cache hierarchy to simplify the experiment. With `NoCache`, the memory system is directly connected to the processor.
 
 ---
 
@@ -195,7 +199,7 @@ cd materials/02-Using-gem5/03-traffic-generators/
 gem5 memory-test.py
 ```
 
-Look in `m5out/stats.txt` for the results.
+Look in `m5out/stats.txt` for the results. Remember that this directory and file is created in whichever directory you run the gem5 binary.
 
 `board.processor.cores.generator.readBW` is 17180800000 (or 17.1808 GB/s).
 
@@ -203,18 +207,29 @@ Note that the bandwidth is given in GB (*not* GiB). I.e., 1 GB = 10^9 bytes.
 
 ---
 
-## Step 3: Vary the write percentage and read percentage
+<!-- _class: code-80-percent -->
 
-For this step, you can add arguments to your script with the `argparse` Python library. This way, you don't have to keep modifying your script.
+## Step 3a: Add An Argument Parser
 
-Run the script with 16 GiB/s, 32 GiB/s, 64 GiB/s as the traffic rates and 100% reads and 50% reads for each traffic rate.
-Measure the bandwidth in each case to see what the simulated model's performance is.
+For this step, you can add arguments to your script with the `argparse` Python library. In this experiment you will add an argument to set the rate of the generator. This way, you don't have to keep modifying your script.
+```python
+parser = argparse.ArgumentParser()
+    parser.add_argument("rate", type=str, help="The rate of the generator")
+    args = parser.parse_args()
+```
+
+Create also an argument to set the read percentage for the traffic generator.
+
+Adjust the rate argument inside the generator definition to use the argument value (i.e. `args.rate`).
+
+Also add the read percentage parameter (i.e `rd_perc`) in the generator definition and set it to the argument corresponding to this variable.
 
 ---
+<!-- _class: code-80-percent -->
 
-## Step 3: *Hint*
+## Step 3b: Add simstats
 
-You may also want to use `simstats` to get the bandwidth instead of reading `stats.txt`.
+You want to use `simstats` to get the bandwidth in the script directly instead of reading `stats.txt`.
 
 ```python
 stats = simulator.get_simstats()
@@ -232,19 +247,58 @@ print(f"Average latency: {latency / stats.simFreq.value * 1e9:0.2f} ns")
 ```
 
 ---
+<!-- _class: code-80-percent -->
 
-## Step 3: Answer
+## Step 3c: Run your script
 
+Run your script in gem5 using  six configurations:
+1. 16 GiB/s and 50% reads,
+2. 16 GiB/s and 100% reads,
+3. 32 GiB/s and 50% reads,
+4. 32 GiB/s and 100% reads,
+5. 64 GiB/s and 50% reads,
+6. and 64 GiB/s and 100% reads.
+
+Look at the output in the terminal.
+
+---
+
+## Step 3 a, b, c: Answers
+
+Run the script using `gem5 memory-test.py 16GiB/s 50` for each of the 6 configiurations.
 Results for running with 16 GiB/s, 32 GiB/s, 64 GiB/s, and 100% reads and 50% reads.
+<style scoped>
+table {
+            color: blue;
+            background-color: white;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            border-left: 1px solid black;
+            border-right: 1px solid black;
+}
+th {
+    color: black;
+            /* border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            border-left: 1px solid black;
+            border-right: 1px solid black; */
+}
+/* table td{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+} */
+</style>
 
-| Bandwidth | Read Percentage | Linear Speed (GiB/s) | Random Speed (GiB/s) |
-|-----------|-----------------|---------------------|---------------------|
-| 16 GiB/s  | 100%            | 16.00               | 16.00               |
-|           | 50%             | 16.00               | 16.00               |
-| 32 GiB/s  | 100%            | 31.99               | 31.99               |
-|           | 50%             | 31.99               | 31.99               |
-| 64 GiB/s  | 100%            | 32.11               | 32.11               |
-|           | 50%             | 32.11               | 32.11               |
+| Bandwidth | Read Percentage | Avg Latency (ns) | Bandwidth (GiB/s) |
+|-----------:|:-----------------:|:---------------------:|:---------------------:|
+| 16 GiB/s  | 100%            | 23.81               | 16.00               |
+|           | 50%             | 23.81               | 16.00               |
+| 32 GiB/s  | 100%            | 23.81               | 31.99               |
+|           | 50%             | 23.80               | 31.99               |
+| 64 GiB/s  | 100%            | 25.66               | 32.11               |
+|           | 50%             | 25.67               | 32.11               |
 
 With the `SimpleMemory` you don't see any complex behavior in the memory model (but it **is** fast).
 
@@ -273,7 +327,7 @@ def SingleChannelDDR4_2400(
 
 Use the `SingleChannelDDR4_2400` memory system with the `LinearGenerator` and `RandomGenerator` to see how the memory bandwidth changes with different traffic read-write ratios.
 
-You may want to add another argument to the `argparse` to specify the memory system.
+You may want to add another argument to the `argparse` to specify the memory system and the type of generator (linear or random).
 
 Note: You may not need to run all possibly combinations. Try to run the minimum to answer the questions.
 

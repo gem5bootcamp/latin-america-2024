@@ -121,7 +121,7 @@ You can also open it in your local VS Code if you install the Codespaces extensi
   - Python scripts and other materials for the class examples.
   - Completed examples are in the `completed` directories.
 - **`homework/`**
-  - Homework assignments
+  - Homework assignments to be completed outside of the workshop.
 
 Both the slides and materials are broken down into sections and lessons.
 We use numbering to keep them in order.
@@ -130,6 +130,8 @@ We use numbering to keep them in order.
 
 ## Building gem5
 
+- To build the gem5 binary you need to use SCons. The following code is an example of how you would build the optimized version of gem5.
+  - SCons is a software construction tool like Make that makes it easy to put together libraries and environments. 
 > Don't do this right now!
 
 ```sh

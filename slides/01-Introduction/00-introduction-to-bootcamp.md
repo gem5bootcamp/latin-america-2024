@@ -55,7 +55,7 @@ Boulder Computer Architecture Research Lab (BCARL)
 
 ![CU Boulder Logo w:450px center](00-introduction-to-bootcamp-imgs/Boulder%20centered.jpg)
 
->Note: interested in applying to the PhD program at CU Boulder? Ask me how to waive the application fee. Application deadline is **December 15th 2024**.
+> Note: interested in applying to the PhD program at CU Boulder? Ask me how to waive the application fee. Application deadline is **December 15th 2024**.
 
 ---
 
