@@ -203,11 +203,17 @@ Note that the bandwidth is given in GB (*not* GiB). I.e., 1 GB = 10^9 bytes.
 
 ---
 
-<!-- _class: code-80-percent -->
-
 ## Step 3: Vary the write percentage and read percentage
 
 For this step, you can add arguments to your script with the `argparse` Python library. This way, you don't have to keep modifying your script.
+
+Run the script with 16 GiB/s, 32 GiB/s, 64 GiB/s as the traffic rates and 100% reads and 50% reads for each traffic rate.
+Measure the bandwidth in each case to see what the simulated model's performance is.
+
+---
+
+## Step 3: *Hint*
+
 You may also want to use `simstats` to get the bandwidth instead of reading `stats.txt`.
 
 ```python
