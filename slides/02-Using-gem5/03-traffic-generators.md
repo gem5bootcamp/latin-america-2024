@@ -207,15 +207,14 @@ Note that the bandwidth is given in GB (*not* GiB). I.e., 1 GB = 10^9 bytes.
 
 ---
 
-<!-- _class: code-80-percent -->
-
 ## Step 3a: Add An Argument Parser
 
 For this step, you can add arguments to your script with the `argparse` Python library. In this experiment you will add an argument to set the rate of the generator. This way, you don't have to keep modifying your script.
+
 ```python
 parser = argparse.ArgumentParser()
-    parser.add_argument("rate", type=str, help="The rate of the generator")
-    args = parser.parse_args()
+parser.add_argument("rate", type=str, help="The rate of the generator")
+args = parser.parse_args()
 ```
 
 Create also an argument to set the read percentage for the traffic generator.
@@ -225,7 +224,6 @@ Adjust the rate argument inside the generator definition to use the argument val
 Also add the read percentage parameter (i.e `rd_perc`) in the generator definition and set it to the argument corresponding to this variable.
 
 ---
-<!-- _class: code-80-percent -->
 
 ## Step 3b: Add simstats
 
@@ -247,7 +245,6 @@ print(f"Average latency: {latency / stats.simFreq.value * 1e9:0.2f} ns")
 ```
 
 ---
-<!-- _class: code-80-percent -->
 
 ## Step 3c: Run your script
 
@@ -265,31 +262,8 @@ Look at the output in the terminal.
 
 ## Step 3 a, b, c: Answers
 
-Run the script using `gem5 memory-test.py 16GiB/s 50` for each of the 6 configiurations.
+Run the script using `gem5 memory-test.py 16GiB/s 50` for each of the 6 configurations.
 Results for running with 16 GiB/s, 32 GiB/s, 64 GiB/s, and 100% reads and 50% reads.
-<style scoped>
-table {
-            color: blue;
-            background-color: white;
-            border-top: 1px solid black;
-            border-bottom: 1px solid black;
-            border-left: 1px solid black;
-            border-right: 1px solid black;
-}
-th {
-    color: black;
-            /* border-top: 1px solid black;
-            border-bottom: 1px solid black;
-            border-left: 1px solid black;
-            border-right: 1px solid black; */
-}
-/* table td{
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-} */
-</style>
 
 | Bandwidth | Read Percentage | Avg Latency (ns) | Bandwidth (GiB/s) |
 |-----------:|:-----------------:|:---------------------:|:---------------------:|
