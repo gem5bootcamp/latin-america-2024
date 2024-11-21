@@ -14,7 +14,7 @@ In this section, we will get familiar with the tutorial's codespace environmen
 
 ---
 
-## Let’s hit the ground running
+## Let's hit the ground running
 
 ### This example will show
 
@@ -43,7 +43,7 @@ cd gem5
 > **stable**: The default branch for gem5. Updated at stable releases. Currently v24.0 (As of August 2024).
 > **develop**: The branch in which new features, improvements, etc. are added regularly for the next release.
 
-In this tutorial we’re going to use codespaces with a repo which includes some example materials. Though all the gem5 code is v24.0.
+In this tutorial we're going to use codespaces with a repo which includes some example materials. Though all the gem5 code is v24.0.
 
 ---
 
@@ -64,7 +64,7 @@ The last two numbers are for
 - Minor releases (these happen rarely when a major bug is found).
 - Hotfix releases: These are for "small" bugs that are found after a release.
 
-See [CONTRIBUTING.md](../../gem5/CONTRIBUTING.md#Releases) for more information.
+See [CONTRIBUTING.md](/gem5/CONTRIBUTING.md#Releases) for more information.
 
 ---
 
@@ -72,12 +72,11 @@ See [CONTRIBUTING.md](../../gem5/CONTRIBUTING.md#Releases) for more information.
 
 - We will be using the "bootcamp environment"
   - Note: That's also where the source for these slides are
-  - You will be doing all of your development in the repo found at <https://github.com/gem5bootcamp/2024>.
+  - You will be doing all of your development in the repo found at <https://github.com/gem5bootcamp/latin-america-2024>.
 
-These slides and are available at <https://bootcamp.gem5.org/> for you to follow along.
-(Note: They will be archived at <https://gem5bootcamp.github.io/2024>)
+These slides and are available at <https://gem5bootcamp.github.io/latin-america-2024/> for you to follow along.
 
-> **Step 1:** Go to the classroom <https://classroom.github.com/a/gCcXlgBs>
+> **Step 1:** Go to the classroom <https://classroom.github.com/a/zIM1ysn_>
 
 You need to be in the GitHub organization (via the classroom) to get free codespaces.
 
