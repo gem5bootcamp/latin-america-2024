@@ -73,13 +73,13 @@ A coherence problem can arise if multiple cores have access to multiple copies o
 
 ---
 
-## What is Coherency
+<!-- ## What is Coherency
 
 A coherence problem can arise if multiple cores have access to multiple copies of a data (e.g., in multiple caches) and at least one access is a write
 
 ![Cores and Coherency across caches with write request](04-cache-hierarchies-imgs/cache_line_2.svg)
 
----
+--- -->
 
 ## Classic Cache: Coherent Crossbar
 
@@ -91,7 +91,7 @@ Each crossbar can connect *n* cpu-side ports and *m* memory-side ports.
 
 <!-- _class: exercise two-col -->
 
-## Exercise 1: Measure the bandwidth and latency the caches
+## Exercise 1: Measure the cache bandwidth and latency
 
 Use the Private L1, Private L2 cache hierarchy to measure the bandwidth and latency of the cache-based system.
 Use a Dual channel DDR4 memory.
