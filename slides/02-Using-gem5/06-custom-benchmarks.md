@@ -25,7 +25,7 @@ In this section, we'll cover how to create or modify your own workloads.
 
 ---
 
-<!-- _class: two-col code-50-percent -->
+<!-- _class: two-col code-60-percent -->
 
 ## Region of interest
 
@@ -118,7 +118,7 @@ There are also other things we may want to communicate from the *guest* applicat
 - See [gem5/src/sim/pseudo_inst.cc](https://github.com/gem5/gem5/blob/stable/src/sim/pseudo_inst.cc) for details.
 - The gem5 standard library might have default behaviors for some of the m5ops. See [src/python/gem5/simulate/simulator.py](https://github.com/gem5/gem5/blob/stable/src/python/gem5/simulate/simulator.py#L301) for the default behaviors.
 
-> **Note**: gem5 version 24.1 will make some major updates to this API.
+> **Note**: gem5 version 25.0 will make some major updates to this API.
 
 ---
 
@@ -179,6 +179,70 @@ In order to build the m5ops library,
 
 - If the host system ISA does not match with the target ISA, then we will need to use the cross-compiler.
 - `TARGET_ISA` has to be in lower case.
+
+> You'll need to do this in a minute
+
+---
+
+## Controlling the simulation
+
+Now, we have a way to communicate from the guest application to the simulator.
+The next step is to take some action based on the state of the guest application.
+
+Examples of actions we might want to take:
+
+- Dump the statistics
+- Reset the statistics
+- Exit the simulation
+- Take a checkpoint
+- Switch the CPU model
+
+The way gem5 allows you to do this is that the m5ops functions *exit* the simulation loop and return control back to the Python script.
+The `Simulator` class in gem5 provides a way to override the default bahavior for different exit events.
+
+---
+
+## Controlling behavior on simulation loop exits
+
+The `Simulator` class in gem5 provides a way to override the behavior for different exit events.
+It has a parameter, `on_exit_event`, that takes a dictionary of handlers for different exit events.
+
+Each of these handlers can specify a set of actions to take when the simulation loop exits.
+In other words, the first time the simulator exits for a reason you can take one action, and the second time another action.
+These are specified as Python *generators*.
+
+See [`gem5/src/python/gem5/exit_event.py`](/gem5/src/python/gem5/exit_event.py) for the list of exit events.
+
+```python
+class ExitEvent(Enum):
+    EXIT = "exit"  # A standard vanilla exit.
+    WORKBEGIN = "workbegin"  # An exit because a ROI has been reached.
+    WORKEND = "workend"  # An exit because a ROI has ended.
+    ...
+```
+
+---
+
+## Types of behaviors
+
+You can take many different actions when the simulator loop exits (all in the Python script). You can add any code here that you want.
+
+There are many examples in [`gem5/src/python/gem5/simulate/exit_event_generators.py`](/gem5/src/python/gem5/simulate/exit_event_generators.py).
+
+For example, you can dump the stats and reset the stats.
+
+```python
+def dump_reset_generator():
+    while True:
+        m5.stats.dump()
+        m5.stats.reset()
+        yield False
+```
+
+This will dump the stats and reset the stats every time the simulation loop exits.
+It returns `False` to indicate that the simulation should continue where it left off.
+
+<!-- Note: other examples include sampling and checkpointing -->
 
 ---
 
