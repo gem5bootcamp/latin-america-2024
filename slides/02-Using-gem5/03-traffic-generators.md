@@ -309,14 +309,39 @@ Note: You may not need to run all possibly combinations. Try to run the minimum 
 
 ## Step 4: Answer
 
-Results for running with 16 GiB/s, 32 GiB/s, and 100% reads and 50% reads.
+Results for running with DDR4 with 16 GiB/s, 32 GiB/s, and 100% reads and 50% reads.
 
-| Bandwidth | Read Percentage | Linear Speed (GiB/s) | Random Speed (GiB/s) |
-|-----------|-----------------|---------------------|---------------------|
-| 16 GiB/s  | 100%            | 12.92               | 12.15               |
-|           | 50%             | 15.58               |  18.41              |
-| 32 GiB/s  | 100%            | 12.05               | 12.92               |
-|           | 50%             | 15.93               | 16.99               |
+<style scoped>
+table {
+            color: blue;
+            background-color: white;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            border-left: 1px solid black;
+            border-right: 1px solid black;
+}
+th {
+    color: black;
+            /* border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            border-left: 1px solid black;
+            border-right: 1px solid black;*/
+            }
+/* table td{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+} */
+</style>
+
+| Bandwidth | Read Perc | Linear | Random|
+|-----------:|:-----------------:|:--------------:|:--------------:|
+| | | *Speed (GiB/s)/Avg Lat (ns)* | * Speed (GiB/s) /Avg Lat (ns)* |
+| 16 GiB/s  | 100%            | 12.92 / 320.61    | 15.58  / 115.89 |
+|           | 50%             | 12.05 / 341.84    | 15.93 / 126.84  |
+| 64 GiB/s  | 100%            | 12.92 / 323.51    | 16.99 / 251.70  |
+|           | 50%             | 12.19 / 379.48    | 18.49 / 259.00  |
 
 As expected, because of read-to-write turn around, reading 100% is more efficient than 50% reads.
 Also as expected, the bandwidth is lower than the SimpleMemory (only about 75% utilization).
@@ -357,12 +382,35 @@ The last line will create a new memory system with LPDDR5 using a single channel
 
 ## Step 5: Answer Cont.
 
-| Bandwidth | Read Percentage | Linear Speed (GiB/s) | Random Speed (GiB/s) |
-|-----------|-----------------|----------------------|----------------------|
-| 16 GiB/s  | 100%            | 11.10                | 11.15                |
-|           | 50%             | 8.76                 | 10.42                |
-| 32 GiB/s  | 100%            | 11.10                | 11.16                |
-|           | 50%             | 8.78                 | 10.45                |
+<style scoped>
+table {
+            color: blue;
+            background-color: white;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            border-left: 1px solid black;
+            border-right: 1px solid black;
+}
+th {
+    color: black;
+            /* border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            border-left: 1px solid black;
+            border-right: 1px solid black;*/
+            }
+/* table td{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+} */
+</style>
+| Bandwidth | Read Perc | Linear Speed (GiB/s)/Latency)(ns) | Random Speed (GiB/s)/Latency(ns) |
+|-----------:|:-----------------:|:-----------:|:---------------:|
+| 16 GiB/s  | 100%            | 11.10 / 371.97 | 11.15 / 370.20 |
+|           | 50%             | 8.76 / 449.05  | 10.42 / 393.84 |
+| 64 GiB/s  | 100%            | 11.10 / 372.62 | 11.16 / 370.88 |
+|           | 50%             | 8.80 / 474.75  | 10.46 / 410.66 |
 
 So, LPDDR5 doesn't perform quite as well as DDR4.
 Not only is the bandwidth lower, but the latency is higher.
@@ -378,14 +426,37 @@ You can use the same `ChanneledMemory` interface to create a memory system with 
 
 ## Step 6: Answer
 
-| Bandwidth | Read Percentage | Linear Speed (GiB/s) | Random Speed (GiB/s) |
-|-----------|-----------------|----------------------|----------------------|
-| 16 GiB/s  | 100%            | 16.00                | 16.00                |
-|           | 50%             | 16.00                | 16.00                |
-| 32 GiB/s  | 100%            | 31.99                | 31.98                |
-|           | 50%             | 30.28                | 31.98                |
-| 64 GiB/s  | 100%            | 44.31                | 43.75                |
-|           | 50%             | 38.23                | 56.60                |
+<style scoped>
+table {
+            color: blue;
+            background-color: white;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            border-left: 1px solid black;
+            border-right: 1px solid black;
+}
+th {
+    color: black;
+            /* border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            border-left: 1px solid black;
+            border-right: 1px solid black;*/
+            }
+/* table td{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+} */
+</style>
+| Bandwidth | Read Perc | Linear Speed (GiB/s)/Latency)(ns) | Random Speed (GiB/s)/Latency(ns) |
+|-----------:|:-----------------:|:-----------:|:---------------:|
+| 16 GiB/s  | 100%            | 16.00 / 159.00  | 16.00 / 138.78  |
+|           | 50%             | 16.00 / 160.51  | 16.00 / 100.49  |
+| 32 GiB/s  | 100%            | 31.99 / 199.47      | 31.98 / 154.19  |
+|           | 50%             | 30.28 / 168.88               | 31.98 / 120.04  |
+| 64 GiB/s  | 100%            | 44.31        278.32        | 43.75 / 265.33  |
+|           | 50%             | 38.23   /185.18             | 56.60 / 126.56  |
 
 ---
 
