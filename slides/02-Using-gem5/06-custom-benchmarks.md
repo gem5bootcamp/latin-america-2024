@@ -25,7 +25,7 @@ In this section, we'll cover how to create or modify your own workloads.
 
 ---
 
-<!-- _class: two-col code-60-percent -->
+<!-- _class: two-col code-50-percent -->
 
 ## Region of interest
 
@@ -366,7 +366,7 @@ For each exit, dump *and* reset the stats.
 
 ---
 
-<!-- _class: two-col code-80-percent -->
+<!-- _class: two-col code-70-percent -->
 
 ## Step 5: Answer
 
