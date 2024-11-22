@@ -316,10 +316,9 @@ We'll be using Slido for questions and answers.
 
 ### Bootcamp links
 
-- [Bootcamp website](https://gem5bootcamp.gem5.org/) (Maybe you're here now)
-  - [Bootcamp archive](https://gem5bootcamp.github.io/2024) (If you're coming to this later)
-- [Source for bootcamp materials](https://github.com/gem5bootcamp/2024) (You'll work here)
-- [GitHub Classroom](https://classroom.github.com/a/gCcXlgBs) (Needed to use codespaces)
+- [Bootcamp website](https://gem5bootcamp.github.io/latin-america-2024) (Maybe you're here now)
+- [Source for bootcamp materials](https://github.com/gem5bootcamp/latin-america-2024) (You'll work here)
+- [GitHub Classroom](https://classroom.github.com/a/zIM1ysn_) (Needed to use codespaces)
 
 ### gem5 links
 
