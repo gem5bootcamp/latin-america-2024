@@ -5,6 +5,8 @@ theme: gem5
 title: Modeling CPU cores in gem5
 ---
 
+<!-- presenter: Tamara -->
+
 <!-- _class: title -->
 
 ## Modeling CPU cores in gem5

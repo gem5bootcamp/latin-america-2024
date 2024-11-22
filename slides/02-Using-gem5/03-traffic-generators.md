@@ -249,6 +249,7 @@ print(f"Average latency: {latency / stats.simFreq.value * 1e9:0.2f} ns")
 ## Step 3c: Run your script
 
 Run your script in gem5 using  six configurations:
+
 1. 16 GiB/s and 50% reads,
 2. 16 GiB/s and 100% reads,
 3. 32 GiB/s and 50% reads,
@@ -311,30 +312,6 @@ Note: You may not need to run all possibly combinations. Try to run the minimum 
 
 Results for running with DDR4 with 16 GiB/s, 32 GiB/s, and 100% reads and 50% reads.
 
-<style scoped>
-table {
-            color: blue;
-            background-color: white;
-            border-top: 1px solid black;
-            border-bottom: 1px solid black;
-            border-left: 1px solid black;
-            border-right: 1px solid black;
-}
-th {
-    color: black;
-            /* border-top: 1px solid black;
-            border-bottom: 1px solid black;
-            border-left: 1px solid black;
-            border-right: 1px solid black;*/
-            }
-/* table td{
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-} */
-</style>
-
 | Bandwidth | Read Perc | Linear | Random|
 |-----------:|:-----------------:|:--------------:|:--------------:|
 | | | *Speed (GiB/s)/Avg Lat (ns)* | * Speed (GiB/s) /Avg Lat (ns)* |
@@ -382,29 +359,6 @@ The last line will create a new memory system with LPDDR5 using a single channel
 
 ## Step 5: Answer Cont.
 
-<style scoped>
-table {
-            color: blue;
-            background-color: white;
-            border-top: 1px solid black;
-            border-bottom: 1px solid black;
-            border-left: 1px solid black;
-            border-right: 1px solid black;
-}
-th {
-    color: black;
-            /* border-top: 1px solid black;
-            border-bottom: 1px solid black;
-            border-left: 1px solid black;
-            border-right: 1px solid black;*/
-            }
-/* table td{
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-} */
-</style>
 | Bandwidth | Read Perc | Linear Speed (GiB/s)/Latency)(ns) | Random Speed (GiB/s)/Latency(ns) |
 |-----------:|:-----------------:|:-----------:|:---------------:|
 | 16 GiB/s  | 100%            | 11.10 / 371.97 | 11.15 / 370.20 |
@@ -426,29 +380,6 @@ You can use the same `ChanneledMemory` interface to create a memory system with 
 
 ## Step 6: Answer
 
-<style scoped>
-table {
-            color: blue;
-            background-color: white;
-            border-top: 1px solid black;
-            border-bottom: 1px solid black;
-            border-left: 1px solid black;
-            border-right: 1px solid black;
-}
-th {
-    color: black;
-            /* border-top: 1px solid black;
-            border-bottom: 1px solid black;
-            border-left: 1px solid black;
-            border-right: 1px solid black;*/
-            }
-/* table td{
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-} */
-</style>
 | Bandwidth | Read Perc | Linear Speed (GiB/s)/Latency)(ns) | Random Speed (GiB/s)/Latency(ns) |
 |-----------:|:-----------------:|:-----------:|:---------------:|
 | 16 GiB/s  | 100%            | 16.00 / 159.00  | 16.00 / 138.78  |
@@ -501,7 +432,6 @@ Here's a diagram that shows how each `LinearGeneratorCore` should access memory.
 
 ![Linear Generator Core Memory Access Diagram](03-traffic-generators-imgs/lin_core_access_diagram.drawio.svg)
 
-
 ---
 
 ## 06-traffic-gen: HybridGenerator: Dividing Memory Address Range
@@ -510,7 +440,7 @@ When we create a `HybridGenerator`, we have to determine which `LinearGeneratorC
 
 As previously discussed, we need to partition the memory address range into equally sized sections and configure each `LinearGeneratorCore` to simulate accesses to a different section.
 
-To partition, we will use the `partition_range()` function in [`gem5/src/python/gem5/components/processors/abstract_generator.py`](../../gem5/src/python/gem5/components/processors/abstract_generator.py).
+To partition, we will use the `partition_range()` function in [`gem5/src/python/gem5/components/processors/abstract_generator.py`](/gem5/src/python/gem5/components/processors/abstract_generator.py).
 
 This function takes the range of `min_addr` to `max_addr` and partitions it into `num_partitions` equal-length pieces.
 
@@ -905,7 +835,7 @@ As you can see, cores 0, 1, 2, and 3 are `LinearGeneratorCores`, and cores 4 and
 
 Now, let's look at some of the statistical differences between our `LinearGeneratorCores` and `RandomGeneratorCores`.
 
-Run the following command to see the miss rate for each core's l1 data cache.
+Run the following command to see the miss rate for each core's L1 data cache.
 
 ```sh
 grep ReadReq.missRate::processor m5out/stats.txt

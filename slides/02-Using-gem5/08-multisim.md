@@ -5,6 +5,8 @@ theme: gem5
 title: MultiSim
 ---
 
+<!-- presenter: Tamara -->
+
 <!-- _class: title -->
 
 ## MultiSim

@@ -82,7 +82,7 @@ Boulder Computer Architecture Research Lab (BCARL)
   - [Getting started with gem5](02-getting-started.md) <!-- 10 minutes (Jason) -->
     - Getting into the codespace environment
     - Running your first simulation
-    - 👉 **EXERCISE**: Run your first simulation <!-- 20 minutes -->
+    - **EXERCISE**: Run your first simulation <!-- 20 minutes -->
 - Using gem5
   - [gem5's standard library](../02-Using-gem5/01-stdlib.md)
     - Quick overview of stdlib ideas (board, processor, cache hierarchy, memory) <!-- 15 minutes -->
@@ -98,13 +98,12 @@ Boulder Computer Architecture Research Lab (BCARL)
     - **EXERCISE**: Using the traffic generator to test memory <!-- 20 minutes -->
     - **EXERCISE**: Creating a new (hybrid) traffic generator <!-- 30 minutes -->
   - [Modeling caches in gem5](../02-Using-gem5/05-cache-hierarchies.md)
-    - 👉 (Note: Remove/update cache intro)
     - Cache models in gem5 (Ruby and classic) <!--  10 minutes -->
     - **EXERCISE**: 3 level classic cache hierarchy <!-- 30 minutes -->
     - 👉 Replacement policies
     - 👉 Tag policies
     - Tradeoffs between classic and Ruby <!-- 10 minutes -->
-    - **EXERCISE**: Example of using a Ruby hierarchy <!-- 30 minutes -->
+    - **HOMEWORK**: Example of using a Ruby hierarchy <!-- 30 minutes -->
     - Look at the gem5 generated statistics
 
 ### Day 2
@@ -114,18 +113,18 @@ Boulder Computer Architecture Research Lab (BCARL)
     - Types of CPU models in gem5 <!-- 15 minutes -->
     - **EXERCISE**: (Optional) Comparison of atomic and timing CPU <!-- 15 minutes -->
     - Look at the gem5 generated statistics
-    - 👉 **EXERCISE**: Create a two custom out-of-order cores and compare <!-- 30 minutes -->
+    - **EXERCISE**: Create a two custom out-of-order cores and compare <!-- 30 minutes -->
     - 👉 Branch predictors <!-- 15 minutes -->
     - 👉 Overview of ISAs and tradeoffs
-  - [Using gem5 resources](../02-Using-gem5/02-gem5-resources.md)
-    - 🤏 Overview of resources, workloads, and suites <!-- 15 minutes -->
-    - [Multisim](../02-Using-gem5/11-multisim.md) <!-- 10 minutes -->
-    - 👉 **EXERCISE**: Running suite and seeing different results from different apps <!-- 30 minutes -->
   - [Running applications in gem5](../02-Using-gem5/03-running-in-gem5.md)
     - Intro to syscall emulation mode <!-- 30 minutes -->
-    - 👉 The gem5-bridge utility and library
+    - The gem5-bridge utility and library
     - Cross compiling
-    - 👉 **EXERCISE**: Create your own workload <!-- 30 minutes -->
+    - **EXERCISE**: Create your own workload <!-- 30 minutes -->
+  - [Using gem5 resources](../02-Using-gem5/02-gem5-resources.md)
+    - Overview of resources, workloads, and suites <!-- 15 minutes -->
+    - [Multisim](../02-Using-gem5/11-multisim.md) <!-- 10 minutes -->
+    - **EXERCISE**: Running suite and seeing different results from different apps <!-- 30 minutes -->
 
 **Now we have a full "baseline" that's running!**
 
@@ -228,6 +227,7 @@ Boulder Computer Architecture Research Lab (BCARL)
     - Adding latency and and modeling buffers/computing time
   - [Power modeling](../02-Using-gem5/10-modeling-power.md) <!-- 10 minutes -->
     - 👉 **EXERCISE**: Running a power simulation <!-- 15 minutes -->
+
 ---
 
 ## Our goals for the gem5 bootcamp
@@ -277,6 +277,22 @@ Hello, world!
 You'll be seeing a lot of Python code
 The slides will be a reference, but we'll be doing a lot of live coding!
 ```
+
+---
+
+<!-- _class: exercise -->
+
+## Exercises
+
+Throughout the bootcamp, we'll have exercises for you to work on.
+
+These exercises are designed to help you learn the material.
+
+We will give you step-by-step instructions for each exercise.
+
+### Questions
+
+We will also have questions for you to answer?
 
 ---
 

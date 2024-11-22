@@ -3,8 +3,9 @@ marp: true
 paginate: true
 theme: gem5
 title: Custom benchmarks
-
 ---
+
+<!-- presenter: Tamara -->
 
 <!-- _class: title -->
 
