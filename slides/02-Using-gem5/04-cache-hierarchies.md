@@ -29,6 +29,16 @@ Between the cores and the caches (and the memory controllers and caches) are `Po
 
 ---
 
+## Caches
+
+Caches are used to store copies of data that are frequently accessed.
+
+One of gem5's main goals is to model multicore systems, so caches are a key part of the system.
+
+Much of the cache model's details and complexity come from implementing cache coherence.
+
+---
+
 ## Types of caches in gem5
 
 There are two types of cache models in gem5:
@@ -39,37 +49,9 @@ There are two types of cache models in gem5:
 This is a historical quirk of the combination of *GEMS* which had Ruby and *m5* whose cache model we now call "classic" caches.
 
 **Ruby** is a highly-detailed model with many different coherence protocols (specified in a language called "SLICC")
-More on Ruby in [Modeling Cache Coherence in gem5](../03-Developing-gem5-models/06-modeling-cache-coherence.md).
+More on Ruby in [Modeling Cache Coherence in gem5](https://bootcamp.gem5.org/#03-Developing-gem5-models/06-modeling-cache-coherence) in the Summer 2024 bootcamp.
 
 **Classic** caches are simpler and faster, but less flexible and detailed. The coherence protocol is not parameterized and the hierarchies and topologies are fixed.
-
----
-
-## Outline
-
-- Background on cache coherency
-- Simple Cache
-  - Coherency protocol in simple cache
-  - How to use simple cache
-- Ruby cache
-  - Ruby components
-  - Example of MESI two level protocol
-
----
-
-## What is Coherency
-
-A coherence problem can arise if multiple cores have access to multiple copies of a data (e.g., in multiple caches) and at least one access is a write
-
-![Cores and Coherency across caches](04-cache-hierarchies-imgs/cache_line_1.svg)
-
----
-
-## What is Coherency
-
-A coherence problem can arise if multiple cores have access to multiple copies of a data (e.g., in multiple caches) and at least one access is a write
-
-![Cores and Coherency across caches with write request](04-cache-hierarchies-imgs/cache_line_2.svg)
 
 ---
 
@@ -579,6 +561,48 @@ Code for controllers is "generated" via SLICC compilers
 
 You can see much more detail in [Modeling Cache Coherence in gem5](https://bootcamp.gem5.org/#03-Developing-gem5-models/06-modeling-cache-coherence) (Not covered this week).
 
+
+---
+
+<!-- _class: center-image -->
+
+## Cache Coherence Reminder
+
+Single-Writer Multiple-Reader (SWMR) invariant
+
+![cache coherence example](04-cache-hierarchies-imgs/cache-coherence-example-1.drawio.svg)
+
+---
+
+<!-- _paginate: hold -->
+<!-- _class: center-image -->
+
+## Cache Coherence Reminder
+
+Single-Writer Multiple-Reader (SWMR) invariant
+
+![cache coherence example](04-cache-hierarchies-imgs/cache-coherence-example-2.drawio.svg)
+
+---
+
+## Ruby enables detailed cache coherence models
+
+- **MSI**: Modified, Shared, Invalid
+- From Nagarajan, Sorin, Hill, and Wood. [A Primer on Memory Consistency and Cache Coherence](https://link.springer.com/book/10.1007/978-3-031-01764-3).
+- [Excerpt of 8.2 download](https://www.gem5.org/pages/static/external/Sorin_et-al_Excerpt_8.2.pdf)
+
+![MSI state diagramo table](04-cache-hierarchies-imgs/msi-table.drawio.svg)
+
+---
+
+## SLICC Original Purpose
+
+- Create these tables
+
+> Actual output!
+
+![MSI state diagram table from SLICC](04-cache-hierarchies-imgs/msi-table-slicc.drawio.svg)
+
 ---
 
 <!-- _class: two-col -->
@@ -602,6 +626,16 @@ You can see much more detail in [Modeling Cache Coherence in gem5](https://bootc
 - Limited to a hierarchy of crossbars
 - Cannot configure the protocol
 - Cheats for coherence
+
+---
+
+## Homework: Use a detailed coherence protocol
+
+You will be using the Ruby cache hierarchy to model a cache coherence protocol.
+
+You will investigate false sharing by comparing statistics with different applications.
+
+See [the homework](/homework/cache-coherence/README.md) for more details.
 
 ---
 
