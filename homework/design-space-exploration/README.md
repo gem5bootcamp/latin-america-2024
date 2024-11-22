@@ -6,13 +6,15 @@ Title: Design Space Exploration in gem5
 ## Table of Contents
 
 - [Introduction](#introduction)
+- [Steps to Complete the Assignment](#steps-to-complete-the-assignment)
+- [Specific Questions to Answer](#specific-questions-to-answer)
+- [IMPORTANT](#important)
 
 ## Introduction
 
 In this assignment, you will explore the design space of a heterogeneous architecture featuring both Big and Little cores. You will modify the cache configurations and memory channels to analyze their impact on performance. The goal is to understand how architectural choices affect system efficiency and performance metrics.
 
 In this assignment you will take all of the different components that you have built throughout the bootcamp and put them together to explore the design space of an system-on-chip (SoC).
-
 
 ### Objectives:
 
