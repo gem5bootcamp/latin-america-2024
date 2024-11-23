@@ -35,6 +35,26 @@ Now, let's see how applications and their instructions are executed in gem5.
 
 ---
 
+## Aside: Predicting instruction execution flow
+
+Instructions are usually executed in sequential order i.e. one after another. However, some instructions allow the program to jump, or *branch* to other parts of the program.
+
+To ensure the hardware is ready to execute instructions—no matter the possible order—it is good to *predict* the direction of branching instructions.
+
+Predicting the direction (e.g. a branch instruction is either "taken" or "not taken") of branch instructions is called **branch prediction**.
+
+Better branch prediction leads to better performance, all other factors remaining same!
+
+- Simplest predictors:
+  - Just always predict "taken"! (or "not taken".)
+  - Predic what the most recent direction was.
+  - Similarly, keep a saturating counter which increases upon a "taken" and decreases on "not taken". Predict based on the value of the counter.
+- State-of-the-art predictors:
+  - [TAGE](https://inria.hal.science/hal-03408381/document)-based and/or
+  - [Perceptron](https://www.cs.utexas.edu/~lin/papers/hpca01.pdf)-based
+
+---
+
 ## Outline
 
 - **Learn about CPU models in gem5​**
@@ -652,3 +672,22 @@ board = SimpleBoard(
 1. What is the IPC of the big and little processors?
 2. What is the speedup of the big processor?
 3. What is the bottleneck in the little processor?
+
+---
+
+## Aside: Exploring branch prediction effects
+
+Now that you've created your `BigProcessor` and `LittleProcessor` let us look at the results of effective branch prediction on CPU models.
+
+1. Modify `my_processor.py`'s `BigO3` class `__init__` function to include the following and re-run your run script.
+
+  ```
+  self.branchPred = BiModeBP()
+  ```
+2. _Further_ modify `my_processor.py`'s `BigO3` class `__init__` function to change the branch predictor again, and re-run your run script.
+
+  ```
+  self.branchPred = MultiperspectivePerceptronTAGE64KB()
+  ```
+3. Compare your `stats.txt` results for your Big processors, focusing on `board.processor.cores.core.commit.branchMispredicts` counts.
+
