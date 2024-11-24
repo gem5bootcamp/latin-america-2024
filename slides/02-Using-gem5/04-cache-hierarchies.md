@@ -236,7 +236,7 @@ The constructor is already provided.
 This will be your first time using a "raw" gem5 model (i.e., not something in the stdlib).
 
 For this, use a `SystemXBar` with a width of 64.
-See `SystemXBar` in [/gem5/src/mem/xbar.py](/gem5/src/mem/xbar.py).
+See `SystemXBar` in [gem5/src/mem/xbar.py](gem5/src/mem/xbar.py).
 
 ---
 

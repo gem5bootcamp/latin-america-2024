@@ -365,7 +365,7 @@ Change the cache size in the `PrivateL1CacheHierarchy` component and run the sim
 
 ---
 
-## Exercise 1: Question answers
+## Exercise 1: Write Answers for These Questions
 
 1. Compare the total number of instructions simulated by each CPU model. What do you observe?
 2. Compare the total simulated time for each CPU model. What do you observe?
@@ -647,7 +647,7 @@ board = SimpleBoard(
 
 ---
 
-## Exercise 2: Question answers
+## Exercise 2: Write Answers for These Questions
 
 1. What is the IPC of the big and little processors?
 2. What is the speedup of the big processor?
