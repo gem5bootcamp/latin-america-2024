@@ -91,7 +91,7 @@ simulator = Simulator(board={name of your board}, full_system=False, on_exit_eve
 
 ## Analysis
 
-Now, we are going to use the output of the gem5 simulation to understand how the metadta cache impacts the performance of the secure memroy system
+Now, we are going to use the output of the gem5 simulation to understand how the metadata cache impacts the performance of the secure memroy system
 
 ### Question 1
 
