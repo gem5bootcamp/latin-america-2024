@@ -30,19 +30,24 @@ The default parameters for the cache will include the LRU replacement policy, th
 
 ## Implementation
 
-The first change we will have to make will be to include the ports (the send and receive ports) to be able to declare a cache inside the SecureMemory component that we created during the workshop. You fill make these changes in the file called SecureMemoryTutorial.py which is in src/mem/secmem-tutorial/.  The code in this file will look something like below:
+The first change we will have to make will be to include the ports (the send and receive ports) to be able to declare a cache inside the SecureMemory component that we created during the workshop. You fill make these changes in the file called SecureMemoryTutorial.py which is in gem5/src/mem/secmem-tutorial/.  The code in this file will look something like below:
 
 ```metadata_cache_request_port  = RequestPort("Cache access port, sends requests for metadata")
    metadata_cache_response_port = RequestPort("Response side port, receives responses from the metadata cache")
    ```
 
-The next change you will have to make will be inside the secure.py file which is in src/python/gem5/components/memory/. In this file you will have to import the L1DCache module so that you can instantiate the metadata cache:
+The next change you will have to make will be inside the secure.py file which is in gem5/src/python/gem5/components/memory/. In this file you will have to import the L1DCache module so that you can instantiate the metadata cache:
 
 ```python
 from m5.objects import L1Cache
 ...
 self.metadata_cache = L1Cache()
 ```
+Then you will have to connect the mem and cpu side ports from the cache to the secure memory object.
+
+The third change you have to make is in the secure_memory.hh and secure_memory.cc files, found in the gem5/src/mem/ directory. Here you will modify the way the simulator models the secure memory controller to include a cache. You will first need to declare the ports, that you referenced in the SecureMemoryTutorial.py declarations. Once declared, you need to include their instation in the constructor of the secure memory object. Then everywhere where a packet is being sent, you need to change it to use the cache's request port instead of the memory's port.
+
+Then the recvTimingReq of the cache implementation on the cpu side port will also need to be modified so that we can identify when a cache access resulted in a cache hit. Remember that when we have a cache hit, the integrity verification process can stop, since everything that is fetched from the cache is trusted. This change will take a bit of thinking as the cache access function does not record if the access was a hit or not. One hint to implement this functionality the easiest way is to simply add a field into the packet object to record when there is a cache hit.
 
 ## Experimental setup
 
