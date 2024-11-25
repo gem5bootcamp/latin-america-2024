@@ -306,6 +306,20 @@ We'll be using Slido for questions and answers.
 
 ## Bootcamp logistics
 
+We'll be teaching each day from
+9:00 a.m. - 12:00 p.m. and from 1:00 p.m. - 4:00 p.m.
+
+We will be in the laboratories of pavilion 0+inf, but we'll be in different rooms each day.
+
+
+| Día          | Laboratorio |
+|--------------|-------------|
+| Lunes 25/11  | Labo 1110   |
+| Martes 26/11 | Labo 1111   |
+| Miércoles 27/11 | Labo 1110 |
+| Jueves 28/11 | Labo 1108   |
+| Viernes 29/11 | Labo 1108  |
+
 ---
 
 ## Other admin things
