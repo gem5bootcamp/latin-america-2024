@@ -21,3 +21,5 @@ author: Tamara Lehman
 ### How we're going to use this research idea throughout the week
 
 Full slide deck in slides/01-Introduction/IntroToCompArchResearch.pptx
+
+[Download the slides](./IntroToCompArchResearch.pptx)
