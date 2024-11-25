@@ -391,6 +391,17 @@ You can use the same `ChanneledMemory` interface to create a memory system with 
 
 ---
 
+## Exercise Questions
+
+- When using the SimpleMemory model, how does the memory bandwidth change with different read-write ratios? Why or why not?
+- When using DDR4 memory, how does the memory bandwidth change with different traffic read-write ratios? Why or why not?
+- Compare the performance of DDR4 to LPDDR5. Which has better bandwidth? What about latency? (Or, is this the wrong way to measure latency?)
+- Run with a single channel of DDR4 and compare that to the performance of 4 channels of LPDDR5. What is the bandwidth difference?
+
+Use <https://app.sli.do/event/qpr43XWrbjYJCdE3GHGCWg> to answer the questions.
+
+---
+
 <!-- _class: start -->
 
 ## Extra exercise
