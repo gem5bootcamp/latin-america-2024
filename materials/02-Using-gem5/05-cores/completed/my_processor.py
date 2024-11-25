@@ -7,6 +7,7 @@ from m5.objects import RiscvO3CPU
 from m5.objects.FuncUnitConfig import *
 from m5.objects.BranchPredictor import (
     TournamentBP,
+    BiModeBP,
     MultiperspectivePerceptronTAGE64KB,
 )
 
