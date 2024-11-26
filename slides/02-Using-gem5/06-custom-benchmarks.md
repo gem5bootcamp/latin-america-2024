@@ -129,7 +129,7 @@ There are three versions of m5ops:
 
 1. Instruction mode: it only works with simulated CPU models
 2. Address mode: it works with simulated CPU models and the KVM CPU (only supports Arm and X86)
-3. Semihosting: it works with simulated CPU models and the Fast Model
+3. Semihosting: it works with simulated CPU models and the [Fast Model](https://developer.arm.com/Tools%20and%20Software/Fast%20Models)
 
 Different modes should be used depending on the CPU type and ISA.
 
