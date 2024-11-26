@@ -680,7 +680,7 @@ board = SimpleBoard(
 
 ---
 
-## Aside: Exploring branch prediction effects
+## Exercise 3: Exploring branch prediction effects
 
 Now that you've created your `BigProcessor` and `LittleProcessor` let us look at the results of effective branch prediction on CPU models.
 
@@ -689,10 +689,26 @@ Now that you've created your `BigProcessor` and `LittleProcessor` let us look at
   ```
   self.branchPred = BiModeBP()
   ```
+
+>Remember to import the branch predictor objects before using them:
+
+```python
+from m5.objects.BranchPredictor import (
+    BiModeBP,
+    MultiperspectivePerceptronTAGE64KB,
+)
+```
+
+---
+
+## Exercise 3 (cont): Exploring branch prediction effects
+
 2. _Further_ modify `my_processor.py`'s `BigO3` class `__init__` function to change the branch predictor again, and re-run your run script.
 
   ```
   self.branchPred = MultiperspectivePerceptronTAGE64KB()
-  ```
+```
+
 3. Compare your `stats.txt` results for your Big processors, focusing on `board.processor.cores.core.commit.branchMispredicts` counts.
+
 
