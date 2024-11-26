@@ -130,8 +130,7 @@ Typically this "required" baseline CSS is added by `makestuff.js` during build.
 <p>See <a href="/gem5-resources/src/matrix-multiply/matrix-multiply.c"><code>gem5-resources/src/matrix-multiply/matrix-multiply.c</code></a>.</p>
 <p>Notice that most of this code is initialization and printing. The actual matrix multiplication is only a few lines.</p>
 <h3 id=""></h3>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-type">const</span> <span class="hljs-type">int</span> size = <span class="hljs-number">100</span>;
-<span class="hljs-type">int</span> first[size][size], second[size][size], multiply[size][size];
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-type">int</span> first[size][size], second[size][size], multiply[size][size];
 <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Populating the first and second matrix...\n&quot;</span>);
 <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> x=<span class="hljs-number">0</span>; x&lt;size; x++) {
     <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> y=<span class="hljs-number">0</span>; y&lt;size; y++) {
