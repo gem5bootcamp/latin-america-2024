@@ -9,6 +9,7 @@ title: Using synthetic traffic generators
 Notes for next time:
 
 - No cache vs None in the test board
+- The frequency of the board is important. If it's too low, you get a panic about too many packets.
 -->
 
 <!-- _class: title -->

@@ -500,6 +500,8 @@ You can use `riscv64-linux-gnu-g++` for RISC-V and `aarch64-linux-gnu-g++` for A
 
 ---
 
+<!-- _class: exercise -->
+
 ## Exercise: Comparing RISC-V and X86
 
 In this exercise, we will cross-compile the workload to the RISC-V ISA and run it in gem5.

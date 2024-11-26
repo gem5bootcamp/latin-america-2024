@@ -68,7 +68,7 @@ On the website, use the copy button to copy the `id` of the resource you want to
 
 ---
 
-<!-- _class: two-col code-70-percent -->
+<!-- _class: two-col code-60-percent -->
 
 ## Workloads
 
