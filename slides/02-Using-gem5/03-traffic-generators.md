@@ -5,6 +5,12 @@ theme: gem5
 title: Using synthetic traffic generators
 ---
 
+<!--
+Notes for next time:
+
+- No cache vs None in the test board
+-->
+
 <!-- _class: title -->
 
 ## Using synthetic traffic generators

@@ -5,6 +5,12 @@ theme: gem5
 title: gem5's Standard Library
 ---
 
+<!--
+Notes for next time:
+
+- There is confusion in SE vs FS mode when answering the questions
+-->
+
 <!-- _class: title -->
 
 ## gem5's Standard Library
