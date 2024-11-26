@@ -24,8 +24,8 @@ window.get_slide_registry = function() {
                 "03-traffic-generators",
                 "04-cache-hierarchies",
                 "05-cores",
-                "06-gem5-resources",
-                "07-custom-benchmarks",
+                "06-custom-benchmarks",
+                "07-gem5-resources",
                 "08-multisim"
             ]
         },
