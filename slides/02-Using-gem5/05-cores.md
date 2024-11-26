@@ -374,7 +374,7 @@ board = SimpleBoard(
     memory=SingleChannelDDR4_2400(),
     cache_hierarchy=PrivateL1CacheHierarchy()
 )
-workload = obtain_resource("riscv-matrix-multiply")
+workload = obtain_resource("riscv-matrix-multiply-run")
 board.set_workload(workload)
 sim = Simulator(board=board)
 sim.run()
