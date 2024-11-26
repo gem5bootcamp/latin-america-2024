@@ -97,11 +97,13 @@ Use the traffic generator from the previous section to generate traffic.
 
 Use the `PrivateL1PrivateL2CacheHierarchy`.
 
-See [`PrivateL1PrivateL2CacheHierarchy`](/gem5/src/python/gem5/components/cachehierarchies/classic/private_l1_private_l2_cache_hierarchy.py) for details.
+See [`PrivateL1PrivateL2CacheHierarchy`](/gem5/src/python/gem5/components/cachehierarchies/classic/private_l1_private_l2_cache_hierarchy.py) for details. You can find this object in the `gem5.components.cachehierarchies.classic.private_l1_private_l2_cache_hierarchy` module.
 
 Think about what the value for `max_addr` should be for the generator to test L1, L2, and memory.
 
 Think about whether you want to use the random or linear generator.
+
+You can find the `DualChannelDDR4_2400` memory object in the `gem5.memory.multi_channel` module.
 
 ---
 
