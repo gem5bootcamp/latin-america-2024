@@ -437,7 +437,7 @@ We'll talk more about this in the next section.</p>
     memory=SingleChannelDDR4_2400(),
     cache_hierarchy=PrivateL1CacheHierarchy()
 )
-workload = obtain_resource(<span class="hljs-string">&quot;riscv-matrix-multiply&quot;</span>)
+workload = obtain_resource(<span class="hljs-string">&quot;riscv-matrix-multiply-run&quot;</span>)
 board.set_workload(workload)
 sim = Simulator(board=board)
 sim.run()
