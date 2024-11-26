@@ -41,7 +41,12 @@ Instructions are usually executed in sequential order i.e. one after another. Ho
 
 To ensure the hardware is ready to execute instructions—no matter the possible order—it is good to *predict* the direction of branching instructions.
 
+
 Predicting the direction (e.g. a branch instruction is either "taken" or "not taken") of branch instructions is called **branch prediction**.
+
+---
+
+## Aside: Branch Prediction
 
 Better branch prediction leads to better performance, all other factors remaining same!
 
