@@ -97,7 +97,7 @@ make naive-gem5
 
 ### Implementation 2: Chunking the array
 
-One problem with Implementation 1 is that each array will read in a cache line worth of data (64B), but it will only use 1 value from that cache line (4B).
+One problem with Implementation 1 is that each thread will read in a cache line worth of data (64B), but it will only use 1 value from that cache line (4B).
 Thus, we are wasting 60B out of 64B, or 94% of the data we're reading from memory!
 
 To improve this (think about what kind of locality this is... see [Question 1](#question-1) below), we can instead "chunk up" the array.
