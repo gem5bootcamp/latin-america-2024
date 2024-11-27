@@ -321,7 +321,7 @@ Now, let's add an `event` to our `HelloSimObject` to print `Hello ...` periodica
 First, we need to include `sim/eventq.hh` so we can add a member of type `EventFunctionWrapper`. Add the following line to do this. **REMEMBER**: Make sure to follow the right order of includes.
 
 ```cpp
-#include "sim/eventq.hh
+#include "sim/eventq.hh"
 ```
 
 ---
