@@ -12,6 +12,10 @@ Title: Secure Memory Metadata Cache in gem5
 - [Analysis](#analysis)
 - [Submission](#submission)
 
+**Suggested due date**: 6/12/2024 23:59
+
+**Final due date**: 13/12/2024 23:59
+
 ## Introduction
 
 In this assignment, you will extend the gem5 implementation of the secure memory system (completed during the workshop) to include a cache, the metadata cache, to improve the secure memory system performance. The metadata cache will hold recently used metadata nodes, including encryption counters, integrity tree nodes, and data hashes, reducing the overhead of repeatedly performing decryption and integrity verification for data fetched from memory.

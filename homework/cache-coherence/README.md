@@ -13,6 +13,10 @@ Title: Cache Coherence in gem5
 - [Analysis and simulation](#analysis-and-simulation)
 - [Submission](#submission)
 
+**Suggested due date**: 27/11/2024 23:59
+
+**Final due date**: 13/12/2024 23:59
+
 ## Introduction
 
 In this assignment, you will explore the performance bottlenecks in poorly-written parallel code.

@@ -11,6 +11,10 @@ Title: Design Space Exploration in gem5
 - [IMPORTANT](#important)
 - [Submission](#submission)
 
+**Suggested due date**: 27/12/2024 23:59
+
+**Final due date**: 13/12/2024 23:59
+
 ## Introduction
 
 In this assignment, you will explore the design space of a heterogeneous architecture featuring both Big and Little cores. You will modify the cache configurations and memory channels to analyze their impact on performance. The goal is to understand how architectural choices affect system efficiency and performance metrics.
