@@ -25,7 +25,7 @@ As their names would suggest:
 Make sure to differentiate between `request`/`response` and `data`. Both `requests` and `response` can carry `data` with them.
 
 ---
-<!-- _class: two-col code-50-percent -->
+<!-- _class: two-col -->
 
 ## Packets
 
@@ -221,8 +221,8 @@ Now let's go ahead and create a `SimObject` declaration file for `SecureMemory`.
 
 ```sh
 cd /workspaces/2024/gem5/src
-mkdir -p bootcamp/inspector-gadget
-cd bootcamp/inspector-gadget
+mkdir -p bootcamp/insepctor_gadget
+cd bootcamp/insepctor_gadget
 touch SecureMemory.py
 ```
 
@@ -234,7 +234,7 @@ touch SConscript
 
 ---
 
-## InspectoGadget: SimObject Declaration File
+## SecureMemory: SimObject Declaration File
 
 Now, inside `SecureMemory.py`, let's define `SecureMemory` as a `ClockedObject`. To do that, we need to import `ClockedObject`. Do it by adding the following line to `SecureMemory.py`.
 
@@ -255,7 +255,7 @@ from m5.objects.ClockedObject import ClockedObject
 
 class SecureMemory(ClockedObject):
     type = "SecureMemory"
-    cxx_header = "bootcamp/secure-memory/inspector_gadget.hh"
+    cxx_header = "bootcamp/secure_memory/secure_memory.hh"
     cxx_class = "gem5::SecureMemory"
 ```
 
@@ -324,7 +324,7 @@ from m5.params import *
 
 class SecureMemory(ClockedObject):
     type = "SecureMemory"
-    cxx_header = "bootcamp/secure-memory/inspector_gadget.hh"
+    cxx_header = "bootcamp/secure_memory/secure_memory.hh"
     cxx_class = "gem5::SecureMemory"
 
     cpu_side_port = ResponsePort("ResponsePort to received requests from CPU side.")
@@ -340,29 +340,29 @@ class SecureMemory(ClockedObject):
 
 Remember to register `SecureMemory` as a `SimObject` as well as create a `DebugFlag` for it.
 
-To do this, put the following in `gem5/src/bootcamp/secure-memory/SConscript`:
+To do this, put the following in `gem5/src/bootcamp/secure_memory/SConscript`:
 
 ```python
 Import("*")
 
 SimObject("SecureMemory.py", sim_objects=["SecureMemory"])
 
-Source("inspector_gadget.cc")
+Source("secure_memory.cc")
 
 DebugFlag("SecureMemory")
 ```
 
-> **NOTE**: In the next steps we will create `inspector_gadget.hh` and `inspector_gadget.cc`.
+> **NOTE**: In the next steps we will create `secure_memory.hh` and `secure_memory.cc`.
 
 ---
 
 ## SecureMemory: C++ Files
 
-Now, let's go ahead and create a header and source file for `SecureMemory` in `gem5/src/bootcamp/inspector-gadget`. Remember to make sure the path to your header file matches that of what you specified in `cxx_header` in `SecureMemory.py` and the path for your source file matches that of what you specified in `SConscript`. Run the following commands from within our `inspector-gadget` directory:
+Now, let's go ahead and create a header and source file for `SecureMemory` in `gem5/src/bootcamp/insepctor_gadget`. Remember to make sure the path to your header file matches that of what you specified in `cxx_header` in `SecureMemory.py` and the path for your source file matches that of what you specified in `SConscript`. Run the following commands from within our `insepctor_gadget` directory:
 
 ```sh
-touch inspector_gadget.hh
-touch inspector_gadget.cc
+touch secure_memory.hh
+touch secure_memory.cc
 ```
 
 Now, let's simply declare `SecureMemory` as a class that inherits from `ClockedObject`. This means you have to import `sim/clocked_object.hh` instead of `sim/sim_object.hh`. Let's add everything that we have added in the Python to our class except for the `Ports`.
@@ -373,8 +373,8 @@ Now, let's simply declare `SecureMemory` as a class that inherits from `ClockedO
 ## SecureMemory: Header File
 
 ```cpp
-#ifndef __BOOTCAMP_INSPECTOR_GADGET_INSPECTOR_GADGET_HH__
-#define __BOOTCAMP_INSPECTOR_GADGET_INSPECTOR_GADGET_HH__
+#ifndef __BOOTCAMP_SECURE_MEMORY_SECURE_MEMORY_HH__
+#define __BOOTCAMP_SECURE_MEMORY_SECURE_MEMORY_HH__
 
 #include "params/SecureMemory.hh"
 #include "sim/clocked_object.hh"
@@ -395,7 +395,7 @@ class SecureMemory : public ClockedObject
 
 } // namespace gem5
 
-#endif // __BOOTCAMP_INSPECTOR_GADGET_INSPECTOR_GADGET_HH__
+#endif // __BOOTCAMP_SECURE_MEMORY_SECURE_MEMORY_HH__
 ```
 
 ---
@@ -404,7 +404,7 @@ class SecureMemory : public ClockedObject
 
 Recall, `RequestPort` and `ResponsePort` classes were abstract classes, i.e. they had `pure virtual` functions which means objects cannot be instantiated from that class. Therefore, for us to use `Ports` we need to extend the classes and implement their `pure virtual` functions.
 
-Before anything, let's go ahead and import the header file that contains the declaration for `Port` classes. We also need to include [`mem/packet.hh`](/gem5/src/mem/packet.hh) since we will be dealing with and moving around `Packets` a lot. Do it by adding the following lines to `inspector_gadget.hh`:
+Before anything, let's go ahead and import the header file that contains the declaration for `Port` classes. We also need to include [`mem/packet.hh`](/gem5/src/mem/packet.hh) since we will be dealing with and moving around `Packets` a lot. Do it by adding the following lines to `secure_memory.hh`:
 
 ```cpp
 #include "mem/packet.hh"
@@ -418,7 +418,7 @@ Before anything, let's go ahead and import the header file that contains the dec
 
 ## Extending ResponsePort
 
-Now, let's get to extending `ResponsePort` class. Let's do it inside the scope of our `SecureMemory` class to prevent using names used by other gem5 developers. Let's go ahead an create `CPUSidePort` class that inherits from `ResponsePort` in the `private` scope. To do this, add the following code to `inspector_gadget.hh`.
+Now, let's get to extending `ResponsePort` class. Let's do it inside the scope of our `SecureMemory` class to prevent using names used by other gem5 developers. Let's go ahead an create `CPUSidePort` class that inherits from `ResponsePort` in the `private` scope. To do this, add the following code to `secure_memory.hh`.
 
 ```cpp
   private:
@@ -464,7 +464,7 @@ Here is a deeper look into the declaration of `CPUSidePort`.
 
 ## Extending RequestPort
 
-We're going to follow a similar approach for extending `RequestPort`. Let's create class `MemSidePort` that inherits from `RequestPort`. Again we'll do it in the `private` scope of `SecureMemory`. Do it by adding the following code to `inspector_gadget.hh`.
+We're going to follow a similar approach for extending `RequestPort`. Let's create class `MemSidePort` that inherits from `RequestPort`. Again we'll do it in the `private` scope of `SecureMemory`. Do it by adding the following code to `secure_memory.hh`.
 
 ```cpp
   private:
@@ -504,7 +504,7 @@ Let's take a deeper look into what we added for class `MemSidePort`.
 
 ## Creating Instances of Ports in SecureMemory
 
-Now that we have declared `CPUSidePort` and `MemSidePort` classes (which are not abstract classes), we can go ahead and create an instance of each class in `SecureMemory`. To do that, add the following two lines to `inspector_gadget.hh`
+Now that we have declared `CPUSidePort` and `MemSidePort` classes (which are not abstract classes), we can go ahead and create an instance of each class in `SecureMemory`. To do that, add the following two lines to `secure_memory.hh`
 
 ```cpp
   private:
@@ -555,7 +555,7 @@ This function is used for connecting ports to each other. As far as we are conce
 
 For now, let's implement this function to return a `Port&` when we recognize `if_name` (which would be the name that we gave to a `Port` in Python) and, otherwise, we will pass this up to the parent class `ClockedObject` to handle the function call.
 
-Let's go ahead and add the declaration for this function to `inspector_gadget.hh`.
+Let's go ahead and add the declaration for this function to `secure_memory.hh`.
 
 ```cpp
   public:
@@ -568,10 +568,10 @@ Let's go ahead and add the declaration for this function to `inspector_gadget.hh
 
 So far, we have declared quite a few functions that we need to implement. Let's start defining some of them. In the next several slides, we will be defining functions from `CPUSidePort` and `MemSidePort`, as well as `getPort` from `SecureMemory`.
 
-Open `inspector_gadget.cc` and let's start by adding  the following include statements:
+Open `secure_memory.cc` and let's start by adding  the following include statements:
 
 ```cpp
-#include "bootcamp/secure-memory/inspector_gadget.hh"
+#include "bootcamp/secure_memory/secure_memory.hh"
 
 #include "debug/SecureMemory.hh"
 ```
@@ -583,7 +583,7 @@ As we start defining functions, we will likely find the need to declare and defi
 
 ## Defining SecureMemory::getPort
 
-Let's start by implementing `SecureMemory::getPort`. Add the following code inside `namespace gem5` in `inspector_gadget.cc` to do this  (all code in such definition files should go inside `namespace gem5`):
+Let's start by implementing `SecureMemory::getPort`. Add the following code inside `namespace gem5` in `secure_memory.cc` to do this  (all code in such definition files should go inside `namespace gem5`):
 
 ```cpp
 Port&
@@ -623,7 +623,7 @@ As we start defining these functions you will see that `Ports` are interfaces th
 
 ## CPUSidePort::recvAtomic, CPUSidePort::recvFunctional
 
-These two functions are very simple to define. Basically, our responsibility is to pass the `PacketPtr` to `SimObjects` further down in the memory hierarchy. To implement them we will call functions with the same name from `SecureMemory`. Add the following code to `inspector_gadget.cc`:
+These two functions are very simple to define. Basically, our responsibility is to pass the `PacketPtr` to `SimObjects` further down in the memory hierarchy. To implement them we will call functions with the same name from `SecureMemory`. Add the following code to `secure_memory.cc`:
 
 ```cpp
 Tick
@@ -653,7 +653,7 @@ We will also need to eventually declare the functions that we call from the owne
 
 Reminder: This function returns an `AddrRangeList` that represents the address ranges for which the port is a responder. To understand this better, think about dual channel memory. Each channel in the memory is responsible for a subset of all the addresses in your computer.
 
-To define this function, we are again going to rely on `SecureMemory` and call a function with the same name from `SecureMemory`. Do this by adding the following code to `inspector_gadget.cc`:
+To define this function, we are again going to rely on `SecureMemory` and call a function with the same name from `SecureMemory`. Do this by adding the following code to `secure_memory.cc`:
 
 ```cpp
 AddrRangeList
@@ -675,7 +675,7 @@ In this function we will do the following:
 
 Ask the owner to receive the `Packet` the `Port` is receiving. To do this we will call a function with the same name from `SecureMemory`. If `SecureMemory` can accept the `Packet` then the `Port` will return true. Otherwise, the `Port` will return false as well as remember that we need to send a `retry request` in the future, i.e. we will set `needToSendRetry = true`.
 
-To define this function add the following code to `inspector_gadget.cc`.
+To define this function add the following code to `secure_memory.cc`.
 
 ```cpp
 bool
@@ -699,7 +699,7 @@ SecureMemory::CPUSidePort::recvTimingReq(PacketPtr pkt)
 
 Now that we are finished with defining functions from `CPUSidePort`, let's go ahead and declare the functions from `SecureMemory` that we noted down.
 
-To do this add the following code to the `public` scope of `SecureMemory` in `inspector_gadget.hh`.
+To do this add the following code to the `public` scope of `SecureMemory` in `secure_memory.hh`.
 
 ```cpp
   public:
@@ -731,7 +731,7 @@ As we mentioned, in this first step, all `SecureMemory` does is buffer the traff
 
 ### Timed Queue: Details
 
-Like `CPUSidePort` and `MemSidePort`, let's declare our class `TimedQueue` in the `private` scope of `SecureMemory`. Do this by adding the lines on the right side of this slide to `inspector_gadget.hh`.
+Like `CPUSidePort` and `MemSidePort`, let's declare our class `TimedQueue` in the `private` scope of `SecureMemory`. Do this by adding the lines on the right side of this slide to `secure_memory.hh`.
 
 Make sure to add the following include statement to the top of the file as well.
 
@@ -804,7 +804,7 @@ void recvFunctional(PacketPtr pkt);
 
 ## Let's Get the Easy Ones Out the Way
 
-Between the four functions, `getAddrRanges` and `recvFunctional` are the most straightforward to define. We just need to call the same functions from `memSidePort`. To define these two functions, add the following code under `namespace gem5` in `inspector_gadget.cc`:
+Between the four functions, `getAddrRanges` and `recvFunctional` are the most straightforward to define. We just need to call the same functions from `memSidePort`. To define these two functions, add the following code under `namespace gem5` in `secure_memory.cc`:
 
 ```cpp
 AddrRangeList
@@ -830,7 +830,7 @@ SecureMemory::recvFunctional(PacketPtr pkt)
 
 Looking at `recvAtomic`, this function returns a value of type `Tick`. This value is supposed to represent the latency of the access if that access was done in singularity, i.e atomically/without being interleaved. **CAUTION**: This latency is not an accurate representation of the actual latency of the access in a real setup. In a real setup there are many accesses happening at the same time and most of the time accesses do not happen atomically.
 
-Let's add *one* cycle to the latency of accesses from the lower level of memory hierarchy. To do this we are going to call `clockPeriod` from the parent class of `SecureMemory`, which is `ClockedObject`. This function returns the period of the `clk_domain` in `Ticks`. Add the following code to define of `SecureMemory::recvAtomic` in `inspector_gadget.cc`.
+Let's add *one* cycle to the latency of accesses from the lower level of memory hierarchy. To do this we are going to call `clockPeriod` from the parent class of `SecureMemory`, which is `ClockedObject`. This function returns the period of the `clk_domain` in `Ticks`. Add the following code to define of `SecureMemory::recvAtomic` in `secure_memory.cc`.
 
 ```cpp
 Tick
@@ -881,13 +881,13 @@ Now, let's go ahead and declare an `EventFunctionWrapper` for picking the `Packe
 
 We're going to declare a function `EventFunctionWrapper nextReqSendEvent` to send `Packets` through `memSidePort`. Remember what we need to do?
 
-Add the following include statement to `inspector_gadget.hh` to include the appropriate header file for the class `EventFunctionWrapper`.
+Add the following include statement to `secure_memory.hh` to include the appropriate header file for the class `EventFunctionWrapper`.
 
 ```cpp
 #include "sim/eventq.hh"
 ```
 
-If you remember from [Event Driven Simulation](./03-event-driven-sim.md), we also need to declare a `std::function<void>()` to pass as the callback function for `nextReqSendEvent`. I would like to name these functions with `process` prefixing the name of the `event`. Let's go ahead and declare `nextReqSendEvent` as well as its callback function in the `private` scope of `SecureMemory`. Do it by adding the following lines to `inspector_gadget.hh`:
+If you remember from [Event Driven Simulation](./03-event-driven-sim.md), we also need to declare a `std::function<void>()` to pass as the callback function for `nextReqSendEvent`. I would like to name these functions with `process` prefixing the name of the `event`. Let's go ahead and declare `nextReqSendEvent` as well as its callback function in the `private` scope of `SecureMemory`. Do it by adding the following lines to `secure_memory.hh`:
 
 ```cpp
   private:
@@ -905,7 +905,7 @@ Now, that we have declared `nextReqSendEvent`, we can schedule `nextReqSendEvent
 
 What I do when I write `SimObjects` is that, for every `event`, I create a function to schedule that event. I name these functions with `schedule` prefixing the name of the event. Let's go ahead and a declare `scheduleNextReqSendEvent` under the `private` scope in `SecureMemory`.
 
-Open `inspector_gadget.hh` and add the following lines:
+Open `secure_memory.hh` and add the following lines:
 
 ```cpp
   private:
@@ -944,7 +944,7 @@ SecureMemory::recvTimingReq(PacketPtr pkt)
 
 As mentioned before, it's a good idea to create a function for sending `Packets` through `memSidePort`. To do this, let's go ahead and define `MemSidePort::sendPacket`. We define this function now since we're going to need it in `processNextReqSendEvent`.
 
-To define `MemSidePort::sendPacket` add the following code to `inspector_gadget.cc`
+To define `MemSidePort::sendPacket` add the following code to `secure_memory.cc`
 
 ```cpp
 void
@@ -966,7 +966,7 @@ SecureMemory::MemSidePort::sendPacket(PacketPtr pkt)
 
 ## SecureMemory::processNextReqSendEvent cont.
 
-Now that we have defined `sendPacket`, we can use it in `processNextReqSendEvent`. Add the following definition to `inspector_gadget.cc`:
+Now that we have defined `sendPacket`, we can use it in `processNextReqSendEvent`. Add the following definition to `secure_memory.cc`:
 
 ```cpp
 void
@@ -1004,7 +1004,7 @@ Are we done with `cpuSidePort` yet? If we look at `SecureMemory::recvTimingReq`,
 
 ## nextReqRetryEvent
 
-Let's add a declaration for `nextReqRetryEvent` as well as its callback function and its scheduler function. To do it add the following lines to the `private` scope of `SecureMemory` in `inspector_gadget.hh`.
+Let's add a declaration for `nextReqRetryEvent` as well as its callback function and its scheduler function. To do it add the following lines to the `private` scope of `SecureMemory` in `secure_memory.hh`.
 
 ```cpp
   private:
@@ -1013,7 +1013,7 @@ Let's add a declaration for `nextReqRetryEvent` as well as its callback function
     void scheduleNextReqRetryEvent(Tick when);
 ```
 
-Define the functions by adding the following code in `inspector_gadget.cc`.
+Define the functions by adding the following code in `secure_memory.cc`.
 
 ```cpp
 void
@@ -1061,7 +1061,7 @@ Next we will see the details of the scheduler function for `nextReqSendEvent`.
 
 ## scheduleNextReqSendEvent
 
-To define `scheduleNextReqSendEvent`, add the following code to `inspector_gadget.cc`.
+To define `scheduleNextReqSendEvent`, add the following code to `secure_memory.cc`.
 
 ```cpp
 void
@@ -1102,7 +1102,7 @@ Since we tracked the last `Packet` that we have tried to send, we can simply try
 
 ## MemSidePort::recvReqRetry cont.
 
-Add the following code to `inspector_gadget.cc` to define `MemSidePort::recvReqRetry`
+Add the following code to `secure_memory.cc` to define `MemSidePort::recvReqRetry`
 
 ```cpp
 void
@@ -1130,14 +1130,14 @@ SecureMemory::MemSidePort::recvReqRetry()
 
 ## SecureMemory::recvReqRetry
 
-Let's go ahead and declare and define `recvReqRetry` in the `public` scope of `SecureMemory`. Add the following lines to `inspector_gadget.hh` to declare `InpsectorGadget::recvReqRetry`:
+Let's go ahead and declare and define `recvReqRetry` in the `public` scope of `SecureMemory`. Add the following lines to `secure_memory.hh` to declare `InpsectorGadget::recvReqRetry`:
 
 ```cpp
   private:
     void recvReqRetry();
 ```
 
-Now, let's define it. We simply need to try to schedule `nextReqSendEvent` for the `nextCycle`. Add the following code to `inspector_gadget.cc`:
+Now, let's define it. We simply need to try to schedule `nextReqSendEvent` for the `nextCycle`. Add the following code to `secure_memory.cc`:
 
 ```cpp
 void
@@ -1179,7 +1179,7 @@ MemSidePort.recvTimingResp
 
 ## Response Path Additions to Header File
 
-Let's declare the following in `inspector_gadget.hh` to implement the `response` path.
+Let's declare the following in `secure_memory.hh` to implement the `response` path.
 
 ```cpp
   private:
@@ -1217,13 +1217,13 @@ void SecureMemory::processNextRespRetryEvent();
 void SecureMemory::scheduleNextRespSendEvent(Tick when);
 ```
 
-To find the definition for all these functions please look at the [complete version](../../materials/03-Developing-gem5-models/04-ports/step-1/src/bootcamp/secure-memory/inspector_gadget.cc) of `inspector_gadget.cc`. You can search for `Too-Much-Code` to find these functions.
+To find the definition for all these functions please look at the [complete version](../../materials/03-Developing-gem5-models/04-ports/step-1/src/bootcamp/secure_memory/secure_memory.cc) of `secure_memory.cc`. You can search for `Too-Much-Code` to find these functions.
 
 ---
 
 ## SecureMemory::SecureMemory
 
-Now, what we have to do is define the constructor of `SecureMemory`. To do it add the following code to `inspector_gadget.cc`:
+Now, what we have to do is define the constructor of `SecureMemory`. To do it add the following code to `secure_memory.cc`:
 
 ```cpp
 SecureMemory::SecureMemory(const SecureMemoryParams& params):
@@ -1246,7 +1246,7 @@ SecureMemory::SecureMemory(const SecureMemoryParams& params):
 
 ## SimObject::init
 
-Last step before compilation is to define the `init` function. Since `SecureMemory` is a `Responder` object, the convention is to let `peer` ports know that they can ask for their address range when the ranges become known. `init` is a `virtual` and `public` function from `SimObject`. Let's go ahead and declare it to override it. To do this, add the following declaration to the `public` scope of `SecureMemory` in `inspector-gadget.hh`.
+Last step before compilation is to define the `init` function. Since `SecureMemory` is a `Responder` object, the convention is to let `peer` ports know that they can ask for their address range when the ranges become known. `init` is a `virtual` and `public` function from `SimObject`. Let's go ahead and declare it to override it. To do this, add the following declaration to the `public` scope of `SecureMemory` in `insepctor_gadget.hh`.
 
 ```cpp
 virtual void init() override;
@@ -1301,7 +1301,7 @@ We will need to do the following to extend `ChanneledMemory`:
 
 ### SecureMemory: Code
 
-This is what should be in `gem5/configs/bootcamp/secure-memory/components/inspected_memory.py`:
+This is what should be in `gem5/configs/bootcamp/secure_memory/components/inspected_memory.py`:
 
 ```python
 from typing import Optional, Sequence, Tuple, Union, Type
@@ -1368,7 +1368,7 @@ class SecureMemory(ChanneledMemory):
 
 ## first-secure-memory-example.py
 
-Now, let's just simply add the following imports to `gem5/configs/bootcamp/secure-memory/first-secure-memory-example.py`:
+Now, let's just simply add the following imports to `gem5/configs/bootcamp/secure_memory/first-secure-memory-example.py`:
 
 ```python
 from components.inspected_memory import SecureMemory
@@ -1389,7 +1389,7 @@ memory = SecureMemory(
 Now, let's run the following command to simulate our configuration script.
 
 ```sh
-./build/NULL/gem5.opt --debug-flags=SecureMemory configs/bootcamp/secure-memory/first-secure-memory-example.py
+./build/NULL/gem5.opt --debug-flags=SecureMemory configs/bootcamp/secure_memory/first-secure-memory-example.py
 ```
 
 In the next slide, there is a recording of my terminal when running the command above.
@@ -1416,7 +1416,7 @@ In this step, we see how to add statistics to our `SimObjects` so that we can me
 
 ## Statistics:: Header File
 
-gem5 has its own internal classes for measuring statistics (stats for short). Let's go ahead and include the header files for them in `src/bootcamp/inspector-gadget.hh`
+gem5 has its own internal classes for measuring statistics (stats for short). Let's go ahead and include the header files for them in `src/bootcamp/insepctor_gadget.hh`
 
 ```cpp
 #include "base/statistics.hh"
@@ -1425,7 +1425,7 @@ gem5 has its own internal classes for measuring statistics (stats for short). Le
 
 gem5 stats have multiple types, each useful for measuring specific types of data. We will look at using `statistics::Scalar` stats since all the things we want to measure are scalars.
 
-Let's go ahead a declare a new `struct` called `SecureMemoryStats` inside the `private` scope of `SecureMemory` and also declare an instance of it. It will inherit from `statistics::Group`. Add the following lines to `src/bootcamp/inspector-gadget.hh` to do this.
+Let's go ahead a declare a new `struct` called `SecureMemoryStats` inside the `private` scope of `SecureMemory` and also declare an instance of it. It will inherit from `statistics::Group`. Add the following lines to `src/bootcamp/insepctor_gadget.hh` to do this.
 
 ```cpp
   private:
@@ -1435,7 +1435,7 @@ Let's go ahead a declare a new `struct` called `SecureMemoryStats` inside the `p
         statistics::Scalar numRequestsFwded;
         statistics::Scalar totalResponseBufferLatency;
         statistics::Scalar numResponsesFwded;
-        SecureMemoryStats(SecureMemory* inspector_gadget);
+        SecureMemoryStats(SecureMemory* secure_memory);
     };
     SecureMemoryStats stats;
 ```
@@ -1449,8 +1449,8 @@ Let's define the constructor of `SecureMemoryStats`. Add the following code unde
 
 ```cpp
 
-SecureMemory::SecureMemoryStats::SecureMemoryStats(SecureMemory* inspector_gadget):
-    statistics::Group(inspector_gadget),
+SecureMemory::SecureMemoryStats::SecureMemoryStats(SecureMemory* secure_memory):
+    statistics::Group(secure_memory),
     ADD_STAT(totalbufferLatency, statistics::units::Tick::get(), "Total inspection buffer latency."),
     ADD_STAT(numRequestsFwded, statistics::units::Count::get(), "Number of requests forwarded."),
     ADD_STAT(totalResponseBufferLatency, statistics::units::Tick::get(), "Total response buffer latency."),
@@ -1460,7 +1460,7 @@ SecureMemory::SecureMemoryStats::SecureMemoryStats(SecureMemory* inspector_gadge
 
 Few things to note:
 
-1- Initialize our stat object by adding `stats(this)` to the initialization list in the constructor `InspectorGdaget`.
+1- Initialize our stat object by adding `stats(this)` to the initialization list in the constructor `SecureMemory`.
 2- `statistics::Group::Group` takes a pointer to an object of `statistics::Group` that will be its parent. Class `SimObject` inherits from `statistics::Group` so we can use a pointer to `SecureMemory` as that input.
 3- The macro `ADD_STAT` registers and initializes our statistics that we have defined under the struct. The order of arguments are `name`, `unit`, `description`. To rid yourself of any headache, make sure the order of `ADD_STAT` macros match that of statistic declaration.
 
@@ -1545,7 +1545,7 @@ scons build/NULL/gem5.opt -j$(nproc)
 Now, let's go ahead and run the simulation again. We don't need to make any changes to our configuration script. Run the following command in the base gem5 directory to run the simulation.
 
 ```sh
-./build/NULL/gem5.opt configs/bootcamp/secure-memory/first-secure-memory-example.py
+./build/NULL/gem5.opt configs/bootcamp/secure_memory/first-secure-memory-example.py
 ```
 
 Now if you search for the name of the stats we added in `m5out/stats.txt`. This is what we will see. **NOTE**: I did by searching for the name of the `SecureMemory` objects in the file using `grep secure_widgets m5out/stats.txt` in the base gem5 directory.
