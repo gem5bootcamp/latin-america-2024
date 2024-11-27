@@ -35,21 +35,21 @@ These links and more information are also available at [https://www.gem5.org/ask
 ## Running gem5 at home
 
 - gem5 performance qualities
-   - Single threaded
-   - Consumes lots of RAM (if you want to model 32 GB of memory, it needs 32 GB of memory to model it)
-   - Can take a lot of time
+  - Single threaded
+  - Consumes lots of RAM (if you want to model 32 GB of memory, it needs 32 GB of memory to model it)
+  - Can take a lot of time
 - Because of this its best to run multiple experiments in parallel
 - Recommended hardware:
-   - High single thread performance
-   - Doesn't need many cores
-   - LOTS OF RAM
+  - High single thread performance
+  - Doesn't need many cores
+  - LOTS OF RAM
 
 ---
 
 ## System software requirements
 
 - Ubuntu 22.04+ (at least GCC 10)
-   - 20.04 works, but there are bugs in GCC 8 (or 9, whatever the default is) and you have to upgrade the GCC version.
+  - 20.04 works, but there are bugs in GCC 8 (or 9, whatever the default is) and you have to upgrade the GCC version.
 - Python 3.6+
 - SCons
 - Many optional requirements.
@@ -89,16 +89,85 @@ The devcontainer we've been using is based off of `ghcr.io/gem5/ubuntu-24.04_all
 
 You can find it at `ghcr.io/gem5/devcontainer:bootcamp-2024`.
 
-The source will be at [`gem5/utils/dockerfiles/devcontainer`](https://github.com/gem5/gem5/blob/stable/util/dockerfiles/devcontainer/Dockerfile) soon.
+The source is at [`gem5/utils/dockerfiles/devcontainer`](https://github.com/gem5/gem5/blob/stable/util/dockerfiles/devcontainer/Dockerfile).
 
 ---
 
 ## Recommended practices
 
-- Unless planning on contributing to gem5 or you need to use recently developed work, use the ```stable``` branch.
+- Unless planning on contributing to gem5 or you need to use recently developed work, use the `stable` branch.
 - Create branches off of stable.
 - Don't modify parameters of python files in `src/`. Instead create *extensions* of stdlib types or SimObjects.
 - Don't be afraid to read the code. The code is the best documentation.
+
+---
+
+<!-- _class: two-col code-60-percent tight -->
+
+## gem5 Cheat Sheet
+
+#### Downloading
+
+```sh
+git clone https://github.com/gem5/gem5
+```
+
+#### Building
+
+```sh
+scons build/ALL/gem5.opt -j$(nproc)
+```
+
+#### Customizing the build
+
+```sh
+scons menuconfig build/ALL
+```
+
+#### Running
+
+```sh
+build/ALL/gem5.opt <your script>
+```
+
+###
+
+#### Example scripts
+
+`configs/examples/gem5_library`
+
+#### Debugging
+
+```sh
+build/ALL/gem5.opt --debug-flags=<debug flags> <your script>
+build/ALL/gem5.opt --debug-help
+```
+
+---
+
+<!-- _class: two-col code-60-percent tight -->
+
+## More cheat sheet
+
+#### Creating a disk image
+
+See <https://github.com/gem5/gem5-resources/>. Use the packer files already available or create your own.
+
+```sh
+packer build <packer json file>
+```
+
+#### Take a checkpoint
+
+```python
+sim.save_checkpoint('checkpoint')
+```
+
+#### Restore a checkpoint
+
+```python
+sim = Simulator(checkpoint_path='checkpoint')
+```
 
 ---
 
@@ -120,7 +189,4 @@ The source will be at [`gem5/utils/dockerfiles/devcontainer`](https://github.com
 
 Please let us know how we did:
 
-<https://forms.gle/ZLZdv9h126d8GFrS7>
-
-![QR code for google form bg right 60%](03-gem5-at-home-imgs/qr-code.png)
-
+<https://forms.gle/M6HZHxGjXpcdw4kZ8>

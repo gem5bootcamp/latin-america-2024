@@ -165,6 +165,11 @@ section.title p {
     line-height: 2.5rem;
 }
 
+section.tight p h4 pre {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
 /****************************************************/
 /* For two-column layout */
 section.two-col {
