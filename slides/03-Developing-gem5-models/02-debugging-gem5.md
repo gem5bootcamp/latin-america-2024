@@ -73,7 +73,7 @@ Let's include the header files in `hello_sim_object.cc` by adding the following 
 
 ```cpp
 #include "base/trace.hh"
-#include "debug/HelloExampleFlag.hh
+#include "debug/HelloExampleFlag.hh"
 ```
 
 Now let's add a simple `DPRINTF` statement inside the constructor of `HelloSimObject` to print `Hello from ...`. Do it by adding the following line after the `for-loop`. **NOTE**: `__func__` will return the name of the function we're in as a string.
