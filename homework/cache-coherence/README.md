@@ -11,6 +11,7 @@ Title: Cache Coherence in gem5
 - [Real hardware experiments](#real-hardware-experiments)
 - [gem5 Experimental](#gem5)
 - [Analysis and simulation](#analysis-and-simulation)
+- [Submission](#submission)
 
 ## Introduction
 
@@ -589,3 +590,14 @@ As you increase the cache-to-cache latency, how does it affect the importance of
 
 You don't have to run all algorithms.
 You can probably get away with just running algorithm 1 and algorithm 6.
+
+## Submission
+
+You will submit this assignment using GitHub Classroom.
+Use the "blank" repository that was created for you.
+
+Create a new file named "hw1_submission.md" in the root of your repository and include the answers to the nine questions above.
+After completing the assignment, commit and push your changes to the repository.
+
+**Be sure to add your name and email address to the README.md file.**
+This way we can associate your submission with you.

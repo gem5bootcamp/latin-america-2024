@@ -117,11 +117,11 @@ How do the statistics change (if at all) when running with 4 cores compared to w
 
 ## Submission
 
-Use clear reasoning and visualization to drive your conclusions.
+You will submit this assignment using GitHub Classroom.
+Use the "blank" repository that was created for you.
 
-Submit all your code through your assignment repository. Please make sure to include code/scripts for the following.
+Create a new file named "hw3_submission.md" in the root of your repository and include the answers to the nine questions above.
+After completing the assignment, commit and push your changes to the repository.
 
-- `Instruction.md`: should include instructions on how to run your simulations.
-- Automation: code/scripts to run your simulations.
-- Configuration: python file configuring the systems you need to simulate.
-- `Answers.md`: should include the answers to the questions in the assignment.
+**Be sure to add your name and email address to the README.md file.**
+This way we can associate your submission with you.
