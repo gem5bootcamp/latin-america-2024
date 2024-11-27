@@ -137,13 +137,13 @@ gem5 -m gem5.utils.multisim my_script.py
 List all simulations:
 
 ```shell
-gem5 -m gem5.utils.multisim my_script.py --list
+gem5 my_script.py --list
 ```
 
 Run a single simulation:
 
 ```shell
-gem5 -m gem5.utils.multisim my_script.py {id}
+gem5 my_script.py {id}
 ```
 
 ---
@@ -265,3 +265,7 @@ gem5 -m gem5.utils.multisim my-cores-run.py
 
 1. What is the IPC of each workload on the big and little processors?
 2. How much speedup did we achieve by using `multisim`?
+
+For now, test with `gem5 my-cores-run.py --list`
+
+And `gem5 my-cores-run.py little-riscv-npb-is-size-s-run` should run in 1-2 minutes and have an output in `m5out/little-riscv-npb-is-size-s-run`.
