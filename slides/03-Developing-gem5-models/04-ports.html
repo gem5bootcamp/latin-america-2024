@@ -123,7 +123,7 @@ Typically this "required" baseline CSS is added by `makestuff.js` during build.
 </ul>
 <p>Make sure to differentiate between <code>request</code>/<code>response</code> and <code>data</code>. Both <code>requests</code> and <code>response</code> can carry <code>data</code> with them.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="3" data-paginate="true" data-class="two-col code-50-percent" data-theme="gem5" lang="en-US" class="two-col code-50-percent" data-marpit-pagination="3" style="--paginate:true;--class:two-col code-50-percent;--theme:gem5;" data-marpit-pagination-total="79">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="3" data-paginate="true" data-class="two-col" data-theme="gem5" lang="en-US" class="two-col" data-marpit-pagination="3" style="--paginate:true;--class:two-col;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="packets">Packets</h2>
 <p><code>Packets</code> facilitate communication through ports. They can be either <code>request</code> or <code>response</code> packets.</p>
 <blockquote>
@@ -269,8 +269,8 @@ Typically this "required" baseline CSS is added by `makestuff.js` during build.
 <h2 id="securememory-adding-files">SecureMemory: Adding Files</h2>
 <p>Now let's go ahead and create a <code>SimObject</code> declaration file for <code>SecureMemory</code>. Do it by running the following commands:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh"><span class="hljs-built_in">cd</span> /workspaces/2024/gem5/src
-<span class="hljs-built_in">mkdir</span> -p bootcamp/inspector-gadget
-<span class="hljs-built_in">cd</span> bootcamp/inspector-gadget
+<span class="hljs-built_in">mkdir</span> -p bootcamp/insepctor_gadget
+<span class="hljs-built_in">cd</span> bootcamp/insepctor_gadget
 <span class="hljs-built_in">touch</span> SecureMemory.py
 </code></pre>
 <p>Now, let's also create a <code>SConscript</code> for registering <code>SecureMemory</code>. Do it by running the following command:</p>
@@ -278,7 +278,7 @@ Typically this "required" baseline CSS is added by `makestuff.js` during build.
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="17" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="79">
-<h2 id="inspectogadget-simobject-declaration-file">InspectoGadget: SimObject Declaration File</h2>
+<h2 id="securememory-simobject-declaration-file">SecureMemory: SimObject Declaration File</h2>
 <p>Now, inside <code>SecureMemory.py</code>, let's define <code>SecureMemory</code> as a <code>ClockedObject</code>. To do that, we need to import <code>ClockedObject</code>. Do it by adding the following line to <code>SecureMemory.py</code>.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">from</span> m5.objects.ClockedObject <span class="hljs-keyword">import</span> ClockedObject
 </code></pre>
@@ -291,7 +291,7 @@ Typically this "required" baseline CSS is added by `makestuff.js` during build.
 
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">SecureMemory</span>(<span class="hljs-title class_ inherited__">ClockedObject</span>):
     <span class="hljs-built_in">type</span> = <span class="hljs-string">&quot;SecureMemory&quot;</span>
-    cxx_header = <span class="hljs-string">&quot;bootcamp/secure-memory/inspector_gadget.hh&quot;</span>
+    cxx_header = <span class="hljs-string">&quot;bootcamp/secure_memory/secure_memory.hh&quot;</span>
     cxx_class = <span class="hljs-string">&quot;gem5::SecureMemory&quot;</span>
 </code></pre>
 </section>
@@ -324,7 +324,7 @@ response_buffer_entries = Param.Int(<span class="hljs-string">&quot;Number of en
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="22" data-paginate="true" data-class="code-80-percent" data-theme="gem5" lang="en-US" class="code-80-percent" data-marpit-pagination="22" style="--paginate:true;--class:code-80-percent;--theme:gem5;" data-marpit-pagination-total="79">
-<h2 id="securememory-simobject-declaration-file">SecureMemory: SimObject Declaration File</h2>
+<h2 id="securememory-simobject-declaration-file-1">SecureMemory: SimObject Declaration File</h2>
 <p>This is what should be in <code>SecureMemory.py</code> now:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">from</span> m5.objects.ClockedObject <span class="hljs-keyword">import</span> ClockedObject
 <span class="hljs-keyword">from</span> m5.params <span class="hljs-keyword">import</span> *
@@ -332,7 +332,7 @@ response_buffer_entries = Param.Int(<span class="hljs-string">&quot;Number of en
 
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">SecureMemory</span>(<span class="hljs-title class_ inherited__">ClockedObject</span>):
     <span class="hljs-built_in">type</span> = <span class="hljs-string">&quot;SecureMemory&quot;</span>
-    cxx_header = <span class="hljs-string">&quot;bootcamp/secure-memory/inspector_gadget.hh&quot;</span>
+    cxx_header = <span class="hljs-string">&quot;bootcamp/secure_memory/secure_memory.hh&quot;</span>
     cxx_class = <span class="hljs-string">&quot;gem5::SecureMemory&quot;</span>
 
     cpu_side_port = ResponsePort(<span class="hljs-string">&quot;ResponsePort to received requests from CPU side.&quot;</span>)
@@ -345,31 +345,31 @@ response_buffer_entries = Param.Int(<span class="hljs-string">&quot;Number of en
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="23" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="23" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="updating-sconscript">Updating SConscript</h2>
 <p>Remember to register <code>SecureMemory</code> as a <code>SimObject</code> as well as create a <code>DebugFlag</code> for it.</p>
-<p>To do this, put the following in <code>gem5/src/bootcamp/secure-memory/SConscript</code>:</p>
+<p>To do this, put the following in <code>gem5/src/bootcamp/secure_memory/SConscript</code>:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python">Import(<span class="hljs-string">&quot;*&quot;</span>)
 
 SimObject(<span class="hljs-string">&quot;SecureMemory.py&quot;</span>, sim_objects=[<span class="hljs-string">&quot;SecureMemory&quot;</span>])
 
-Source(<span class="hljs-string">&quot;inspector_gadget.cc&quot;</span>)
+Source(<span class="hljs-string">&quot;secure_memory.cc&quot;</span>)
 
 DebugFlag(<span class="hljs-string">&quot;SecureMemory&quot;</span>)
 </code></pre>
 <blockquote>
-<p><strong>NOTE</strong>: In the next steps we will create <code>inspector_gadget.hh</code> and <code>inspector_gadget.cc</code>.</p>
+<p><strong>NOTE</strong>: In the next steps we will create <code>secure_memory.hh</code> and <code>secure_memory.cc</code>.</p>
 </blockquote>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="24" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="24" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="securememory-c-files">SecureMemory: C++ Files</h2>
-<p>Now, let's go ahead and create a header and source file for <code>SecureMemory</code> in <code>gem5/src/bootcamp/inspector-gadget</code>. Remember to make sure the path to your header file matches that of what you specified in <code>cxx_header</code> in <code>SecureMemory.py</code> and the path for your source file matches that of what you specified in <code>SConscript</code>. Run the following commands from within our <code>inspector-gadget</code> directory:</p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh"><span class="hljs-built_in">touch</span> inspector_gadget.hh
-<span class="hljs-built_in">touch</span> inspector_gadget.cc
+<p>Now, let's go ahead and create a header and source file for <code>SecureMemory</code> in <code>gem5/src/bootcamp/insepctor_gadget</code>. Remember to make sure the path to your header file matches that of what you specified in <code>cxx_header</code> in <code>SecureMemory.py</code> and the path for your source file matches that of what you specified in <code>SConscript</code>. Run the following commands from within our <code>insepctor_gadget</code> directory:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh"><span class="hljs-built_in">touch</span> secure_memory.hh
+<span class="hljs-built_in">touch</span> secure_memory.cc
 </code></pre>
 <p>Now, let's simply declare <code>SecureMemory</code> as a class that inherits from <code>ClockedObject</code>. This means you have to import <code>sim/clocked_object.hh</code> instead of <code>sim/sim_object.hh</code>. Let's add everything that we have added in the Python to our class except for the <code>Ports</code>.</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="25" data-paginate="true" data-class="code-60-percent" data-theme="gem5" lang="en-US" class="code-60-percent" data-marpit-pagination="25" style="--paginate:true;--class:code-60-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="securememory-header-file">SecureMemory: Header File</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> __BOOTCAMP_INSPECTOR_GADGET_INSPECTOR_GADGET_HH__</span>
-<span class="hljs-meta">#<span class="hljs-keyword">define</span> __BOOTCAMP_INSPECTOR_GADGET_INSPECTOR_GADGET_HH__</span>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> __BOOTCAMP_SECURE_MEMORY_SECURE_MEMORY_HH__</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> __BOOTCAMP_SECURE_MEMORY_SECURE_MEMORY_HH__</span>
 
 <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;params/SecureMemory.hh&quot;</span></span>
 <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;sim/clocked_object.hh&quot;</span></span>
@@ -390,13 +390,13 @@ DebugFlag(<span class="hljs-string">&quot;SecureMemory&quot;</span>)
 
 } <span class="hljs-comment">// namespace gem5</span>
 
-<span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">// __BOOTCAMP_INSPECTOR_GADGET_INSPECTOR_GADGET_HH__</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">// __BOOTCAMP_SECURE_MEMORY_SECURE_MEMORY_HH__</span></span>
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="26" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="26" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="extending-ports">Extending Ports</h2>
 <p>Recall, <code>RequestPort</code> and <code>ResponsePort</code> classes were abstract classes, i.e. they had <code>pure virtual</code> functions which means objects cannot be instantiated from that class. Therefore, for us to use <code>Ports</code> we need to extend the classes and implement their <code>pure virtual</code> functions.</p>
-<p>Before anything, let's go ahead and import the header file that contains the declaration for <code>Port</code> classes. We also need to include <a href="/gem5/src/mem/packet.hh"><code>mem/packet.hh</code></a> since we will be dealing with and moving around <code>Packets</code> a lot. Do it by adding the following lines to <code>inspector_gadget.hh</code>:</p>
+<p>Before anything, let's go ahead and import the header file that contains the declaration for <code>Port</code> classes. We also need to include <a href="/gem5/src/mem/packet.hh"><code>mem/packet.hh</code></a> since we will be dealing with and moving around <code>Packets</code> a lot. Do it by adding the following lines to <code>secure_memory.hh</code>:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;mem/packet.hh&quot;</span></span>
 <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;mem/port.hh&quot;</span></span>
 </code></pre>
@@ -406,7 +406,7 @@ DebugFlag(<span class="hljs-string">&quot;SecureMemory&quot;</span>)
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="27" data-paginate="true" data-class="no-logo code-50-percent" data-theme="gem5" lang="en-US" class="no-logo code-50-percent" data-marpit-pagination="27" style="--paginate:true;--class:no-logo code-50-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="extending-responseport">Extending ResponsePort</h2>
-<p>Now, let's get to extending <code>ResponsePort</code> class. Let's do it inside the scope of our <code>SecureMemory</code> class to prevent using names used by other gem5 developers. Let's go ahead an create <code>CPUSidePort</code> class that inherits from <code>ResponsePort</code> in the <code>private</code> scope. To do this, add the following code to <code>inspector_gadget.hh</code>.</p>
+<p>Now, let's get to extending <code>ResponsePort</code> class. Let's do it inside the scope of our <code>SecureMemory</code> class to prevent using names used by other gem5 developers. Let's go ahead an create <code>CPUSidePort</code> class that inherits from <code>ResponsePort</code> in the <code>private</code> scope. To do this, add the following code to <code>secure_memory.hh</code>.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">  <span class="hljs-keyword">private</span>:
     <span class="hljs-keyword">class</span> <span class="hljs-title class_">CPUSidePort</span>: <span class="hljs-keyword">public</span> ResponsePort
     {
@@ -442,7 +442,7 @@ DebugFlag(<span class="hljs-string">&quot;SecureMemory&quot;</span>)
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="29" data-paginate="true" data-class="no-logo code-60-percent" data-theme="gem5" lang="en-US" class="no-logo code-60-percent" data-marpit-pagination="29" style="--paginate:true;--class:no-logo code-60-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="extending-requestport">Extending RequestPort</h2>
-<p>We're going to follow a similar approach for extending <code>RequestPort</code>. Let's create class <code>MemSidePort</code> that inherits from <code>RequestPort</code>. Again we'll do it in the <code>private</code> scope of <code>SecureMemory</code>. Do it by adding the following code to <code>inspector_gadget.hh</code>.</p>
+<p>We're going to follow a similar approach for extending <code>RequestPort</code>. Let's create class <code>MemSidePort</code> that inherits from <code>RequestPort</code>. Again we'll do it in the <code>private</code> scope of <code>SecureMemory</code>. Do it by adding the following code to <code>secure_memory.hh</code>.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">  <span class="hljs-keyword">private</span>:
     <span class="hljs-keyword">class</span> <span class="hljs-title class_">MemSidePort</span>: <span class="hljs-keyword">public</span> RequestPort
     {
@@ -475,7 +475,7 @@ DebugFlag(<span class="hljs-string">&quot;SecureMemory&quot;</span>)
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="31" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="31" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="creating-instances-of-ports-in-securememory">Creating Instances of Ports in SecureMemory</h2>
-<p>Now that we have declared <code>CPUSidePort</code> and <code>MemSidePort</code> classes (which are not abstract classes), we can go ahead and create an instance of each class in <code>SecureMemory</code>. To do that, add the following two lines to <code>inspector_gadget.hh</code></p>
+<p>Now that we have declared <code>CPUSidePort</code> and <code>MemSidePort</code> classes (which are not abstract classes), we can go ahead and create an instance of each class in <code>SecureMemory</code>. To do that, add the following two lines to <code>secure_memory.hh</code></p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">  <span class="hljs-keyword">private</span>:
     CPUSidePort cpuSidePort;
     MemSidePort memSidePort;
@@ -515,7 +515,7 @@ DebugFlag(<span class="hljs-string">&quot;SecureMemory&quot;</span>)
 <h2 id="simobjectgetport-cont">SimObject::getPort cont.</h2>
 <p>This function is used for connecting ports to each other. As far as we are concerned, we need to create a mapping between our <code>Port</code> objects in C++ and the <code>Ports</code> that we declare in Python. To the best of my knowledge, we will never have to call this function on our own.</p>
 <p>For now, let's implement this function to return a <code>Port&amp;</code> when we recognize <code>if_name</code> (which would be the name that we gave to a <code>Port</code> in Python) and, otherwise, we will pass this up to the parent class <code>ClockedObject</code> to handle the function call.</p>
-<p>Let's go ahead and add the declaration for this function to <code>inspector_gadget.hh</code>.</p>
+<p>Let's go ahead and add the declaration for this function to <code>secure_memory.hh</code>.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">  <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-keyword">virtual</span> Port&amp; <span class="hljs-title">getPort</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; if_name, PortID idxInvalidPortID)</span></span>;
 </code></pre>
@@ -523,8 +523,8 @@ DebugFlag(<span class="hljs-string">&quot;SecureMemory&quot;</span>)
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="34" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="enough-with-the-declarations-for-now">Enough with the Declarations! For Now!</h2>
 <p>So far, we have declared quite a few functions that we need to implement. Let's start defining some of them. In the next several slides, we will be defining functions from <code>CPUSidePort</code> and <code>MemSidePort</code>, as well as <code>getPort</code> from <code>SecureMemory</code>.</p>
-<p>Open <code>inspector_gadget.cc</code> and let's start by adding  the following include statements:</p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;bootcamp/secure-memory/inspector_gadget.hh&quot;</span></span>
+<p>Open <code>secure_memory.cc</code> and let's start by adding  the following include statements:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;bootcamp/secure_memory/secure_memory.hh&quot;</span></span>
 
 <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;debug/SecureMemory.hh&quot;</span></span>
 </code></pre>
@@ -532,7 +532,7 @@ DebugFlag(<span class="hljs-string">&quot;SecureMemory&quot;</span>)
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="35" data-paginate="true" data-class="no-logo code-60-percent" data-theme="gem5" lang="en-US" class="no-logo code-60-percent" data-marpit-pagination="35" style="--paginate:true;--class:no-logo code-60-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="defining-securememorygetport">Defining SecureMemory::getPort</h2>
-<p>Let's start by implementing <code>SecureMemory::getPort</code>. Add the following code inside <code>namespace gem5</code> in <code>inspector_gadget.cc</code> to do this  (all code in such definition files should go inside <code>namespace gem5</code>):</p>
+<p>Let's start by implementing <code>SecureMemory::getPort</code>. Add the following code inside <code>namespace gem5</code> in <code>secure_memory.cc</code> to do this  (all code in such definition files should go inside <code>namespace gem5</code>):</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-function">Port&amp;
 <span class="hljs-title">SecureMemory::getPort</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string &amp;if_name, PortID idx)</span>
 </span>{
@@ -560,7 +560,7 @@ DebugFlag(<span class="hljs-string">&quot;SecureMemory&quot;</span>)
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="37" data-paginate="true" data-class="no-logo code-50-percent" data-theme="gem5" lang="en-US" class="no-logo code-50-percent" data-marpit-pagination="37" style="--paginate:true;--class:no-logo code-50-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="cpusideportrecvatomic-cpusideportrecvfunctional">CPUSidePort::recvAtomic, CPUSidePort::recvFunctional</h2>
-<p>These two functions are very simple to define. Basically, our responsibility is to pass the <code>PacketPtr</code> to <code>SimObjects</code> further down in the memory hierarchy. To implement them we will call functions with the same name from <code>SecureMemory</code>. Add the following code to <code>inspector_gadget.cc</code>:</p>
+<p>These two functions are very simple to define. Basically, our responsibility is to pass the <code>PacketPtr</code> to <code>SimObjects</code> further down in the memory hierarchy. To implement them we will call functions with the same name from <code>SecureMemory</code>. Add the following code to <code>secure_memory.cc</code>:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">Tick
 SecureMemory::CPUSidePort::<span class="hljs-built_in">recvAtomic</span>(PacketPtr pkt)
 {
@@ -585,7 +585,7 @@ SecureMemory::CPUSidePort::<span class="hljs-built_in">recvFunctional</span>(Pac
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="38" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="38" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="cpusideportgetaddrranges">CPUSidePort::getAddrRanges</h2>
 <p>Reminder: This function returns an <code>AddrRangeList</code> that represents the address ranges for which the port is a responder. To understand this better, think about dual channel memory. Each channel in the memory is responsible for a subset of all the addresses in your computer.</p>
-<p>To define this function, we are again going to rely on <code>SecureMemory</code> and call a function with the same name from <code>SecureMemory</code>. Do this by adding the following code to <code>inspector_gadget.cc</code>:</p>
+<p>To define this function, we are again going to rely on <code>SecureMemory</code> and call a function with the same name from <code>SecureMemory</code>. Do this by adding the following code to <code>secure_memory.cc</code>:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">AddrRangeList
 SecureMemory::CPUSidePort::<span class="hljs-built_in">getAddrRanges</span>() <span class="hljs-type">const</span>
 {
@@ -601,7 +601,7 @@ SecureMemory::CPUSidePort::<span class="hljs-built_in">getAddrRanges</span>() <s
 <h2 id="cpusideportrecvtimingreq">CPUSidePort::recvTimingReq</h2>
 <p>In this function we will do the following:</p>
 <p>Ask the owner to receive the <code>Packet</code> the <code>Port</code> is receiving. To do this we will call a function with the same name from <code>SecureMemory</code>. If <code>SecureMemory</code> can accept the <code>Packet</code> then the <code>Port</code> will return true. Otherwise, the <code>Port</code> will return false as well as remember that we need to send a <code>retry request</code> in the future, i.e. we will set <code>needToSendRetry = true</code>.</p>
-<p>To define this function add the following code to <code>inspector_gadget.cc</code>.</p>
+<p>To define this function add the following code to <code>secure_memory.cc</code>.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-type">bool</span>
 SecureMemory::CPUSidePort::<span class="hljs-built_in">recvTimingReq</span>(PacketPtr pkt)
 {
@@ -621,7 +621,7 @@ SecureMemory::CPUSidePort::<span class="hljs-built_in">recvTimingReq</span>(Pack
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="40" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="back-to-declaration">Back to Declaration</h2>
 <p>Now that we are finished with defining functions from <code>CPUSidePort</code>, let's go ahead and declare the functions from <code>SecureMemory</code> that we noted down.</p>
-<p>To do this add the following code to the <code>public</code> scope of <code>SecureMemory</code> in <code>inspector_gadget.hh</code>.</p>
+<p>To do this add the following code to the <code>public</code> scope of <code>SecureMemory</code> in <code>secure_memory.hh</code>.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">  <span class="hljs-keyword">public</span>:
     <span class="hljs-function">AddrRangeList <span class="hljs-title">getAddrRanges</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;
     <span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">recvTimingReq</span><span class="hljs-params">(PacketPtr pkt)</span></span>;
@@ -642,7 +642,7 @@ SecureMemory::CPUSidePort::<span class="hljs-built_in">recvTimingReq</span>(Pack
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-paginate="true" data-class="two-col code-50-percent" data-theme="gem5" lang="en-US" class="two-col code-50-percent" data-marpit-pagination="42" style="--paginate:true;--class:two-col code-50-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h3 id="timed-queue-details">Timed Queue: Details</h3>
-<p>Like <code>CPUSidePort</code> and <code>MemSidePort</code>, let's declare our class <code>TimedQueue</code> in the <code>private</code> scope of <code>SecureMemory</code>. Do this by adding the lines on the right side of this slide to <code>inspector_gadget.hh</code>.</p>
+<p>Like <code>CPUSidePort</code> and <code>MemSidePort</code>, let's declare our class <code>TimedQueue</code> in the <code>private</code> scope of <code>SecureMemory</code>. Do this by adding the lines on the right side of this slide to <code>secure_memory.hh</code>.</p>
 <p>Make sure to add the following include statement to the top of the file as well.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;queue&gt;</span></span>
 </code></pre>
@@ -699,7 +699,7 @@ SecureMemory::CPUSidePort::<span class="hljs-built_in">recvTimingReq</span>(Pack
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="44" data-paginate="true" data-class="code-60-percent" data-theme="gem5" lang="en-US" class="code-60-percent" data-marpit-pagination="44" style="--paginate:true;--class:code-60-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="lets-get-the-easy-ones-out-the-way">Let's Get the Easy Ones Out the Way</h2>
-<p>Between the four functions, <code>getAddrRanges</code> and <code>recvFunctional</code> are the most straightforward to define. We just need to call the same functions from <code>memSidePort</code>. To define these two functions, add the following code under <code>namespace gem5</code> in <code>inspector_gadget.cc</code>:</p>
+<p>Between the four functions, <code>getAddrRanges</code> and <code>recvFunctional</code> are the most straightforward to define. We just need to call the same functions from <code>memSidePort</code>. To define these two functions, add the following code under <code>namespace gem5</code> in <code>secure_memory.cc</code>:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-function">AddrRangeList
 <span class="hljs-title">SecureMemory::getAddrRanges</span><span class="hljs-params">()</span> <span class="hljs-type">const</span>
 </span>{
@@ -719,7 +719,7 @@ SecureMemory::CPUSidePort::<span class="hljs-built_in">recvTimingReq</span>(Pack
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="45" data-paginate="true" data-class="no-log code-80-percent" data-theme="gem5" lang="en-US" class="no-log code-80-percent" data-marpit-pagination="45" style="--paginate:true;--class:no-log code-80-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="securememoryrecvatomic">SecureMemory::recvAtomic</h2>
 <p>Looking at <code>recvAtomic</code>, this function returns a value of type <code>Tick</code>. This value is supposed to represent the latency of the access if that access was done in singularity, i.e atomically/without being interleaved. <strong>CAUTION</strong>: This latency is not an accurate representation of the actual latency of the access in a real setup. In a real setup there are many accesses happening at the same time and most of the time accesses do not happen atomically.</p>
-<p>Let's add <em>one</em> cycle to the latency of accesses from the lower level of memory hierarchy. To do this we are going to call <code>clockPeriod</code> from the parent class of <code>SecureMemory</code>, which is <code>ClockedObject</code>. This function returns the period of the <code>clk_domain</code> in <code>Ticks</code>. Add the following code to define of <code>SecureMemory::recvAtomic</code> in <code>inspector_gadget.cc</code>.</p>
+<p>Let's add <em>one</em> cycle to the latency of accesses from the lower level of memory hierarchy. To do this we are going to call <code>clockPeriod</code> from the parent class of <code>SecureMemory</code>, which is <code>ClockedObject</code>. This function returns the period of the <code>clk_domain</code> in <code>Ticks</code>. Add the following code to define of <code>SecureMemory::recvAtomic</code> in <code>secure_memory.cc</code>.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-function">Tick
 <span class="hljs-title">SecureMemory::recvAtomic</span><span class="hljs-params">(PacketPtr pkt)</span>
 </span>{
@@ -752,10 +752,10 @@ SecureMemory::CPUSidePort::<span class="hljs-built_in">recvTimingReq</span>(Pack
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="48" data-paginate="true" data-class="no-logo code-70-percent" data-theme="gem5" lang="en-US" class="no-logo code-70-percent" data-marpit-pagination="48" style="--paginate:true;--class:no-logo code-70-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="nextreqsendevent">nextReqSendEvent</h2>
 <p>We're going to declare a function <code>EventFunctionWrapper nextReqSendEvent</code> to send <code>Packets</code> through <code>memSidePort</code>. Remember what we need to do?</p>
-<p>Add the following include statement to <code>inspector_gadget.hh</code> to include the appropriate header file for the class <code>EventFunctionWrapper</code>.</p>
+<p>Add the following include statement to <code>secure_memory.hh</code> to include the appropriate header file for the class <code>EventFunctionWrapper</code>.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;sim/eventq.hh&quot;</span></span>
 </code></pre>
-<p>If you remember from <a href="./03-event-driven-sim.md">Event Driven Simulation</a>, we also need to declare a <code>std::function&lt;void&gt;()</code> to pass as the callback function for <code>nextReqSendEvent</code>. I would like to name these functions with <code>process</code> prefixing the name of the <code>event</code>. Let's go ahead and declare <code>nextReqSendEvent</code> as well as its callback function in the <code>private</code> scope of <code>SecureMemory</code>. Do it by adding the following lines to <code>inspector_gadget.hh</code>:</p>
+<p>If you remember from <a href="./03-event-driven-sim.md">Event Driven Simulation</a>, we also need to declare a <code>std::function&lt;void&gt;()</code> to pass as the callback function for <code>nextReqSendEvent</code>. I would like to name these functions with <code>process</code> prefixing the name of the <code>event</code>. Let's go ahead and declare <code>nextReqSendEvent</code> as well as its callback function in the <code>private</code> scope of <code>SecureMemory</code>. Do it by adding the following lines to <code>secure_memory.hh</code>:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">  <span class="hljs-keyword">private</span>:
     EventFunctionWrapper nextReqSendEvent;
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">processNextReqSendEvent</span><span class="hljs-params">()</span></span>;
@@ -765,7 +765,7 @@ SecureMemory::CPUSidePort::<span class="hljs-built_in">recvTimingReq</span>(Pack
 <h2 id="managing-the-schedule-of-nextreqsendevent">Managing the Schedule of nextReqSendEvent</h2>
 <p>Now, that we have declared <code>nextReqSendEvent</code>, we can schedule <code>nextReqSendEvent</code> in <code>SecureMemory::recvTimingReq</code>. We will see in a few slides why it is helpful to have a function that decides if and when <code>nextReqSendEvent</code> should be scheduled.</p>
 <p>What I do when I write <code>SimObjects</code> is that, for every <code>event</code>, I create a function to schedule that event. I name these functions with <code>schedule</code> prefixing the name of the event. Let's go ahead and a declare <code>scheduleNextReqSendEvent</code> under the <code>private</code> scope in <code>SecureMemory</code>.</p>
-<p>Open <code>inspector_gadget.hh</code> and add the following lines:</p>
+<p>Open <code>secure_memory.hh</code> and add the following lines:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">  <span class="hljs-keyword">private</span>:
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">scheduleNextReqSendEvent</span><span class="hljs-params">(Tick when)</span></span>;
 </code></pre>
@@ -790,7 +790,7 @@ SecureMemory::CPUSidePort::<span class="hljs-built_in">recvTimingReq</span>(Pack
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="51" data-paginate="true" data-class="no-logo code-50-percent" data-theme="gem5" lang="en-US" class="no-logo code-50-percent" data-marpit-pagination="51" style="--paginate:true;--class:no-logo code-50-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="memsideportsendpacket">MemSidePort::sendPacket</h2>
 <p>As mentioned before, it's a good idea to create a function for sending <code>Packets</code> through <code>memSidePort</code>. To do this, let's go ahead and define <code>MemSidePort::sendPacket</code>. We define this function now since we're going to need it in <code>processNextReqSendEvent</code>.</p>
-<p>To define <code>MemSidePort::sendPacket</code> add the following code to <code>inspector_gadget.cc</code></p>
+<p>To define <code>MemSidePort::sendPacket</code> add the following code to <code>secure_memory.cc</code></p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-type">void</span>
 SecureMemory::MemSidePort::<span class="hljs-built_in">sendPacket</span>(PacketPtr pkt)
 {
@@ -809,7 +809,7 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">sendPacket</span>(PacketP
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="52" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="52" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="securememoryprocessnextreqsendevent-cont">SecureMemory::processNextReqSendEvent cont.</h2>
-<p>Now that we have defined <code>sendPacket</code>, we can use it in <code>processNextReqSendEvent</code>. Add the following definition to <code>inspector_gadget.cc</code>:</p>
+<p>Now that we have defined <code>sendPacket</code>, we can use it in <code>processNextReqSendEvent</code>. Add the following definition to <code>secure_memory.cc</code>:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-function"><span class="hljs-type">void</span>
 <span class="hljs-title">SecureMemory::processNextReqSendEvent</span><span class="hljs-params">()</span>
 </span>{
@@ -837,13 +837,13 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">sendPacket</span>(PacketP
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="54" data-paginate="true" data-class="no-logo code-50-percent" data-theme="gem5" lang="en-US" class="no-logo code-50-percent" data-marpit-pagination="54" style="--paginate:true;--class:no-logo code-50-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="nextreqretryevent">nextReqRetryEvent</h2>
-<p>Let's add a declaration for <code>nextReqRetryEvent</code> as well as its callback function and its scheduler function. To do it add the following lines to the <code>private</code> scope of <code>SecureMemory</code> in <code>inspector_gadget.hh</code>.</p>
+<p>Let's add a declaration for <code>nextReqRetryEvent</code> as well as its callback function and its scheduler function. To do it add the following lines to the <code>private</code> scope of <code>SecureMemory</code> in <code>secure_memory.hh</code>.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">  <span class="hljs-keyword">private</span>:
     EventFunctionWrapper nextReqRetryEvent;
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">processNextReqRetryEvent</span><span class="hljs-params">()</span></span>;
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">scheduleNextReqRetryEvent</span><span class="hljs-params">(Tick when)</span></span>;
 </code></pre>
-<p>Define the functions by adding the following code in <code>inspector_gadget.cc</code>.</p>
+<p>Define the functions by adding the following code in <code>secure_memory.cc</code>.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-function"><span class="hljs-type">void</span>
 <span class="hljs-title">SecureMemory::processNextReqRetryEvent</span><span class="hljs-params">()</span>
 </span>{
@@ -881,7 +881,7 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">sendPacket</span>(PacketP
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="56" data-paginate="true" data-class="no-logo code-50-percent" data-theme="gem5" lang="en-US" class="no-logo code-50-percent" data-marpit-pagination="56" style="--paginate:true;--class:no-logo code-50-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="schedulenextreqsendevent">scheduleNextReqSendEvent</h2>
-<p>To define <code>scheduleNextReqSendEvent</code>, add the following code to <code>inspector_gadget.cc</code>.</p>
+<p>To define <code>scheduleNextReqSendEvent</code>, add the following code to <code>secure_memory.cc</code>.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-function"><span class="hljs-type">void</span>
 <span class="hljs-title">SecureMemory::scheduleNextReqSendEvent</span><span class="hljs-params">(Tick when)</span>
 </span>{
@@ -909,7 +909,7 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">sendPacket</span>(PacketP
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="58" data-paginate="true" data-class="code-60-percent" data-theme="gem5" lang="en-US" class="code-60-percent" data-marpit-pagination="58" style="--paginate:true;--class:code-60-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="memsideportrecvreqretry-cont">MemSidePort::recvReqRetry cont.</h2>
-<p>Add the following code to <code>inspector_gadget.cc</code> to define <code>MemSidePort::recvReqRetry</code></p>
+<p>Add the following code to <code>secure_memory.cc</code> to define <code>MemSidePort::recvReqRetry</code></p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-type">void</span>
 SecureMemory::MemSidePort::<span class="hljs-built_in">recvReqRetry</span>()
 {
@@ -932,11 +932,11 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">recvReqRetry</span>()
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="59" data-paginate="true" data-class="no-logo code-80-percent" data-theme="gem5" lang="en-US" class="no-logo code-80-percent" data-marpit-pagination="59" style="--paginate:true;--class:no-logo code-80-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="securememoryrecvreqretry">SecureMemory::recvReqRetry</h2>
-<p>Let's go ahead and declare and define <code>recvReqRetry</code> in the <code>public</code> scope of <code>SecureMemory</code>. Add the following lines to <code>inspector_gadget.hh</code> to declare <code>InpsectorGadget::recvReqRetry</code>:</p>
+<p>Let's go ahead and declare and define <code>recvReqRetry</code> in the <code>public</code> scope of <code>SecureMemory</code>. Add the following lines to <code>secure_memory.hh</code> to declare <code>InpsectorGadget::recvReqRetry</code>:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">  <span class="hljs-keyword">private</span>:
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">recvReqRetry</span><span class="hljs-params">()</span></span>;
 </code></pre>
-<p>Now, let's define it. We simply need to try to schedule <code>nextReqSendEvent</code> for the <code>nextCycle</code>. Add the following code to <code>inspector_gadget.cc</code>:</p>
+<p>Now, let's define it. We simply need to try to schedule <code>nextReqSendEvent</code> for the <code>nextCycle</code>. Add the following code to <code>secure_memory.cc</code>:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-function"><span class="hljs-type">void</span>
 <span class="hljs-title">SecureMemory::recvReqRetry</span><span class="hljs-params">()</span>
 </span>{
@@ -963,7 +963,7 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">recvReqRetry</span>()
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="61" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="61" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="response-path-additions-to-header-file">Response Path Additions to Header File</h2>
-<p>Let's declare the following in <code>inspector_gadget.hh</code> to implement the <code>response</code> path.</p>
+<p>Let's declare the following in <code>secure_memory.hh</code> to implement the <code>response</code> path.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">  <span class="hljs-keyword">private</span>:
     TimedQueue&lt;PacketPtr&gt; responseBuffer;
 
@@ -992,11 +992,11 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">recvReqRetry</span>()
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">SecureMemory::processNextRespRetryEvent</span><span class="hljs-params">()</span></span>;
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">SecureMemory::scheduleNextRespSendEvent</span><span class="hljs-params">(Tick when)</span></span>;
 </code></pre>
-<p>To find the definition for all these functions please look at the <a href="../../materials/03-Developing-gem5-models/04-ports/step-1/src/bootcamp/secure-memory/inspector_gadget.cc">complete version</a> of <code>inspector_gadget.cc</code>. You can search for <code>Too-Much-Code</code> to find these functions.</p>
+<p>To find the definition for all these functions please look at the <a href="../../materials/03-Developing-gem5-models/04-ports/step-1/src/bootcamp/secure_memory/secure_memory.cc">complete version</a> of <code>secure_memory.cc</code>. You can search for <code>Too-Much-Code</code> to find these functions.</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="63" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="63" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="securememorysecurememory">SecureMemory::SecureMemory</h2>
-<p>Now, what we have to do is define the constructor of <code>SecureMemory</code>. To do it add the following code to <code>inspector_gadget.cc</code>:</p>
+<p>Now, what we have to do is define the constructor of <code>SecureMemory</code>. To do it add the following code to <code>secure_memory.cc</code>:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">SecureMemory::<span class="hljs-built_in">SecureMemory</span>(<span class="hljs-type">const</span> SecureMemoryParams&amp; params):
     <span class="hljs-built_in">ClockedObject</span>(params),
     <span class="hljs-built_in">cpuSidePort</span>(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">name</span>() + <span class="hljs-string">&quot;.cpu_side_port&quot;</span>),
@@ -1014,7 +1014,7 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">recvReqRetry</span>()
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="64" data-paginate="true" data-class="code-70-percent" data-theme="gem5" lang="en-US" class="code-70-percent" data-marpit-pagination="64" style="--paginate:true;--class:code-70-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="simobjectinit">SimObject::init</h2>
-<p>Last step before compilation is to define the <code>init</code> function. Since <code>SecureMemory</code> is a <code>Responder</code> object, the convention is to let <code>peer</code> ports know that they can ask for their address range when the ranges become known. <code>init</code> is a <code>virtual</code> and <code>public</code> function from <code>SimObject</code>. Let's go ahead and declare it to override it. To do this, add the following declaration to the <code>public</code> scope of <code>SecureMemory</code> in <code>inspector-gadget.hh</code>.</p>
+<p>Last step before compilation is to define the <code>init</code> function. Since <code>SecureMemory</code> is a <code>Responder</code> object, the convention is to let <code>peer</code> ports know that they can ask for their address range when the ranges become known. <code>init</code> is a <code>virtual</code> and <code>public</code> function from <code>SimObject</code>. Let's go ahead and declare it to override it. To do this, add the following declaration to the <code>public</code> scope of <code>SecureMemory</code> in <code>insepctor_gadget.hh</code>.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span></span>;
 </code></pre>
 <p>To define it, we need to simply call <code>sendRangeChange</code> from <code>cpuSidePort</code>. Add the following code to define <code>init</code> in <code>secure-memory.cc</code></p>
@@ -1048,7 +1048,7 @@ scons build/NULL/gem5.opt -j$(<span class="hljs-built_in">nproc</span>)
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="68" data-paginate="true" data-class="two-col no-logo code-50-percent" data-theme="gem5" lang="en-US" class="two-col no-logo code-50-percent" data-marpit-pagination="68" style="--paginate:true;--class:two-col no-logo code-50-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h3 id="securememory-code">SecureMemory: Code</h3>
-<p>This is what should be in <code>gem5/configs/bootcamp/secure-memory/components/inspected_memory.py</code>:</p>
+<p>This is what should be in <code>gem5/configs/bootcamp/secure_memory/components/inspected_memory.py</code>:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-type">Optional</span>, <span class="hljs-type">Sequence</span>, <span class="hljs-type">Tuple</span>, <span class="hljs-type">Union</span>, <span class="hljs-type">Type</span>
 
 <span class="hljs-keyword">from</span> m5.objects <span class="hljs-keyword">import</span> (
@@ -1107,7 +1107,7 @@ scons build/NULL/gem5.opt -j$(<span class="hljs-built_in">nproc</span>)
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="69" data-paginate="true" data-class="code-60-percent no-logo" data-theme="gem5" lang="en-US" class="code-60-percent no-logo" data-marpit-pagination="69" style="--paginate:true;--class:code-60-percent no-logo;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="first-secure-memory-examplepy">first-secure-memory-example.py</h2>
-<p>Now, let's just simply add the following imports to <code>gem5/configs/bootcamp/secure-memory/first-secure-memory-example.py</code>:</p>
+<p>Now, let's just simply add the following imports to <code>gem5/configs/bootcamp/secure_memory/first-secure-memory-example.py</code>:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-python"><span class="hljs-keyword">from</span> components.inspected_memory <span class="hljs-keyword">import</span> SecureMemory
 <span class="hljs-keyword">from</span> m5.objects.DRAMInterface <span class="hljs-keyword">import</span> DDR3_1600_8x8
 </code></pre>
@@ -1120,7 +1120,7 @@ scons build/NULL/gem5.opt -j$(<span class="hljs-built_in">nproc</span>)
 )
 </code></pre>
 <p>Now, let's run the following command to simulate our configuration script.</p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">./build/NULL/gem5.opt --debug-flags=SecureMemory configs/bootcamp/secure-memory/first-secure-memory-example.py
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">./build/NULL/gem5.opt --debug-flags=SecureMemory configs/bootcamp/secure_memory/first-secure-memory-example.py
 </code></pre>
 <p>In the next slide, there is a recording of my terminal when running the command above.</p>
 </section>
@@ -1138,12 +1138,12 @@ scons build/NULL/gem5.opt -j$(<span class="hljs-built_in">nproc</span>)
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="72" data-paginate="true" data-class="no-logo code-50-percent" data-theme="gem5" lang="en-US" class="no-logo code-50-percent" data-marpit-pagination="72" style="--paginate:true;--class:no-logo code-50-percent;--theme:gem5;" data-marpit-pagination-total="79">
 <h2 id="statistics-header-file">Statistics:: Header File</h2>
-<p>gem5 has its own internal classes for measuring statistics (stats for short). Let's go ahead and include the header files for them in <code>src/bootcamp/inspector-gadget.hh</code></p>
+<p>gem5 has its own internal classes for measuring statistics (stats for short). Let's go ahead and include the header files for them in <code>src/bootcamp/insepctor_gadget.hh</code></p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;base/statistics.hh&quot;</span></span>
 <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;base/stats/group.hh&quot;</span></span>
 </code></pre>
 <p>gem5 stats have multiple types, each useful for measuring specific types of data. We will look at using <code>statistics::Scalar</code> stats since all the things we want to measure are scalars.</p>
-<p>Let's go ahead a declare a new <code>struct</code> called <code>SecureMemoryStats</code> inside the <code>private</code> scope of <code>SecureMemory</code> and also declare an instance of it. It will inherit from <code>statistics::Group</code>. Add the following lines to <code>src/bootcamp/inspector-gadget.hh</code> to do this.</p>
+<p>Let's go ahead a declare a new <code>struct</code> called <code>SecureMemoryStats</code> inside the <code>private</code> scope of <code>SecureMemory</code> and also declare an instance of it. It will inherit from <code>statistics::Group</code>. Add the following lines to <code>src/bootcamp/insepctor_gadget.hh</code> to do this.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">  <span class="hljs-keyword">private</span>:
     <span class="hljs-keyword">struct</span> <span class="hljs-title class_">SecureMemoryStats</span>: <span class="hljs-keyword">public</span> statistics::Group
     {
@@ -1151,7 +1151,7 @@ scons build/NULL/gem5.opt -j$(<span class="hljs-built_in">nproc</span>)
         statistics::Scalar numRequestsFwded;
         statistics::Scalar totalResponseBufferLatency;
         statistics::Scalar numResponsesFwded;
-        <span class="hljs-built_in">SecureMemoryStats</span>(SecureMemory* inspector_gadget);
+        <span class="hljs-built_in">SecureMemoryStats</span>(SecureMemory* secure_memory);
     };
     SecureMemoryStats stats;
 </code></pre>
@@ -1160,8 +1160,8 @@ scons build/NULL/gem5.opt -j$(<span class="hljs-built_in">nproc</span>)
 <h2 id="statistics-source-file">Statistics: Source File</h2>
 <p>Let's define the constructor of <code>SecureMemoryStats</code>. Add the following code under <code>namespace gem5</code> to do this.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">
-SecureMemory::SecureMemoryStats::<span class="hljs-built_in">SecureMemoryStats</span>(SecureMemory* inspector_gadget):
-    statistics::<span class="hljs-built_in">Group</span>(inspector_gadget),
+SecureMemory::SecureMemoryStats::<span class="hljs-built_in">SecureMemoryStats</span>(SecureMemory* secure_memory):
+    statistics::<span class="hljs-built_in">Group</span>(secure_memory),
     <span class="hljs-built_in">ADD_STAT</span>(totalbufferLatency, statistics::units::Tick::<span class="hljs-built_in">get</span>(), <span class="hljs-string">&quot;Total inspection buffer latency.&quot;</span>),
     <span class="hljs-built_in">ADD_STAT</span>(numRequestsFwded, statistics::units::Count::<span class="hljs-built_in">get</span>(), <span class="hljs-string">&quot;Number of requests forwarded.&quot;</span>),
     <span class="hljs-built_in">ADD_STAT</span>(totalResponseBufferLatency, statistics::units::Tick::<span class="hljs-built_in">get</span>(), <span class="hljs-string">&quot;Total response buffer latency.&quot;</span>),
@@ -1169,7 +1169,7 @@ SecureMemory::SecureMemoryStats::<span class="hljs-built_in">SecureMemoryStats</
 {}
 </code></pre>
 <p>Few things to note:</p>
-<p>1- Initialize our stat object by adding <code>stats(this)</code> to the initialization list in the constructor <code>InspectorGdaget</code>.<br />
+<p>1- Initialize our stat object by adding <code>stats(this)</code> to the initialization list in the constructor <code>SecureMemory</code>.<br />
 2- <code>statistics::Group::Group</code> takes a pointer to an object of <code>statistics::Group</code> that will be its parent. Class <code>SimObject</code> inherits from <code>statistics::Group</code> so we can use a pointer to <code>SecureMemory</code> as that input.<br />
 3- The macro <code>ADD_STAT</code> registers and initializes our statistics that we have defined under the struct. The order of arguments are <code>name</code>, <code>unit</code>, <code>description</code>. To rid yourself of any headache, make sure the order of <code>ADD_STAT</code> macros match that of statistic declaration.</p>
 </section>
@@ -1230,7 +1230,7 @@ SecureMemory::SecureMemoryStats::<span class="hljs-built_in">SecureMemoryStats</
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">scons build/NULL/gem5.opt -j$(<span class="hljs-built_in">nproc</span>)
 </code></pre>
 <p>Now, let's go ahead and run the simulation again. We don't need to make any changes to our configuration script. Run the following command in the base gem5 directory to run the simulation.</p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">./build/NULL/gem5.opt configs/bootcamp/secure-memory/first-secure-memory-example.py
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">./build/NULL/gem5.opt configs/bootcamp/secure_memory/first-secure-memory-example.py
 </code></pre>
 <p>Now if you search for the name of the stats we added in <code>m5out/stats.txt</code>. This is what we will see. <strong>NOTE</strong>: I did by searching for the name of the <code>SecureMemory</code> objects in the file using <code>grep secure_widgets m5out/stats.txt</code> in the base gem5 directory.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh">system.memory.secure_widgets0.totalbufferLatency         7334                       <span class="hljs-comment"># Total inspection buffer latency. (Tick)</span>
