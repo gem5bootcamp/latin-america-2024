@@ -966,8 +966,8 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">recvReqRetry</span>()
 <p>Let's declare the following in <code>secure_memory.hh</code> to implement the <code>response</code> path.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">  <span class="hljs-keyword">private</span>:
     TimedQueue&lt;PacketPtr&gt; responseBuffer;
-
-    EventFunctionWrapper nextRespSendEvent;        EventFunctionWrapper nextRespRetryEvent;
+    EventFunctionWrapper nextRespSendEvent;
+    EventFunctionWrapper nextRespRetryEvent;
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">processNextRespSendEvent</span><span class="hljs-params">()</span></span>;
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">scheduleNextRespSendEvent</span><span class="hljs-params">(Tick when)</span></span>;
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">processNextRespRetryEvent</span><span class="hljs-params">()</span></span>;
@@ -989,7 +989,7 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">recvReqRetry</span>()
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">SecureMemory::processNextRespSendEvent</span><span class="hljs-params">()</span></span>;
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">SecureMemory::scheduleNextRespSendEvent</span><span class="hljs-params">(Tick when)</span></span>;
 <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">SecureMemory::processNextRespRetryEvent</span><span class="hljs-params">()</span></span>;
-<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">SecureMemory::scheduleNextRespSendEvent</span><span class="hljs-params">(Tick when)</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">SecureMemory::scheduleNextRespRetryEvent</span><span class="hljs-params">(Tick when)</span></span>;
 </code></pre>
 <p>To find the definition for all these functions please look at the <a href="../../materials/03-Developing-gem5-models/04-ports/step-1/src/bootcamp/secure_memory/secure_memory.cc">complete version</a> of <code>secure_memory.cc</code>. You can search for <code>Too-Much-Code</code> to find these functions.</p>
 </section>
