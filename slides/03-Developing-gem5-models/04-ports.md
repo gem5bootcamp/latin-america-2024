@@ -1577,3 +1577,16 @@ Now, we will extend the `SecureMemory` class to include walking a Merkle Tree.
 For each packet that goes into the buffer, we will calculate the hash of the packet and store it in a Merkle Tree. When the packet is sent to the memory controller, we will calculate the hash of the packet and compare it with the hash stored in the Merkle Tree. If the hashes match, we will forward the packet to the memory controller. If the hashes do not match, we will drop the packet.
 
 We will send extra memory accesses to the memory controller to read and update the Merkle Tree. We will also add statistics to measure the number of packets dropped and the number of memory accesses to the Merkle Tree.
+
+> Hints are on the next slide
+
+---
+
+## Step 2 hints
+
+You can use the following file as a reference:
+
+<https://github.com/samueltphd/SecureMemoryTutorial/blob/main/src/mem/secmem-tutorial/secure_memory.cc>
+
+The main difference from the example above and what you have already done is that the device in Sam's example doesn't have a queue for incoming requests.
+Your task is to make the changes to your secure memory so it behaves like the one in the example.
