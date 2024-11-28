@@ -1474,7 +1474,7 @@ SecureMemory::processNextReqSendEvent()
 }
 
 void
-SecureMemory::processNextReqSendEvent()
+SecureMemory::processNextRespSendEvent()
 {
     // ...
     stats.numResponsesFwded++;
@@ -1513,7 +1513,7 @@ SecureMemory::processNextReqSendEvent()
 }
 
 void
-SecureMemory::processNextReqSendEvent()
+SecureMemory::processNextRespSendEvent()
 {
     // ...
     stats.numResponsesFwded++;
