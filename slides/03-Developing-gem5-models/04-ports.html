@@ -894,10 +894,6 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">sendPacket</span>(PacketP
     }
 }
 </code></pre>
-<p>You might wonder why we need to calculate <code>schedule_time</code> ourselves. As we mentioned, <code>Tick when</code> is passed from the perspective of the caller for when it thinks <code>nextReqSendEvent</code> should be scheduled. However, we need to make sure that we schedule the event at the time that simulates latencies correctly.</p>
-<p>Make sure to add the following include statement as well since we're using <code>std::max</code>.</p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span>
-</code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="57" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="57" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="80">
 <h2 id="memsideportrecvreqretry">MemSidePort::recvReqRetry</h2>
@@ -932,7 +928,7 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">recvReqRetry</span>()
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="59" data-paginate="true" data-class="no-logo code-80-percent" data-theme="gem5" lang="en-US" class="no-logo code-80-percent" data-marpit-pagination="59" style="--paginate:true;--class:no-logo code-80-percent;--theme:gem5;" data-marpit-pagination-total="80">
 <h2 id="securememoryrecvreqretry">SecureMemory::recvReqRetry</h2>
-<p>Let's go ahead and declare and define <code>recvReqRetry</code> in the <code>public</code> scope of <code>SecureMemory</code>. Add the following lines to <code>secure_memory.hh</code> to declare <code>InpsectorGadget::recvReqRetry</code>:</p>
+<p>Let's go ahead and declare and define <code>recvReqRetry</code> in the <code>public</code> scope of <code>SecureMemory</code>. Add the following lines to <code>secure_memory.hh</code> to declare <code>SecureMemory::recvReqRetry</code>:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">  <span class="hljs-keyword">private</span>:
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">recvReqRetry</span><span class="hljs-params">()</span></span>;
 </code></pre>
