@@ -18,7 +18,7 @@ In this section, we will cover how to accelerate gem5 simulations using fast-for
 (Not our fault. It’s the nature of simulation)
 <!-- class: center-image -->
 
-![width:1000](08-accelerating-simulation-img/fig1.drawio.svg)
+![width:1000](02-accelerating-simulation-img/fig1.drawio.svg)
 
 ---
 
@@ -28,19 +28,19 @@ In this section, we will cover how to accelerate gem5 simulations using fast-for
 
 <!-- class: center-image -->
 
-![width:800](08-accelerating-simulation-img/fig2.drawio.svg)
+![width:800](02-accelerating-simulation-img/fig2.drawio.svg)
 
 ---
 
 ## Simulations can always be made faster by simulating less
 
-![width:720 bg](08-accelerating-simulation-img/fig3.png)
+![width:720 bg](02-accelerating-simulation-img/fig3.png)
 
 ---
 
 ## This isn't always a bad thing... large parts of simulations are not interesting to us
 
-![width:990 bg](08-accelerating-simulation-img/fig4.png)
+![width:990 bg](02-accelerating-simulation-img/fig4.png)
 
 ---
 
@@ -222,11 +222,9 @@ Since it runs on the host, we know that we can use it with X86 KVM.
 
 ---
 
-## Hands-on Time!
+<!-- _class: exercise -->
 
-### 02-kvm-time
-
-### Let's use KVM to fast forward to the ROI
+## Exercise: Let's use KVM to fast forward to the ROI
 
 Let's run the Class A EP benchmark in the NPB benchmark suite.
 gem5 resources provides us with the `npb-ep-a` workload that allows us to run it with a single line:
@@ -243,13 +241,7 @@ You can find the details of the workload at the [gem5 resources website](https:/
 
 ---
 
-## 02-kvm-time
-
-All materials can be found in [materials/04-Advanced-using-gem5/08-accelerating-simulation/02-kvm-time](/materials/04-Advanced-using-gem5/08-accelerating-simulation/02-kvm-time).
-
-We will be editing [`02-kvm-time.py`](../../materials/04-Advanced-using-gem5/08-accelerating-simulation/02-kvm-time/02-kvm-time.py)
-
-### Goal
+## Goal
 
 1. Use KVM to fast-forward the simulation until the beginning of the ROI.
 2. When the simulation reaches the ROI begin, switch the CPU from KVM CPU to TIMING CPU.
@@ -261,27 +253,51 @@ We will be editing [`02-kvm-time.py`](../../materials/04-Advanced-using-gem5/08-
 
 ---
 
-## 02-kvm-time
+## Step 1a: Setting up memory and cache
+
+Use the `PrivateL1CacheHierarchy` and `DualChannelDDR4_2400` memory that we used in the previous examples.
+
+**Important**: Set the size of the memory to only 3 GiB. X86 defines an "I/O hole" between 3 and 4 GiB in physical memory, so (as of today) gem5 does not support physical memory sizes larger than 3 GiB for X86.
+
+---
+
+## Step 1a: Answer
+
+```python
+cache_hierarchy = PrivateL1CacheHierarchy(
+    l1d_size="32kB",
+    l1i_size="32kB"
+)
+
+memory = DualChannelDDR4_2400(size="3GB")
+```
+
+---
+
+## Step 1b: Setting up the processor
 
 First, we will need to set up a switchable processor that allows us to start with the KVM CPU, then switch to the detailed timing CPU.
 
+See [`SimpleSwitchableProcessor`](/gem5/src/python/gem5/components/processors/simple_switchable_processor.py) for more details.
+
+Use the KVM and TIMING CPUs as the two core types.
+
+---
+
+## Step 1b: Answer
+
 ```python
-# Here we set up the processor. The SimpleSwitchableProcessor allows for
-# switching between different CPU types during simulation, such as KVM to Timing
 processor = SimpleSwitchableProcessor(
     starting_core_type=CPUTypes.KVM,
     switch_core_type=CPUTypes.TIMING,
     isa=ISA.X86,
     num_cores=2,
 )
-#
 ```
 
 ---
 
-## 02-kvm-time
-
-Then, we will need to set up the workbegin handler to
+## Step 2:
 
 1. Dump the stats at the end of the KVM fast-forwarding
 2. Switch from the KVM CPU to the TIMING CPU
@@ -289,12 +305,15 @@ Then, we will need to set up the workbegin handler to
 4. Schedule an exit event after running for 1,000,000,000 Ticks
 5. Fall back to simulation
 
+Use the `processor.switch()` function to switch the CPU.
+
 ---
 
 <!-- _class: code-80-percent -->
 
+## Step 2: Answer
+
 ```python
-# Set up workbegin handler to reset stats and switch to TIMING CPU
 def workbegin_handler():
     print("Done booting Linux")
 
@@ -310,14 +329,17 @@ def workbegin_handler():
     m5.stats.reset()
 
     yield False
-#
 ```
 
 ---
 
-## 02-kvm-time
+## Step 3: Register the exit event handlers
 
-Now, let's register the exit event handlers.
+Now, let's register the exit event handlers. Set your `workbegin_handler` to the `ExitEvent.WORKBEGIN` event.
+
+---
+
+## Step 3: Answer
 
 ```python
 simulator = Simulator(
@@ -334,38 +356,9 @@ simulator = Simulator(
 
 <!-- _class: no-logo code-80-percent -->
 
-## 02-kvm-time
+## Step 4: Run the simulation
 
-If we run it with
-
-```bash
-cd materials/04-Advanced-using-gem5/08-accelerating-simulation/02-kvm-time
-gem5 -re 02-kvm-time.py
-```
-
-We will see the following error in our terminal
-
-```bash
-Aborted (core dumped)
-```
-
-If we open the `simerr.txt`, we will see the following error
-
-```bash
-src/sim/simulate.cc:199: info: Entering event queue @ 0.  Starting simulation...
-src/cpu/kvm/perfevent.cc:191: panic: PerfKvmCounter::attach failed (2)
-Memory Usage: 3539020 KBytes
-src/cpu/kvm/perfevent.ccProgram aborted at tick 0
-:191: panic: PerfKvmCounter::attach failed (2)
-Memory Usage: 3539020 KBytes
-```
-
----
-
-## 02-kvm-time
-
-This happens to some kernels due to permission issues.
-When this happens, we can avoid the error by disabling the use of perf in the KVM CPU.
+> **Important**: Make sure you have the following lines in your script.
 
 ```python
 # Here we tell the KVM CPU (the starting CPU) not to use perf.
@@ -374,15 +367,9 @@ for proc in processor.start:
 #
 ```
 
-Now, let's run it again
-
-```bash
-gem5 -re 02-kvm-time.py
-```
-
 ---
 
-## 02-kvm-time
+## Step 4: Answer
 
 It might take a minute to boot up the kernel and fast-forward to the ROI begin.
 
@@ -403,7 +390,7 @@ indicates that we reached the beginning of the ROI.
 
 ---
 
-## 02-kvm-time
+## More answers
 
 If we look at `simout.txt`, we will see that the simulation ran our `workbegin_handler` and switched the CPU from the KVM CPU to the TIMING CPU.
 
@@ -422,7 +409,7 @@ Resetting stats at the start of ROI!
 
 ---
 
-## 02-kvm-time
+## How to find the results
 
 Because we schedule an exit event that will be triggered after running for 1,000,000,000 Ticks, the simulation will exit before `work_begin_addr` is called so we can look at the stats sooner for the tutorial.
 Let's look at the stats now.
@@ -439,7 +426,7 @@ indicate different stats dumps.
 
 <!-- _class: code-80-percent -->
 
-## 02-kvm-time
+## Details of results
 
 Let's look at the first stats dump.
 
@@ -459,7 +446,7 @@ Importantly, it also indicates that KVM fast-forwarding does not warm up micro-a
 
 <!-- _class: no-logo -->
 
-## 02-kvm-time
+## More Details of results
 
 Let's look at the second stats dump.
 
@@ -494,11 +481,11 @@ We can work around the above downsides by using the checkpoint feature in gem5.
 
 <!-- _class: start -->
 
-## Checkpoint in gem5
+## Checkpointing in gem5
 
 ---
 
-## Checkpoint in gem5
+## What is Checkpointing?
 
 - Saves the architectural state of the system
 - Saves *some* microarchitectural state
@@ -507,18 +494,23 @@ We can work around the above downsides by using the checkpoint feature in gem5.
   - the size of the memory has to be the same
   - the workload and its dependencies (i.e. the disk image) have to be the same
 
+It is possible for a gem5 checkpoint to be outdated if the checkpoint is taken with an older version of gem5 and being restored with a newer version of gem5.
+In this case, we might need to update it with [`gem5/util/cpt_upgrader.py`](../../gem5/util/cpt_upgrader.py) of the newer version gem5.
+
+<!-- I feel like there is still something to add here -->
+
 ---
 
-## Hands-on Time!
+<!-- _class: exercise -->
 
-### 03-checkpoint-and-restore
+## Exercise: checkpoint and restore
 
 ### Let's take a checkpoint
 
 We will be using KVM to fast-forward to the ROI of EP like we did for the last example.
 However, we have a different goal this time. Also we will have a much simpler system than the one we used previously.
 
-### Goal
+### Goal for this exercise
 
 1. Use KVM to fast-forward the simulation until the beginning of the ROI
 2. When reaching the ROI begin, take a checkpoint
@@ -526,55 +518,63 @@ However, we have a different goal this time. Also we will have a much simpler sy
 
 ---
 
-## 03-checkpoint-and-restore
+## Step 1: Create the base script
 
-All materials can be found under [materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore](/materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore).
-We will first edit [`03-take-a-checkpoint.py`](../../materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-take-a-checkpoint.py) to take a checkpoint. We will be calling it as the checkpointing script.
+You can copy your script from the previous exercise and modify it to take a checkpoint.
+
+### Step 1a: Change the cache hierarchy and memory
 
 In the checkpointing script, let's first give the system the simplest cache hierarchy, which is no cache at all.
 
+For the memory, use a single channel DDR3.
+
+---
+
+## Step 1a: Answer
+
 ```python
-# Let's setup a NoCache cache hierarchy
 from gem5.components.cachehierarchies.classic.no_cache import NoCache
 cache_hierarchy = NoCache()
-#
+```
+
+```python
+from gem5.components.memory.single_channel import SingleChannelDDR4_2400
+memory = SingleChannelDDR4_2400(size="3GB")
 ```
 
 ---
 
-<!-- _class: no-logo code-80-percent -->
-
-## 03-checkpoint-and-restore
-
-Next, let's set up a simple single channel memory with 3GB.
-
-```python
-# Let's set up a SingleChannelDDR4_2400 memory with 3GB size
-from gem5.components.memory.single_channel import SingleChannelDDR4_2400
-memory = SingleChannelDDR4_2400(size="3GB")
-#
-```
+## Step 1b: Change the processor
 
 For the processor, since we won't be switching to another CPU type, we can use the simple processor with KVM CPU.
 
+---
+
+## Step 1b: Answer
+
 ```python
-# Here we set up a simple processor with the KVM CPU
 processor = SimpleProcessor(
     cpu_type=CPUTypes.KVM,
     isa=ISA.X86,
     num_cores=2,
 )
-#
 ```
 
 ---
 
-## 03-checkpoint-and-restore
+## Step 2: Change the workbegin handler
 
 For the workbegin handler, we want it to take a checkpoint then exit the simulation.
 
+Use the [`simulator.save_checkpoint()`](/gem5/src/python/gem5/simulate/simulator.py) function to save the checkpoint.
+
+Note that you will `yeild` `True` to exit the simulation.
+
+---
+
+## Step 2: Answer
+
 ```python
-# Set up workbegin handler to reset stats and switch to TIMING CPU
 def workbegin_handler():
     print("Done booting Linux")
 
@@ -582,14 +582,19 @@ def workbegin_handler():
     simulator.save_checkpoint("03-cpt")
 
     yield True
-#
 ```
 
 In this example, it will save the gem5 checkpoint into the directory `./03-cpt`. You can config the path and the name using the `simulator.save_checkpoint()` function.
 
 ---
 
-## 03-checkpoint-and-restore
+## Step 3: Take the checkpoint
+
+Run your script!
+
+---
+
+## Step 3: Answer
 
 Let's run this script with
 
@@ -613,32 +618,22 @@ Simulation Done
 
 ---
 
-## 03-checkpoint-and-restore
+## Step 4: Create a restoring script
 
-We should also find the checkpoint saved at `materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt`.
-If you're interested, you can look at the [`m5.cpt`](/materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-cpt/m5.cpt) inside the `03-cpt` directory to see what is being saved.
+### Step 4a: Update the simulator to restore
 
-It is possible for a gem5 checkpoint to be outdated if the checkpoint is taken with an older version of gem5 and being restored with a newer version of gem5.
-In this case, we might need to update it with [`gem5/util/cpt_upgrader.py`](../../gem5/util/cpt_upgrader.py) of the newer version gem5.
+We will be using the exact same system that we used to restore the checkpoint we just took.
 
-<!-- I feel like there is still something to add here -->
+We can pass in the path to the checkpoint as a parameter to the `simulator` object.
+We can also pass in the path using the `board` object. Use the [`checkpoint_path`](https://github.com/gem5/gem5/blob/stable/src/python/gem5/components/boards/kernel_disk_workload.py#L142) argument.
+
+For this example, we will pass in the path to the `simulator` object.
 
 ---
 
-<!-- _class: no-logo -->
+## Step 4a: Answer
 
-## 03-checkpoint-and-restore
-
-### Let's restore the checkpoint!
-
-We will be using the exact same system that we used in 02-kvm-time to restore the checkpoint we just took.
-
-The restoring script is [`materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-restore-the-checkpoint.py`](../../materials/04-Advanced-using-gem5/08-accelerating-simulation/03-checkpoint-and-restore/03-restore-the-checkpoint.py).
-
-We can pass in the path to the checkpoint as a parameter to the `simulator` object.
-We can also pass in the path using the `board` object. More details can be found [here](https://github.com/gem5/gem5/blob/stable/src/python/gem5/components/boards/kernel_disk_workload.py#L142).
-
-For this example, we will pass in the path to the `simulator` object.
+Use your checkpoint path below!
 
 ```python
 simulator = Simulator(
@@ -651,7 +646,7 @@ simulator = Simulator(
 
 ---
 
-## 03-checkpoint-and-restore
+## Step 4b: Run the simulation
 
 ```python
 simulator.run(1_000_000_000)
@@ -691,21 +686,27 @@ curTick=14788319800411
 
 ---
 
-## 03-checkpoint-and-restore
+## About changing things when restoring a checkpoint
 
 As mentioned in the beginning, there are some restrictions on what we can change between the checkpointing and restoring systems.
 
 1. The number of cores in both systems have to be the same (the restoring simulation will not have an error if they are not the same, but it does not guarantee correctness).
 2. The size of the memory in both systems has to be the same.
-3. The workload and its dependencies (i.e. the disk image) have to be the same.
+3. The workload and its dependencies (i.e., the disk image) have to be the same.
 
 For this example, our cache hierarchies, memory types, and CPU types are different between the checkpointing and restoring systems.
 
 ---
 
+## Step 5: Update the restoring script
+
+Change the restoring script to use a timing CPU and a cache hiearchy (one that is not `NoCache`).
+
+---
+
 <!-- _class: two-col -->
 
-## 03-checkpoint-and-restore
+## Step 5: Answer
 
 ```python
 # restoring script
@@ -736,7 +737,7 @@ processor = SimpleProcessor(
 
 ---
 
-## 03-checkpoint-and-restore
+## Step 5: Answer, cont.
 
 These changes all fall within the limits of the restrictions, but if we change the memory size from `3GB` to `2GB`, we will see the following error.
 
@@ -795,8 +796,8 @@ Downsides:
 
 What if we are not facing this
 
-![](08-accelerating-simulation-img/skipable-experiment.drawio.svg)
+![](02-accelerating-simulation-img/skipable-experiment.drawio.svg)
 
 but actually facing this
 
-![](08-accelerating-simulation-img/roi-too-large.drawio.svg)
+![](02-accelerating-simulation-img/roi-too-large.drawio.svg)
