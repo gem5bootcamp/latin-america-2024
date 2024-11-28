@@ -1027,7 +1027,7 @@ void
 SecureMemory::scheduleNextReqRetryEvent(Tick when)
 {
     if (cpuSidePort.needRetry() && !nextReqRetryEvent.scheduled()) {
-        schedule(nextReqRetryEvent, align(when));
+        schedule(nextReqRetryEvent, when);
     }
 }
 ```
@@ -1071,7 +1071,7 @@ SecureMemory::scheduleNextReqSendEvent(Tick when)
     bool have_items = !buffer.empty();
 
     if (port_avail && have_items && !nextReqSendEvent.scheduled()) {
-        Tick schedule_time = align(buffer.firstReadyTime());
+        Tick schedule_time = buffer.firstReadyTime();
         schedule(nextReqSendEvent, schedule_time);
     }
 }
