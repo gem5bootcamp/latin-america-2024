@@ -1077,14 +1077,6 @@ SecureMemory::scheduleNextReqSendEvent(Tick when)
 }
 ```
 
-You might wonder why we need to calculate `schedule_time` ourselves. As we mentioned, `Tick when` is passed from the perspective of the caller for when it thinks `nextReqSendEvent` should be scheduled. However, we need to make sure that we schedule the event at the time that simulates latencies correctly.
-
-Make sure to add the following include statement as well since we're using `std::max`.
-
-```cpp
-#include <algorithm>
-```
-
 ---
 
 ## MemSidePort::recvReqRetry
@@ -1130,7 +1122,7 @@ SecureMemory::MemSidePort::recvReqRetry()
 
 ## SecureMemory::recvReqRetry
 
-Let's go ahead and declare and define `recvReqRetry` in the `public` scope of `SecureMemory`. Add the following lines to `secure_memory.hh` to declare `InpsectorGadget::recvReqRetry`:
+Let's go ahead and declare and define `recvReqRetry` in the `public` scope of `SecureMemory`. Add the following lines to `secure_memory.hh` to declare `SecureMemory::recvReqRetry`:
 
 ```cpp
   private:
