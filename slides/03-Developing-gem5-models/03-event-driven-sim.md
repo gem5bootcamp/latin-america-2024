@@ -842,7 +842,7 @@ class GoodByeSimObject: public SimObject
     void processNextGoodByeEvent();
 
   public:
-    GoodByeSimObject(const GoodByeSimObject& params);
+    GoodByeSimObject(const GoodByeSimObjectParams& params);
 
     void sayGoodBye();
 };
