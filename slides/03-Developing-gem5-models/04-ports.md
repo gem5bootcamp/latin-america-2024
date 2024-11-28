@@ -221,8 +221,8 @@ Now let's go ahead and create a `SimObject` declaration file for `SecureMemory`.
 
 ```sh
 cd /workspaces/2024/gem5/src
-mkdir -p bootcamp/insepctor_gadget
-cd bootcamp/insepctor_gadget
+mkdir -p bootcamp/secure_memory
+cd bootcamp/secure_memory
 touch SecureMemory.py
 ```
 
