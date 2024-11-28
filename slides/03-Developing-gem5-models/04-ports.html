@@ -970,13 +970,12 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">recvReqRetry</span>()
     EventFunctionWrapper nextRespSendEvent;
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">processNextRespSendEvent</span><span class="hljs-params">()</span></span>;
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">scheduleNextRespSendEvent</span><span class="hljs-params">(Tick when)</span></span>;
-
-    EventFunctionWrapper nextRespRetryEvent;
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">processNextRespRetryEvent</span><span class="hljs-params">()</span></span>;
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">scheduleNextRespRetryEvent</span><span class="hljs-params">(Tick when)</span></span>;
-
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">recvRespRetry</span><span class="hljs-params">()</span>
+    
   <span class="hljs-keyword">public</span>:
-    <span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">recvTimingResp</span><span class="hljs-params">(PacketPtr pkt)</span></span>;
+    bool recvTimingResp(PacketPtr pkt);</span>
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="62" data-paginate="true" data-class="code-80-percent" data-theme="gem5" lang="en-US" class="code-80-percent" data-marpit-pagination="62" style="--paginate:true;--class:code-80-percent;--theme:gem5;" data-marpit-pagination-total="80">
