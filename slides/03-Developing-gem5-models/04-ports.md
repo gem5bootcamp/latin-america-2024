@@ -1185,13 +1185,13 @@ Let's declare the following in `secure_memory.hh` to implement the `response` pa
   private:
     TimedQueue<PacketPtr> responseBuffer;
 
-    EventFunctionWrapper nextRespSendEvent;
+    EventFunctionWrapper nextRespSendEvent;        EventFunctionWrapper nextRespRetryEvent;
     void processNextRespSendEvent();
     void scheduleNextRespSendEvent(Tick when);
     void processNextRespRetryEvent();
     void scheduleNextRespRetryEvent(Tick when);
     void recvRespRetry()
-    
+
   public:
     bool recvTimingResp(PacketPtr pkt);
 ```
