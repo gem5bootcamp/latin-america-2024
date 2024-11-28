@@ -22,7 +22,7 @@ from gem5.components.cachehierarchies.classic.private_l1_private_l2_walk_cache_h
     PrivateL1PrivateL2WalkCacheHierarchy,
 )
 
-# Here we setup a MESI Two Level Cache Hierarchy.
+# Here we setup a classic Two Level Cache Hierarchy.
 cache_hierarchy = PrivateL1PrivateL2WalkCacheHierarchy(
     l1d_size="16kB", l1i_size="16kB", l2_size="256kB"
 )
@@ -48,9 +48,15 @@ board = X86Board(
     cache_hierarchy=cache_hierarchy,
 )
 
-workload = obtain_resource("x86-ubuntu-24.04-boot-with-systemd", resource_version="1.0.0")
+workload = obtain_resource("x86-ubuntu-22.04-boot-with-systemd", resource_version="1.0.0")
+board.set_kernel_disk_workload(
+    kernel = obtain_resource("x86-linux-kernel-5.4.0-105-generic"),
+    disk_image = obtain_resource("x86-ubuntu-24.04-img"),
+    kernel_args = ["earlyprintk=ttyS0", "console=ttyS0", "lpj=7999923", "root=/dev/sda2"],
+    readfile_contents = "echo 'Hello, world!'; sleep 5;",
+)
+# board.append_kernel_arg("interactive=true")
 
-board.set_workload(workload)
 def exit_event_handler():
     print("first exit event: Kernel booted")
     yield False
