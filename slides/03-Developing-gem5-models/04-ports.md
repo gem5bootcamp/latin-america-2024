@@ -1184,8 +1184,8 @@ Let's declare the following in `secure_memory.hh` to implement the `response` pa
 ```cpp
   private:
     TimedQueue<PacketPtr> responseBuffer;
-
-    EventFunctionWrapper nextRespSendEvent;        EventFunctionWrapper nextRespRetryEvent;
+    EventFunctionWrapper nextRespSendEvent;
+    EventFunctionWrapper nextRespRetryEvent;
     void processNextRespSendEvent();
     void scheduleNextRespSendEvent(Tick when);
     void processNextRespRetryEvent();
@@ -1213,7 +1213,7 @@ void SecureMemory::recvRespRetry();
 void SecureMemory::processNextRespSendEvent();
 void SecureMemory::scheduleNextRespSendEvent(Tick when);
 void SecureMemory::processNextRespRetryEvent();
-void SecureMemory::scheduleNextRespSendEvent(Tick when);
+void SecureMemory::scheduleNextRespRetryEvent(Tick when);
 ```
 
 To find the definition for all these functions please look at the [complete version](../../materials/03-Developing-gem5-models/04-ports/step-1/src/bootcamp/secure_memory/secure_memory.cc) of `secure_memory.cc`. You can search for `Too-Much-Code` to find these functions.
