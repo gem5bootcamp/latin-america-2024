@@ -94,7 +94,7 @@ Moreover, if you look at the definition of `sendTimingReq`/`sendTimingResp` in [
 Now let's look at 2 scenarios for communication, in these scenarios let's assume:
 
 - `Requestor` is a `SimObject` that has a `RequestPort`.
-- `Responder` is a `SimObject` that has a `ReponsePort`.
+- `Responder` is a `SimObject` that has a `ResponsePort`.
 
 **NOTE**: Note that while in our scenarios `Requestor` and `Responder` have one `Port`, `SimObjects` can have multiple ports of different types.
 
@@ -997,7 +997,7 @@ Here are a few things to note about `processNextReqSendEvent`:
 
 > Let's take a step back...
 
-Are we done with `cpuSidePort` yet? If we look at `SecureMemory::recvTimingReq`, we return false when there is not enough space in `buffer`. Also, if you remember, if the `reponsder` (in our case `SecureMemory`) rejects a `request` because it's busy (in our case because we don't have enough space in `buffer`), the `responder` has to send a `request retry` when it becomes available (in our case, when there is room freed in `buffer`). So let's go ahead and send a `request retry` to the `peer` of `cpuSidePort`. We need to send that retry **one cycle later**. So, we need another event for that. Let's go ahead and add it.
+Are we done with `cpuSidePort` yet? If we look at `SecureMemory::recvTimingReq`, we return false when there is not enough space in `buffer`. Also, if you remember, if the `responder` (in our case `SecureMemory`) rejects a `request` because it's busy (in our case because we don't have enough space in `buffer`), the `responder` has to send a `request retry` when it becomes available (in our case, when there is room freed in `buffer`). So let's go ahead and send a `request retry` to the `peer` of `cpuSidePort`. We need to send that retry **one cycle later**. So, we need another event for that. Let's go ahead and add it.
 
 ---
 <!-- _class: no-logo code-50-percent -->
@@ -1130,7 +1130,7 @@ SecureMemory::MemSidePort::recvReqRetry()
 
 ## SecureMemory::recvReqRetry
 
-Let's go ahead and declare and define `recvReqRetry` in the `public` scope of `SecureMemory`. Add the following lines to `secure_memory.hh` to declare `InpsectorGadget::recvReqRetry`:
+Let's go ahead and declare and define `recvReqRetry` in the `public` scope of `SecureMemory`. Add the following lines to `secure_memory.hh` to declare `SecureMemory::recvReqRetry`:
 
 ```cpp
   private:
