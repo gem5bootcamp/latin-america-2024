@@ -1208,7 +1208,7 @@ void SecureMemory::processNextRespRetryEvent();
 void SecureMemory::scheduleNextRespRetryEvent(Tick when);
 ```
 
-To find the definition for all these functions please look at the [complete version](../../materials/03-Developing-gem5-models/04-ports/step-1/src/bootcamp/secure_memory/secure_memory.cc) of `secure_memory.cc`. You can search for `Too-Much-Code` to find these functions.
+To find the definition for all these functions please look at the [complete version](../../materials/03-Developing-gem5-models/04-ports/step-1/src/bootcamp/inspector-gadget/inspector-gadget.cc) of `inspector_gadget.cc`. You can search for `Too-Much-Code` to find these functions. (Note that you'll need to change the name of the class to `SecureMemory`).
 
 ---
 
