@@ -19,17 +19,11 @@ title: Sampled simulation with gem5
 
 What if we are not facing this
 
-![](08-accelerating-simulation-img/skipable-experiment.drawio.svg)
+![Timeline of workoad with a lot of startup and end time and a small ROI](02-accelerating-simulation-img/skipable-experiment.drawio.svg)
 
 but actually facing this
 
-![](08-accelerating-simulation-img/roi-too-large.drawio.svg)
-
----
-
-<!-- _class: start -->
-
-## Sampling
+![Timeline of a workload with much larger ROI](02-accelerating-simulation-img/roi-too-large.drawio.svg)
 
 ---
 
@@ -42,15 +36,19 @@ There are two major types of sampling:
 
 ---
 
+<!-- _class: center-image -->
+
 ## Targeted Sampling
 
 Representative methodologies: SimPoint, LoopPoint
-<!-- _class: center-image -->
-![width:950](09-sampling-img/targeted_sampling.png)
+
+![width:950](03-sampling-img/targeted_sampling.png)
 
 Targeted sampling selects samples based on specific characteristics that are discovered by analysis.
 
 ---
+
+<!-- _class: center-image -->
 
 ## More About Targeted Sampling
 
@@ -59,18 +57,20 @@ Well-known simulation sampling methods that use the targeted sampling approach i
 Both methods divide the whole program execution into regions that each execute a fixed number of instructions.
 
 They use **basic block vectors**, which are recordings of the execution pattern of basic blocks within a region (period) of execution. A basic block vector can be used as the signature of the program behavior of the region. Here is an example of a basic block vector.
-<!-- _class: center-image -->
-![basic block vector ](09-sampling-img/basic_block_vecotr.png)
+
+![basic block vector ](03-sampling-img/basic_block_vecotr.png)
 
 They use the basic block vectors to cluster and find the representative regions. They will predict the overall performance of the program by collecting only the representative regions' performance and sum them with weights.
 
 ---
 
-## Statistical Sampling
 <!-- _class: center-image -->
+
+## Statistical Sampling
+
 Representative methodologies: SMARTS, FSA
 
-![width:950](09-sampling-img/statical_sampling.png)
+![width:950](03-sampling-img/statical_sampling.png)
 
 Statistical sampling, as the name suggests, statistically selects its sampling units.
 
@@ -86,6 +86,8 @@ They use the performance of the randomly distributed samples to predict the over
 
 ---
 
+<!-- _class: center-image -->
+
 ## What we should know before we apply the techniques
 
 <!-- warn people that different types of samplings guarantee different things -->
@@ -93,8 +95,8 @@ They use the performance of the randomly distributed samples to predict the over
 
 Before using any of the sampling techniques, we need to make sure the sampling technique works for our experiments.
 For example, SimPoint is designed to work with single-threaded workloads only, so **if our experiments require multi-threaded workloads, we should NOT use SimPoint with them.**
-<!-- _class: center-image -->
-![width:500](09-sampling-img/misuse_tool.png)
+
+![width:500](03-sampling-img/misuse_tool.png)
 
 ---
 
@@ -110,23 +112,11 @@ In gem5, we have the infrastructure for
 
 ---
 
-<!-- _class: start -->
-
-## Targeted Sampling in gem5
-
----
-
 ## Targeted Sampling in gem5
 
 - gem5 provides infrastructure for **SimPoint** and **LoopPoint** to analyze the program, take checkpoints for the representative regions, and run the representative regions.
 Note that LoopPoint analysis support is not currently supported in gem5 v24.0 but is tested and prepared to be upstream in gem5 v24.1.
 - gem5 also provides the infrastructure for **ELFies** to be executed in SE mode, but gem5 does not support creating ELFie files and weight information.
-
----
-
-<!-- _class: start -->
-
-## SimPoint in gem5
 
 ---
 
@@ -139,8 +129,9 @@ As mentioned before, there are three steps to using SimPoint:
 3. Running the regions
 
 There are two key files related to using SimPoint in gem5:
-1. [src/python/gem5/utils/simpoint.py](https://github.com/gem5/gem5/blob/stable/src/python/gem5/utils/simpoint.py)
-2. [src/cpu/simple/probes/SimPoint.py](https://github.com/gem5/gem5/blob/stable/src/cpu/simple/probes/SimPoint.py)
+
+1. [src/python/gem5/utils/simpoint.py](/gem5/src/python/gem5/utils/simpoint.py)
+2. [src/cpu/simple/probes/SimPoint.py](/gem5/src/cpu/simple/probes/SimPoint.py)
 
 We will be seeing them throughout this section.
 
@@ -149,9 +140,9 @@ We will be seeing them throughout this section.
 ## SimPoint Analysis
 
 In gem5, we use the `SimPoint` probe listener object to collect the information SimPoint needs to cluster the regions.
-This object is defined in [src/cpu/simple/probes/SimPoint.py](https://github.com/gem5/gem5/blob/stable/src/cpu/simple/probes/SimPoint.py).
+This object is defined in [src/cpu/simple/probes/SimPoint.py](/gem5/src/cpu/simple/probes/SimPoint.py).
 
-The `SimPoint` probe listener has two parameters: [interval](https://github.com/gem5/gem5/blob/stable/src/cpu/simple/probes/SimPoint.py#L47) and [profile_file](https://github.com/gem5/gem5/blob/stable/src/cpu/simple/probes/SimPoint.py#L48).
+The `SimPoint` probe listener has two parameters: [interval](/gem5/src/cpu/simple/probes/SimPoint.py#L47) and [profile_file](/gem5/src/cpu/simple/probes/SimPoint.py#L48).
 
 - The `interval` takes a length as our definition of a region. It means that every time we execute `n` number of instructions, we see it as the end of a region. The default length is 100,000,000.
 - The `profile_file` takes a name for the output zip file. The default name is `simpoint.bb.gz`.
@@ -160,6 +151,8 @@ In order to use this probe listener object, we need to attach it to an ATOMIC CP
 After exiting the simulation, there will be a zip file with the basic block vector information for each region under the simulation outdir directory.
 
 ---
+
+<!-- _class: exercise -->
 
 ## Hands-On Time!
 
@@ -202,7 +195,7 @@ It connects the ATOMIC CPU core to the `SimPoint` probe listener using
 processor.get_cores()[0].core.addSimPointProbe(1_000_000)
 ```
 
-The definition of this `addSimPointProbe()` function can be found under [src/cpu/simple/BaseAtomicSimpleCPU.py](https://github.com/gem5/gem5/blob/stable/src/cpu/simple/BaseAtomicSimpleCPU.py#L65).
+The definition of this `addSimPointProbe()` function can be found under [src/cpu/simple/BaseAtomicSimpleCPU.py](/gem5/src/cpu/simple/BaseAtomicSimpleCPU.py#L65).
 
 In this example, we set the `interval_length` as 1,000,000, which means that we define a region as 1,000,000 instructions executed (committed).
 
@@ -305,7 +298,7 @@ Now that we have the representative regions and their weights, we will need to f
 
 As introduced in [08-accelerating-simulation](08-accelerating-simulation.md), there are two methods to get to the region of interest. With SimPoint, we usually use checkpointing.
 
-To do it in gem5, we will be using [set_se_simpoint_workoad](https://github.com/gem5/gem5/blob/stable/src/python/gem5/components/boards/se_binary_workload.py#L166C9-L166C33), the [SimPoint class](https://github.com/gem5/gem5/blob/stable/src/python/gem5/utils/simpoint.py#L41), and the [simpoints_save_checkpoint_generator](https://github.com/gem5/gem5/blob/stable/src/python/gem5/simulate/exit_event_generators.py#L146).
+To do it in gem5, we will be using [set_se_simpoint_workoad](/gem5/src/python/gem5/components/boards/se_binary_workload.py#L166C9-L166C33), the [SimPoint class](/gem5/src/python/gem5/utils/simpoint.py#L41), and the [simpoints_save_checkpoint_generator](/gem5/src/python/gem5/simulate/exit_event_generators.py#L146).
 
 ---
 
@@ -387,7 +380,7 @@ The SimPoint class also automatically sorts the SimPoints based on when they sta
 
 It also provides getter functions that might be helpful, such as `get_weight_list()` that returns the list of the weights for each SimPoint.
 
-More information can be found in the [SimPoint](https://github.com/gem5/gem5/blob/stable/src/python/gem5/utils/simpoint.py) class definition.
+More information can be found in the [SimPoint](/gem5/src/python/gem5/utils/simpoint.py) class definition.
 
 ---
 
@@ -395,7 +388,7 @@ More information can be found in the [SimPoint](https://github.com/gem5/gem5/blo
 
 Let's just trust keys 2 and 3 because they both rely on the information passed in from the `SimPoint` object.
 
-We can declare where we want to store the SimPoint checkpoints by passing in the destination path to the `simpoints_save_checkpoint_generator` as a parameter. For more details, we can find the generator in [src/python/gem5/simulate/exit_event_generators.py](https://github.com/gem5/gem5/blob/stable/src/python/gem5/simulate/exit_event_generators.py#L146).
+We can declare where we want to store the SimPoint checkpoints by passing in the destination path to the `simpoints_save_checkpoint_generator` as a parameter. For more details, we can find the generator in [src/python/gem5/simulate/exit_event_generators.py](/gem5/src/python/gem5/simulate/exit_event_generators.py#L146).
 
 ---
 
@@ -620,7 +613,7 @@ Like LoopPoint, it uses the number of times a loop has been executed to mark the
 gem5 does not produce ELFies, but we have support to run ELFies in SE mode.
 All the weights and loop information should come with the ELFies workload.
 
-We can run ELFies with the [ELFieInfo class](https://github.com/gem5/gem5/blob/stable/src/python/gem5/resources/elfie.py#L36).
+We can run ELFies with the [ELFieInfo class](/gem5/src/python/gem5/resources/elfie.py#L36).
 
 There is an example in [materials/04-Advanced-using-gem5/09-sampling/02-elfies/run-elfies.py](../../materials/04-Advanced-using-gem5/09-sampling/02-elfies/run-elfies.py)
 
@@ -659,8 +652,9 @@ elfie.setup_processor(
 
 ---
 
-## ELFies Example
 <!-- _class: code-60-percent -->
+
+## ELFies Example
 
 After getting to the beginning and end markers, the simulator will raise a  `SIMPOINT_BEGIN` exit event. However, there is no default exit event handler for this, so we will need to define our own.
 
@@ -753,7 +747,7 @@ Let's look at the `smarts_generator` with the statistical parameters.
 - `U`: the sampling unit size. It is a number of instructions executed.
 - `W`: the length of the detailed warm up period. It is a number of instructions executed.
 
-![](09-sampling-img/smarts-statistical-model.drawio.svg)
+![](03-sampling-img/smarts-statistical-model.drawio.svg)
 
 ---
 
@@ -785,7 +779,7 @@ When it reaches the end of the detailed warmup, it resets the stats.
 
 When it reaches the end of the detailed simulation, it dumps the stats; then it switches the core type and schedules for the start of the next detailed warmup part.
 
-![](09-sampling-img/smarts-generator-model.drawio.svg)
+![](03-sampling-img/smarts-generator-model.drawio.svg)
 
 ---
 
@@ -827,17 +821,10 @@ As the output suggests, the relative error between the predicted IPC and the act
 
 ---
 
-## Summary
 <!-- _class: center-image -->
+
+## Summary
 
 Now we experimented both targeted and statistical sampling in gem5, let's end it with the trade-offs.
 
-![width:1100](09-sampling-img/tradeoff-table.png)
-
----
-
-## Question in Mind
-
-### When we run the SimPoints, we need to run a separate simulation for each SimPoint. What if we could do it all in one simulation?
-
-<!-- throw a hook to 11-multisim.md -->
+![width:1100](03-sampling-img/tradeoff-table.png)
