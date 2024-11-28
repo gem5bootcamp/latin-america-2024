@@ -1188,11 +1188,10 @@ Let's declare the following in `secure_memory.hh` to implement the `response` pa
     EventFunctionWrapper nextRespSendEvent;
     void processNextRespSendEvent();
     void scheduleNextRespSendEvent(Tick when);
-
-    EventFunctionWrapper nextRespRetryEvent;
     void processNextRespRetryEvent();
     void scheduleNextRespRetryEvent(Tick when);
-
+    void recvRespRetry()
+    
   public:
     bool recvTimingResp(PacketPtr pkt);
 ```
