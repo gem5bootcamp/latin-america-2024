@@ -165,9 +165,21 @@ section.title p {
     line-height: 2.5rem;
 }
 
-section.tight p h4 pre {
-    margin-bottom: 0;
-    margin-top: 0;
+section.tight p {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+section.tight pre {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+section.tight h4 {
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 /****************************************************/
