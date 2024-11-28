@@ -855,7 +855,7 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">sendPacket</span>(PacketP
 <span class="hljs-title">SecureMemory::scheduleNextReqRetryEvent</span><span class="hljs-params">(Tick when)</span>
 </span>{
     <span class="hljs-keyword">if</span> (cpuSidePort.<span class="hljs-built_in">needRetry</span>() &amp;&amp; !nextReqRetryEvent.<span class="hljs-built_in">scheduled</span>()) {
-        <span class="hljs-built_in">schedule</span>(nextReqRetryEvent, <span class="hljs-built_in">align</span>(when));
+        <span class="hljs-built_in">schedule</span>(nextReqRetryEvent, when);
     }
 }
 </code></pre>
@@ -889,7 +889,7 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">sendPacket</span>(PacketP
     <span class="hljs-type">bool</span> have_items = !buffer.<span class="hljs-built_in">empty</span>();
 
     <span class="hljs-keyword">if</span> (port_avail &amp;&amp; have_items &amp;&amp; !nextReqSendEvent.<span class="hljs-built_in">scheduled</span>()) {
-        Tick schedule_time = <span class="hljs-built_in">align</span>(buffer.<span class="hljs-built_in">firstReadyTime</span>());
+        Tick schedule_time = buffer.<span class="hljs-built_in">firstReadyTime</span>();
         <span class="hljs-built_in">schedule</span>(nextReqSendEvent, schedule_time);
     }
 }
