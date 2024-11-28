@@ -127,20 +127,37 @@ scons menuconfig build/ALL
 #### Running
 
 ```sh
-build/ALL/gem5.opt <your script>
+build/ALL/gem5.opt [gem5 options] <your script> [your script options]
 ```
-
-###
 
 #### Example scripts
 
-`configs/examples/gem5_library`
+See `configs/examples/gem5_library`
+
+#### Resources/Workloads/Disk Images/Suites
+
+<https://resources.gem5.org/>
+`obtain_resource(<resource id>)`
 
 #### Debugging
 
 ```sh
 build/ALL/gem5.opt --debug-flags=<debug flags> <your script>
 build/ALL/gem5.opt --debug-help
+```
+
+#### Stats
+
+Found in `m5out/stats.txt`
+
+```python
+simulator.get_simstats()
+```
+
+#### Full system
+
+```sh
+util/term/m5term localhost 3456
 ```
 
 ---
@@ -169,6 +186,23 @@ sim.save_checkpoint('checkpoint')
 sim = Simulator(checkpoint_path='checkpoint')
 ```
 
+#### Controlling simulation
+
+```python
+def my_exit_handler():
+    yield False #continue simulation
+    yield True #stop simulation
+sim  = Simulator(on_exit_event={
+  ExitEvent.WORKBEGIN: my_exit_handler})
+```
+
+#### Stdlib components
+
+- `Board`: Connects things together
+- `Processor`: Multiple cores
+- `CacheHierarchy`: The caches. Either classic or Ruby
+- `MemorySystem`: The main memory
+
 ---
 
 <!-- _class: start -->
@@ -185,8 +219,12 @@ sim = Simulator(checkpoint_path='checkpoint')
 
 ## Big thanks to you all!
 
-![Group photo height:300px](03-gem5-at-home-imgs/group.jpg)
-
 Please let us know how we did:
 
 <https://forms.gle/M6HZHxGjXpcdw4kZ8>
+
+![QR code for the form](./04-gem5-at-home-imgs/qr-code.png)
+
+Reach out to us:
+Jason Lowe-Power <jlowepower@ucdavis.edu>
+Tamara Silbergleit Lehman <tamara.lehman@colorado.edu>
