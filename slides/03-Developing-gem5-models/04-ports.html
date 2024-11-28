@@ -360,7 +360,7 @@ DebugFlag(<span class="hljs-string">&quot;SecureMemory&quot;</span>)
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="24" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="24" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="80">
 <h2 id="securememory-c-files">SecureMemory: C++ Files</h2>
-<p>Now, let's go ahead and create a header and source file for <code>SecureMemory</code> in <code>gem5/src/bootcamp/insepctor_gadget</code>. Remember to make sure the path to your header file matches that of what you specified in <code>cxx_header</code> in <code>SecureMemory.py</code> and the path for your source file matches that of what you specified in <code>SConscript</code>. Run the following commands from within our <code>insepctor_gadget</code> directory:</p>
+<p>Now, let's go ahead and create a header and source file for <code>SecureMemory</code> in <code>gem5/src/bootcamp/secure_memory</code>. Remember to make sure the path to your header file matches that of what you specified in <code>cxx_header</code> in <code>SecureMemory.py</code> and the path for your source file matches that of what you specified in <code>SConscript</code>. Run the following commands from within our <code>secure_memory</code> directory:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-sh"><span class="hljs-built_in">touch</span> secure_memory.hh
 <span class="hljs-built_in">touch</span> secure_memory.cc
 </code></pre>
@@ -1013,7 +1013,7 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">recvReqRetry</span>()
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="64" data-paginate="true" data-class="code-70-percent" data-theme="gem5" lang="en-US" class="code-70-percent" data-marpit-pagination="64" style="--paginate:true;--class:code-70-percent;--theme:gem5;" data-marpit-pagination-total="80">
 <h2 id="simobjectinit">SimObject::init</h2>
-<p>Last step before compilation is to define the <code>init</code> function. Since <code>SecureMemory</code> is a <code>Responder</code> object, the convention is to let <code>peer</code> ports know that they can ask for their address range when the ranges become known. <code>init</code> is a <code>virtual</code> and <code>public</code> function from <code>SimObject</code>. Let's go ahead and declare it to override it. To do this, add the following declaration to the <code>public</code> scope of <code>SecureMemory</code> in <code>insepctor_gadget.hh</code>.</p>
+<p>Last step before compilation is to define the <code>init</code> function. Since <code>SecureMemory</code> is a <code>Responder</code> object, the convention is to let <code>peer</code> ports know that they can ask for their address range when the ranges become known. <code>init</code> is a <code>virtual</code> and <code>public</code> function from <code>SimObject</code>. Let's go ahead and declare it to override it. To do this, add the following declaration to the <code>public</code> scope of <code>SecureMemory</code> in <code>secure_memory.hh</code>.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span></span>;
 </code></pre>
 <p>To define it, we need to simply call <code>sendRangeChange</code> from <code>cpuSidePort</code>. Add the following code to define <code>init</code> in <code>secure-memory.cc</code></p>
@@ -1137,12 +1137,12 @@ scons build/NULL/gem5.opt -j$(<span class="hljs-built_in">nproc</span>)
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="72" data-paginate="true" data-class="no-logo code-50-percent" data-theme="gem5" lang="en-US" class="no-logo code-50-percent" data-marpit-pagination="72" style="--paginate:true;--class:no-logo code-50-percent;--theme:gem5;" data-marpit-pagination-total="80">
 <h2 id="statistics-header-file">Statistics:: Header File</h2>
-<p>gem5 has its own internal classes for measuring statistics (stats for short). Let's go ahead and include the header files for them in <code>src/bootcamp/insepctor_gadget.hh</code></p>
+<p>gem5 has its own internal classes for measuring statistics (stats for short). Let's go ahead and include the header files for them in <code>src/bootcamp/secure_memory.hh</code></p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;base/statistics.hh&quot;</span></span>
 <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;base/stats/group.hh&quot;</span></span>
 </code></pre>
 <p>gem5 stats have multiple types, each useful for measuring specific types of data. We will look at using <code>statistics::Scalar</code> stats since all the things we want to measure are scalars.</p>
-<p>Let's go ahead a declare a new <code>struct</code> called <code>SecureMemoryStats</code> inside the <code>private</code> scope of <code>SecureMemory</code> and also declare an instance of it. It will inherit from <code>statistics::Group</code>. Add the following lines to <code>src/bootcamp/insepctor_gadget.hh</code> to do this.</p>
+<p>Let's go ahead a declare a new <code>struct</code> called <code>SecureMemoryStats</code> inside the <code>private</code> scope of <code>SecureMemory</code> and also declare an instance of it. It will inherit from <code>statistics::Group</code>. Add the following lines to <code>src/bootcamp/secure_memory.hh</code> to do this.</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">  <span class="hljs-keyword">private</span>:
     <span class="hljs-keyword">struct</span> <span class="hljs-title class_">SecureMemoryStats</span>: <span class="hljs-keyword">public</span> statistics::Group
     {
