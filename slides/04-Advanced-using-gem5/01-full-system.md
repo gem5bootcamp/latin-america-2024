@@ -11,68 +11,9 @@ title: Full system simulation in gem5
 
 ---
 
-<!-- _class: start -->
-## Intro to Syscall Emulation Mode
-
----
-
-## What is Syscall Emulation mode, and when to use/avoid it
-
-**Syscall Emulation (SE)** mode does not model all the devices in a system. It focuses on simulating the CPU and memory system. It only emulates Linux system calls, and only models user-mode code.
-
-SE mode is a good choice when the experiment does not need to model the OS (such as page table walks), does not need a high fidelity model (emulation is ok), and faster simulation speed is needed.
-
-However, if the experiment needs to model the OS interaction, or needs to model a system in high fidelity, then we should use the full-system (FS) mode. The FS mode will be covered in [07-full-system](07-full-system.md).
-
----
-
-## Example
-
-### 00-SE-hello-world
-
-Under `materials/04-Advanced-using-gem5/03-running-in-gem5/00-SE-hello-world`, there is a small example of an SE simulation.
-[00-SE-hello-world.py](../../materials/04-Advanced-using-gem5/03-running-in-gem5/00-SE-hello-world/00-SE-hello-world.py) will run the [00-SE-hello-world](../../materials/04-Advanced-using-gem5/03-running-in-gem5/00-SE-hello-world/00-SE-hello-world.c) binary with a simple X86 configuration.
-This binary prints the string `Hello, World!`.
-If we use the debug flag `SyscallAll` with it, we will able to see what syscalls are simulated.
-We can do it with the following command:
-
-```bash
-gem5 -re --debug-flags=SyscallAll 00-SE-hello-world.py
-```
-
-> `-re` is an alias for `--stdout-file` and `--stderr-file` to redirect the output to a file.
-> The default output is in `m5out/simout.txt` and m5out/simerr.txt`.
-
----
-
-## 00-SE-hello-world
-
-Then in [simout.txt](../../materials/04-Advanced-using-gem5/03-running-in-gem5/00-SE-hello-world/m5out/simout.txt), we should see:
-
-```bash
-280945000: board.processor.cores.core: T0 : syscall Calling write(1, 21152, 14)...
-Hello, World!
-280945000: board.processor.cores.core: T0 : syscall Returned 14.
-```
-
-On the left is the timestamp for the simulation.
-As the timestamp suggests, **SE simulation DOES NOT record the time for the syscall**.
-
-> Note that in the `simout.txt` file the standard out from the *simulator* and the *guest* are mixed together.
-
----
-
-<!-- _class: start -->
-
-## Full system mode
-
----
-
 ## What is Full System Simulation?
 
 gem5's **Full System (FS) mode** simulates an entire computer system. This is in contrast to SE mode which uses the host OS.
-
-This is in contrast to SE mode which uses the host OS, thus side-stepping the need to simulate the entire system; a costly process.
 
 ---
 
@@ -81,7 +22,6 @@ This is in contrast to SE mode which uses the host OS, thus side-stepping the ne
 Unlike in SE mode where we can just provide a binary, in FS mode we need to provide much more information to boot up a real system. In particular we need:
 
 1. A disk image containing the operating system and any necessary software or data. This disk image serves as the virtual hard drive for the simulated system.
-
 2. A kernel binary compatible with the simulated architecture is needed to boot the operating system.
 
 Beyond these essentials, you might need to provide other files like a bootloader, depending on the complexity of the simulation.
@@ -119,32 +59,21 @@ def is_fullsystem(self) -> bool:
 
 ---
 
-<!-- _class: code-60-percent -->
-
 ## Ultimately determined by what `set_workload` function is called
 
-In `kernel_disk_workload.py`:
+In [`kernel_disk_workload.py`](/gem5/src/python/gem5/components/boards/kernel_disk_workload.py)
 
 ```python
 class KernelDiskWorkload:
-
-    # ...
-
     def set_kernel_disk_workload(
         self,
         kernel: KernelResource,
         disk_image: DiskImageResource,
         bootloader: Optional[BootloaderResource] = None,
         disk_device: Optional[str] = None,
-        readfile: Optional[str] = None,
-        readfile_contents: Optional[str] = None,
-        kernel_args: Optional[List[str]] = None,
-        exit_on_work_items: bool = True,
-        checkpoint: Optional[Union[Path, CheckpointResource]] = None,
+        ...
     ) -> None:
-
-        # ...
-
+        ...
         self._set_fullsystem(True)
 ```
 
@@ -154,10 +83,134 @@ class KernelDiskWorkload:
 
 ```python
 class X86Board(AbstractSystemBoard, KernelDiskWorkload):
-    #...
+    ...
 ```
 
 So, in short, **the `set_workload` function called determines whether the simulation is in FS mode or SE mode**.
+
+---
+
+## Accessing the running system
+
+In FS mode, you can access the running system using the **serial console**.
+
+You can use the `m5term` utility to connect to the serial console.
+
+Build `m5term` using the following command:
+
+```bash
+cd gem5/util/term
+make
+```
+
+Now you have a program called `m5term` in the `gem5/util/term` directory.
+
+When you run gem5, it will print `Listening for connections on port 3456` when it is ready to accept connections from `m5term`.
+You can then run:
+
+```bash
+./m5term localhost 3456
+```
+
+---
+
+<!-- _class: exercise -->
+
+## Exercise: explore a running simulation
+
+Create a script that boot Ubuntu 22.04 and run some commands.
+
+Use the x86 ISA and the `CPUTypes.KVM` CPU type.
+We'll use KVM so that it is fast.
+
+Use the "x86-ubuntu-22.04-boot-with-systemd" workload from gem5-resources. (This has already been downloaded for you.)
+
+You can run in interactive mode by adding the following line after `board.set_workload`.
+
+```python
+board.append_kernel_arg("interactive=true")
+```
+
+> IMPORTANT: See the next slide for two important notes before you run.
+
+---
+
+<!-- _class: two-col -->
+
+## Important notes
+
+**Note 1**
+Make sure that you have the folowing line in your script. This is required for running in codespaces, but may not be required on your local machine.
+
+```python
+for proc in processor.cores:
+    proc.core.usePerf = False
+```
+
+**Note 2**
+The disk image that you're using has some exit events that will execute by default. You need to make sure to handle them. Here is some example code.
+
+```python
+def exit_event_handler():
+    print("first exit event: Kernel booted")
+    yield False
+    print("second exit event: In after boot")
+    yield False
+    print("third exit event: After run script")
+    yield True
+simulator = Simulator(
+    board=board,
+    on_exit_event={
+        ExitEvent.EXIT: exit_event_handler(),
+    },
+)
+simulator.run()
+```
+
+---
+
+## Using "readfile"
+
+gem5 has a utility called `readfile` that can be used to read files from the simulated system.
+This can be used to execute a command automatically after boot.
+
+You can see how it's used in the default disks by looking at the `after_boot.sh` file in the disk image.
+
+See [`after_boot.sh`](/gem5-resources/src/x86-ubuntu/files/after_boot.sh) in the gem5-resources.
+(Or at <https://github.com/gem5/gem5-resources/blob/stable/src/ubuntu-generic-diskimages/files/x86/after_boot.sh>)
+
+---
+
+## Overriding kernel disk workload
+
+You can override the inputs to the workload by calling `set_kernel_disk_workload` directly.
+
+Look at the [details of the workload you have been using](https://resources.gem5.org/resources/x86-ubuntu-22.04-boot-with-systemd/raw) on gem5-resources to get started.
+
+The key parts are the `resources` and `additional_params` sections.
+
+Use these parameters to fill in the arguments on `set_kernel_disk_workload`.
+
+---
+
+## Running your own command
+
+Now, you should have something like below, and you can override the `readfile_contents` argument.
+
+```python
+board.set_kernel_disk_workload(
+    kernel = obtain_resource("x86-linux-kernel-5.4.0-105-generic"),
+    disk_image = obtain_resource("x86-ubuntu-22.04-img"),
+    kernel_args = ["earlyprintk=ttyS0", "console=ttyS0", "lpj=7999923", "root=/dev/sda2"],
+    readfile_contents = "echo 'Hello, world!'; sleep 5",
+)
+```
+
+> We add `sleep 5` to keep the simulation running so the serial console will be flushed.
+
+Now, when you run the simulation, you should see the output of the `echo` command in the terminal output. (You will want to remove the `board.append_kernel_arg("interactive=true")` line.)
+
+You can also specify a file with the commands via `readfile`.
 
 ---
 
@@ -263,9 +316,7 @@ Let's go over the Packer file.
 
 ---
 
-<!-- _class: no-logo -->
-
-## Let's use the base Ubuntu image to create a disk image with the GAPBS benchmarks
+## Extending the base ubuntu image
 
 Update the [x86-ubuntu.pkr.hcl](../../materials/04-Advanced-using-gem5/07-full-system/x86-ubuntu-gapbs/x86-ubuntu.pkr.hcl) file.
 
@@ -278,6 +329,7 @@ The general structure of the Packer file would be the same but with a few key ch
 
 ---
 
+## Step 1: Downloading the base Ubuntu image
 
 Let's get the base Ubuntu 24.04 image from gem5 resources and unzip it.
 
@@ -294,6 +346,7 @@ sha256sum ./x86-ubuntu-24-04.gz
 
 ---
 
+## Step 2: Updating the packerfile
 
 - **Update the file and shell provisioners:** Let's remove the file provisioners as we dont need to transfer the files again.
 - **Boot command:** As we are not installing Ubuntu, we can write the commands to login along with any other commands we need (e.g. setting up network or ssh). Let's update the boot command to login and enable network:
@@ -310,7 +363,7 @@ sha256sum ./x86-ubuntu-24-04.gz
 
 ---
 
-## Changes to the post installation script
+## Step 3: Changes to the post installation script
 
 For this post installation script we need to get the dependencies and build the GAPBS benchmarks.
 
@@ -328,9 +381,10 @@ Let's run the Packer script and use this disk image in gem5!
 cd /workspaces/2024/materials/04-Advanced-using-gem5/07-full-system
 x86-ubuntu-gapbs/build.sh
 ```
+
 ---
 
-## Let's use our built disk image in gem5
+## Step 4: Let's use our built disk image in gem5
 
 Let's add the md5sum and the path to our [local JSON ](../../materials/04-Advanced-using-gem5/07-full-system/completed/local-gapbs-resource.json).
 
