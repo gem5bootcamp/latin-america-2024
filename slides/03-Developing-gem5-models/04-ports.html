@@ -967,13 +967,13 @@ SecureMemory::MemSidePort::<span class="hljs-built_in">recvReqRetry</span>()
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-cpp">  <span class="hljs-keyword">private</span>:
     TimedQueue&lt;PacketPtr&gt; responseBuffer;
 
-    EventFunctionWrapper nextRespSendEvent;
+    EventFunctionWrapper nextRespSendEvent;        EventFunctionWrapper nextRespRetryEvent;
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">processNextRespSendEvent</span><span class="hljs-params">()</span></span>;
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">scheduleNextRespSendEvent</span><span class="hljs-params">(Tick when)</span></span>;
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">processNextRespRetryEvent</span><span class="hljs-params">()</span></span>;
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">scheduleNextRespRetryEvent</span><span class="hljs-params">(Tick when)</span></span>;
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">recvRespRetry</span><span class="hljs-params">()</span>
-    
+
   <span class="hljs-keyword">public</span>:
     bool recvTimingResp(PacketPtr pkt);</span>
 </code></pre>
