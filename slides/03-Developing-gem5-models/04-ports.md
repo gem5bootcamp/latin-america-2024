@@ -1308,7 +1308,7 @@ from gem5.components.boards.abstract_board import AbstractBoard
 from gem5.components.memory.memory import ChanneledMemory
 from gem5.utils.override import overrides
 
-class SecureMemory(ChanneledMemory):
+class ChanneledSecureMemory(ChanneledMemory):
     def __init__(
         self,
         dram_interface_class: Type[DRAMInterface],
@@ -1362,14 +1362,14 @@ class SecureMemory(ChanneledMemory):
 Now, let's just simply add the following imports to `gem5/configs/bootcamp/secure_memory/first-secure-memory-example.py`:
 
 ```python
-from components.inspected_memory import SecureMemory
+from components.inspected_memory import ChanneledSecureMemory
 from m5.objects.DRAMInterface import DDR3_1600_8x8
 ```
 
 Let's now create an object of `SecureMemory` with the following parameters.
 
 ```python
-memory = SecureMemory(
+memory = ChanneledSecureMemory(
     dram_interface_class=DDR3_1600_8x8,
     num_channels=2,
     interleaving_size=128,
