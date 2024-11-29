@@ -1608,6 +1608,8 @@ Then inside the SecureMemory class:
     uint64_t getHmacAddr(uint64_t child_addr); // fetch address of the hmac for somed data
     uint64_t getParentAddr(uint64_t child_addr); // fetch parent node in the tree
     void verifyChildren(PacketPtr parent); // remove children from pending untrusted once trusted
+    bool handleResponse(PacketPtr pkt) ;
+    bool handleRequest(PacketPtr pkt);
 ```
 
 ---
