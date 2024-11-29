@@ -1279,6 +1279,8 @@ system.memory.secure_widgets1.numResponsesFwded           18                    
     <span class="hljs-function"><span class="hljs-type">uint64_t</span> <span class="hljs-title">getHmacAddr</span><span class="hljs-params">(<span class="hljs-type">uint64_t</span> child_addr)</span></span>; <span class="hljs-comment">// fetch address of the hmac for somed data</span>
     <span class="hljs-function"><span class="hljs-type">uint64_t</span> <span class="hljs-title">getParentAddr</span><span class="hljs-params">(<span class="hljs-type">uint64_t</span> child_addr)</span></span>; <span class="hljs-comment">// fetch parent node in the tree</span>
     <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">verifyChildren</span><span class="hljs-params">(PacketPtr parent)</span></span>; <span class="hljs-comment">// remove children from pending untrusted once trusted</span>
+    <span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">handleResponse</span><span class="hljs-params">(PacketPtr pkt)</span> </span>;
+    <span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">handleRequest</span><span class="hljs-params">(PacketPtr pkt)</span></span>;
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="81" data-paginate="true" data-theme="gem5" lang="en-US" data-marpit-pagination="81" style="--paginate:true;--theme:gem5;" data-marpit-pagination-total="81">
