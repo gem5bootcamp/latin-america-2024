@@ -217,13 +217,17 @@ sim  = Simulator(on_exit_event={
 
 ---
 
+<!-- _class: two-col -->
+
 ## Big thanks to you all!
 
 Please let us know how we did:
 
 <https://forms.gle/M6HZHxGjXpcdw4kZ8>
 
-![QR code for the form](./04-gem5-at-home-imgs/qr-code.png)
+![QR code for the form width:300px](./04-gem5-at-home-imgs/qr-code.png)
+
+###
 
 Reach out to us:
 Jason Lowe-Power <jlowepower@ucdavis.edu>
